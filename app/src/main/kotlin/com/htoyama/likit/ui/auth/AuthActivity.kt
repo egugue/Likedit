@@ -9,6 +9,7 @@ import android.util.Log
 import android.widget.Toast
 import com.htoyama.likit.App
 import com.htoyama.likit.R
+import com.htoyama.likit.data.pref.AccessTokenPrefsDao
 import rx.Observable
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
@@ -27,6 +28,7 @@ class AuthActivity : AppCompatActivity() {
     }
   }
 
+  @Inject lateinit var dao: AccessTokenPrefsDao
   @Inject lateinit var twitter: Twitter
   private lateinit var requestToken: RequestToken
 
@@ -95,8 +97,10 @@ class AuthActivity : AppCompatActivity() {
               return
             }
 
-            //TODO
             Log.d("---", accessToken.toString())
+            dao.store(accessToken)
+            twitter.oAuthAccessToken = accessToken
+            finish()
           }
 
         })
