@@ -7,14 +7,17 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import com.htoyama.likit.App
 import com.htoyama.likit.R
 import rx.Observable
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import twitter4j.Twitter
 import twitter4j.TwitterFactory
 import twitter4j.auth.AccessToken
 import twitter4j.auth.RequestToken
+import javax.inject.Inject
 
 class AuthActivity : AppCompatActivity() {
 
@@ -24,11 +27,16 @@ class AuthActivity : AppCompatActivity() {
     }
   }
 
+  @Inject lateinit var twitter: Twitter
   private lateinit var requestToken: RequestToken
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_auth)
+
+    App.component(this)
+        .inject(this)
+
     executeOauth()
   }
 
@@ -40,12 +48,6 @@ class AuthActivity : AppCompatActivity() {
   }
 
   private fun executeOauth() {
-    val twitter = TwitterFactory.getSingleton();
-    val key = getString(R.string.twitter_secret_key)
-    val sec = getString(R.string.twitter_secret_token)
-
-    twitter.setOAuthConsumer(key, sec)
-
     Observable.fromCallable {
         requestToken = twitter.getOAuthRequestToken("htoyama://twitter")
         requestToken.authenticationURL
