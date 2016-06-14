@@ -8,4 +8,14 @@
     android:layout_height="match_parent"
     tools:context="com.htoyama.likit.ui.auth.AuthActivity">
 
+    <com.twitter.sdk.android.core.identity.TwitterLoginButton
+        android:id="@+id/twitter_login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:layout_constraintLeft_toLeftOf="@+id/activity_oauth"
+        app:layout_constraintTop_toTopOf="@+id/activity_oauth"
+        app:layout_constraintRight_toRightOf="@+id/activity_oauth"
+        app:layout_constraintBottom_toBottomOf="@+id/activity_oauth"/>
+
 </android.support.constraint.ConstraintLayout>

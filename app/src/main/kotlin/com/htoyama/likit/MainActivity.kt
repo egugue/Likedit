@@ -2,9 +2,11 @@ package com.htoyama.likit
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.htoyama.likit.data.pref.AccessTokenPrefsDao
+import com.htoyama.likit.ui.TwitterLogger
 import com.htoyama.likit.ui.auth.AuthActivity
+import com.twitter.sdk.android.core.TwitterAuthConfig
+import io.fabric.sdk.android.Fabric
 import rx.Observable
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
@@ -25,10 +27,16 @@ class MainActivity : AppCompatActivity() {
 
     App.component(this).inject(this)
 
-    if (dao.get() == null) {
+    findViewById(R.id.text_view)?.setOnClickListener {
       startActivity(AuthActivity.createIntent(this))
     }
 
+    val authConfig = TwitterAuthConfig(
+        getString(R.string.twitter_secret_key),
+        getString(R.string.twitter_secret_token));
+    Fabric.with(this, com.twitter.sdk.android.Twitter(authConfig));
+
+    return
     Observable.fromCallable { twitter.favorites }
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
@@ -48,10 +56,9 @@ class MainActivity : AppCompatActivity() {
             }
 
             for (status in t) {
-              Log.d("---", status.toString())
+              TwitterLogger.log(status)
             }
           }
-
         })
   }
 

@@ -10,6 +10,8 @@ import android.widget.Toast
 import com.htoyama.likit.App
 import com.htoyama.likit.R
 import com.htoyama.likit.data.pref.AccessTokenPrefsDao
+import com.twitter.sdk.android.core.*
+import com.twitter.sdk.android.core.identity.TwitterLoginButton
 import rx.Observable
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
@@ -31,15 +33,33 @@ class AuthActivity : AppCompatActivity() {
   @Inject lateinit var dao: AccessTokenPrefsDao
   @Inject lateinit var twitter: Twitter
   private lateinit var requestToken: RequestToken
+  private lateinit var loginButton: TwitterLoginButton
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_auth)
+    loginButton = findViewById(R.id.twitter_login_button) as TwitterLoginButton
+
+    loginButton.callback = object : Callback<TwitterSession>() {
+      override fun success(result: Result<TwitterSession>) {
+        val session = result.data
+        Toast.makeText(this@AuthActivity,
+            "@" + session.userName + "logged in",
+            Toast.LENGTH_SHORT).show()
+      }
+
+      override fun failure(exception: TwitterException?) {
+        Log.d("---", "Login with Twitter failure", exception)
+      }
+    }
 
     App.component(this)
         .inject(this)
+  }
 
-    executeOauth()
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
+    loginButton.onActivityResult(requestCode, resultCode, data)
   }
 
   override fun onNewIntent(intent: Intent?) {
