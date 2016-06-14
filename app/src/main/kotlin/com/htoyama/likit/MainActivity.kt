@@ -5,8 +5,6 @@ import android.os.Bundle
 import com.htoyama.likit.data.pref.AccessTokenPrefsDao
 import com.htoyama.likit.ui.TwitterLogger
 import com.htoyama.likit.ui.auth.AuthActivity
-import com.twitter.sdk.android.core.TwitterAuthConfig
-import io.fabric.sdk.android.Fabric
 import rx.Observable
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
@@ -30,11 +28,6 @@ class MainActivity : AppCompatActivity() {
     findViewById(R.id.text_view)?.setOnClickListener {
       startActivity(AuthActivity.createIntent(this))
     }
-
-    val authConfig = TwitterAuthConfig(
-        getString(R.string.twitter_secret_key),
-        getString(R.string.twitter_secret_token));
-    Fabric.with(this, com.twitter.sdk.android.Twitter(authConfig));
 
     return
     Observable.fromCallable { twitter.favorites }

@@ -2,6 +2,9 @@ package com.htoyama.likit
 
 import android.app.Application
 import android.content.Context
+import com.twitter.sdk.android.Twitter
+import com.twitter.sdk.android.core.TwitterAuthConfig
+import io.fabric.sdk.android.Fabric
 
 class App :Application() {
 
@@ -22,12 +25,20 @@ class App :Application() {
   override fun onCreate() {
     super.onCreate()
     buildComponent()
+    buildFabric()
   }
 
-  private fun buildComponent()  {
+  private fun buildComponent() {
     component = DaggerAppComponent.builder()
         .appModule(AppModule(this))
         .build()
+  }
+
+  private fun buildFabric() {
+    val authConfig = TwitterAuthConfig(
+        getString(R.string.twitter_secret_key),
+        getString(R.string.twitter_secret_token));
+    Fabric.with(this, Twitter(authConfig));
   }
 
 }
