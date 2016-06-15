@@ -1,4 +1,4 @@
-package com.htoyama.likit.data.pref
+package com.htoyama.likit.data.common.pref
 
 import android.app.Application
 import android.content.Context
