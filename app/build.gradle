@@ -7,6 +7,13 @@ repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
+def props = new Properties()
+try {
+    props.load(file('fabric.properties').newDataInputStream())
+} catch (Exception ex) {
+    throw new GradleException("Missing fabric.properties, check the crashlytics.properties.sample file.", ex);
+}
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
@@ -19,7 +26,13 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            buildConfigField "String", "TWITTER_CONSUMER_KEY", "\"${props.getProperty("twitterConsumerKey")}\""
+            buildConfigField "String", "TWITTER_CONSUMER_SECRET", "\"${props.getProperty("twitterConsumerSecret")}\""
+        }
         release {
+            buildConfigField "String", "TWITTER_CONSUMER_KEY", "\"${props.getProperty("twitterConsumerKey")}\""
+            buildConfigField "String", "TWITTER_CONSUMER_SECRET", "\"${props.getProperty("twitterConsumerSecret")}\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -79,6 +92,8 @@ afterEvaluate {
 
         file.write(
             "twitterPluginId=" + System.getenv("LIKEDIT_FABRIC_TWITTER_PLUGIN_ID") + "\n" +
+            "twitterConsumerKey=" + System.getenv("LIKEDIT_FABRIC_TWITTER_CONSUMER_KEY") + "\n" +
+            "twitterConsumerSecret=" + System.getenv("LIKEDIT_FABRIC_TWITTER_CONSUMER_SECRET") + "\n" +
             "apiKey=" + System.getenv("LIKEDIT_FABRIC_API_KEY")
         )
 

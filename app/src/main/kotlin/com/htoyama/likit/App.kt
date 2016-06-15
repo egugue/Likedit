@@ -35,10 +35,10 @@ class App :Application() {
   }
 
   private fun buildFabric() {
-    val authConfig = TwitterAuthConfig(
-        getString(R.string.twitter_secret_key),
-        getString(R.string.twitter_secret_token));
-    Fabric.with(this, Twitter(authConfig));
+    val c = TwitterAuthConfig(
+        BuildConfig.TWITTER_CONSUMER_KEY,
+        BuildConfig.TWITTER_CONSUMER_SECRET);
+    Fabric.with(this, Twitter(c));
   }
 
 }

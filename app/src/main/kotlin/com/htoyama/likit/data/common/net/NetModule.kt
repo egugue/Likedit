@@ -1,10 +1,7 @@
 package com.htoyama.likit.data.common.net
 
-import android.app.Application
 import com.google.gson.GsonBuilder
-import com.htoyama.likit.R
 import com.twitter.sdk.android.core.AuthenticatedClient
-import com.twitter.sdk.android.core.TwitterAuthConfig
 import com.twitter.sdk.android.core.TwitterCore
 import com.twitter.sdk.android.core.internal.TwitterApi
 import com.twitter.sdk.android.core.models.SafeListAdapter
@@ -20,11 +17,6 @@ import javax.inject.Singleton
  * Created by toyamaosamuyu on 2016/06/15.
  */
 @Module class NetModule {
-
-  @Provides fun twitterAuthConfig(app: Application): TwitterAuthConfig =
-      TwitterAuthConfig(
-          app.getString(R.string.twitter_secret_key),
-          app.getString(R.string.twitter_secret_token))
 
   @Provides @Singleton fun twitterCore(): TwitterCore
       = TwitterCore.getInstance()
