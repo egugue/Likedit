@@ -4,19 +4,15 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.htoyama.likit.data.common.net.FavoriteService
-import com.htoyama.likit.data.pref.AccessTokenPrefsDao
 import com.htoyama.likit.ui.auth.AuthActivity
 import com.twitter.sdk.android.core.models.Tweet
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-import twitter4j.Twitter
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
-  @Inject lateinit var twitter: Twitter
-  @Inject lateinit var dao: AccessTokenPrefsDao
   @Inject lateinit var service: FavoriteService
 
   override fun onCreate(savedInstanceState: Bundle?) {
