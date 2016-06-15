@@ -75,13 +75,7 @@ afterEvaluate {
             println "ふーーーーーーーーーーーー"
         }
 
-        println System.getProperty("os.name").toLowerCase()
-
-        println "fabTask = " + fabTask.name
-        def file = file("hogehoge.text")
-
-        println "twitterPluginId=" + System.getenv("LIKEDIT_FABRIC_TWITTER_PLUGIN_ID")
-        println "apiKey=" + System.getenv("LIKEDIT_FABRIC_API_KEY")
+        def file = file("fabric.properties")
 
         file.write(
             "twitterPluginId=" + System.getenv("LIKEDIT_FABRIC_TWITTER_PLUGIN_ID") + "\n" +
