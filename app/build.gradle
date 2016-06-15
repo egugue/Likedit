@@ -25,6 +25,7 @@ afterEvaluate {
         fabTask.dependsOn fooTask
         */
 
+        def file = file("fabric.properties")
         file.write(
             "twitterPluginId=" + System.getenv("LIKEDIT_FABRIC_TWITTER_PLUGIN_ID") + "\n" +
             "twitterConsumerKey=" + System.getenv("LIKEDIT_FABRIC_TWITTER_CONSUMER_KEY") + "\n" +
