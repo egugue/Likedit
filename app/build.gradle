@@ -37,7 +37,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha2'
+    //compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha2'
     compile 'io.reactivex:rxjava:1.1.5'
     compile 'io.reactivex:rxandroid:1.2.0'
 
@@ -54,4 +54,36 @@ dependencies {
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support:support-annotations:23.4.0'
+}
+
+afterEvaluate {
+    android.applicationVariants.each { variant ->
+
+        def isRunningOnMac = "mac os x".equals System.getProperty("os.name").toLowerCase()
+        if (isRunningOnMac) {
+            return
+        }
+
+        def variantName = variant.name.capitalize()
+        def fabTask = tasks.findByName("fabricGenerateResources${variantName}")
+        fabTask.doFirst {
+            println "ふぁｆｄさｆｓｄｆｄさふぁｓ"
+        }
+
+        def fooTask = tasks.create("generateFabricPropertiesFile${variantName}")
+        fooTask.doFirst {
+            println "ふーーーーーーーーーーーー"
+        }
+
+        println System.getProperty("os.name").toLowerCase()
+
+        println "fabTask = " + fabTask.name
+        def file = file("hogehoge.text")
+        file.write(
+            "twitterPluginId=" + System.getenv("LIKEDIT_FABRIC_TWITTER_PLUGIN_ID") + "\n" +
+            "apiKey=" + System.getenv("LIKEDIT_FABRIC_API_KEY")
+        )
+
+        fabTask.dependsOn fooTask
+    }
 }
