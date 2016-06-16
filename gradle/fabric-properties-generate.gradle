@@ -1,0 +1,54 @@
+def getEnvOrThrow(String name) {
+    def value = System.getenv(name)
+    if (value == null) {
+        throw new GradleException("no such enviroment variable: ${name}")
+    }
+    return value
+}
+
+def fabricTwitterPluginId() {
+    return getEnvOrThrow("LIKEDIT_FABRIC_TWITTER_PLUGIN_ID")
+}
+
+def String twitterConsumerKey() {
+    return getEnvOrThrow("LIKEDIT_FABRIC_TWITTER_CONSUMER_KEY")
+}
+
+def twitterConsumerSecret() {
+    return getEnvOrThrow("LIKEDIT_FABRIC_TWITTER_CONSUMER_SECRET")
+}
+
+def twitterApiKey() {
+    return getEnvOrThrow("LIKEDIT_FABRIC_API_KEY")
+}
+
+def generateFabricProperties() {
+    def pluginId = fabricTwitterPluginId()
+    def consumerKey = twitterConsumerKey()
+    def consumerSecret = twitterConsumerSecret()
+    def apiKey = twitterApiKey()
+    def now = new Date().toString()
+
+    def text = """#Contains API Secret used to validate your application. Commit to internal source control; avoid making secret public.
+#$now
+twitterPluginId=$pluginId
+twitterConsumerKey=$consumerKey
+twitterConsumerSecret=$consumerSecret
+apiKey=$apiKey
+"""
+
+    file("fabric.properties").write(text)
+}
+
+afterEvaluate {
+    android.applicationVariants.each { variant ->
+        def variantName = variant.name.capitalize()
+        def resourceTask = tasks.findByName("fabricGenerateResources${variantName}")
+
+        task "fabricGenerateProperties${variantName}" << {
+            generateFabricProperties()
+        }
+
+        resourceTask.dependsOn "fabricGenerateProperties${variantName}"
+    }
+}
