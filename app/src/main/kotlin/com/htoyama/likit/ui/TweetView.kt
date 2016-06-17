@@ -38,11 +38,19 @@ class TweetView
         .load(avatorUrl(tweet.user.profileImageUrlHttps))
         .into(avatorIv)
 
-    fullNameTv.text = tweet.user.name
+    setFullName(tweet)
     screenNameTv.text = tweet.user.screenName
     contentTv.text = tweet.text
 
     setTimeStamp(tweet)
+  }
+
+  private fun setFullName(tweet: Tweet?) {
+    if (tweet != null && tweet.user != null && tweet.user.name != null) {
+      fullNameTv.text = tweet.user.name
+    } else {
+      fullNameTv.text = ""
+    }
   }
 
   private fun setTimeStamp(tweet: Tweet) {
