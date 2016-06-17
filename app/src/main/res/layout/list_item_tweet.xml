@@ -66,8 +66,10 @@
         android:layout_toEndOf="@+id/tw__tweet_author_avatar"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:textColorLink="@color/tw__tweet_action_color"
         android:textSize="14sp"
         android:textColor="#36000000"
+        android:focusable="false"
         tools:text="Secondary line text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam massa quam."
     />
 

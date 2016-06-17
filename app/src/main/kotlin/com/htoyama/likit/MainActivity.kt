@@ -9,9 +9,6 @@ import com.htoyama.likit.data.common.net.FavoriteService
 import com.htoyama.likit.ui.TweetAdapter
 import com.htoyama.likit.ui.auth.AuthActivity
 import com.twitter.sdk.android.core.models.Tweet
-import com.twitter.sdk.android.tweetui.CompactTweetView
-import com.twitter.sdk.android.tweetui.TweetTimelineListAdapter
-import com.twitter.sdk.android.tweetui.UserTimeline
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -48,7 +45,7 @@ class MainActivity : AppCompatActivity() {
     val adapter = TweetAdapter()
     listview.adapter = adapter
 
-    service.list(null, null, 30, null, null, false)
+    service.list(null, null, 30, null, null, true)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(object : Subscriber<List<Tweet>>() {
