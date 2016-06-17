@@ -62,10 +62,6 @@ class TweetView
     return avatorUrl.replace("_normal", "_reasonably_small")
   }
 
-  override fun onFinishInflate() {
-    super.onFinishInflate()
-  }
-
   private fun displayTweet(): Tweet? {
     if (tweet == null || (tweet as Tweet).retweetedStatus == null) {
       return tweet
