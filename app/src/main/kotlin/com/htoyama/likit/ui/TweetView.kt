@@ -1,6 +1,7 @@
 package com.htoyama.likit.ui
 
 import android.content.Context
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.RelativeLayout
@@ -39,7 +40,7 @@ class TweetView
         .into(avatorIv)
 
     setFullName(tweet)
-    screenNameTv.text = tweet.user.screenName
+    setScreenName(tweet)
     contentTv.text = tweet.text
 
     setTimeStamp(tweet)
@@ -51,6 +52,25 @@ class TweetView
     } else {
       fullNameTv.text = ""
     }
+  }
+
+  private fun setScreenName(tweet: Tweet?) {
+    if (tweet != null && tweet.user != null && tweet.user.screenName!= null) {
+      screenNameTv.text = formatScreenName(tweet.user.screenName)
+    } else {
+      screenNameTv.text = ""
+    }
+  }
+
+  private fun formatScreenName(screenName: CharSequence): CharSequence {
+    if (TextUtils.isEmpty(screenName)) {
+      return "";
+    }
+
+    if (screenName.get(0) == '@') {
+      return screenName;
+    }
+    return "@" + screenName;
   }
 
   private fun setTimeStamp(tweet: Tweet) {
