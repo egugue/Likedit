@@ -42,6 +42,20 @@ class TweetView
     screenNameTv.text = tweet.user.screenName
     contentTv.text = tweet.text
 
+    setTimeStamp(tweet)
+  }
+
+  private fun setTimeStamp(tweet: Tweet) {
+    val createdAt = tweet.createdAt
+    val timeStamp: String
+    if (createdAt != null && TweetDateUtils.isValidTimestamp(createdAt)) {
+      timeStamp = TweetDateUtils.getRelativeTimeString(
+          resources, System.currentTimeMillis(), TweetDateUtils.apiTimeToLong(createdAt))
+    } else {
+      timeStamp = ""
+    }
+
+    timestampTv.text = timeStamp
   }
 
   private fun avatorUrl(avatorUrl: String): String {

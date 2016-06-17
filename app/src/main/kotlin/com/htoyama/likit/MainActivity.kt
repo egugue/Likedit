@@ -40,9 +40,9 @@ class MainActivity : AppCompatActivity() {
     val adapter = TweetTimelineListAdapter.Builder(this)
         .setTimeline(userTimeline)
         .build();
-
     listview.adapter = adapter
-    */
+        */
+
     val listview = findViewById(R.id.list) as RecyclerView
     listview.layoutManager = LinearLayoutManager(this)
     val adapter = TweetAdapter()
