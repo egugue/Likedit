@@ -85,8 +85,8 @@ final class TweetDateUtils {
             return RELATIVE_DATE_FORMAT.format(d);
         }
 
-        if (now.get(Calendar.MONTH) == c.get(Calendar.MONTH)
-            && now.get(Calendar.YEAR) == c.get(Calendar.YEAR)) {
+        if ( now.get(Calendar.MONTH) == c.get(Calendar.MONTH) &&
+            now.get(Calendar.DAY_OF_MONTH) == c.get(Calendar.DAY_OF_MONTH)) {
             //Same day
             RELATIVE_DATE_FORMAT.applyPattern(
                 res.getString(R.string.relative_date_format_in_day));
