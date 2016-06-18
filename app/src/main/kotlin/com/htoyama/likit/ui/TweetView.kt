@@ -92,7 +92,7 @@ class TweetView
       return "";
     }
 
-    if (screenName.get(0) == '@') {
+    if (screenName[0] == '@') {
       return screenName;
     }
     return "@" + screenName;
