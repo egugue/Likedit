@@ -53,7 +53,7 @@ public final class TweetTextLinkifier {
             final int linkHighlightColor) {
         if (tweetText == null) return null;
 
-        Log.d("ーーー", tweetText.toString());
+        //Log.d("ーーー", tweetText.toString());
 
         if (TextUtils.isEmpty(tweetText.text)) {
             return tweetText.text;
@@ -145,15 +145,16 @@ public final class TweetTextLinkifier {
                 // replace the last photo url with empty string, we can use the start indices as
                 // as simple check, since none of this will work anyways if we have overlapping
                 // entities
-                Log.d("ーーー", "url = " + url.displayUrl);
+                //Log.d("ーーー", "url = " + url.displayUrl);
                 if (lastPhoto != null && lastPhoto.start == url.start) {
                     spannable.replace(start, end, "");
                     len = end - start;
                     end -= len;
                     offset += len;
+                    Log.d("ーーー", "                last phot ari " + lastPhoto.displayUrl);
                 } else if (!TextUtils.isEmpty(url.displayUrl)) {
-                    Log.d("ーーー", spannable.toString());
-                    Log.d("ーーー", "start = " + start + "  end = " + end);
+                    //Log.d("ーーー", spannable.toString());
+                    //Log.d("ーーー", "start = " + start + "  end = " + end);
                     spannable.replace(start, end, url.displayUrl);
                     len = end - (start + url.displayUrl.length());
                     end -= len;

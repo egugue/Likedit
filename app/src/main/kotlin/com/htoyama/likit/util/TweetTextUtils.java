@@ -18,6 +18,7 @@
 package com.htoyama.likit.util;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.Tweet;
@@ -54,7 +55,7 @@ public final class TweetTextUtils {
      * @param formattedTweetText The formatted tweet text that is to be populated
      * @param tweet The source Tweet
      */
-    static void convertEntities(FormattedTweetText formattedTweetText, Tweet tweet) {
+    private static void convertEntities(FormattedTweetText formattedTweetText, Tweet tweet) {
         if (tweet.entities == null) {
             return;
         }
@@ -83,16 +84,21 @@ public final class TweetTextUtils {
      * @param formattedTweetText The formatted tweet text that is to be populated
      * @param tweet The source Tweet
      */
-    static void format(FormattedTweetText formattedTweetText, Tweet tweet) {
+    private static void format(FormattedTweetText formattedTweetText, Tweet tweet) {
         if (TextUtils.isEmpty(tweet.text)) return;
 
+        //Log.d("ーーーーー", tweet.text);
         final HtmlEntities.Unescaped u = HtmlEntities.HTML40.unescape(tweet.text);
+        //Log.d("ーーーーー", u.unescaped);
         final StringBuilder result = new StringBuilder(u.unescaped);
 
         adjustIndicesForEscapedChars(formattedTweetText.urlEntities, u.indices);
         adjustIndicesForEscapedChars(formattedTweetText.mediaEntities, u.indices);
         adjustIndicesForSupplementaryChars(result, formattedTweetText);
         formattedTweetText.text = result.toString();
+        //Log.d("ーーーーー", formattedTweetText.text);
+        //Log.d("ーーーーー", ".");
+        //Log.d("ーーーーー", ".");
     }
 
     /**
@@ -103,9 +109,9 @@ public final class TweetTextUtils {
      * @param entities The entities that need to be adjusted
      * @param indices The indices of where there were escaped html chars that we unescaped
      */
-    static void adjustIndicesForEscapedChars(
-            List<? extends FormattedUrlEntity> entities,
-            List<int[]> indices) {
+    private static void adjustIndicesForEscapedChars(
+        List<? extends FormattedUrlEntity> entities,
+        List<int[]> indices) {
         if (entities == null || indices == null || indices.isEmpty()) {
             return;
         }
@@ -152,13 +158,15 @@ public final class TweetTextUtils {
      * @param content The content of the tweet
      * @param formattedTweetText The formatted tweet text with entities that we need to adjust
      */
-    static void adjustIndicesForSupplementaryChars(StringBuilder content,
+    private static void adjustIndicesForSupplementaryChars(StringBuilder content,
             FormattedTweetText formattedTweetText) {
         final List<Integer> highSurrogateIndices = new ArrayList<>();
         final int len = content.length() - 1;
         for (int i = 0; i < len; ++i) {
             if (Character.isHighSurrogate(content.charAt(i))
                     && Character.isLowSurrogate(content.charAt(i + 1))) {
+                Log.d("ーーー", "charAt("+i+") = "+content.charAt(i)
+                    + "   charAt("+(i+1)+") = "+content.charAt(i+1));
                 highSurrogateIndices.add(i);
             }
         }
@@ -174,22 +182,28 @@ public final class TweetTextUtils {
      * @param entities The entities that need to be adjusted
      * @param indices The indices in the string where there are supplementary chars
      */
-    static void adjustEntitiesWithOffsets(List<? extends FormattedUrlEntity> entities,
+    private static void adjustEntitiesWithOffsets(List<? extends FormattedUrlEntity> entities,
             List<Integer> indices) {
         if (entities == null || indices == null) return;
         for (FormattedUrlEntity entity : entities) {
             // find all indices <= start and update offsets by that much
+            //Log.d("ーーーーー", "start = " + entity.start + "  end = " + entity.end);
+            //Log.d("ーーーーー", "indies = " + indices.toString());
             final int start = entity.start;
             int offset = 0;
             for (Integer index : indices) {
                 if (index - offset <= start) {
                     offset += 1;
                 } else {
+                    //TODO: it will be removed later.
+                    Log.e("ーーー", entity.displayUrl + "  " + entity.url);
                     break;
                 }
             }
             entity.start = entity.start + offset;
             entity.end = entity.end + offset;
+            //Log.d("ーーーーー", "start = " + entity.start + "  end = " + entity.end);
         }
     }
+
 }
