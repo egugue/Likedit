@@ -61,11 +61,11 @@ class TweetView
     }
 
     val formatTweetText = TweetTextUtils.formatTweetText(tweet)
-    val actionColor = ResourcesCompat.getColor(resources, R.color.tw__tweet_action_color, null)
-    val actionHighLightColor = ResourcesCompat.getColor(resources, R.color.tw__tweet_action_light_highlight_color, null)
+    val linkColor = ResourcesCompat.getColor(resources, R.color.tweet_text_link, null)
+    val linkHighLightColor = ResourcesCompat.getColor(resources, R.color.tweet_text_link_highlight, null)
     val hasPhoto = TweetMediaUtils.hasPhoto(tweet)
     val text = TweetTextLinkifier.linkifyUrls(formatTweetText, linkClickListener,
-        hasPhoto, actionColor, actionHighLightColor)
+        hasPhoto, linkColor, linkHighLightColor)
 
     contentTv.text = text
     SpanClickHandler.enableClicksOnSpans(contentTv)

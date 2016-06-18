@@ -27,6 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/tw__tweet_author_avatar"
         android:layout_toEndOf="@+id/tw__tweet_author_avatar"
+        android:textAppearance="@style/Likedit.TextAppearance.Tweet.FullName"
         tools:text="Egugue"
     />
 
@@ -39,8 +40,7 @@
         android:layout_alignBottom="@+id/tw__tweet_author_full_name"
         android:layout_toRightOf="@+id/tw__tweet_author_full_name"
         android:layout_toEndOf="@+id/tw__tweet_author_full_name"
-        android:textSize="14sp"
-        android:textColor="#36000000"
+        android:textAppearance="@style/Likedit.TextAppearance.Tweet.ScreenName"
         tools:text="@duame0728"
     />
 
@@ -66,12 +66,9 @@
         android:layout_toEndOf="@+id/tw__tweet_author_avatar"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textColorLink="@color/tw__tweet_action_color"
-        android:textSize="14sp"
-        android:textColor="#36000000"
         android:focusable="false"
+        android:textAppearance="@style/Likedit.TextAppearance.Tweet.Text"
         tools:text="Secondary line text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam massa quam."
     />
-
 
 </com.htoyama.likit.ui.TweetView>
