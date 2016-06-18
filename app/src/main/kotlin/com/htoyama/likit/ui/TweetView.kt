@@ -88,14 +88,13 @@ class TweetView
   }
 
   private fun formatScreenName(screenName: CharSequence): CharSequence {
-    if (TextUtils.isEmpty(screenName)) {
-      return "";
+    return if (TextUtils.isEmpty(screenName)) {
+      ""
+    } else if (screenName[0] == '@') {
+      screenName
+    } else {
+      "@" + screenName
     }
-
-    if (screenName[0] == '@') {
-      return screenName;
-    }
-    return "@" + screenName;
   }
 
   private fun setTimeStamp(tweet: Tweet) {
