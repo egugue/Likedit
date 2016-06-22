@@ -6,6 +6,7 @@ import android.net.Uri
 import android.support.v4.content.res.ResourcesCompat
 import android.text.TextUtils
 import android.util.AttributeSet
+import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -14,6 +15,8 @@ import com.htoyama.likit.R
 import com.htoyama.likit.util.LinkClickListener
 import com.htoyama.likit.util.TweetTextLinkifier
 import com.htoyama.likit.util.TweetTextUtils
+import com.htoyama.toGone
+import com.htoyama.toVisible
 import com.squareup.picasso.Picasso
 import com.twitter.sdk.android.core.models.MediaEntity
 
@@ -35,6 +38,7 @@ class TweetView
   val screenNameTv: TextView by bindView(R.id.tw__tweet_author_screen_name)
   val contentTv: TextView by bindView(R.id.tw__tweet_text)
   val timestampTv: TextView by bindView(R.id.tw__tweet_timestamp)
+  val mediaIv: TweetImageView by bindView(R.id.tw__tweet_media)
 
   fun setTweet(tweet: Tweet) {
     this.tweet = tweet
@@ -52,11 +56,13 @@ class TweetView
     setScreenName(tweet)
     setContent(tweet)
     setTimeStamp(tweet)
+    setMedia(tweet)
   }
 
   private fun setContent(tweet: Tweet?) {
     if (tweet == null) {
       contentTv.text = ""
+      contentTv.toGone()
       return
     }
 
@@ -67,7 +73,14 @@ class TweetView
     val text = TweetTextLinkifier.linkifyUrls(formatTweetText, linkClickListener,
         hasPhoto, linkColor, linkHighLightColor)
 
+    if (text == null) {
+      contentTv.text = ""
+      contentTv.toGone()
+      return
+    }
+
     contentTv.text = text
+    contentTv.toVisible()
     SpanClickHandler.enableClicksOnSpans(contentTv)
   }
 
@@ -108,6 +121,25 @@ class TweetView
     }
 
     timestampTv.text = timeStamp
+  }
+
+  private fun setMedia(tweet: Tweet?) {
+    if (tweet == null || !
+    TweetMediaUtils.hasPhoto(tweet)) {
+      mediaIv.visibility = View.GONE
+      return
+    }
+
+    val photoEntity = TweetMediaUtils.getPhotoEntity(tweet)
+    if (photoEntity != null && photoEntity.sizes != null && photoEntity.sizes.medium != null) {
+        mediaIv.setImageSize(photoEntity.sizes.medium.w, photoEntity.sizes.medium.h);
+    }
+    mediaIv.visibility = View.VISIBLE
+    Picasso.with(context)
+        .load(photoEntity.mediaUrlHttps)
+        .centerCrop()
+        .fit()
+        .into(mediaIv)
   }
 
   private fun avatorUrl(avatorUrl: String): String {

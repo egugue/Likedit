@@ -165,8 +165,8 @@ public final class TweetTextUtils {
         for (int i = 0; i < len; ++i) {
             if (Character.isHighSurrogate(content.charAt(i))
                     && Character.isLowSurrogate(content.charAt(i + 1))) {
-                Log.d("ーーー", "charAt("+i+") = "+content.charAt(i)
-                    + "   charAt("+(i+1)+") = "+content.charAt(i+1));
+                //Log.d("ーーー", "charAt("+i+") = "+content.charAt(i)
+                //    + "   charAt("+(i+1)+") = "+content.charAt(i+1));
                 highSurrogateIndices.add(i);
             }
         }
@@ -194,9 +194,9 @@ public final class TweetTextUtils {
             for (Integer index : indices) {
                 if (index - offset <= start) {
                     offset += 1;
-                } else {
                     //TODO: it will be removed later.
                     Log.e("ーーー", entity.displayUrl + "  " + entity.url);
+                } else {
                     break;
                 }
             }

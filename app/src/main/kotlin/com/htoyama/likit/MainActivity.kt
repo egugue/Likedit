@@ -56,9 +56,6 @@ class MainActivity : AppCompatActivity() {
             }
 
             adapter.setTweetList(t)
-            for (tweet in t) {
-              Log.d("---", tweet.user.name)
-            }
           }
 
           override fun onError(e: Throwable?) {
