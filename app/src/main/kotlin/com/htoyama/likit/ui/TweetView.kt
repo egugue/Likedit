@@ -137,8 +137,6 @@ class TweetView
     mediaIv.visibility = View.VISIBLE
     Picasso.with(context)
         .load(photoEntity.mediaUrlHttps)
-        .centerCrop()
-        .fit()
         .into(mediaIv)
   }
 
