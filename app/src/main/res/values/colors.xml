@@ -3,4 +3,11 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!-- textColor -->
+    <color name="textColorPrimary">#de000000</color>
+    <color name="textColorSecondary">#89000000</color>
+
+    <color name="tweet_text_link">#55acee</color>
+    <color name="tweet_text_link_highlight">#ebeef0</color>
 </resources>

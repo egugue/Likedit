@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.htoyama.likit.ui.TweetView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="12dp"
+    android:paddingRight="22dp"
+    android:paddingEnd="22dp"
+    android:background="@android:color/white"
+    >
+
+    <ImageView
+        android:id="@+id/tw__tweet_author_avatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        tools:src="@drawable/avator"
+    />
+
+    <TextView
+        android:id="@+id/tw__tweet_author_full_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/tw__tweet_author_avatar"
+        android:layout_toEndOf="@+id/tw__tweet_author_avatar"
+        android:textAppearance="@style/Likedit.TextAppearance.Tweet.FullName"
+        tools:text="Egugue"
+    />
+
+    <TextView
+        android:id="@+id/tw__tweet_author_screen_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_alignBottom="@+id/tw__tweet_author_full_name"
+        android:layout_toRightOf="@+id/tw__tweet_author_full_name"
+        android:layout_toEndOf="@+id/tw__tweet_author_full_name"
+        android:textAppearance="@style/Likedit.TextAppearance.Tweet.ScreenName"
+        tools:text="@duame0728"
+    />
+
+    <TextView
+        android:id="@+id/tw__tweet_timestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tw__tweet_author_full_name"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textSize="14sp"
+        android:textColor="#36000000"
+        tools:text="Today 08:00"
+    />
+
+    <TextView
+        android:id="@+id/tw__tweet_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_below="@+id/tw__tweet_author_full_name"
+        android:layout_toRightOf="@+id/tw__tweet_author_avatar"
+        android:layout_toEndOf="@+id/tw__tweet_author_avatar"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:focusable="false"
+        android:textAppearance="@style/Likedit.TextAppearance.Tweet.Text"
+        tools:text="Secondary line text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam massa quam."
+    />
+
+    <com.htoyama.likit.ui.TweetImageView
+        android:id="@+id/tw__tweet_media"
+        android:layout_width="600dp"
+        android:layout_height="wrap_content"
+        android:maxHeight="480dp"
+        android:minWidth="480dp"
+        android:scaleType="centerCrop"
+        android:layout_below="@+id/tw__tweet_text"
+        android:layout_marginTop="32dp"
+        tools:src="@drawable/avator"
+    />
+
+</com.htoyama.likit.ui.TweetView>
