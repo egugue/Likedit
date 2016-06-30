@@ -87,18 +87,18 @@ public final class TweetTextUtils {
     private static void format(FormattedTweetText formattedTweetText, Tweet tweet) {
         if (TextUtils.isEmpty(tweet.text)) return;
 
-        //Log.d("ーーーーー", tweet.text);
+        Log.d("ーーーーー", tweet.text);
         final HtmlEntities.Unescaped u = HtmlEntities.HTML40.unescape(tweet.text);
-        //Log.d("ーーーーー", u.unescaped);
+        Log.d("ーーーーー", u.unescaped);
         final StringBuilder result = new StringBuilder(u.unescaped);
 
         adjustIndicesForEscapedChars(formattedTweetText.urlEntities, u.indices);
         adjustIndicesForEscapedChars(formattedTweetText.mediaEntities, u.indices);
         adjustIndicesForSupplementaryChars(result, formattedTweetText);
         formattedTweetText.text = result.toString();
-        //Log.d("ーーーーー", formattedTweetText.text);
-        //Log.d("ーーーーー", ".");
-        //Log.d("ーーーーー", ".");
+        Log.d("ーーーーー", formattedTweetText.text);
+        Log.d("ーーーーー", ".");
+        Log.d("ーーーーー", ".");
     }
 
     /**

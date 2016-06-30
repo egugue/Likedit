@@ -6,15 +6,15 @@ import android.net.Uri
 import android.support.v4.content.res.ResourcesCompat
 import android.text.TextUtils
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import butterknife.bindView
 import com.htoyama.likit.R
-import com.htoyama.likit.util.LinkClickListener
-import com.htoyama.likit.util.TweetTextLinkifier
-import com.htoyama.likit.util.TweetTextUtils
+import com.htoyama.likit.model.tweet.TweetFactory
+import com.htoyama.likit.util.*
 import com.htoyama.toGone
 import com.htoyama.toVisible
 import com.squareup.picasso.Picasso
@@ -32,6 +32,7 @@ class TweetView
     : RelativeLayout(context, attrs, defStyleAttr) {
 
   private var tweet: Tweet? = null
+  var listener: OnTweetClickListener? = null
 
   val avatorIv: ImageView by bindView(R.id.tw__tweet_author_avatar)
   val fullNameTv: TextView by bindView(R.id.tw__tweet_author_full_name)
@@ -46,8 +47,38 @@ class TweetView
   }
 
   private fun render() {
-    val tweet = displayTweet() ?: return
+    val factory = TweetFactory()
 
+    val tweet = displayTweet() ?: return
+    var my = factory.from(tweet)
+    Picasso.with(context)
+        .load(my.user.avatorUrl)
+        .into(avatorIv)
+
+    fullNameTv.text = my.user.name
+    screenNameTv.text = my.user.screenName
+    timestampTv.text = TweetDateUtils.getRelativeTimeString(
+        resources, System.currentTimeMillis(), my.createdAt)
+
+    val linklifier =  TweetTextLinklifer()
+    contentTv.text = linklifier.linklifyText(my,
+        context.getColor(R.color.tweet_action_light_highlight_color), listener)
+    contentTv.movementMethod = LinkTouchMovementMethod.instance
+
+    if (my.photos.isEmpty()) {
+      mediaIv.toGone()
+    }
+    for (photo in my.photos) {
+      mediaIv.setImageSize(photo.sizes.medium.width, photo.sizes.medium.height);
+      mediaIv.visibility = View.VISIBLE
+      Picasso.with(context)
+          .load(photo.url)
+          .into(mediaIv)
+      break
+    }
+
+
+    /*
     Picasso.with(context)
         .load(avatorUrl(tweet.user.profileImageUrlHttps))
         .into(avatorIv)
@@ -57,6 +88,7 @@ class TweetView
     setContent(tweet)
     setTimeStamp(tweet)
     setMedia(tweet)
+    */
   }
 
   private fun setContent(tweet: Tweet?) {
@@ -70,8 +102,11 @@ class TweetView
     val linkColor = ResourcesCompat.getColor(resources, R.color.tweet_text_link, null)
     val linkHighLightColor = ResourcesCompat.getColor(resources, R.color.tweet_text_link_highlight, null)
     val hasPhoto = TweetMediaUtils.hasPhoto(tweet)
+    /*
     val text = TweetTextLinkifier.linkifyUrls(formatTweetText, linkClickListener,
         hasPhoto, linkColor, linkHighLightColor)
+        */
+    val text = formatTweetText.text
 
     if (text == null) {
       contentTv.text = ""
@@ -150,6 +185,12 @@ class TweetView
     } else {
       return (tweet as Tweet).retweetedStatus
     }
+  }
+
+  interface OnItemClickListener {
+    fun onUrlClicked(url: String)
+    fun onPhotoClicked()
+    fun onTweetClick()
   }
 
   private val linkClickListener: LinkClickListener = object : LinkClickListener {

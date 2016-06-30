@@ -1,6 +1,7 @@
 package com.htoyama.likit.ui
 
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import java.util.ArrayList
  */
 class TweetAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   private lateinit var tweetList: List<Tweet>
+  var listener: OnTweetClickListener? = null
 
   init {
     this.tweetList = ArrayList<Tweet>()
@@ -37,7 +39,7 @@ class TweetAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   }
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-    (holder as TweetHolder).bind(tweetList[position])
+    (holder as TweetHolder).bind(tweetList[position], listener)
   }
 
   override fun getItemCount(): Int {
@@ -47,8 +49,11 @@ class TweetAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   private class TweetHolder constructor(itemView: View)
       : RecyclerView.ViewHolder(itemView) {
 
-    fun bind(tweet: Tweet) {
-      (itemView as TweetView).setTweet(tweet)
+    fun bind(tweet: Tweet, listener: OnTweetClickListener?) {
+      (itemView as TweetView).apply {
+        this.listener = listener
+        setTweet(tweet)
+      }
     }
 
   }

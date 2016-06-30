@@ -27,7 +27,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-final class TweetDateUtils {
+public final class TweetDateUtils {
     // Sat Mar 14 02:34:20 +0000 2009
     private static final SimpleDateFormat DATE_TIME_RFC822
             = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", Locale.ENGLISH);
@@ -63,7 +63,7 @@ final class TweetDateUtils {
      * @param timestamp timestamp
      * @return the relative time string
      */
-    static String getRelativeTimeString(Resources res, long currentTimeMillis, long timestamp) {
+    public static String getRelativeTimeString(Resources res, long currentTimeMillis, long timestamp) {
         final long diff = currentTimeMillis - timestamp;
         if (diff < 0) {
             RELATIVE_DATE_FORMAT.applyPattern(res.getString(
