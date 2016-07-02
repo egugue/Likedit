@@ -1,4 +1,4 @@
-package com.htoyama.likit.ui
+package com.htoyama.likit.ui.common.tweet
 
 import android.content.Context
 import android.util.AttributeSet
@@ -8,7 +8,7 @@ import android.widget.TextView
 import butterknife.bindView
 import com.htoyama.likit.R
 import com.htoyama.likit.model.tweet.Tweet
-import com.htoyama.likit.util.*
+import com.htoyama.likit.ui.common.tweet.TweetDateUtils
 import com.htoyama.toGone
 import com.htoyama.toVisible
 import com.squareup.picasso.Picasso
@@ -48,7 +48,7 @@ class TweetView
     timestampTv.text = TweetDateUtils.getRelativeTimeString(
         resources, System.currentTimeMillis(), tweet.createdAt)
 
-    val linklifier =  TweetTextLinklifer()
+    val linklifier = TweetTextLinklifer()
     contentTv.text = linklifier.linklifyText(tweet,
         context.getColor(R.color.tweet_action_light_highlight_color), listener)
     contentTv.movementMethod = LinkTouchMovementMethod.instance

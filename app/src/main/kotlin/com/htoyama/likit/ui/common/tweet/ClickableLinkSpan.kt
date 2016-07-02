@@ -1,4 +1,4 @@
-package com.htoyama.likit.util
+package com.htoyama.likit.ui.common.tweet
 
 import android.graphics.Color
 import android.text.TextPaint

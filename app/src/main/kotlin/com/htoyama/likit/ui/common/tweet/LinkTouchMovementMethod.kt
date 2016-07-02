@@ -1,4 +1,4 @@
-package com.htoyama.likit.util
+package com.htoyama.likit.ui.common.tweet
 
 import android.text.Selection
 import android.text.Spannable
@@ -22,7 +22,7 @@ class LinkTouchMovementMethod private constructor()
   private var mPressedSpan: HighlightedClickableSpan? = null
 
   override fun onTouchEvent(textView: TextView, spannable: Spannable,
-      event: MotionEvent): Boolean {
+                            event: MotionEvent): Boolean {
 
     if (event.action == MotionEvent.ACTION_DOWN) {
       mPressedSpan = getSpan(textView, spannable, event)

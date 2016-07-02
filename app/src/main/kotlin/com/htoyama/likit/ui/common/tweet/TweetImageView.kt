@@ -1,4 +1,4 @@
-package com.htoyama.likit.ui
+package com.htoyama.likit.ui.common.tweet
 
 import android.content.Context
 import android.support.v7.widget.AppCompatImageView

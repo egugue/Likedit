@@ -1,4 +1,4 @@
-package com.htoyama.likit.ui
+package com.htoyama.likit.ui.common.tweet
 
 /**
  * Interface definition for a callback to be invoked when a view displaying a tweet is clicked.

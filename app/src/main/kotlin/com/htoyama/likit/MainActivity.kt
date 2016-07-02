@@ -9,7 +9,7 @@ import android.support.v7.widget.RecyclerView
 import com.htoyama.likit.data.common.net.FavoriteService
 import com.htoyama.likit.model.tweet.Tweet
 import com.htoyama.likit.model.tweet.TweetFactory
-import com.htoyama.likit.ui.OnTweetClickListener
+import com.htoyama.likit.ui.common.tweet.OnTweetClickListener
 import com.htoyama.likit.ui.TweetAdapter
 import com.htoyama.likit.ui.auth.AuthActivity
 import rx.Subscriber

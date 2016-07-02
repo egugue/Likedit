@@ -1,11 +1,11 @@
-package com.htoyama.likit.util
+package com.htoyama.likit.ui.common.tweet
 
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.view.View
 import com.htoyama.likit.model.tweet.Tweet
 import com.htoyama.likit.model.tweet.Url
-import com.htoyama.likit.ui.OnTweetClickListener
+import com.htoyama.likit.ui.common.tweet.OnTweetClickListener
 
 class TweetTextLinklifer {
 
@@ -18,7 +18,7 @@ class TweetTextLinklifer {
   }
 
   private fun linklifyUrl(urlList: List<Url>, bgColor: Int, listener: OnTweetClickListener?,
-      ssb: SpannableStringBuilder) {
+                          ssb: SpannableStringBuilder) {
     var offset = 0
     var start: Int
     var end: Int

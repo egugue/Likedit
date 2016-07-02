@@ -15,7 +15,7 @@
  *
  */
 
-package com.htoyama.likit.ui;
+package com.htoyama.likit.ui.common.tweet;
 
 import android.content.res.Resources;
 
