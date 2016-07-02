@@ -7,8 +7,8 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.htoyama.likit.data.common.net.FavoriteService
-import com.htoyama.likit.model.tweet.Tweet
-import com.htoyama.likit.model.tweet.TweetFactory
+import com.htoyama.likit.domain.tweet.Tweet
+import com.htoyama.likit.domain.tweet.TweetFactory
 import com.htoyama.likit.ui.common.tweet.OnTweetClickListener
 import com.htoyama.likit.ui.TweetAdapter
 import com.htoyama.likit.ui.auth.AuthActivity

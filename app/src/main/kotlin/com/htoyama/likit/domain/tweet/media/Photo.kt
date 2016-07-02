@@ -1,4 +1,4 @@
-package com.htoyama.likit.model.tweet.media
+package com.htoyama.likit.domain.tweet.media
 
 import com.twitter.sdk.android.core.models.MediaEntity
 

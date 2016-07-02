@@ -1,8 +1,8 @@
-package com.htoyama.likit.model.tweet
+package com.htoyama.likit.domain.tweet
 
-import com.htoyama.likit.model.tweet.media.Photo
-import com.htoyama.likit.model.tweet.media.Video
-import com.htoyama.likit.model.user.User
+import com.htoyama.likit.domain.tweet.media.Photo
+import com.htoyama.likit.domain.tweet.media.Video
+import com.htoyama.likit.domain.user.User
 import com.twitter.sdk.android.core.models.MediaEntity
 import java.text.SimpleDateFormat
 import java.util.*
@@ -22,7 +22,7 @@ class TweetFactory @Inject constructor() {
         "EEE MMM dd HH:mm:ss Z yyyy", Locale.ENGLISH);
   }
 
-  fun createListFrom(dtoList: List<Dto>): List<Tweet> {
+  fun createListFrom(dtoList: List<com.twitter.sdk.android.core.models.Tweet>): List<Tweet> {
     val tweetList = ArrayList<Tweet>(dtoList.size)
     for (dto in dtoList) {
       tweetList.add(createFrom(dto))
@@ -31,7 +31,7 @@ class TweetFactory @Inject constructor() {
     return Collections.unmodifiableList(tweetList)
   }
 
-  fun createFrom(dto1: Dto): Tweet {
+  fun createFrom(dto1: com.twitter.sdk.android.core.models.Tweet): Tweet {
     var dto = dto1
     if (dto1.retweetedStatus != null) {
       dto = dto1.retweetedStatus;
@@ -59,7 +59,7 @@ class TweetFactory @Inject constructor() {
     return DATE_TIME_RFC822.parse(createdAt).time
   }
 
-  fun extractUrl(dto: Dto): List<Url> {
+  fun extractUrl(dto: com.twitter.sdk.android.core.models.Tweet): List<Url> {
     if (dto.entities.urls == null) {
       return ArrayList()
     }
@@ -71,7 +71,7 @@ class TweetFactory @Inject constructor() {
     return list
   }
 
-  fun hoge(dto: Dto): String {
+  fun hoge(dto: com.twitter.sdk.android.core.models.Tweet): String {
     var text = dto.text
 
     if (dto.entities.urls != null) {
@@ -124,7 +124,7 @@ class TweetFactory @Inject constructor() {
     return photoList;
   }
 
-  private fun extractAllMedias(dto: Dto): List<MediaEntity> {
+  private fun extractAllMedias(dto: com.twitter.sdk.android.core.models.Tweet): List<MediaEntity> {
     //val size = dto.entities.media + dto.extendedEtities.media
     val mediaList = ArrayList<MediaEntity>()
 

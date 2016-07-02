@@ -3,8 +3,8 @@ package com.htoyama.likit.ui.common.tweet
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.view.View
-import com.htoyama.likit.model.tweet.Tweet
-import com.htoyama.likit.model.tweet.Url
+import com.htoyama.likit.domain.tweet.Tweet
+import com.htoyama.likit.domain.tweet.Url
 import com.htoyama.likit.ui.common.tweet.OnTweetClickListener
 
 class TweetTextLinklifer {

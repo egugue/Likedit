@@ -7,7 +7,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import butterknife.bindView
 import com.htoyama.likit.R
-import com.htoyama.likit.model.tweet.Tweet
+import com.htoyama.likit.domain.tweet.Tweet
 import com.htoyama.likit.ui.common.tweet.TweetDateUtils
 import com.htoyama.toGone
 import com.htoyama.toVisible
