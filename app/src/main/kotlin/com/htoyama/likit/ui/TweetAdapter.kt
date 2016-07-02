@@ -1,16 +1,11 @@
 package com.htoyama.likit.ui
 
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.htoyama.likit.R
-
-import com.twitter.sdk.android.core.models.Tweet
-import com.twitter.sdk.android.tweetui.BaseTweetView
-import com.twitter.sdk.android.tweetui.CompactTweetView
-
+import com.htoyama.likit.model.tweet.Tweet
 import java.util.ArrayList
 
 /**
@@ -30,8 +25,6 @@ class TweetAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-    val tweet: Tweet? = null
-    //val childView = CompactTweetView(parent.context, tweet)
     val childView = LayoutInflater.from(parent.context)
         .inflate(R.layout.list_item_tweet, parent, false)
 

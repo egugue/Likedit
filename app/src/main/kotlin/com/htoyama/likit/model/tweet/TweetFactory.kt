@@ -7,19 +7,31 @@ import com.twitter.sdk.android.core.models.MediaEntity
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
+import javax.inject.Inject
+import javax.inject.Singleton
 import com.twitter.sdk.android.core.models.Tweet as Dto
 
 /**
  * Created by toyamaosamuyu on 2016/06/29.
  */
-class TweetFactory {
+@Singleton
+class TweetFactory @Inject constructor() {
 
   companion object {
     private val DATE_TIME_RFC822 = SimpleDateFormat(
         "EEE MMM dd HH:mm:ss Z yyyy", Locale.ENGLISH);
   }
 
-  fun from(dto1: Dto): Tweet {
+  fun createListFrom(dtoList: List<Dto>): List<Tweet> {
+    val tweetList = ArrayList<Tweet>(dtoList.size)
+    for (dto in dtoList) {
+      tweetList.add(createFrom(dto))
+    }
+
+    return Collections.unmodifiableList(tweetList)
+  }
+
+  fun createFrom(dto1: Dto): Tweet {
     var dto = dto1
     if (dto1.retweetedStatus != null) {
       dto = dto1.retweetedStatus;

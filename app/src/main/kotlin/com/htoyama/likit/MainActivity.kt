@@ -6,12 +6,12 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import com.htoyama.likit.data.common.net.FavoriteService
+import com.htoyama.likit.model.tweet.Tweet
+import com.htoyama.likit.model.tweet.TweetFactory
 import com.htoyama.likit.ui.OnTweetClickListener
 import com.htoyama.likit.ui.TweetAdapter
 import com.htoyama.likit.ui.auth.AuthActivity
-import com.twitter.sdk.android.core.models.Tweet
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -19,6 +19,7 @@ import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
+  @Inject lateinit var tweetFactory: TweetFactory
   @Inject lateinit var service: FavoriteService
   val listener: OnTweetClickListener = object : OnTweetClickListener {
     override fun onUrlClicked(url: String) {
@@ -56,6 +57,7 @@ class MainActivity : AppCompatActivity() {
     listview.adapter = adapter
 
     service.list(null, null, 30, null, null, true)
+        .map { tweetFactory.createListFrom(it) }
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(object : Subscriber<List<Tweet>>() {
