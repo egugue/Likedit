@@ -10,4 +10,5 @@
 
     <color name="tweet_text_link">#55acee</color>
     <color name="tweet_text_link_highlight">#ebeef0</color>
+    <color name="tweet_action_light_highlight_color">#ebeef0</color>
 </resources>
