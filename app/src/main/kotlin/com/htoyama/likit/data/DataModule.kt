@@ -4,7 +4,7 @@ import com.htoyama.likit.data.common.net.FavoriteService
 import com.htoyama.likit.data.common.net.NetModule
 import com.htoyama.likit.data.common.pref.PrefModule
 import com.htoyama.likit.data.tweet.TweetRepositoryImpl
-import com.htoyama.likit.domain.tweet.TweetFactory
+import com.htoyama.likit.data.tweet.TweetFactory
 import com.htoyama.likit.domain.tweet.TweetRepository
 import dagger.Module
 import dagger.Provides
