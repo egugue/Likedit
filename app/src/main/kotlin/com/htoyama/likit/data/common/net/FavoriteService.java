@@ -54,7 +54,9 @@ public interface FavoriteService {
         @Query("count") Integer count,
         @Query("since_id") String sinceId,
         @Query("max_id") String maxId,
-        @Query("include_entities") Boolean includeEntities);
+        @Query("include_entities") Boolean includeEntities,
+        @Query("page") Integer page
+    );
 
 
     /**
