@@ -2,7 +2,6 @@ package com.htoyama.likit.data.tweet
 
 import com.htoyama.likit.data.common.net.FavoriteService
 import com.htoyama.likit.domain.tweet.Tweet
-import com.htoyama.likit.data.tweet.TweetMapper
 import com.htoyama.likit.domain.tweet.TweetRepository
 import rx.Observable
 
