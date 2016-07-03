@@ -14,10 +14,10 @@ import javax.inject.Singleton
 import com.twitter.sdk.android.core.models.Tweet as Dto
 
 /**
- * Created by toyamaosamuyu on 2016/06/29.
+ * Transform between [Tweet] and DTO that represents JSON.
  */
 @Singleton
-class TweetFactory @Inject constructor() {
+class TweetMapper @Inject constructor() {
 
   companion object {
     private val DATE_TIME_RFC822 = SimpleDateFormat(
