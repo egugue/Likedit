@@ -5,6 +5,8 @@ import android.content.Context
 import com.twitter.sdk.android.Twitter
 import com.twitter.sdk.android.core.TwitterAuthConfig
 import io.fabric.sdk.android.Fabric
+import io.realm.Realm
+import io.realm.RealmConfiguration
 
 class App :Application() {
 
@@ -21,11 +23,27 @@ class App :Application() {
   }
 
   lateinit var component: AppComponent
+  lateinit var realm: Realm
 
   override fun onCreate() {
     super.onCreate()
     buildComponent()
     buildFabric()
+    buildRealm()
+  }
+
+  override fun onTerminate() {
+    super.onTerminate()
+    realm.close()
+  }
+
+  private fun buildRealm() {
+    Realm.setDefaultConfiguration(
+        RealmConfiguration.Builder(this)
+            .schemaVersion(1)
+            .build())
+
+    realm = Realm.getDefaultInstance()
   }
 
   private fun buildComponent() {
