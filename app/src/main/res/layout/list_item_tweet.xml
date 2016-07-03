@@ -71,7 +71,7 @@
         tools:text="Secondary line text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam massa quam."
     />
 
-    <com.htoyama.likit.ui.TweetImageView
+    <com.htoyama.likit.ui.common.tweet.TweetImageView
         android:id="@+id/tw__tweet_media"
         android:layout_width="600dp"
         android:layout_height="wrap_content"

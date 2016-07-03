@@ -1,8 +1,8 @@
-package com.htoyama.likit.model.tweet
+package com.htoyama.likit.domain.tweet
 
-import com.htoyama.likit.model.tweet.media.Photo
-import com.htoyama.likit.model.tweet.media.Video
-import com.htoyama.likit.model.user.User
+import com.htoyama.likit.domain.tweet.media.Photo
+import com.htoyama.likit.domain.tweet.media.Video
+import com.htoyama.likit.domain.user.User
 
 /**
  * Created by toyamaosamuyu on 2016/06/28.

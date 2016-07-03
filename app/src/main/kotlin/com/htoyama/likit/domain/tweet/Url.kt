@@ -1,4 +1,4 @@
-package com.htoyama.likit.model.tweet
+package com.htoyama.likit.domain.tweet
 
 import com.twitter.sdk.android.core.models.UrlEntity
 
