@@ -7,6 +7,7 @@ import com.twitter.sdk.android.core.TwitterAuthConfig
 import io.fabric.sdk.android.Fabric
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import io.realm.RealmMigration
 
 open class App :Application() {
 

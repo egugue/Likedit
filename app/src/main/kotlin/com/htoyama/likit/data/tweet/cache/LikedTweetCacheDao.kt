@@ -55,6 +55,7 @@ class LikedTweetCacheDao @Inject constructor() {
     }
 
     val user = RealmUser(
+        id = tweet.user.id,
         name = tweet.user.name,
         screenName = tweet.user.screenName,
         avatorUrl = tweet.user.avatorUrl
@@ -138,6 +139,7 @@ class LikedTweetCacheDao @Inject constructor() {
     }
 
     val user = User(
+        id = realmTweet.user.id,
         name = realmTweet.user.name,
         screenName = realmTweet.user.screenName,
         avatorUrl = realmTweet.user.avatorUrl
