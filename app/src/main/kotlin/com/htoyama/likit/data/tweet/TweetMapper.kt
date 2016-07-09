@@ -100,6 +100,7 @@ class TweetMapper @Inject constructor() {
         .replace("_normal", "_reasonably_small")
 
     return User(
+        id = dto.id,
         name = dto.name,
         screenName = "@" + dto.name,
         avatorUrl = avatorUrl)

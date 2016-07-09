@@ -1,6 +1,5 @@
 package com.htoyama.likit.domain.tweet.media
 
-import android.graphics.Movie
 import com.twitter.sdk.android.core.models.MediaEntity
 
 /**
