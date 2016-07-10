@@ -24,8 +24,8 @@ class MapperTest {
       assertThat(id).isEqualTo(tweet.id)
       assertThat(createAt.time).isEqualTo(tweet.createdAt)
       assertThat(text).isEqualTo(tweet.text)
-      assertThat(photoList.size).isEqualTo(tweet.photos.size)
-      assertThat(urlList.size).isEqualTo(tweet.urls.size)
+      assertThat(photoList.size).isEqualTo(tweet.photoList.size)
+      assertThat(urlList.size).isEqualTo(tweet.urlList.size)
     }
   }
 
@@ -55,21 +55,21 @@ class MapperTest {
       assertThat(id).isEqualTo(realmTweet.id)
       assertThat(createdAt).isEqualTo(realmTweet.createAt.time)
       assertThat(text).isEqualTo(realmTweet.text)
-      assertThat(photos.size).isEqualTo(realmTweet.photoList.size)
-      assertThat(urls.size).isEqualTo(realmTweet.urlList.size)
+      assertThat(photoList.size).isEqualTo(realmTweet.photoList.size)
+      assertThat(urlList.size).isEqualTo(realmTweet.urlList.size)
     }
   }
 
   @Test fun fromRealmTweet_whenPhotoListtIsEmpty() {
     val realmTweet = RealmTweet(photoList = RealmList())
     val tweet = mapper.mapFrom(realmTweet)
-    assertThat(tweet.photos).isEmpty()
+    assertThat(tweet.photoList).isEmpty()
   }
 
   @Test fun fromRealmTweet_whenUrlListIsEmpty() {
     val realmTweet = RealmTweet(urlList = RealmList())
     val tweet = mapper.mapFrom(realmTweet)
-    assertThat(tweet.urls).isEmpty()
+    assertThat(tweet.urlList).isEmpty()
   }
 
   @Test fun fromUser() {

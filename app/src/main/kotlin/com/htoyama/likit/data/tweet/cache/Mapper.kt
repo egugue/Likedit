@@ -25,13 +25,13 @@ internal class Mapper
     val user = mapFrom(tweet.user)
 
     val photoList = RealmList<RealmPhoto>()
-    for (photo in tweet.photos) {
+    for (photo in tweet.photoList) {
       photoList.add(
           mapFrom(photo))
     }
 
     val urlList = RealmList<RealmUrl>()
-    for (url in tweet.urls) {
+    for (url in tweet.urlList) {
       urlList.add(
           mapFrom(url))
     }
@@ -74,8 +74,8 @@ internal class Mapper
         user = user,
         createdAt = realmTweet.createAt.time,
         text = realmTweet.text,
-        photos = photoList,
-        urls = urlList,
+        photoList = photoList,
+        urlList = urlList,
         video = video)
   }
 

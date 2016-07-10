@@ -52,12 +52,12 @@ class TweetView
         context.getColor(R.color.tweet_action_light_highlight_color), listener)
     contentTv.movementMethod = LinkTouchMovementMethod.instance
 
-    if (tweet.photos.isEmpty()) {
+    if (tweet.photoList.isEmpty()) {
       mediaIv.toGone()
       return
     }
 
-    for (photo in tweet.photos) {
+    for (photo in tweet.photoList) {
       mediaIv.setImageSize(photo.sizes.medium.width, photo.sizes.medium.height);
       mediaIv.toVisible()
       Picasso.with(context)

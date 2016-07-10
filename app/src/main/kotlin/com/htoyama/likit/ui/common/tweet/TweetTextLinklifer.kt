@@ -12,7 +12,7 @@ class TweetTextLinklifer {
   fun linklifyText(tweet: Tweet, bgColor: Int, listener: OnTweetClickListener?): CharSequence {
     val ssb = SpannableStringBuilder(tweet.text)
 
-    linklifyUrl(tweet.urls, bgColor, listener, ssb)
+    linklifyUrl(tweet.urlList, bgColor, listener, ssb)
 
     return ssb
   }
