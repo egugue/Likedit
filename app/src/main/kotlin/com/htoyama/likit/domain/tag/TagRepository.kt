@@ -8,6 +8,11 @@ import rx.Observable
 interface  TagRepository {
 
   /**
+   * Publish a next [Tag]'s Identity.
+   */
+  fun publishNextIdentity(): Long
+
+  /**
    * Retrieve all stored [Tag]s as [List].
    */
   fun findAll(): Observable<List<Tag>>
