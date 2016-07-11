@@ -9,7 +9,7 @@ import com.google.common.truth.Truth.assertThat
  * Created by toyamaosamuyu on 2016/07/12.
  */
 class TagMapperTest {
-  lateinit internal var mapper: TagMapper
+  lateinit var mapper: TagMapper
 
   @Before fun setUp() {
     mapper = TagMapper()

@@ -6,7 +6,7 @@ import javax.inject.Inject
 /**
  * Transform between [Tag] and [RealmTag]
  */
-internal class TagMapper @Inject internal constructor() {
+class TagMapper @Inject internal constructor() {
 
   /**
    * Transform [Tag] into [RealmTag]
