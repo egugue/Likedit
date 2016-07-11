@@ -5,9 +5,9 @@ import com.htoyama.likit.data.common.net.NetModule
 import com.htoyama.likit.data.common.pref.PrefModule
 import com.htoyama.likit.data.tag.TagRealmDao
 import com.htoyama.likit.data.tag.TagRepositoryImpl
-import com.htoyama.likit.data.tweet.TweetRepositoryImpl
-import com.htoyama.likit.data.tweet.TweetMapper
-import com.htoyama.likit.data.tweet.cache.LikedTweetCacheDao
+import com.htoyama.likit.data.likedtweet.TweetRepositoryImpl
+import com.htoyama.likit.data.likedtweet.TweetMapper
+import com.htoyama.likit.data.likedtweet.cache.LikedTweetCacheDao
 import com.htoyama.likit.domain.tag.TagRepository
 import com.htoyama.likit.domain.tweet.TweetRepository
 import dagger.Module

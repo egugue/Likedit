@@ -1,6 +1,6 @@
-package com.htoyama.likit.data.tweet.cache
+package com.htoyama.likit.data.likedtweet.cache
 
-import com.htoyama.likit.data.tweet.cache.model.*
+import com.htoyama.likit.data.likedtweet.cache.model.*
 import com.htoyama.likit.domain.tweet.Tweet
 import com.htoyama.likit.domain.tweet.Url
 import com.htoyama.likit.domain.tweet.media.Photo

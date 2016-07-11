@@ -1,8 +1,8 @@
-package com.htoyama.likit.data.tweet
+package com.htoyama.likit.data.likedtweet
 
 import android.util.Log
 import com.htoyama.likit.data.common.net.FavoriteService
-import com.htoyama.likit.data.tweet.cache.LikedTweetCacheDao
+import com.htoyama.likit.data.likedtweet.cache.LikedTweetCacheDao
 import com.htoyama.likit.domain.tweet.Tweet
 import com.htoyama.likit.domain.tweet.TweetRepository
 import rx.Observable
