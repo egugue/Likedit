@@ -1,4 +1,4 @@
-package com.htoyama.likit.data.likedtweet
+package com.htoyama.likit.data.tweet
 
 import com.htoyama.likit.domain.tweet.Tweet
 import com.htoyama.likit.domain.tweet.Url
