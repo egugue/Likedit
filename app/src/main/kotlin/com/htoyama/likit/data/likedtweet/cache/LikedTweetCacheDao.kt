@@ -12,7 +12,7 @@ import javax.inject.Inject
  * Created by toyamaosamuyu on 2016/07/03.
  */
 class LikedTweetCacheDao
-  @Inject internal constructor(private val mapper: Mapper) {
+  @Inject internal constructor(private val tweetMapper: TweetMapper) {
 
   fun store(likedList: List<Tweet>) {
     Realm.getDefaultInstance().use {
@@ -20,7 +20,7 @@ class LikedTweetCacheDao
         val realmLikedList = ArrayList<RealmTweet>(likedList.size)
         for (tweet in likedList) {
           realmLikedList.add(
-              mapper.mapFrom(tweet))
+              tweetMapper.mapFrom(tweet))
         }
         it.copyToRealmOrUpdate(realmLikedList)
       }
@@ -50,7 +50,7 @@ class LikedTweetCacheDao
       val favoriteList = ArrayList<Tweet>(results.size)
       for (realmTweet in results) {
         favoriteList.add(
-            mapper.mapFrom(realmTweet))
+            tweetMapper.mapFrom(realmTweet))
       }
 
       return Observable.fromCallable {
