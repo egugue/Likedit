@@ -14,8 +14,8 @@ class LikedTweetRepositoryImpl constructor(
     private val likedRealmGateway: LikedRealmGateway,
     private val likedFactory: RealmTweetFactory) : LikedTweetRepository {
 
-  override fun findAll(): Observable<List<LikedTweet>> {
-    return likedTweetDao.getTweetList(1, 200)
+  override fun find(page: Int, count: Int): Observable<List<LikedTweet>> {
+    return likedTweetDao.getTweetList(page, count)
         .map {
           val realmLikedList = likedRealmGateway.getBy(it)
           likedFactory.createFrom(realmLikedList, it)

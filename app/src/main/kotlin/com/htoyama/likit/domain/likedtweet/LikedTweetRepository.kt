@@ -11,7 +11,7 @@ interface LikedTweetRepository {
   /**
    * Retrieves all [LikedTweet] as list.
    */
-  fun findAll(): Observable<List<LikedTweet>>
+  fun find(page: Int, count: Int): Observable<List<LikedTweet>>
 
   /**
    * Retrives some [LikedTweet]s by a given [Tag]
