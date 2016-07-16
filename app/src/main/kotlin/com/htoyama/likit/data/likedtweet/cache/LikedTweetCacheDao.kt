@@ -18,7 +18,6 @@ class LikedTweetCacheDao
       private val tweetMapper: TweetMapper,
       private val mapper: LikedTweetMapper) {
 
-
   /*
   fun store(likedList: List<LikedTweet>) {
     Realm.getDefaultInstance().use {

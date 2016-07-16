@@ -18,6 +18,8 @@ class TweetRepositoryImpl(
 ) : TweetRepository {
 
   override fun findLikedTweetList(page: Int, count: Int): Observable<List<Tweet>> {
+    return Observable.empty()
+    /*
     val fromCache = likedCacheDao.getList(page, count)
 
     val fromNetwork = favoriteService.list(null, null, count, null, null, true, page)
@@ -28,6 +30,7 @@ class TweetRepositoryImpl(
         .first { cached ->
           Log.d("ーーー", "chache isNotEmpty: " + cached.isNotEmpty().toString())
           cached.isNotEmpty() }
+          */
   }
 
 }

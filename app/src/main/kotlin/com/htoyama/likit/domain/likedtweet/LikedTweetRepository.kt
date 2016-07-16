@@ -6,7 +6,7 @@ import rx.Observable
 /**
  * A repository related to [LikedTweet]
  */
-interface LikeTweetRepository {
+interface LikedTweetRepository {
 
   /**
    * Retrieves all [LikedTweet] as list.
