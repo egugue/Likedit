@@ -18,16 +18,6 @@ class LikedTweetCacheDao
       private val tweetMapper: TweetMapper,
       private val mapper: LikedTweetMapper) {
 
-  fun store(tweetList: List<Tweet>) {
-    Realm.getDefaultInstance().use {
-      it.executeTransaction {
-        val realmTweetList = tweetList.map {
-          tweetMapper.mapFrom(it) }
-        it.insertOrUpdate(realmTweetList)
-      }
-    }
-
-  }
 
   /*
   fun store(likedList: List<LikedTweet>) {
@@ -41,32 +31,6 @@ class LikedTweetCacheDao
   }
   */
 
-  fun getList(page: Int, count: Int): Observable<List<Tweet>> {
-    return Observable.fromCallable {
-      Realm.getDefaultInstance().use { realm ->
-        val allResults = realm.where(RealmTweet::class.java)
-            .findAllSorted("id", Sort.DESCENDING)
-        if (allResults.isEmpty()) {
-          Collections.unmodifiableList(ArrayList<LikedTweet>())
-        }
-
-        val fromIndex = (page - 1) * count
-        val toIndex = fromIndex + count
-        val results: List<RealmTweet>
-        if (toIndex > allResults.size) {
-          results = allResults.subList(fromIndex, allResults.size)
-        } else {
-          results = allResults.subList(fromIndex, fromIndex + count)
-        }
-
-        val favoriteList = results.map {
-          tweetMapper.mapFrom(it)
-        }
-
-        Collections.unmodifiableList(favoriteList)
-      }
-    }
-  }
 
   /*
   fun getListByTag(tag: Tag): Observable<List<LikedTweet>> {
