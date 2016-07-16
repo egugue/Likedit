@@ -41,7 +41,7 @@ class LikedTweetMapperTest {
 
     val actual = mapper.mapFrom(liked)
 
-    assertThat(actual.tweet).isEqualTo(expectedRealmTweet)
+    assertThat(actual.tweetId).isEqualTo(expectedRealmTweet)
   }
 
   @Test fun mapFromLiked_shouldTransformTagListWhenListIsEmpty() {
@@ -86,7 +86,7 @@ class LikedTweetMapperTest {
     val expectedTweet = TweetBuilder().build()
     val realmLiked = RealmLikedTweet()
 
-    When(tweetMapper.mapFrom(realmLiked.tweet))
+    When(tweetMapper.mapFrom(realmLiked.tweetId))
         .thenReturn(expectedTweet)
 
     val actual = mapper.mapFrom(realmLiked)

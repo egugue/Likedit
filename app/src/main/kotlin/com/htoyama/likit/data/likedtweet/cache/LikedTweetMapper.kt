@@ -17,6 +17,7 @@ internal class LikedTweetMapper
   /**
    * Transform [LikedTweet] into [RealmLikedTweet]
    */
+  /*
   fun mapFrom(liked: LikedTweet): RealmLikedTweet {
     val realmTweet = tweetMapper.mapFrom(liked.tweet)
     val tagList = RealmList<RealmTag>()
@@ -26,15 +27,17 @@ internal class LikedTweetMapper
     }
 
     return RealmLikedTweet(
-        tweet = realmTweet,
+        tweetId = realmTweet,
         tagList = tagList)
   }
+  */
 
   /**
    * Transform [RealmLikedTweet] into [LikedTweet]
    */
+  /*
   fun mapFrom(realmLiked: RealmLikedTweet): LikedTweet {
-    val tweet = tweetMapper.mapFrom(realmLiked.tweet)
+    val tweet = tweetMapper.mapFrom(realmLiked.tweetId)
     val tagList = realmLiked.tagList.map {
       tagMapper.mapFrom(it)
     }
@@ -44,5 +47,6 @@ internal class LikedTweetMapper
         tagList = tagList
     )
   }
+  */
 
 }

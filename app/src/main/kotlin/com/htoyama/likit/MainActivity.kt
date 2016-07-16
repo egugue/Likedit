@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import butterknife.bindView
+import com.htoyama.likit.data.likedtweet.tweet.LikedTweetDao
 import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.domain.tag.TagRepository
 import com.htoyama.likit.domain.tweet.Tweet
@@ -30,6 +31,8 @@ class MainActivity : AppCompatActivity() {
   @Inject lateinit var tagRepository: TagRepository
   val tagEt: EditText by bindView(R.id.tag_name)
   val tagButton: Button by bindView(R.id.tag_post_button)
+
+  @Inject lateinit var likedTweetDao: LikedTweetDao
 
   val listener: OnTweetClickListener = object : OnTweetClickListener {
     override fun onUrlClicked(url: String) {
@@ -98,7 +101,8 @@ class MainActivity : AppCompatActivity() {
     adapter.listener = listener
     listview.adapter = adapter
 
-    tweetRepository.findLikedTweetList(1, 40)
+    likedTweetDao.getTweetList(1, 40)
+    //tweetRepository.findLikedTweetList(1, 40)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(object : Subscriber<List<Tweet>>() {

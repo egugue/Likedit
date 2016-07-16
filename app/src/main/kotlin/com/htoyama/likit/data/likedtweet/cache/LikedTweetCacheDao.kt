@@ -3,6 +3,7 @@ package com.htoyama.likit.data.likedtweet.cache
 import com.htoyama.likit.data.likedtweet.cache.model.*
 import com.htoyama.likit.domain.likedtweet.LikedTweet
 import com.htoyama.likit.domain.tag.Tag
+import com.htoyama.likit.domain.tweet.Tweet
 import io.realm.Realm
 import io.realm.Sort
 import rx.Observable
@@ -17,6 +18,18 @@ class LikedTweetCacheDao
       private val tweetMapper: TweetMapper,
       private val mapper: LikedTweetMapper) {
 
+  fun store(tweetList: List<Tweet>) {
+    Realm.getDefaultInstance().use {
+      it.executeTransaction {
+        val realmTweetList = tweetList.map {
+          tweetMapper.mapFrom(it) }
+        it.insertOrUpdate(realmTweetList)
+      }
+    }
+
+  }
+
+  /*
   fun store(likedList: List<LikedTweet>) {
     Realm.getDefaultInstance().use {
       it.executeTransaction {
@@ -26,19 +39,20 @@ class LikedTweetCacheDao
       }
     }
   }
+  */
 
-  fun getList(page: Int, count: Int): Observable<List<LikedTweet>> {
-    Realm.getDefaultInstance().use { realm ->
-      return Observable.fromCallable {
-        val allResults = realm.where(RealmLikedTweet::class.java)
-            .findAllSorted("tweet.id", Sort.DESCENDING)
+  fun getList(page: Int, count: Int): Observable<List<Tweet>> {
+    return Observable.fromCallable {
+      Realm.getDefaultInstance().use { realm ->
+        val allResults = realm.where(RealmTweet::class.java)
+            .findAllSorted("id", Sort.DESCENDING)
         if (allResults.isEmpty()) {
           Collections.unmodifiableList(ArrayList<LikedTweet>())
         }
 
         val fromIndex = (page - 1) * count
         val toIndex = fromIndex + count
-        val results: List<RealmLikedTweet>
+        val results: List<RealmTweet>
         if (toIndex > allResults.size) {
           results = allResults.subList(fromIndex, allResults.size)
         } else {
@@ -46,7 +60,7 @@ class LikedTweetCacheDao
         }
 
         val favoriteList = results.map {
-          mapper.mapFrom(it)
+          tweetMapper.mapFrom(it)
         }
 
         Collections.unmodifiableList(favoriteList)
@@ -54,6 +68,7 @@ class LikedTweetCacheDao
     }
   }
 
+  /*
   fun getListByTag(tag: Tag): Observable<List<LikedTweet>> {
     Realm.getDefaultInstance().use { realm ->
       return Observable.fromCallable {
@@ -69,5 +84,6 @@ class LikedTweetCacheDao
       }
     }
   }
+  */
 
 }
