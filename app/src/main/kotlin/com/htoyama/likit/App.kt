@@ -45,6 +45,8 @@ open class App :Application() {
               .build())
       realm = Realm.getDefaultInstance()
     } catch(e: UnsatisfiedLinkError) {
+      // when using Robolectric, Realm throw this error.
+      // So we ignore it only when debug
       if (!BuildConfig.DEBUG) {
         throw e
       }
