@@ -1,4 +1,4 @@
-package com.htoyama.likit.data.likedtweet
+package com.htoyama.likit.data.liked
 
 import com.htoyama.likit.data.tag.RealmTag
 import io.realm.RealmList

@@ -1,4 +1,4 @@
-package com.htoyama.likit.data.likedtweet.tweet.cache
+package com.htoyama.likit.data.liked.tweet.cache
 
 import org.junit.Before
 import org.junit.Test

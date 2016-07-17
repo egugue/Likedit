@@ -1,8 +1,8 @@
-package com.htoyama.likit.data.likedtweet.tweet
+package com.htoyama.likit.data.liked.tweet
 
 import com.htoyama.likit.data.common.net.FavoriteService
-import com.htoyama.likit.data.likedtweet.LikedRealmGateway
-import com.htoyama.likit.data.likedtweet.tweet.cache.LikedTweetCacheGateway
+import com.htoyama.likit.data.liked.LikedRealmGateway
+import com.htoyama.likit.data.liked.tweet.cache.LikedTweetCacheGateway
 import com.htoyama.likit.data.tweet.TweetMapper
 import com.htoyama.likit.domain.tweet.Tweet
 import rx.Observable

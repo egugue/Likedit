@@ -1,4 +1,4 @@
-package com.htoyama.likit.data.likedtweet.tweet.cache
+package com.htoyama.likit.data.liked.tweet.cache
 
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey

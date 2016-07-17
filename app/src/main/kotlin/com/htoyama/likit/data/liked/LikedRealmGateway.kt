@@ -1,7 +1,7 @@
-package com.htoyama.likit.data.likedtweet
+package com.htoyama.likit.data.liked
 
 import android.util.LongSparseArray
-import com.htoyama.likit.data.likedtweet.RealmLikedTweet
+import com.htoyama.likit.data.liked.RealmLikedTweet
 import com.htoyama.likit.data.tag.TagMapper
 import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.domain.tweet.Tweet

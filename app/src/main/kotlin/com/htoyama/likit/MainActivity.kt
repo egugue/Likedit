@@ -11,8 +11,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import butterknife.bindView
-import com.htoyama.likit.domain.likedtweet.LikedTweet
-import com.htoyama.likit.domain.likedtweet.LikedTweetRepository
+import com.htoyama.likit.domain.liked.LikedTweet
+import com.htoyama.likit.domain.liked.LikedRepository
 import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.domain.tag.TagRepository
 import com.htoyama.likit.ui.common.tweet.OnTweetClickListener
@@ -26,7 +26,7 @@ import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
-  @Inject lateinit var likedTweetRepository: LikedTweetRepository
+  @Inject lateinit var likedRepository: LikedRepository
   @Inject lateinit var tagRepository: TagRepository
   val tagEt: EditText by bindView(R.id.tag_name)
   val tagButton: Button by bindView(R.id.tag_post_button)
@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity() {
     adapter.listener = listener
     listview.adapter = adapter
 
-    likedTweetRepository.find(1, 200)
+    likedRepository.find(1, 200)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(object : Subscriber<List<LikedTweet>>() {
@@ -111,6 +111,7 @@ class MainActivity : AppCompatActivity() {
           }
 
           override fun onNext(t: List<LikedTweet>) {
+            Log.d("ーーーー", " aaa " + t.size)
             adapter.setTweetList(t.map { it.tweet })
           }
 

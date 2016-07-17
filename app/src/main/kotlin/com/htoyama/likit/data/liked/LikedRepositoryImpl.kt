@@ -1,18 +1,18 @@
-package com.htoyama.likit.data.likedtweet
+package com.htoyama.likit.data.liked
 
-import com.htoyama.likit.data.likedtweet.tweet.LikedTweetDao
-import com.htoyama.likit.domain.likedtweet.LikedTweet
-import com.htoyama.likit.domain.likedtweet.LikedTweetRepository
+import com.htoyama.likit.data.liked.tweet.LikedTweetDao
+import com.htoyama.likit.domain.liked.LikedTweet
+import com.htoyama.likit.domain.liked.LikedRepository
 import com.htoyama.likit.domain.tag.Tag
 import rx.Observable
 
 /**
  * Created by toyamaosamuyu on 2016/07/16.
  */
-class LikedTweetRepositoryImpl constructor(
+class LikedRepositoryImpl constructor(
     private val likedTweetDao: LikedTweetDao,
     private val likedRealmGateway: LikedRealmGateway,
-    private val likedFactory: RealmTweetFactory) : LikedTweetRepository {
+    private val likedFactory: LikedFactory) : LikedRepository {
 
   override fun find(page: Int, count: Int): Observable<List<LikedTweet>> {
     return likedTweetDao.getTweetList(page, count)

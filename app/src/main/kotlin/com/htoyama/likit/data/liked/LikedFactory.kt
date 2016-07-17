@@ -1,8 +1,8 @@
-package com.htoyama.likit.data.likedtweet
+package com.htoyama.likit.data.liked
 
 import android.util.LongSparseArray
 
-import com.htoyama.likit.domain.likedtweet.LikedTweet
+import com.htoyama.likit.domain.liked.LikedTweet
 import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.domain.tweet.Tweet
 import java.util.*
@@ -11,7 +11,7 @@ import javax.inject.Inject
 /**
  * Created by toyamaosamuyu on 2016/07/16.
  */
-class RealmTweetFactory
+class LikedFactory
     @Inject constructor() {
 
   fun createFrom(tagTable: LongSparseArray<List<Tag>>,
