@@ -7,7 +7,6 @@ import com.twitter.sdk.android.core.TwitterAuthConfig
 import io.fabric.sdk.android.Fabric
 import io.realm.Realm
 import io.realm.RealmConfiguration
-import io.realm.RealmMigration
 
 open class App :Application() {
 
@@ -24,7 +23,7 @@ open class App :Application() {
   }
 
   lateinit var component: AppComponent
-  lateinit var realm: Realm
+  var realm: Realm? = null
 
   override fun onCreate() {
     super.onCreate()
@@ -35,16 +34,23 @@ open class App :Application() {
 
   override fun onTerminate() {
     super.onTerminate()
-    realm.close()
+    realm?.close()
   }
 
   private fun buildRealm() {
-    Realm.setDefaultConfiguration(
-        RealmConfiguration.Builder(this)
-            .schemaVersion(1)
-            .build())
-
-    realm = Realm.getDefaultInstance()
+    try {
+      Realm.setDefaultConfiguration(
+          RealmConfiguration.Builder(this)
+              .schemaVersion(1)
+              .build())
+      realm = Realm.getDefaultInstance()
+    } catch(e: UnsatisfiedLinkError) {
+      // when using Robolectric, Realm throw this error.
+      // So we ignore it only when debug
+      if (!BuildConfig.DEBUG) {
+        throw e
+      }
+    }
   }
 
   private fun buildComponent() {

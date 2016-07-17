@@ -1,9 +1,9 @@
-package com.htoyama.likit.data.tweet.cache.model
+package com.htoyama.likit.data.liked.tweet.cache
 
 import io.realm.RealmObject
 
 /**
- * Created by toyamaosamuyu on 2016/07/03.
+ * A video stored to Realm.
  */
 open class RealmVideo(
     open var url: String = "",

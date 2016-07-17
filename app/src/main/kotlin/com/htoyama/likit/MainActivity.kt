@@ -11,10 +11,10 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import butterknife.bindView
+import com.htoyama.likit.domain.liked.LikedTweet
+import com.htoyama.likit.domain.liked.LikedRepository
 import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.domain.tag.TagRepository
-import com.htoyama.likit.domain.tweet.Tweet
-import com.htoyama.likit.domain.tweet.TweetRepository
 import com.htoyama.likit.ui.common.tweet.OnTweetClickListener
 import com.htoyama.likit.ui.TweetAdapter
 import com.htoyama.likit.ui.auth.AuthActivity
@@ -26,7 +26,7 @@ import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
-  @Inject lateinit var tweetRepository: TweetRepository
+  @Inject lateinit var likedRepository: LikedRepository
   @Inject lateinit var tagRepository: TagRepository
   val tagEt: EditText by bindView(R.id.tag_name)
   val tagButton: Button by bindView(R.id.tag_post_button)
@@ -98,24 +98,21 @@ class MainActivity : AppCompatActivity() {
     adapter.listener = listener
     listview.adapter = adapter
 
-    tweetRepository.findLikedTweetList(1, 40)
+    likedRepository.find(1, 200)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(object : Subscriber<List<Tweet>>() {
-
-          override fun onNext(t: List<Tweet>?) {
-            if (t == null) {
-              return
-            }
-
-            adapter.setTweetList(t)
+        .subscribe(object : Subscriber<List<LikedTweet>>() {
+          override fun onCompleted() {
+            //throw UnsupportedOperationException()
           }
 
           override fun onError(e: Throwable?) {
             e?.printStackTrace()
           }
 
-          override fun onCompleted() {
+          override fun onNext(t: List<LikedTweet>) {
+            Log.d("ーーーー", " aaa " + t.size)
+            adapter.setTweetList(t.map { it.tweet })
           }
 
         })

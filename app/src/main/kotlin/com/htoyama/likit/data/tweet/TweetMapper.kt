@@ -52,8 +52,8 @@ class TweetMapper @Inject constructor() {
         user = user,
         createdAt = createdAt,
         text = text,
-        photos = photoList,
-        urls = urlsList,
+        photoList = photoList,
+        urlList = urlsList,
         video = video)
   }
 

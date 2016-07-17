@@ -12,7 +12,7 @@ data class Tweet(
     val user: User,
     val createdAt: Long,
     val text: String,
-    val photos: List<Photo>,
-    val urls: List<Url>,
+    val photoList: List<Photo>,
+    val urlList: List<Url>,
     val video: Video?
 )

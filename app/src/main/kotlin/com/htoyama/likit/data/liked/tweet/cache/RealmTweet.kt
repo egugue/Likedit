@@ -1,4 +1,4 @@
-package com.htoyama.likit.data.tweet.cache.model
+package com.htoyama.likit.data.liked.tweet.cache
 
 import io.realm.RealmList
 import io.realm.RealmObject
@@ -6,7 +6,7 @@ import io.realm.annotations.PrimaryKey
 import java.util.*
 
 /**
- * Created by toyamaosamuyu on 2016/07/03.
+ * A tweet stored to Realm.
  */
 open class RealmTweet(
     @PrimaryKey open var id: Long = -1,

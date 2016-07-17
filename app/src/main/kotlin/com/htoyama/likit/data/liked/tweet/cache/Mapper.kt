@@ -1,6 +1,5 @@
-package com.htoyama.likit.data.tweet.cache
+package com.htoyama.likit.data.liked.tweet.cache
 
-import com.htoyama.likit.data.tweet.cache.model.*
 import com.htoyama.likit.domain.tweet.Tweet
 import com.htoyama.likit.domain.tweet.Url
 import com.htoyama.likit.domain.tweet.media.Photo
@@ -25,13 +24,13 @@ internal class Mapper
     val user = mapFrom(tweet.user)
 
     val photoList = RealmList<RealmPhoto>()
-    for (photo in tweet.photos) {
+    for (photo in tweet.photoList) {
       photoList.add(
           mapFrom(photo))
     }
 
     val urlList = RealmList<RealmUrl>()
-    for (url in tweet.urls) {
+    for (url in tweet.urlList) {
       urlList.add(
           mapFrom(url))
     }
@@ -74,8 +73,8 @@ internal class Mapper
         user = user,
         createdAt = realmTweet.createAt.time,
         text = realmTweet.text,
-        photos = photoList,
-        urls = urlList,
+        photoList = photoList,
+        urlList = urlList,
         video = video)
   }
 

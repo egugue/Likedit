@@ -9,7 +9,8 @@ import javax.inject.Inject
 /**
  * A DAO handling Tag [Realm] database.
  */
-class TagRealmDao @Inject constructor() {
+class TagRealmDao
+  @Inject internal constructor(private val mapper: TagMapper) {
 
   /**
    * Retrieve last inserted id.
@@ -36,11 +37,8 @@ class TagRealmDao @Inject constructor() {
         val all = ArrayList<Tag>(results.size)
 
         for (realmTag in results) {
-          all.add(Tag(
-              id = realmTag.id,
-              name = realmTag.name,
-              createdAt = realmTag.createdAt
-          ))
+          all.add(mapper
+              .mapFrom(realmTag))
         }
 
         Collections.unmodifiableList(all)
@@ -51,11 +49,7 @@ class TagRealmDao @Inject constructor() {
   fun insertOrUpdate(tag: Tag) {
     Realm.getDefaultInstance().use {
       it.executeTransaction {
-        val realmTag = RealmTag(
-            id = tag.id,
-            name = tag.name,
-            createdAt = tag.createdAt
-        )
+        val realmTag = mapper.mapFrom(tag)
         it.insertOrUpdate(realmTag)
       }
     }
