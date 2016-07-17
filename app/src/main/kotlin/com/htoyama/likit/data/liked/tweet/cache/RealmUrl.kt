@@ -3,7 +3,7 @@ package com.htoyama.likit.data.liked.tweet.cache
 import io.realm.RealmObject
 
 /**
- * Created by toyamaosamuyu on 2016/07/03.
+ * A url stored to Realm.
  */
 open class RealmUrl(
     open var url: String = "",

@@ -1,7 +1,6 @@
 package com.htoyama.likit.data.liked
 
 import android.util.LongSparseArray
-import com.htoyama.likit.data.liked.RealmLikedTweet
 import com.htoyama.likit.data.tag.TagMapper
 import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.domain.tweet.Tweet
@@ -11,10 +10,17 @@ import io.realm.Sort
 import javax.inject.Inject
 
 /**
- * Created by toyamaosamuyu on 2016/07/16.
+ * A gateway that handles liked-tweet and tag list via Realm.
  */
-class LikedRealmGateway @Inject internal constructor(private val tagMapper: TagMapper) {
+class LikedRealmGateway @Inject internal constructor(
+    private val tagMapper: TagMapper) {
 
+  /**
+   * Insert the given list as Liked which contains no tag.
+   *
+   * Note: If the Cache already havs a tweet in the given list,
+   * the cache ignore the tweet data instead of updating.
+   */
   fun insertAsContainingNoTag(tweetList: List<Tweet>) {
     Realm.getDefaultInstance().use {
       it.executeTransaction {
@@ -46,6 +52,12 @@ class LikedRealmGateway @Inject internal constructor(private val tagMapper: TagM
   }
   */
 
+  /**
+   * Retrieve some Likes as [LongSparseArray]
+   * It's key means tweet-id and It's value means [Tag] list.
+   *
+   * The result is ordered by tweet-id descending.
+   */
   fun getBy(tweetList: List<Tweet>): LongSparseArray<List<Tag>> {
     Realm.getDefaultInstance().use {
       val size = tweetList.size - 1

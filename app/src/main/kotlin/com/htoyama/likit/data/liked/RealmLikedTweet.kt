@@ -6,7 +6,7 @@ import io.realm.RealmObject
 import io.realm.annotations.Index
 
 /**
- * Created by toyamaosamuyu on 2016/07/12.
+ * A Liked stored to Realm
  */
 open class RealmLikedTweet(
     @Index var tweetId: Long = -1,

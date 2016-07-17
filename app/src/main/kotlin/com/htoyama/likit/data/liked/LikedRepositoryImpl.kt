@@ -7,7 +7,7 @@ import com.htoyama.likit.domain.tag.Tag
 import rx.Observable
 
 /**
- * Created by toyamaosamuyu on 2016/07/16.
+ * The implementation of [LikedRepository]
  */
 class LikedRepositoryImpl constructor(
     private val likedTweetDao: LikedTweetDao,

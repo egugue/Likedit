@@ -8,11 +8,17 @@ import javax.inject.Inject
 import rx.Observable
 
 /**
- * Created by toyamaosamuyu on 2016/07/16.
+ * A gateway that handle cached liked-tweet data via cache repository.
  */
 class LikedTweetCacheGateway
   @Inject internal constructor(private val mapper: Mapper) {
 
+  /**
+   * Store the given tweets list.
+   *
+   * Note: If the Cache already havs a tweet in the given list,
+   * the cache updates the tweet data instead of ignoring.
+   */
   fun store(tweetList: List<Tweet>) {
     Realm.getDefaultInstance().use {
       it.executeTransaction {
@@ -23,6 +29,9 @@ class LikedTweetCacheGateway
     }
   }
 
+  /**
+   * Retrive liked-tweet list as [Observable]
+   */
   fun getList(page: Int, count: Int): Observable<List<Tweet>> {
     return Observable.fromCallable {
       Realm.getDefaultInstance().use { realm ->

@@ -3,7 +3,7 @@ package com.htoyama.likit.data.liked.tweet.cache
 import io.realm.RealmObject
 
 /**
- * Created by toyamaosamuyu on 2016/07/03.
+ * A size stored to Realm.
  */
 open class RealmSize(
     open var width: Int = 0,

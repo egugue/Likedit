@@ -9,11 +9,14 @@ import java.util.*
 import javax.inject.Inject
 
 /**
- * Created by toyamaosamuyu on 2016/07/16.
+ * A factory that build [LikedTweet]
  */
 class LikedFactory
     @Inject constructor() {
 
+  /**
+   * Create [LikedTweet]s list by the given params.
+   */
   fun createFrom(tagTable: LongSparseArray<List<Tag>>,
                  tweetList: List<Tweet>): List<LikedTweet> {
     val tweetTable = LongSparseArray<Tweet>(tweetList.size)
