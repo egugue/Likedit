@@ -9,10 +9,10 @@ import io.realm.RealmList
 import java.util.*
 
 class MapperTest {
-  private lateinit var mapper: TweetMapper
+  private lateinit var mapper: Mapper
 
   @Before fun setUp() {
-    mapper = TweetMapper()
+    mapper = Mapper()
   }
 
   @Test fun fromTweet() {

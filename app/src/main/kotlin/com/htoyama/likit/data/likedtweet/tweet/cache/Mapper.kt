@@ -14,7 +14,7 @@ import javax.inject.Inject
 /**
  * Transform between [Tweet] and [RealmTweet]
  */
-open class TweetMapper
+internal class Mapper
   @Inject constructor() {
 
   /**

@@ -11,7 +11,7 @@ import rx.Observable
  * Created by toyamaosamuyu on 2016/07/16.
  */
 class LikedTweetCacheGateway
-  @Inject internal constructor(private val mapper: TweetMapper) {
+  @Inject internal constructor(private val mapper: Mapper) {
 
   fun store(tweetList: List<Tweet>) {
     Realm.getDefaultInstance().use {
