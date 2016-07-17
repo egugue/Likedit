@@ -11,7 +11,7 @@ import javax.inject.Inject
 /**
  * A Data Access Object that handles liked Tweet by authenticated user.
  */
-class LikedTweetDao
+open class LikedTweetDao
     @Inject internal constructor(
         private val favoriteService: FavoriteService,
         private val cacheGateway: LikedTweetCacheGateway,
@@ -21,7 +21,7 @@ class LikedTweetDao
   /**
    * Retrieve liked [Tweet]s List by current authenticated user.
    */
-  fun getTweetList(page: Int, count: Int): Observable<List<Tweet>> {
+  open fun getTweetList(page: Int, count: Int): Observable<List<Tweet>> {
      assert(count > 0)
      assert(page > 0)
 

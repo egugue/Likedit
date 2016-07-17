@@ -12,7 +12,7 @@ import javax.inject.Inject
 /**
  * A gateway that handles liked-tweet and tag list via Realm.
  */
-class LikedRealmGateway @Inject internal constructor(
+open class LikedRealmGateway @Inject internal constructor(
     private val tagMapper: TagMapper) {
 
   /**
@@ -58,7 +58,7 @@ class LikedRealmGateway @Inject internal constructor(
    *
    * The result is ordered by tweet-id descending.
    */
-  fun getBy(tweetList: List<Tweet>): LongSparseArray<List<Tag>> {
+  open fun getBy(tweetList: List<Tweet>): LongSparseArray<List<Tag>> {
     Realm.getDefaultInstance().use {
       val size = tweetList.size - 1
       val query = it.where(RealmLikedTweet::class.java)
