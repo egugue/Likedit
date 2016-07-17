@@ -32,6 +32,7 @@ class LikedTweetDao
                 likedRealmGateway.insertAsContainingNoTag(tweetList)
             }
 
+        //TODO: https://github.com/egugue/Likedit/issues/24
         return Observable.concat(fromCache, fromNet)
                 .first { cached -> cached.isNotEmpty() && cached.size >= count}
     }
