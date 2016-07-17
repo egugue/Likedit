@@ -54,7 +54,7 @@ class LikedRealmGateway @Inject internal constructor(
 
   /**
    * Retrieve some Likes as [LongSparseArray]
-   * It's key means tweet-id and It's value means [Tag] list.
+   * Its key means tweet-id and its value means [Tag] list.
    *
    * The result is ordered by tweet-id descending.
    */

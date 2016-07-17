@@ -9,7 +9,7 @@ import java.util.*
 import javax.inject.Inject
 
 /**
- * A factory that build [LikedTweet]
+ * A factory that builds [LikedTweet]
  */
 class LikedFactory
     @Inject constructor() {

@@ -8,7 +8,7 @@ import javax.inject.Inject
 import rx.Observable
 
 /**
- * A gateway that handle cached liked-tweet data via cache repository.
+ * A gateway that handles cached liked-tweet data via cache repository.
  */
 class LikedTweetCacheGateway
   @Inject internal constructor(private val mapper: Mapper) {
