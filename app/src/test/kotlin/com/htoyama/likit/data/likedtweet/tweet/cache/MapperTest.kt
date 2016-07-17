@@ -1,10 +1,9 @@
-package com.htoyama.likit.data.likedtweet.cache
+package com.htoyama.likit.data.likedtweet.tweet.cache
 
 import org.junit.Before
 import org.junit.Test
 import com.google.common.truth.Truth.assertThat
 import com.htoyama.likit.*
-import com.htoyama.likit.data.likedtweet.cache.model.*
 import com.htoyama.likit.domain.tweet.media.Video
 import io.realm.RealmList
 import java.util.*
@@ -158,7 +157,7 @@ class MapperTest {
   }
 
   @Test fun fromVideo_ButNull() {
-    val video:Video? = null
+    val video: Video? = null
     val realmVideo = mapper.mapFrom(video)
     assertThat(realmVideo).isNull()
   }

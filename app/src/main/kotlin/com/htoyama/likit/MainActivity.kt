@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity() {
     adapter.listener = listener
     listview.adapter = adapter
 
-    likedTweetRepository.findAll()
+    likedTweetRepository.find(1, 200)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(object : Subscriber<List<LikedTweet>>() {
