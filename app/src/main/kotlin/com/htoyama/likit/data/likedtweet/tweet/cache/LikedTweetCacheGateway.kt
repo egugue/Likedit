@@ -1,7 +1,5 @@
 package com.htoyama.likit.data.likedtweet.tweet.cache
 
-import com.htoyama.likit.data.likedtweet.cache.TweetMapper
-import com.htoyama.likit.data.likedtweet.cache.model.RealmTweet
 import com.htoyama.likit.domain.tweet.Tweet
 import io.realm.Realm
 import io.realm.Sort

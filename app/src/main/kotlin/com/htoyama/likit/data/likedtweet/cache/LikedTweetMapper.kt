@@ -1,6 +1,7 @@
 package com.htoyama.likit.data.likedtweet.cache
 
-import com.htoyama.likit.data.likedtweet.cache.model.RealmLikedTweet
+import com.htoyama.likit.data.likedtweet.RealmLikedTweet
+import com.htoyama.likit.data.likedtweet.tweet.cache.TweetMapper
 import com.htoyama.likit.data.tag.RealmTag
 import com.htoyama.likit.data.tag.TagMapper
 import com.htoyama.likit.domain.likedtweet.LikedTweet
@@ -12,7 +13,7 @@ import javax.inject.Inject
  */
 internal class LikedTweetMapper
     @Inject constructor(private val tweetMapper: TweetMapper,
-        private val tagMapper: TagMapper) {
+                        private val tagMapper: TagMapper) {
 
   /**
    * Transform [LikedTweet] into [RealmLikedTweet]

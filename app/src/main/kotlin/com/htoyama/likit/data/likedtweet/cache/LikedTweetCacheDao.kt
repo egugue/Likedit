@@ -1,6 +1,7 @@
 package com.htoyama.likit.data.likedtweet.cache
 
 import com.htoyama.likit.data.likedtweet.cache.model.*
+import com.htoyama.likit.data.likedtweet.tweet.cache.TweetMapper
 import com.htoyama.likit.domain.likedtweet.LikedTweet
 import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.domain.tweet.Tweet
