@@ -5,7 +5,6 @@ import com.htoyama.likit.TweetBuilder
 import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.domain.tag.TagBuilder
 import com.google.common.truth.Truth.assertThat
-import com.htoyama.likit.BuildConfig
 import com.htoyama.likit.domain.tweet.Tweet
 import org.junit.Before
 import org.junit.Test
@@ -36,8 +35,6 @@ class LikedFactoryTest {
         tweetBuilder.setId(3).build())
 
     val actual = factory.createFrom(tagTable, tweetList)
-
-    assertThat(BuildConfig.FLAVOR).isEqualTo("testDebug")
 
     assertThat(actual).hasSize(1)
     val liked = actual[0]
