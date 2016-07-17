@@ -18,6 +18,7 @@ import com.htoyama.likit.domain.tag.TagRepository
 import com.htoyama.likit.ui.common.tweet.OnTweetClickListener
 import com.htoyama.likit.ui.TweetAdapter
 import com.htoyama.likit.ui.auth.AuthActivity
+import com.htoyama.likit.ui.home.HomeActivity
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -45,7 +46,9 @@ class MainActivity : AppCompatActivity() {
     App.component(this).inject(this)
 
     findViewById(R.id.text_view)?.setOnClickListener {
-      startActivity(AuthActivity.createIntent(this))
+      val intent = Intent(this, HomeActivity::class.java)
+      startActivity(intent)
+      //startActivity(AuthActivity.createIntent(this))
     }
 
     tagRepository.findAll()
