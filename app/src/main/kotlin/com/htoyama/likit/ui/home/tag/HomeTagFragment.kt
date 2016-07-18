@@ -12,6 +12,11 @@ import com.htoyama.likit.R
  *
  */
 class HomeTagFragment : Fragment() {
+
+  companion object {
+    fun new(): HomeTagFragment = HomeTagFragment()
+  }
+
   override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                             savedInstanceState: Bundle?): View? {
     // Inflate the layout for this fragment

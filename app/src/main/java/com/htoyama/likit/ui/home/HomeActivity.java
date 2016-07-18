@@ -3,6 +3,8 @@ package com.htoyama.likit.ui.home;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -26,6 +28,14 @@ public class HomeActivity extends AppCompatActivity {
             .setAction("Action", null).show();
       }
     });
+
+    TabLayout tabLayout = (TabLayout) findViewById(R.id.home_tablayout);
+    tabLayout.addTab(tabLayout.newTab().setText("Tags"));
+    tabLayout.addTab(tabLayout.newTab().setText("Liked"));
+    ViewPager pager = (ViewPager) findViewById(R.id.home_pager);
+    HomePagerAdapter adapter = new HomePagerAdapter(getSupportFragmentManager());
+    pager.setAdapter(adapter);
+    pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
   }
 
 }
