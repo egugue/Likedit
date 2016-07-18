@@ -7,10 +7,17 @@ import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import com.htoyama.likit.App
 
 import com.htoyama.likit.R
 
 class HomeActivity : AppCompatActivity() {
+
+  val component: HomeComponent by lazy {
+    DaggerHomeComponent.builder()
+        .appComponent(App.component(this))
+        .build()
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
