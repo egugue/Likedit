@@ -29,9 +29,8 @@ class TagRealmDao
   }
 
   fun selectAll(): Observable<List<Tag>> {
-    Realm.getDefaultInstance().use {
-      return Observable.fromCallable {
-
+    return Observable.fromCallable {
+      Realm.getDefaultInstance().use {
         val results = it.where(RealmTag::class.java)
             .findAll()
         val all = ArrayList<Tag>(results.size)

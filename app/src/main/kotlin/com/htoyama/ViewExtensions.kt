@@ -14,3 +14,6 @@ fun View.toGone() {
   this.visibility = GONE
 }
 
+fun View.isVisible(): Boolean = this.visibility == VISIBLE
+
+fun View.isGone(): Boolean = this.visibility == GONE

@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -11,23 +11,44 @@
     </style>
 
     <!-- this application base namespace -->
-    <style name="Likedit" />
+    <style name="Likedit"/>
 
     <!-- TextAppearance -->
-    <style name="Likedit.TextAppearance" />
-    <style name="Likedit.TextAppearance.Tweet" />
+    <style name="Likedit.TextAppearance"/>
 
-    <style name="Likedit.TextAppearance.Base" />
-    <style name="Likedit.TextAppearance.Base.Body1" parent="TextAppearance.AppCompat.Body1" />
-    <style name="Likedit.TextAppearance.Base.Subhead" parent="TextAppearance.AppCompat.Subhead" />
+    <style name="Likedit.TextAppearance.Tweet"/>
 
-    <style name="Likedit.TextAppearance.Tweet.Text" parent="Likedit.TextAppearance.Base.Body1">
+    <style name="Likedit.TextAppearance.Base"/>
+
+    <style name="Likedit.TextAppearance.Base.Body1"
+           parent="TextAppearance.AppCompat.Body1"/>
+
+    <style name="Likedit.TextAppearance.Base.Subhead"
+           parent="TextAppearance.AppCompat.Subhead"/>
+
+    <style name="Likedit.TextAppearance.Tweet.Text"
+           parent="Likedit.TextAppearance.Base.Body1">
         <item name="android:textColorLink">@color/tweet_text_link</item>
     </style>
-    <style name="Likedit.TextAppearance.Tweet.FullName" parent="Likedit.TextAppearance.Base.Subhead">
+
+    <style name="Likedit.TextAppearance.Tweet.FullName"
+           parent="Likedit.TextAppearance.Base.Subhead">
     </style>
-    <style name="Likedit.TextAppearance.Tweet.ScreenName" parent="Likedit.TextAppearance.Base.Body1">
+
+    <style name="Likedit.TextAppearance.Tweet.ScreenName"
+           parent="Likedit.TextAppearance.Base.Body1">
         <item name="android:textColor">?android:textColorSecondary</item>
     </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay"
+           parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay"
+           parent="ThemeOverlay.AppCompat.Light"/>
 
 </resources>
