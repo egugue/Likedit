@@ -9,7 +9,7 @@ import com.htoyama.likit.ui.home.tag.HomeTagFragment
 /**
  * A [FragmentPagerAdapter] attatched by HomeActivity
  */
-class HomePagerAdapter(fm: FragmentManager)
+internal class HomePagerAdapter(fm: FragmentManager)
     : FragmentPagerAdapter(fm) {
 
   override fun getItem(position: Int): Fragment? {
