@@ -6,11 +6,19 @@
     tools:context="com.htoyama.likit.ui.home.tag.HomeTagFragment"
     >
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/home_tag_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
     <TextView
+        android:id="@+id/home_tag_empty_state"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="100sp"
-        android:text="aaaaaaaaaaaaaaaaaaaaaaaaa"
+        android:text="This is a Empty State"
+        android:visibility="gone"
         />
 
 </FrameLayout>
