@@ -3,8 +3,8 @@ package com.htoyama.likit.ui.home.tag
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,9 +29,10 @@ class HomeTagFragment : Fragment() {
     fun new(): HomeTagFragment = HomeTagFragment()
   }
 
+  @Inject lateinit var tagRepository: TagRepository
+  private val adapter: ListAdapter = ListAdapter()
   lateinit private var listView: RecyclerView
   lateinit private var emptyState: View
-  @Inject lateinit var tagRepository: TagRepository
 
   override fun onAttach(context: Context?) {
     super.onAttach(context)
@@ -41,9 +42,12 @@ class HomeTagFragment : Fragment() {
 
   override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                             savedInstanceState: Bundle?): View? {
-    // Inflate the layout for this fragment
     val rootView = inflater!!.inflate(R.layout.fragment_home_tag, container, false)
+
     listView = rootView.findViewById(R.id.home_tag_list) as RecyclerView
+    listView.adapter = adapter
+    listView.layoutManager = LinearLayoutManager(context)
+
     emptyState = rootView.findViewById(R.id.home_tag_empty_state)
     return rootView
   }
@@ -59,8 +63,8 @@ class HomeTagFragment : Fragment() {
             e!!.printStackTrace()
           }
 
-          override fun onNext(t: List<Tag>) {
-            if (t.isEmpty()) {
+          override fun onNext(tagList: List<Tag>) {
+            if (tagList.isEmpty()) {
               listView.toGone()
               emptyState.toVisible()
               return
@@ -68,6 +72,7 @@ class HomeTagFragment : Fragment() {
 
             listView.toVisible()
             emptyState.toGone()
+            adapter.setItemList(tagList)
           }
 
           override fun onCompleted() {
