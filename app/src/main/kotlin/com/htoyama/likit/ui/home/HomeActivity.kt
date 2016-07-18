@@ -29,8 +29,6 @@ class HomeActivity : AppCompatActivity() {
     fab!!.setOnClickListener { view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show() }
 
     val tabLayout = findViewById(R.id.home_tablayout) as TabLayout?
-    tabLayout!!.addTab(tabLayout.newTab().setText("Tags"))
-    tabLayout.addTab(tabLayout.newTab().setText("Liked"))
     val pager = findViewById(R.id.home_pager) as ViewPager?
     val adapter = HomePagerAdapter(supportFragmentManager)
     pager!!.adapter = adapter
