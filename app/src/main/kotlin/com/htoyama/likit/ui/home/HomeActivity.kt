@@ -2,7 +2,6 @@ package com.htoyama.likit.ui.home
 
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
@@ -11,8 +10,9 @@ import butterknife.bindView
 import com.htoyama.likit.App
 
 import com.htoyama.likit.R
+import com.htoyama.likit.ui.home.tag.TagCreateDialogFragment
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(), TagCreateDialogFragment.OnClickListener {
 
   val component: HomeComponent by lazy {
     DaggerHomeComponent.builder()
@@ -31,11 +31,16 @@ class HomeActivity : AppCompatActivity() {
     val toolbar = findViewById(R.id.toolbar) as Toolbar?
     setSupportActionBar(toolbar)
 
-    fab.setOnClickListener { view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show() }
+    fab.setOnClickListener {
+      TagCreateDialogFragment.show(this)
+    }
 
     viewPager.adapter = adapter
     viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
     viewPager.addOnPageChangeListener(FabVisibilityControllListener(fab))
+  }
+
+  override fun onTagCreateButtonClick() {
   }
 
 }
