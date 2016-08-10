@@ -16,13 +16,14 @@
         android:layout_height="wrap_content"
         app:counterMaxLength="@integer/tag_name_max_count"
         app:counterEnabled="true"
+        app:hintEnabled="false"
         >
 
         <EditText
             android:id="@+id/tag_create_edit_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="タグ名"
+            android:hint="@string/tag_create_edit_hint"
             android:lines="1"
             android:maxLines="1"
             />
