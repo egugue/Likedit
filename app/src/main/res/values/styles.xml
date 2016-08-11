@@ -8,7 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">@color/textColorPrimary</item>
         <item name="android:textColorSecondary">@color/textColorSecondary</item>
-        <item name="textColorError">@color/design_textinput_error_color_light</item>
+
+        <!-- http://stackoverflow.com/a/35767811 -->
+        <item name="textColorError">@color/textColor_design_textinput_error_color_light</item>
     </style>
 
     <!-- this application base namespace -->
