@@ -10,7 +10,10 @@ import butterknife.bindView
 import com.htoyama.likit.App
 
 import com.htoyama.likit.R
+import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.ui.home.tag.TagCreateDialogFragment
+import com.htoyama.likit.ui.tag.tweet.select.TagTweetSelectActivity
+import java.util.*
 
 class HomeActivity : AppCompatActivity(), TagCreateDialogFragment.OnClickListener {
 
@@ -41,6 +44,8 @@ class HomeActivity : AppCompatActivity(), TagCreateDialogFragment.OnClickListene
   }
 
   override fun onTagCreateButtonClick() {
+    startActivity(TagTweetSelectActivity
+        .createIntent(this, Tag(1, "foo", Date())))
   }
 
 }
