@@ -25,6 +25,10 @@
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme">
         </activity>
+        <activity
+            android:name=".ui.tag.tweet.select.TagTweetSelectActivity"
+            android:theme="@style/AppTheme">
+        </activity>
     </application>
 
 </manifest>
