@@ -2,14 +2,18 @@ package com.htoyama.likit.ui.home
 
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.view.ViewPager
-import com.htoyama.isGone
-import com.htoyama.isVisible
-import com.htoyama.toGone
-import com.htoyama.toVisible
 
-internal class FabVisibilityControllListener(private val fab: FloatingActionButton)
-    : ViewPager.OnPageChangeListener {
+internal class FabVisibilityControllListener(
+    private val fab: FloatingActionButton,
+    private val viewPager: ViewPager
+) : ViewPager.OnPageChangeListener {
+
   private var state: Int = -1
+
+  init {
+    Page.TAGS
+        .manageFabSetting(fab, viewPager)
+  }
 
   override fun onPageScrollStateChanged(state: Int) {
     this.state = state
@@ -18,13 +22,12 @@ internal class FabVisibilityControllListener(private val fab: FloatingActionButt
   override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) { }
 
   override fun onPageSelected(position: Int) {
-    if (this.state == ViewPager.SCROLL_STATE_SETTLING) {
-      if (position == 0 && fab.isGone()) {
-        fab.toVisible()
-      } else if (position == 1 && fab.isVisible()) {
-        fab.toGone()
-      }
+    if (state != ViewPager.SCROLL_STATE_SETTLING) {
+      return
     }
+
+    Page.of(position)
+        .manageFabSetting(fab, viewPager)
   }
 
 }

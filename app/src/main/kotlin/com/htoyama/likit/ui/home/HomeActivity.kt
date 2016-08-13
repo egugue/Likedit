@@ -10,12 +10,13 @@ import butterknife.bindView
 import com.htoyama.likit.App
 
 import com.htoyama.likit.R
+import com.htoyama.likit.common.extensions.toast
 import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.ui.home.tag.TagCreateDialogFragment
-import com.htoyama.likit.ui.tag.tweet.select.TagTweetSelectActivity
-import java.util.*
+import javax.inject.Inject
 
-class HomeActivity : AppCompatActivity(), TagCreateDialogFragment.OnClickListener {
+class HomeActivity : AppCompatActivity(),
+    TagCreateDialogFragment.OnClickListener, HomePresenter.View {
 
   val component: HomeComponent by lazy {
     DaggerHomeComponent.builder()
@@ -27,6 +28,7 @@ class HomeActivity : AppCompatActivity(), TagCreateDialogFragment.OnClickListene
   private val viewPager: ViewPager by bindView(R.id.home_pager)
   private val tabLayout: TabLayout by bindView(R.id.home_tablayout)
   private val adapter: HomePagerAdapter = HomePagerAdapter(supportFragmentManager)
+  @Inject lateinit var presenter: HomePresenter
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -34,18 +36,39 @@ class HomeActivity : AppCompatActivity(), TagCreateDialogFragment.OnClickListene
     val toolbar = findViewById(R.id.toolbar) as Toolbar?
     setSupportActionBar(toolbar)
 
+    component.inject(this)
+
+    presenter.view = this
+
+    /*
     fab.setOnClickListener {
       TagCreateDialogFragment.show(this)
     }
+    */
 
     viewPager.adapter = adapter
     viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
-    viewPager.addOnPageChangeListener(FabVisibilityControllListener(fab))
+    viewPager.addOnPageChangeListener(FabVisibilityControllListener(fab, viewPager))
   }
 
   override fun onTagCreateButtonClick() {
+    presenter.registerNewTag("foo")
+    /*
     startActivity(TagTweetSelectActivity
         .createIntent(this, Tag(1, "foo", Date())))
+        */
+  }
+
+  override fun showProgress() {
+    toast("showProgress")
+  }
+
+  override fun hideProgress() {
+    toast("hideProgress")
+  }
+
+  override fun goToTagTweetSelectScreen(tag: Tag) {
+    toast("goToTagTweetSelectionScreen")
   }
 
 }

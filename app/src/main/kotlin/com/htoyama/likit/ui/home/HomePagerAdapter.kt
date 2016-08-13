@@ -3,6 +3,7 @@ package com.htoyama.likit.ui.home
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.view.ViewPager
 import com.htoyama.likit.ui.home.liked.HomeLikedFragment
 import com.htoyama.likit.ui.home.tag.HomeTagFragment
 
@@ -13,15 +14,16 @@ internal class HomePagerAdapter(fm: FragmentManager)
     : FragmentPagerAdapter(fm) {
 
   override fun getItem(position: Int): Fragment? {
-    return when(position) {
-      0 -> HomeTagFragment.new()
-      1 -> HomeLikedFragment.new()
-      else -> throw IllegalStateException("Not excepted position: $position")
-    }
+    return Page.of(position)
+        .getFragment()
   }
 
   override fun getCount(): Int {
-    return 2
+    return Page.values().size
+  }
+
+  fun findFragmentByPosition(position: Int, pager: ViewPager): Fragment {
+    return instantiateItem(pager, position) as Fragment
   }
 
 }

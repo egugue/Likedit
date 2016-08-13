@@ -80,4 +80,8 @@ class HomeTagFragment : Fragment() {
         })
   }
 
+  /** Called when FAB on attached Activity is clicked. */
+  fun onClickFab() {
+  }
+
 }
