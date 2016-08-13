@@ -14,8 +14,8 @@ import com.htoyama.likit.R
 import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.domain.tag.TagRepository
 import com.htoyama.likit.ui.home.HomeActivity
-import com.htoyama.toGone
-import com.htoyama.toVisible
+import com.htoyama.likit.common.extensions.toGone
+import com.htoyama.likit.common.extensions.toVisible
 import javax.inject.Inject
 
 /**

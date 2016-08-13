@@ -3,13 +3,13 @@ package com.htoyama.likit.ui.home
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
 import android.view.View
-import com.htoyama.isGone
-import com.htoyama.isVisible
+import com.htoyama.likit.common.extensions.isGone
+import com.htoyama.likit.common.extensions.isVisible
 import com.htoyama.likit.ui.home.liked.HomeLikedFragment
 
 import com.htoyama.likit.ui.home.tag.HomeTagFragment
-import com.htoyama.toGone
-import com.htoyama.toVisible
+import com.htoyama.likit.common.extensions.toGone
+import com.htoyama.likit.common.extensions.toVisible
 
 /**
  * A class that describes a page inside of a [ViewPager]
