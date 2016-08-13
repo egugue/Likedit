@@ -48,7 +48,7 @@ class HomeActivity : AppCompatActivity(),
 
     viewPager.adapter = adapter
     viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
-    viewPager.addOnPageChangeListener(FabVisibilityControllListener(fab, viewPager))
+    viewPager.addOnPageChangeListener(FabSettingManageListener(fab, viewPager))
   }
 
   override fun onTagCreateButtonClick() {

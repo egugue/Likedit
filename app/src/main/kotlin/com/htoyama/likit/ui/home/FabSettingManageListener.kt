@@ -3,7 +3,10 @@ package com.htoyama.likit.ui.home
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.view.ViewPager
 
-internal class FabVisibilityControllListener(
+/**
+ * A listener managing a [FloatingActionButton].
+ */
+internal class FabSettingManageListener(
     private val fab: FloatingActionButton,
     private val viewPager: ViewPager
 ) : ViewPager.OnPageChangeListener {
