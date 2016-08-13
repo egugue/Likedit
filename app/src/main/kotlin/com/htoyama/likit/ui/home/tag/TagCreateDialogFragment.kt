@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.design.widget.TextInputLayout
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
@@ -27,11 +26,6 @@ class TagCreateDialogFragment : DialogFragment() {
       val f = TagCreateDialogFragment()
       f.setTargetFragment(fragment, 0)
       f.show(fragment.fragmentManager, TagCreateDialogFragment::class.java.simpleName)
-    }
-
-    fun show(activity: FragmentActivity) {
-      val f = TagCreateDialogFragment()
-      f.show(activity.supportFragmentManager, TagCreateDialogFragment::class.java.simpleName)
     }
   }
 
