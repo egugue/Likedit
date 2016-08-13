@@ -14,7 +14,7 @@ import com.htoyama.likit.R
 import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.domain.tag.TagRepository
 import com.htoyama.likit.ui.home.HomeActivity
-import com.htoyama.likit.ui.home.HomePresenter
+import com.htoyama.likit.ui.home.tag.HomeTagPresenter
 import com.htoyama.toGone
 import com.htoyama.toVisible
 import rx.Subscriber
@@ -25,13 +25,13 @@ import javax.inject.Inject
 /**
  *
  */
-class HomeTagFragment : Fragment(), TagCreateDialogFragment.OnClickListener, HomePresenter.View {
+class HomeTagFragment : Fragment(), TagCreateDialogFragment.OnClickListener, HomeTagPresenter.View {
 
   companion object {
     fun new() = HomeTagFragment()
   }
 
-  @Inject lateinit var presenter: HomePresenter
+  @Inject lateinit internal var presenter: HomeTagPresenter
   @Inject lateinit var tagRepository: TagRepository
 
   private val adapter: ListAdapter = ListAdapter()
