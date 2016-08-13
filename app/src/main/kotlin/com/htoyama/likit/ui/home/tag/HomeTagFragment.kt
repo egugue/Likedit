@@ -42,7 +42,7 @@ class HomeTagFragment : Fragment(), TagCreateDialogFragment.OnClickListener, Hom
     super.onAttach(context)
     (activity as HomeActivity).component
         .inject(this)
-    presenter.view = this
+    presenter.setView(this)
   }
 
   override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -86,8 +86,8 @@ class HomeTagFragment : Fragment(), TagCreateDialogFragment.OnClickListener, Hom
   }
 
   override fun onDetach() {
-    presenter.view = null
     super.onDetach()
+    presenter.unsubscribe();
   }
 
   /** Called when FAB on attached Activity is clicked. */

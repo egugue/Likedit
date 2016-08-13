@@ -2,14 +2,16 @@ package com.htoyama.likit.ui.home.tag
 
 import com.htoyama.likit.application.tag.TagAppService
 import com.htoyama.likit.domain.tag.Tag
+import com.htoyama.likit.ui.common.base.BasePresenter
 import com.htoyama.likit.ui.home.HomeScope
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import javax.inject.Inject
 
 @HomeScope
-class HomeTagPresenter
-  @Inject internal constructor(private val tagAppService: TagAppService) {
+class HomeTagPresenter @Inject internal constructor(
+    private val tagAppService: TagAppService
+) : BasePresenter<HomeTagPresenter.View>() {
 
   interface View {
     fun showProgress()
@@ -17,12 +19,10 @@ class HomeTagPresenter
     fun goToTagTweetSelectScreen(tag: Tag)
   }
 
-  var view: View? = null
-
   fun registerNewTag(tagName: String) {
     view?.showProgress()
 
-    tagAppService.registerNewTag(tagName)
+    subs.add(tagAppService.registerNewTag(tagName)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
@@ -31,7 +31,7 @@ class HomeTagPresenter
               view?.goToTagTweetSelectScreen(tag)
             },
             { throwable -> view?.hideProgress() }
-        )
+        ))
   }
 
 }
