@@ -12,7 +12,7 @@ import com.htoyama.toGone
 import com.htoyama.toVisible
 
 /**
- * Created by toyamaosamuyu on 2016/08/13.
+ * A class that describes a page inside of a [ViewPager]
  */
 internal enum class Page {
 
