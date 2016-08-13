@@ -17,7 +17,6 @@ import com.htoyama.toVisible
 internal enum class Page {
 
   TAGS {
-
     override fun getFragment(): Fragment = HomeTagFragment.new();
 
     override fun manageFabSetting(fab: View, pager: ViewPager) {

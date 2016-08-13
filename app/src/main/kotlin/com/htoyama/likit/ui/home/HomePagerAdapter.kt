@@ -4,8 +4,6 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
-import com.htoyama.likit.ui.home.liked.HomeLikedFragment
-import com.htoyama.likit.ui.home.tag.HomeTagFragment
 
 /**
  * A [FragmentPagerAdapter] attatched by HomeActivity
