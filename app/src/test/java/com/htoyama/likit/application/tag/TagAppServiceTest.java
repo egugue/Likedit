@@ -8,11 +8,15 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import rx.Observable;
 import rx.observers.TestSubscriber;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.when;
 
 public class TagAppServiceTest {
@@ -44,6 +48,21 @@ public class TagAppServiceTest {
     Tag tag = sub.getOnNextEvents().get(0);
     assertThat(tag.getId()).isEqualTo(expectedId);
     assertThat(tag.getName()).isEqualTo(expectedName);
+  }
+
+  @Test public void findAll() {
+    List<Tag> expected = new ArrayList<>();
+    when(repository.findAll())
+        .thenReturn(Observable.just(expected));
+
+    TestSubscriber<List<Tag>> sub = new TestSubscriber<>();
+    service.findAll().subscribe(sub);
+
+    sub.awaitTerminalEvent();
+    sub.assertNoErrors();
+    sub.assertCompleted();
+    List<Tag> actual = sub.getOnNextEvents().get(0);
+    assertThat(actual).isEqualTo(expected);
   }
 
 }
