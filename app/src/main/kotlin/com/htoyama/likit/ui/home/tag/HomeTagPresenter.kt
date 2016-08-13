@@ -16,7 +16,28 @@ class HomeTagPresenter @Inject internal constructor(
   interface View {
     fun showProgress()
     fun hideProgress()
+    fun showAllTags(tagList: List<Tag>)
+    fun showEmptyState()
     fun goToTagTweetSelectScreen(tag: Tag)
+  }
+
+  fun loadAllTags() {
+    view?.showProgress()
+
+    subs.add(tagAppService.findAll()
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(
+            { tagList ->
+              if (tagList.isEmpty()) {
+                view?.showEmptyState()
+              } else {
+                view?.showAllTags(tagList)
+              }
+              view?.hideProgress()
+            },
+            { throwable -> throwable.printStackTrace() }
+        ))
   }
 
   fun registerNewTag(tagName: String) {

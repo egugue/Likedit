@@ -25,4 +25,11 @@ class TagAppService @Inject internal constructor(
         .map { tag }
   }
 
+  /**
+   * Retrieves all stored [Tag]s as List
+   */
+  fun findAll(): Observable<List<Tag>> {
+    return tagRepository.findAll()
+  }
+
 }
