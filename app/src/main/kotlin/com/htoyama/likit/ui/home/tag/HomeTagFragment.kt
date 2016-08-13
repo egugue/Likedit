@@ -8,11 +8,13 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 
 import com.htoyama.likit.R
 import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.domain.tag.TagRepository
 import com.htoyama.likit.ui.home.HomeActivity
+import com.htoyama.likit.ui.home.HomePresenter
 import com.htoyama.toGone
 import com.htoyama.toVisible
 import rx.Subscriber
@@ -23,13 +25,15 @@ import javax.inject.Inject
 /**
  *
  */
-class HomeTagFragment : Fragment() {
+class HomeTagFragment : Fragment(), TagCreateDialogFragment.OnClickListener, HomePresenter.View {
 
   companion object {
-    fun new(): HomeTagFragment = HomeTagFragment()
+    fun new() = HomeTagFragment()
   }
 
+  @Inject lateinit var presenter: HomePresenter
   @Inject lateinit var tagRepository: TagRepository
+
   private val adapter: ListAdapter = ListAdapter()
   lateinit private var listView: RecyclerView
   lateinit private var emptyState: View
@@ -38,6 +42,7 @@ class HomeTagFragment : Fragment() {
     super.onAttach(context)
     (activity as HomeActivity).component
         .inject(this)
+    presenter.view = this
   }
 
   override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -80,8 +85,30 @@ class HomeTagFragment : Fragment() {
         })
   }
 
+  override fun onDetach() {
+    presenter.view = null
+    super.onDetach()
+  }
+
   /** Called when FAB on attached Activity is clicked. */
   fun onClickFab() {
+    TagCreateDialogFragment.show(this)
+  }
+
+  override fun onTagCreateButtonClick(tagName: String) {
+    presenter.registerNewTag(tagName)
+  }
+
+  override fun showProgress() {
+    Toast.makeText(context, "showProgress", Toast.LENGTH_SHORT).show()
+  }
+
+  override fun hideProgress() {
+    Toast.makeText(context, "hideProgress", Toast.LENGTH_SHORT).show()
+  }
+
+  override fun goToTagTweetSelectScreen(tag: Tag) {
+    Toast.makeText(context, "goTo", Toast.LENGTH_SHORT).show()
   }
 
 }

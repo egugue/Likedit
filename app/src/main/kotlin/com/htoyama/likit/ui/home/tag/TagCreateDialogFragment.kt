@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.support.design.widget.TextInputLayout
 import android.support.v4.app.DialogFragment
+import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
@@ -22,6 +23,12 @@ import rx.subscriptions.Subscriptions
 class TagCreateDialogFragment : DialogFragment() {
 
   companion object {
+    fun show(fragment: Fragment) {
+      val f = TagCreateDialogFragment()
+      f.setTargetFragment(fragment, 0)
+      f.show(fragment.fragmentManager, TagCreateDialogFragment::class.java.simpleName)
+    }
+
     fun show(activity: FragmentActivity) {
       val f = TagCreateDialogFragment()
       f.show(activity.supportFragmentManager, TagCreateDialogFragment::class.java.simpleName)
@@ -29,7 +36,7 @@ class TagCreateDialogFragment : DialogFragment() {
   }
 
   interface OnClickListener {
-    fun onTagCreateButtonClick()
+    fun onTagCreateButtonClick(tagName: String)
   }
 
   private var sub: Subscription = Subscriptions.empty()
@@ -63,16 +70,19 @@ class TagCreateDialogFragment : DialogFragment() {
 
     val button = (dialog as AlertDialog).getButton(DialogInterface.BUTTON_POSITIVE)
     button?.setOnClickListener {
-      val length = getTextLength()
+      val tagName = getTagName()
+      val length = tagName.length
       val isNoInput = length <= 0
       val isOverLength = tagNameMaxCount < length
 
       if (isNoInput) {
         Toast.makeText(context, R.string.tag_create_no_input_error, Toast.LENGTH_SHORT).show()
+
       } else if (isOverLength) {
         Toast.makeText(context, countOverErrorMessage, Toast.LENGTH_SHORT).show()
+
       } else {
-        (activity as OnClickListener).onTagCreateButtonClick()
+        (targetFragment as OnClickListener).onTagCreateButtonClick(tagName)
         dismiss()
       }
     }
@@ -107,10 +117,9 @@ class TagCreateDialogFragment : DialogFragment() {
     return view
   }
 
-  private fun getTextLength(): Int = inputLayout
+  private fun getTagName() = inputLayout
         .editText
         ?.text
         .toString()
-        .length
 
 }
