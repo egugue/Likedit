@@ -16,6 +16,7 @@ import com.htoyama.likit.domain.tag.TagRepository
 import com.htoyama.likit.ui.home.HomeActivity
 import com.htoyama.likit.common.extensions.toGone
 import com.htoyama.likit.common.extensions.toVisible
+import com.htoyama.likit.common.extensions.toast
 import javax.inject.Inject
 
 /**
@@ -92,7 +93,7 @@ class HomeTagFragment : Fragment(), TagCreateDialogFragment.OnClickListener, Hom
   }
 
   override fun goToTagTweetSelectScreen(tag: Tag) {
-    Toast.makeText(context, "goTo", Toast.LENGTH_SHORT).show()
+    toast("完了")
   }
 
 }

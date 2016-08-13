@@ -41,14 +41,11 @@ class HomeTagPresenter @Inject internal constructor(
   }
 
   fun registerNewTag(tagName: String) {
-    view?.showProgress()
-
     subs.add(tagAppService.registerNewTag(tagName)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
             { tag ->
-              view?.hideProgress()
               view?.goToTagTweetSelectScreen(tag)
             },
             { throwable -> view?.hideProgress() }

@@ -85,9 +85,7 @@ public class HomeTagPresenterTest {
 
     presenter.registerNewTag(expected.getName());
 
-    verify(view).showProgress();
     verify(view).goToTagTweetSelectScreen(expected);
-    verify(view).hideProgress();
   }
 
 }
