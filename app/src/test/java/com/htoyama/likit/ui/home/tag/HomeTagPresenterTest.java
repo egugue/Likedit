@@ -63,7 +63,6 @@ public class HomeTagPresenterTest {
 
     verify(view).showProgress();
     verify(view).showAllTags(tagList);
-    verify(view).hideProgress();
     verify(view, never()).showEmptyState();
   }
 
@@ -74,7 +73,6 @@ public class HomeTagPresenterTest {
 
     verify(view).showProgress();
     verify(view, never()).showAllTags(emptyList);
-    verify(view).hideProgress();
     verify(view).showEmptyState();
   }
 

@@ -78,10 +78,6 @@ class HomeTagFragment : Fragment(), TagCreateDialogFragment.OnClickListener, Hom
     stateLayout.showProgress()
   }
 
-  override fun hideProgress() {
-    Toast.makeText(context, "hideProgress", Toast.LENGTH_SHORT).show()
-  }
-
   override fun showAllTags(tagList: List<Tag>) {
     adapter.setItemList(tagList)
     stateLayout.showContent()

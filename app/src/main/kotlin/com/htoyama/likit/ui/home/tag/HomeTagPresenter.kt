@@ -15,7 +15,6 @@ class HomeTagPresenter @Inject internal constructor(
 
   interface View {
     fun showProgress()
-    fun hideProgress()
     fun showAllTags(tagList: List<Tag>)
     fun showEmptyState()
     fun goToTagTweetSelectScreen(tag: Tag)
@@ -34,7 +33,6 @@ class HomeTagPresenter @Inject internal constructor(
               } else {
                 view?.showAllTags(tagList)
               }
-              view?.hideProgress()
             },
             { throwable -> throwable.printStackTrace() }
         ))
@@ -48,7 +46,7 @@ class HomeTagPresenter @Inject internal constructor(
             { tag ->
               view?.goToTagTweetSelectScreen(tag)
             },
-            { throwable -> view?.hideProgress() }
+            { throwable -> throwable?.printStackTrace() }
         ))
   }
 
