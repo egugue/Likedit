@@ -25,12 +25,16 @@ import javax.inject.Singleton
   @Provides @Singleton fun twitterCore() =
       TwitterCore.getInstance()!!
 
-  @Provides fun okHttpClient(core: TwitterCore) =
-      OkHttpClientHelper.getOkHttpClient(
-          core.sessionManager.activeSession,
-          core.authConfig,
-          core.sslSocketFactory)
+  @Provides fun okHttpClient(core: TwitterCore): OkHttpClient {
+    val builder = OkHttpClientHelper.getOkHttpClientBuilder(
+        core.sessionManager.activeSession,
+        core.authConfig,
+        core.sslSocketFactory)
 
+    EnvDependedDelegate.onBuildOkHttpBulilder(builder)
+
+    return builder.build()
+  }
 
   @Provides @Singleton @Named("twitter")
   fun retrofit(okHttpClient: OkHttpClient): Retrofit {
