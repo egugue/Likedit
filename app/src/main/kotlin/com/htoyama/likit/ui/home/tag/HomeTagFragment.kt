@@ -8,76 +8,87 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 
 import com.htoyama.likit.R
 import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.domain.tag.TagRepository
 import com.htoyama.likit.ui.home.HomeActivity
-import com.htoyama.toGone
-import com.htoyama.toVisible
-import rx.Subscriber
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
+import com.htoyama.likit.common.extensions.toast
+import com.htoyama.likit.ui.common.StateLayout
 import javax.inject.Inject
 
 /**
  *
  */
-class HomeTagFragment : Fragment() {
+class HomeTagFragment : Fragment(), TagCreateDialogFragment.OnClickListener, HomeTagPresenter.View {
 
   companion object {
-    fun new(): HomeTagFragment = HomeTagFragment()
+    fun new() = HomeTagFragment()
   }
 
+  @Inject lateinit internal var presenter: HomeTagPresenter
   @Inject lateinit var tagRepository: TagRepository
+
   private val adapter: ListAdapter = ListAdapter()
   lateinit private var listView: RecyclerView
   lateinit private var emptyState: View
+  lateinit private var stateLayout: StateLayout
 
   override fun onAttach(context: Context?) {
     super.onAttach(context)
     (activity as HomeActivity).component
         .inject(this)
+    presenter.setView(this)
   }
 
   override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                             savedInstanceState: Bundle?): View? {
-    val rootView = inflater!!.inflate(R.layout.fragment_home_tag, container, false)
+    stateLayout = inflater!!.inflate(R.layout.fragment_home_tag, container, false) as StateLayout
 
-    listView = rootView.findViewById(R.id.home_tag_list) as RecyclerView
+    listView = stateLayout.findViewById(R.id.home_tag_list) as RecyclerView
     listView.adapter = adapter
     listView.layoutManager = LinearLayoutManager(context)
 
-    emptyState = rootView.findViewById(R.id.home_tag_empty_state)
-    return rootView
+    emptyState = stateLayout.findViewById(R.id.home_tag_empty_state)
+    return stateLayout
   }
 
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    presenter.loadAllTags()
+  }
 
-    tagRepository.findAll()
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(object : Subscriber<List<Tag>>() {
-          override fun onError(e: Throwable?) {
-            e!!.printStackTrace()
-          }
+  override fun onDetach() {
+    super.onDetach()
+    presenter.unsubscribe();
+  }
 
-          override fun onNext(tagList: List<Tag>) {
-            if (tagList.isEmpty()) {
-              listView.toGone()
-              emptyState.toVisible()
-              return
-            }
+  /** Called when FAB on attached Activity is clicked. */
+  fun onClickFab() {
+    TagCreateDialogFragment.show(this)
+  }
 
-            listView.toVisible()
-            emptyState.toGone()
-            adapter.setItemList(tagList)
-          }
+  override fun onTagCreateButtonClick(tagName: String) {
+    presenter.registerNewTag(tagName)
+  }
 
-          override fun onCompleted() {
-          }
-        })
+  override fun showProgress() {
+    Toast.makeText(context, "showProgress", Toast.LENGTH_SHORT).show()
+    stateLayout.showProgress()
+  }
+
+  override fun showAllTags(tagList: List<Tag>) {
+    adapter.setItemList(tagList)
+    stateLayout.showContent()
+  }
+
+  override fun showEmptyState() {
+    stateLayout.showEmptyState()
+  }
+
+  override fun goToTagTweetSelectScreen(tag: Tag) {
+    toast("完了")
   }
 
 }

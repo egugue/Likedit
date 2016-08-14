@@ -8,8 +8,8 @@ import android.widget.TextView
 import butterknife.bindView
 import com.htoyama.likit.R
 import com.htoyama.likit.domain.tweet.Tweet
-import com.htoyama.toGone
-import com.htoyama.toVisible
+import com.htoyama.likit.common.extensions.toGone
+import com.htoyama.likit.common.extensions.toVisible
 import com.squareup.picasso.Picasso
 
 /**

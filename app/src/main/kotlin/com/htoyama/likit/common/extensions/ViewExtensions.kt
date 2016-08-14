@@ -1,4 +1,4 @@
-package com.htoyama
+package com.htoyama.likit.common.extensions
 
 import android.view.View
 import android.view.View.*

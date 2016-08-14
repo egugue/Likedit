@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="StateLayout_Layout">
+        <attr name="layout_state">
+            <enum name="content" value="0" />
+            <enum name="progress" value="1" />
+            <enum name="error" value="2" />
+            <enum name="empty" value="3" />
+            </attr>
+    </declare-styleable>
+</resources>

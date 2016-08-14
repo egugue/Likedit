@@ -7,6 +7,7 @@
     <!-- textColor -->
     <color name="textColorPrimary">#de000000</color>
     <color name="textColorSecondary">#89000000</color>
+    <color name="textColor_design_textinput_error_color_light">#FFD50000</color>
 
     <color name="tweet_text_link">#55acee</color>
     <color name="tweet_text_link_highlight">#ebeef0</color>

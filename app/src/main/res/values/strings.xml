@@ -5,6 +5,13 @@
     <string name="relative_date_format_out_year">dd MMM yyyy</string>
     <string name="title_activity_home">HomeActivity</string>
 
+    <string name="tag_create_count_over_error">最大文字数を超えています</string>
+    <string name="tag_create_dialog_title">タグを作成</string>
+    <string name="tag_create_dialog_positive">作成</string>
+    <string name="tag_create_dialog_negative">キャンセル</string>
+    <string name="tag_create_no_input_error">名前を入力してください</string>
+    <string name="tag_create_edit_hint">タグ名</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
