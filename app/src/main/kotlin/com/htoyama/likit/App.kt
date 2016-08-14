@@ -8,7 +8,7 @@ import io.fabric.sdk.android.Fabric
 import io.realm.Realm
 import io.realm.RealmConfiguration
 
-open class App :Application() {
+open class App : Application() {
 
   companion object {
     /**
