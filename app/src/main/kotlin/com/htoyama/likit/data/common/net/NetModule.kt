@@ -1,15 +1,19 @@
 package com.htoyama.likit.data.common.net
 
 import com.google.gson.GsonBuilder
-import com.twitter.sdk.android.core.AuthenticatedClient
 import com.twitter.sdk.android.core.TwitterCore
 import com.twitter.sdk.android.core.internal.TwitterApi
+import com.twitter.sdk.android.core.internal.network.OkHttpClientHelper
+import com.twitter.sdk.android.core.models.BindingValues
+import com.twitter.sdk.android.core.models.BindingValuesAdapter
 import com.twitter.sdk.android.core.models.SafeListAdapter
 import com.twitter.sdk.android.core.models.SafeMapAdapter
 import dagger.Module
 import dagger.Provides
-import retrofit.RestAdapter
-import retrofit.converter.GsonConverter
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -18,30 +22,38 @@ import javax.inject.Singleton
  */
 @Module class NetModule {
 
-  @Provides @Singleton fun twitterCore(): TwitterCore
-      = TwitterCore.getInstance()
+  @Provides @Singleton fun twitterCore() =
+      TwitterCore.getInstance()!!
 
-  @Provides fun authenticatedClient(core: TwitterCore): AuthenticatedClient =
-      AuthenticatedClient(
-          core.authConfig,
-          core.sessionManager.activeSession,
-          core.sslSocketFactory)
+  @Provides fun okHttpClient(core: TwitterCore): OkHttpClient {
+    val builder = OkHttpClientHelper.getOkHttpClientBuilder(
+        core.sessionManager.activeSession,
+        core.authConfig,
+        core.sslSocketFactory)
+
+    EnvDependedDelegate.onBuildOkHttpBulilder(builder)
+
+    return builder.build()
+  }
 
   @Provides @Singleton @Named("twitter")
-  fun twitterAdapter(client: AuthenticatedClient): RestAdapter {
+  fun retrofit(okHttpClient: OkHttpClient): Retrofit {
+
     val gson = GsonBuilder()
         .registerTypeAdapterFactory(SafeListAdapter())
         .registerTypeAdapterFactory(SafeMapAdapter())
-        .create();
+        .registerTypeAdapter(BindingValues::class.java, BindingValuesAdapter())
+        .create()
 
-    return RestAdapter.Builder()
-        .setClient(client)
-        .setEndpoint(TwitterApi().baseHostUrl)
-        .setConverter(GsonConverter(gson))
+    return Retrofit.Builder()
+        .client(okHttpClient)
+        .baseUrl(TwitterApi().baseHostUrl)
+        .addConverterFactory(GsonConverterFactory.create(gson))
+        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
         .build()
   }
 
-  @Provides fun favoriteService(@Named("twitter") adapter: RestAdapter): FavoriteService =
-      adapter.create(FavoriteService::class.java)
+  @Provides fun favoriteService(@Named("twitter") retrofit: Retrofit) =
+      retrofit.create(FavoriteService::class.java)!!
 
 }
