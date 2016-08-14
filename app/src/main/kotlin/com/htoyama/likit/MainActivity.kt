@@ -8,12 +8,9 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
 import butterknife.bindView
 import com.htoyama.likit.domain.liked.LikedTweet
 import com.htoyama.likit.domain.liked.LikedRepository
-import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.domain.tag.TagRepository
 import com.htoyama.likit.ui.common.tweet.OnTweetClickListener
 import com.htoyama.likit.ui.TweetAdapter
@@ -22,15 +19,14 @@ import com.htoyama.likit.ui.home.HomeActivity
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-import java.util.*
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
   @Inject lateinit var likedRepository: LikedRepository
   @Inject lateinit var tagRepository: TagRepository
-  val tagEt: EditText by bindView(R.id.tag_name)
-  val tagButton: Button by bindView(R.id.tag_post_button)
+  val authButton: Button by bindView(R.id.auth_button)
+  val homeButton: Button by bindView(R.id.home_button)
 
   val listener: OnTweetClickListener = object : OnTweetClickListener {
     override fun onUrlClicked(url: String) {
@@ -45,54 +41,13 @@ class MainActivity : AppCompatActivity() {
 
     App.component(this).inject(this)
 
-    findViewById(R.id.text_view)?.setOnClickListener {
-      val intent = Intent(this, HomeActivity::class.java)
-      startActivity(intent)
-      //startActivity(AuthActivity.createIntent(this))
+    authButton.setOnClickListener {
+      startActivity(AuthActivity.createIntent(this))
     }
 
-    tagRepository.findAll()
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(object : Subscriber<List<Tag>>() {
-          override fun onNext(t: List<Tag>) {
-            for (tag in t) {
-              Log.d("ーーー", tag.toString())
-            }
-          }
-
-          override fun onError(e: Throwable?) {
-            //throw UnsupportedOperationException()
-            e?.printStackTrace()
-          }
-
-          override fun onCompleted() {
-            //throw UnsupportedOperationException()
-          }
-        })
-
-    tagButton.setOnClickListener {
-      val tag = Tag(
-          id = tagRepository.publishNextIdentity(),
-          name = tagEt.text.toString(),
-          createdAt = Date()
-      )
-      tagRepository.store(tag)
-          .subscribeOn(Schedulers.io())
-          .observeOn(AndroidSchedulers.mainThread())
-          .subscribe(object : Subscriber<Void>() {
-            override fun onError(e: Throwable?) {
-              e?.printStackTrace()
-            }
-
-            override fun onNext(t: Void?) {
-            }
-
-            override fun onCompleted() {
-              Toast.makeText(applicationContext, "save completed", Toast.LENGTH_SHORT).show()
-            }
-
-          })
+    homeButton.setOnClickListener {
+      val intent = Intent(this, HomeActivity::class.java)
+      startActivity(intent)
     }
 
     val listview = findViewById(R.id.list) as RecyclerView
