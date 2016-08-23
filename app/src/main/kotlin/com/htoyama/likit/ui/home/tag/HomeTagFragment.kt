@@ -80,7 +80,7 @@ class HomeTagFragment : Fragment(), TagCreateDialogFragment.OnClickListener, Hom
   }
 
   override fun showAllTags(tagTweetCountList: List<TagTweetCountDto>) {
-    adapter.setItemList(tagList)
+    adapter.setItemList(tagTweetCountList)
     stateLayout.showContent()
   }
 
