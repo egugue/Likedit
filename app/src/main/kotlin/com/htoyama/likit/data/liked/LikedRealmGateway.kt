@@ -83,4 +83,13 @@ open class LikedRealmGateway @Inject internal constructor(
 
   }
 
+  open fun getCountBy(tag: Tag): Int {
+    Realm.getDefaultInstance().use { realm ->
+      return realm.where(RealmLikedTweet::class.java)
+          .equalTo("tagList.id", tag.id)
+          .findAllSorted("tweetId")
+          .size
+    }
+  }
+
 }

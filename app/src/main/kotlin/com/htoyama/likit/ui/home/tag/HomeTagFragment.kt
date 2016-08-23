@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 
 import com.htoyama.likit.R
+import com.htoyama.likit.application.tag.TagTweetCountDto
 import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.domain.tag.TagRepository
 import com.htoyama.likit.ui.home.HomeActivity
@@ -78,7 +79,7 @@ class HomeTagFragment : Fragment(), TagCreateDialogFragment.OnClickListener, Hom
     stateLayout.showProgress()
   }
 
-  override fun showAllTags(tagList: List<Tag>) {
+  override fun showAllTags(tagTweetCountList: List<TagTweetCountDto>) {
     adapter.setItemList(tagList)
     stateLayout.showContent()
   }
