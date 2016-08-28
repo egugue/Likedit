@@ -1,7 +1,7 @@
 package com.htoyama.likit.data.liked
 
 import android.util.LongSparseArray
-import com.htoyama.likit.data.liked.tweet.cache.Mapper
+import com.htoyama.likit.data.liked.tweet.cache.TweetMapper
 import com.htoyama.likit.data.tag.TagMapper
 import com.htoyama.likit.domain.liked.LikedTweet
 import com.htoyama.likit.domain.tag.Tag
@@ -15,7 +15,7 @@ import javax.inject.Inject
  * A gateway that handles liked-tweet and tag list via Realm.
  */
 open class LikedRealmGateway @Inject internal constructor(
-    private val mapper: Mapper,
+    private val tweetMapper: TweetMapper,
     private val tagMapper: TagMapper) {
 
   /**
@@ -27,7 +27,7 @@ open class LikedRealmGateway @Inject internal constructor(
   fun insertAsContainingNoTag(tweetList: List<Tweet>) {
     Realm.getDefaultInstance().use {
       it.executeTransaction {
-        val likedList = tweetList.map { RealmLikedTweet(mapper.mapFrom(it), RealmList()) }
+        val likedList = tweetList.map { RealmLikedTweet(tweetMapper.mapFrom(it), RealmList()) }
         it.insert(likedList)
       }
     }
@@ -58,7 +58,7 @@ open class LikedRealmGateway @Inject internal constructor(
       all.forEach {
         val tagList = it.tagList.map { tagMapper.mapFrom(it) }
         table.add(LikedTweet(
-            mapper.mapFrom(it.tweet),
+            tweetMapper.mapFrom(it.tweet),
             tagList
         ))
       }

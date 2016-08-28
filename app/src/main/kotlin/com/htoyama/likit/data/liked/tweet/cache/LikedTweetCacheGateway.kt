@@ -11,7 +11,7 @@ import rx.Observable
  * A gateway that handles cached liked-tweet data via cache repository.
  */
 class LikedTweetCacheGateway
-  @Inject internal constructor(private val mapper: Mapper) {
+  @Inject internal constructor(private val mapper: TweetMapper) {
 
   /**
    * Store the given tweets list.
