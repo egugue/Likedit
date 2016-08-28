@@ -11,15 +11,12 @@ import rx.Observable
  */
 class LikedRepositoryImpl constructor(
     private val likedTweetDao: LikedTweetDao,
-    private val likedRealmGateway: LikedRealmGateway,
-    private val likedFactory: LikedFactory) : LikedRepository {
+    private val likedRealmGateway: LikedRealmGateway
+) : LikedRepository {
 
   override fun find(page: Int, count: Int): Observable<List<LikedTweet>> {
     return likedTweetDao.getTweetList(page, count)
-        .map {
-          val realmLikedList = likedRealmGateway.getBy(it)
-          likedFactory.createFrom(realmLikedList, it)
-        }
+        .map { tweetList -> likedRealmGateway.getBy(tweetList) }
   }
 
   override fun findByTag(tag: Tag): Observable<List<Tag>> {

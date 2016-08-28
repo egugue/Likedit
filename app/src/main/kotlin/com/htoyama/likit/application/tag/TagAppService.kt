@@ -37,9 +37,9 @@ open class TagAppService @Inject internal constructor(
 
   open fun findAllWithTweetCount(): Observable<List<TagTweetCountDto>> {
     return tagRepository.findAll()
-        .flatMap { Observable.from(it) }
+        .flatMap { tagList -> Observable.from(tagList) }
         .map { tag ->
-          val count = likedRealmGateway.getCountBy(tag)
+          val count = likedRealmGateway.getTweetCountBy(tag)
           TagTweetCountDto(tag, count)
         }
         .toList()

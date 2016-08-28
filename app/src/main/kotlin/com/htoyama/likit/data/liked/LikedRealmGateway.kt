@@ -1,18 +1,21 @@
 package com.htoyama.likit.data.liked
 
 import android.util.LongSparseArray
+import com.htoyama.likit.data.liked.tweet.cache.Mapper
 import com.htoyama.likit.data.tag.TagMapper
+import com.htoyama.likit.domain.liked.LikedTweet
 import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.domain.tweet.Tweet
 import io.realm.Realm
 import io.realm.RealmList
-import io.realm.Sort
+import java.util.*
 import javax.inject.Inject
 
 /**
  * A gateway that handles liked-tweet and tag list via Realm.
  */
 open class LikedRealmGateway @Inject internal constructor(
+    private val mapper: Mapper,
     private val tagMapper: TagMapper) {
 
   /**
@@ -24,33 +27,11 @@ open class LikedRealmGateway @Inject internal constructor(
   fun insertAsContainingNoTag(tweetList: List<Tweet>) {
     Realm.getDefaultInstance().use {
       it.executeTransaction {
-        val likedList = tweetList.map { RealmLikedTweet(it.id, RealmList()) }
+        val likedList = tweetList.map { RealmLikedTweet(mapper.mapFrom(it), RealmList()) }
         it.insert(likedList)
       }
     }
   }
-
-  /*
-  fun getBy(tweetList: List<Tweet>): List<RealmLikedTweet> {
-    Realm.getDefaultInstance().use {
-      val size = tweetList.size - 1
-      val query = it.where(RealmLikedTweet::class.java)
-      tweetList.forEachIndexed { index, tweet ->
-        if (index < size) {
-          query.equalTo("tweetId", tweet.id)
-              .or()
-        } else {
-          query.equalTo("tweetId", tweet.id)
-        }
-      }
-
-      return query.findAll().map {
-        it.asObservable<>()
-      }
-    }
-
-  }
-  */
 
   /**
    * Retrieve some Likes as [LongSparseArray]
@@ -58,24 +39,28 @@ open class LikedRealmGateway @Inject internal constructor(
    *
    * The result is ordered by tweet-id descending.
    */
-  open fun getBy(tweetList: List<Tweet>): LongSparseArray<List<Tag>> {
+  open fun getBy(tweetList: List<Tweet>): List<LikedTweet> {
     Realm.getDefaultInstance().use {
       val size = tweetList.size - 1
       val query = it.where(RealmLikedTweet::class.java)
       tweetList.forEachIndexed { index, tweet ->
         if (index < size) {
-          query.equalTo("tweetId", tweet.id)
+          query.equalTo("tweet.id", tweet.id)
               .or()
         } else {
-          query.equalTo("tweetId", tweet.id)
+          query.equalTo("tweet.id", tweet.id)
         }
       }
 
-      val all = query.findAllSorted("tweetId", Sort.DESCENDING)
-      val table = LongSparseArray<List<Tag>>(all.size)
+      //val all = query.findAllSorted("tweetId", Sort.DESCENDING)
+      val all = query.findAll()
+      val table = ArrayList<LikedTweet>(all.size)
       all.forEach {
         val tagList = it.tagList.map { tagMapper.mapFrom(it) }
-        table.append(it.tweetId, tagList)
+        table.add(LikedTweet(
+            mapper.mapFrom(it.tweet),
+            tagList
+        ))
       }
 
       return table
@@ -83,11 +68,15 @@ open class LikedRealmGateway @Inject internal constructor(
 
   }
 
-  open fun getCountBy(tag: Tag): Int {
+  /**
+   * Retrieve tweet count associated by a given [Tag]
+   */
+  open fun getTweetCountBy(tag: Tag): Int {
     Realm.getDefaultInstance().use { realm ->
       return realm.where(RealmLikedTweet::class.java)
           .equalTo("tagList.id", tag.id)
-          .findAllSorted("tweetId")
+          .findAll()
+          //.findAllSorted("tweet.id")
           .size
     }
   }

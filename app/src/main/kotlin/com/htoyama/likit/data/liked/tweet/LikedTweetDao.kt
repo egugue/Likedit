@@ -31,7 +31,6 @@ open class LikedTweetDao
              it.map { tweetMapper.createFrom(it) }
          }
          .doOnNext { tweetList ->
-             cacheGateway.store(tweetList)
              likedRealmGateway.insertAsContainingNoTag(tweetList)
          }
 
