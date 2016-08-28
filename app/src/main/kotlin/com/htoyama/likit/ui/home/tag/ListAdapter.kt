@@ -34,13 +34,12 @@ internal class ListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val tagNameTv: TextView by bindView(R.id.list_item_tag_name)
-    val tweetCountTv: TextView by bindView(R.id.list_item_tag_name)
+    val tweetCountTv: TextView by bindView(R.id.list_item_tweet_count)
 
     fun bind(tag: Tag, tweetCount: Int) {
       tagNameTv.text = tag.name
       tweetCountTv.text = tweetCount.toString()
     }
-
   }
 
 }
