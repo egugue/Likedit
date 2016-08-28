@@ -4,7 +4,6 @@ import com.htoyama.likit.data.common.net.NetModule
 import com.htoyama.likit.data.common.pref.PrefModule
 import com.htoyama.likit.data.liked.LikedRealmGateway
 import com.htoyama.likit.data.liked.LikedRepositoryImpl
-import com.htoyama.likit.data.liked.LikedFactory
 import com.htoyama.likit.data.tag.TagRealmDao
 import com.htoyama.likit.data.tag.TagRepositoryImpl
 import com.htoyama.likit.data.liked.tweet.LikedTweetDao
@@ -23,8 +22,8 @@ class DataModule {
       : TagRepository = TagRepositoryImpl(tagRealmDao)
 
   @Provides fun likedTweetRepository(likedTweetDao: LikedTweetDao,
-                                     likedRealmGateway: LikedRealmGateway, likedFactory: LikedFactory)
+                                     likedRealmGateway: LikedRealmGateway)
       : LikedRepository
-    = LikedRepositoryImpl(likedTweetDao, likedRealmGateway, likedFactory)
+    = LikedRepositoryImpl(likedTweetDao, likedRealmGateway)
 
 }
