@@ -11,10 +11,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 
 import com.htoyama.likit.R
+import com.htoyama.likit.application.tag.TagTweetCountDto
 import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.domain.tag.TagRepository
 import com.htoyama.likit.ui.home.HomeActivity
 import com.htoyama.likit.common.extensions.toast
+import com.htoyama.likit.ui.common.DividerItemDecoration
 import com.htoyama.likit.ui.common.StateLayout
 import javax.inject.Inject
 
@@ -22,6 +24,10 @@ import javax.inject.Inject
  *
  */
 class HomeTagFragment : Fragment(), TagCreateDialogFragment.OnClickListener, HomeTagPresenter.View {
+
+  init {
+    this.retainInstance = true
+  }
 
   companion object {
     fun new() = HomeTagFragment()
@@ -49,6 +55,7 @@ class HomeTagFragment : Fragment(), TagCreateDialogFragment.OnClickListener, Hom
     listView = stateLayout.findViewById(R.id.home_tag_list) as RecyclerView
     listView.adapter = adapter
     listView.layoutManager = LinearLayoutManager(context)
+    listView.addItemDecoration(DividerItemDecoration(context))
 
     emptyState = stateLayout.findViewById(R.id.home_tag_empty_state)
     return stateLayout
@@ -78,8 +85,8 @@ class HomeTagFragment : Fragment(), TagCreateDialogFragment.OnClickListener, Hom
     stateLayout.showProgress()
   }
 
-  override fun showAllTags(tagList: List<Tag>) {
-    adapter.setItemList(tagList)
+  override fun showAllTags(tagTweetCountList: List<TagTweetCountDto>) {
+    adapter.setItemList(tagTweetCountList)
     stateLayout.showContent()
   }
 

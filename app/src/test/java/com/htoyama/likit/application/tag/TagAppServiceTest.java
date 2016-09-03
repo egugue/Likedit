@@ -1,5 +1,6 @@
 package com.htoyama.likit.application.tag;
 
+import com.htoyama.likit.data.liked.LikedRealmGateway;
 import com.htoyama.likit.domain.tag.Tag;
 import com.htoyama.likit.domain.tag.TagRepository;
 
@@ -21,11 +22,12 @@ import static org.mockito.Mockito.when;
 
 public class TagAppServiceTest {
   @Mock TagRepository repository;
+  @Mock LikedRealmGateway gateway;
   private TagAppService service;
 
   @Before public void setUp() {
     MockitoAnnotations.initMocks(this);
-    service = new TagAppService(repository);
+    service = new TagAppService(repository, gateway);
   }
 
   @Test public void registerNewTag_shouldEmitOneTag() {

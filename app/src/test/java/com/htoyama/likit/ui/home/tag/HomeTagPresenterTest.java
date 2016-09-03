@@ -1,6 +1,7 @@
 package com.htoyama.likit.ui.home.tag;
 
 import com.htoyama.likit.application.tag.TagAppService;
+import com.htoyama.likit.application.tag.TagTweetCountDto;
 import com.htoyama.likit.domain.tag.Tag;
 import com.htoyama.likit.domain.tag.TagBuilder;
 
@@ -57,8 +58,10 @@ public class HomeTagPresenterTest {
   }
 
   @Test public void loadAllTags_shouldInvokeShowAllTags_whenTagListIsNotEmpty() {
-    List<Tag> tagList = Collections.singletonList(new TagBuilder().build());
-    when(service.findAll()).thenReturn(Observable.just(tagList));
+    List<TagTweetCountDto> tagList = Collections.singletonList(new TagTweetCountDto(
+        new TagBuilder().build(), 1
+    ));
+    when(service.findAllWithTweetCount()).thenReturn(Observable.just(tagList));
     presenter.loadAllTags();
 
     verify(view).showProgress();
@@ -67,8 +70,8 @@ public class HomeTagPresenterTest {
   }
 
   @Test public void loadAllTags_shouldInvokeShowEmptyState_whenTagListIsEmpty() {
-    List<Tag> emptyList = new ArrayList<>();
-    when(service.findAll()).thenReturn(Observable.just(emptyList));
+    List<TagTweetCountDto> emptyList = new ArrayList<>();
+    when(service.findAllWithTweetCount()).thenReturn(Observable.just(emptyList));
     presenter.loadAllTags();
 
     verify(view).showProgress();

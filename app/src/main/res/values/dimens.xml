@@ -3,6 +3,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <dimen name="divider_height">1dp</dimen>
+
     <dimen name="tag_create_input_padding_side">20dp</dimen>
 
     <dimen name="tweet_screen_name_text_size">14sp</dimen>

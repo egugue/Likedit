@@ -1,6 +1,7 @@
 package com.htoyama.likit.ui.home.tag
 
 import com.htoyama.likit.application.tag.TagAppService
+import com.htoyama.likit.application.tag.TagTweetCountDto
 import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.ui.common.base.BasePresenter
 import com.htoyama.likit.ui.home.HomeScope
@@ -15,7 +16,7 @@ class HomeTagPresenter @Inject internal constructor(
 
   interface View {
     fun showProgress()
-    fun showAllTags(tagList: List<Tag>)
+    fun showAllTags(tagTweetCountList: List<TagTweetCountDto>)
     fun showEmptyState()
     fun goToTagTweetSelectScreen(tag: Tag)
   }
@@ -23,7 +24,7 @@ class HomeTagPresenter @Inject internal constructor(
   fun loadAllTags() {
     view?.showProgress()
 
-    subs.add(tagAppService.findAll()
+    subs.add(tagAppService.findAllWithTweetCount()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
