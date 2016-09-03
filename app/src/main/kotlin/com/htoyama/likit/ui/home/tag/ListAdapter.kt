@@ -1,5 +1,7 @@
 package com.htoyama.likit.ui.home.tag
 
+import android.content.Context
+import android.content.res.Resources
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -35,10 +37,15 @@ internal class ListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val tagNameTv: TextView by bindView(R.id.list_item_tag_name)
     val tweetCountTv: TextView by bindView(R.id.list_item_tweet_count)
+    val res: Resources
+
+    init {
+      res = itemView.context.resources
+    }
 
     fun bind(tag: Tag, tweetCount: Int) {
       tagNameTv.text = tag.name
-      tweetCountTv.text = tweetCount.toString()
+      tweetCountTv.text = res.getString(R.string.home_tag_related_tweet_count, tweetCount)
     }
   }
 

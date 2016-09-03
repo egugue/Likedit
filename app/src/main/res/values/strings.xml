@@ -11,6 +11,7 @@
     <string name="tag_create_dialog_negative">キャンセル</string>
     <string name="tag_create_no_input_error">名前を入力してください</string>
     <string name="tag_create_edit_hint">タグ名</string>
+    <string name="home_tag_related_tweet_count">%1$d個のツイート</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
