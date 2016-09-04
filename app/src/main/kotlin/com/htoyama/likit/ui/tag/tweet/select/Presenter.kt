@@ -28,6 +28,7 @@ internal class Presenter @Inject constructor(
       .subscribe(
           { likedList ->
             view?.showNextLikedList(likedList)
+            page++
           },
            {throwable ->
 
