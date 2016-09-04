@@ -25,10 +25,6 @@ import javax.inject.Inject
  */
 class HomeTagFragment : Fragment(), TagCreateDialogFragment.OnClickListener, HomeTagPresenter.View {
 
-  init {
-    this.retainInstance = true
-  }
-
   companion object {
     fun new() = HomeTagFragment()
   }
