@@ -1,4 +1,4 @@
-box: keithyokoma/wercker-container-android
+box: egugue/docker-android
 
 build:
   steps:
