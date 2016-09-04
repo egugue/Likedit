@@ -48,8 +48,11 @@ class TweetView
         resources, System.currentTimeMillis(), tweet.createdAt)
 
     val linklifier = TweetTextLinklifer()
-    contentTv.text = linklifier.linklifyText(tweet,
-        context.getColor(R.color.tweet_action_light_highlight_color), listener)
+    contentTv.text = linklifier.linklifyText(
+        tweet,
+        context.resources
+            .getColor(R.color.tweet_action_light_highlight_color, context.theme),
+        listener)
     contentTv.movementMethod = LinkTouchMovementMethod.instance
 
     if (tweet.photoList.isEmpty()) {
