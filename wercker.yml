@@ -1,6 +1,9 @@
-box: egugue/docker-android
-
 build:
+    box:
+      id: egugue/docker-android
+      username: $USERNAME
+      password: $PASSWORD
+      tag: latest
   steps:
     - script:
         name: run gradle assembleDebug
