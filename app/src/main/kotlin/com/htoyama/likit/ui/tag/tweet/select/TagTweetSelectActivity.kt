@@ -5,15 +5,20 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import butterknife.bindView
 
 import com.htoyama.likit.R
-import com.htoyama.likit.common.extensions.toast
+import com.htoyama.likit.domain.liked.LikedTweet
 import com.htoyama.likit.domain.tag.Tag
+import com.htoyama.likit.ui.common.DividerItemDecoration
+import com.htoyama.likit.ui.common.StateLayout
 import com.htoyama.likit.ui.common.activity.BaseActivity
+import javax.inject.Inject
 
-class TagTweetSelectActivity : BaseActivity() {
+class TagTweetSelectActivity : BaseActivity(), Presenter.View {
 
   companion object {
     private val TAG_ID: String = "tag_id"
@@ -28,6 +33,14 @@ class TagTweetSelectActivity : BaseActivity() {
   }
 
   private val toolbar: Toolbar by bindView(R.id.toolbar)
+  private val fab: FloatingActionButton by bindView(R.id.fab)
+  private val stateLayout: StateLayout by bindView(R.id.tag_tweet_select_state_layout)
+  private val listView: RecyclerView by bindView(R.id.tag_tweet_select_list)
+  private val adapter: ListAdapter = ListAdapter()
+  private val component: TagTweetSelectComponent by lazy {
+    TagTweetSelectComponent.Initializer.init(this) }
+
+  @Inject lateinit internal var presenter: Presenter
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -35,10 +48,34 @@ class TagTweetSelectActivity : BaseActivity() {
     toolbar.title = getTagName()
     setSupportActionBar(toolbar)
 
-    val fab = findViewById(R.id.fab) as FloatingActionButton?
-    fab!!.setOnClickListener { view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show() }
+    component.inject(this)
 
-    toast(getTagId().toString())
+    fab.setOnClickListener { view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show() }
+
+    listView.adapter = adapter
+    listView.layoutManager = LinearLayoutManager(this)
+    listView.addItemDecoration(DividerItemDecoration(this))
+
+    presenter.setView(this)
+  }
+
+  override fun onStart() {
+    super.onStart()
+    presenter.loadNextLikedList()
+  }
+
+  override fun onStop() {
+    presenter.unsubscribe()
+    super.onStop()
+  }
+
+  override fun showProgress() {
+    stateLayout.showProgress()
+  }
+
+  override fun showNextLikedList(next: List<LikedTweet>) {
+    stateLayout.showContent()
+    adapter.addItemList(next)
   }
 
   private fun getTagId(): Long {
