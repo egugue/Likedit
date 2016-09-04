@@ -30,7 +30,7 @@ internal class Presenter @Inject constructor(
             view?.showNextLikedList(likedList)
             page++
           },
-           {throwable ->
+           { throwable ->
 
           }
       )
