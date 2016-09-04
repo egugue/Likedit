@@ -13,7 +13,6 @@ import android.widget.Toast
 import com.htoyama.likit.R
 import com.htoyama.likit.application.tag.TagTweetCountDto
 import com.htoyama.likit.domain.tag.Tag
-import com.htoyama.likit.domain.tag.TagRepository
 import com.htoyama.likit.ui.home.HomeActivity
 import com.htoyama.likit.common.extensions.toast
 import com.htoyama.likit.ui.common.DividerItemDecoration
@@ -30,7 +29,6 @@ class HomeTagFragment : Fragment(), TagCreateDialogFragment.OnClickListener, Hom
   }
 
   @Inject lateinit internal var presenter: HomeTagPresenter
-  @Inject lateinit var tagRepository: TagRepository
 
   private val adapter: ListAdapter = ListAdapter()
   lateinit private var listView: RecyclerView
