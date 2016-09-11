@@ -25,7 +25,42 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_tag_tweet_select"/>
+    <com.htoyama.likit.ui.common.StateLayout
+        android:id="@+id/tag_tweet_select_state_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/tag_tweet_select_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_state="content"
+            />
+
+        <TextView
+            android:id="@+id/tag_tweet_select_error_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="This is Error State"
+            android:textSize="100sp"
+            android:visibility="gone"
+            app:layout_state="error"
+            />
+
+        <TextView
+            android:id="@+id/tag_tweet_select_empty_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="This is a Empty State"
+            android:textSize="100sp"
+            android:visibility="gone"
+            app:layout_state="empty"
+            />
+
+        <include layout="@layout/progress_in_pager"/>
+
+    </com.htoyama.likit.ui.common.StateLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

@@ -13,30 +13,25 @@ import android.widget.Toast
 import com.htoyama.likit.R
 import com.htoyama.likit.application.tag.TagTweetCountDto
 import com.htoyama.likit.domain.tag.Tag
-import com.htoyama.likit.domain.tag.TagRepository
 import com.htoyama.likit.ui.home.HomeActivity
-import com.htoyama.likit.common.extensions.toast
 import com.htoyama.likit.ui.common.DividerItemDecoration
 import com.htoyama.likit.ui.common.StateLayout
+import com.htoyama.likit.ui.tag.tweet.select.TagTweetSelectActivity
 import javax.inject.Inject
 
 /**
  *
  */
-class HomeTagFragment : Fragment(), TagCreateDialogFragment.OnClickListener, HomeTagPresenter.View {
-
-  init {
-    this.retainInstance = true
-  }
+class HomeTagFragment : Fragment(), TagCreateDialogFragment.OnClickListener,
+    HomeTagPresenter.View, ListAdapter.OnItemClickListener {
 
   companion object {
     fun new() = HomeTagFragment()
   }
 
   @Inject lateinit internal var presenter: HomeTagPresenter
-  @Inject lateinit var tagRepository: TagRepository
 
-  private val adapter: ListAdapter = ListAdapter()
+  private val adapter: ListAdapter = ListAdapter(this)
   lateinit private var listView: RecyclerView
   lateinit private var emptyState: View
   lateinit private var stateLayout: StateLayout
@@ -94,8 +89,14 @@ class HomeTagFragment : Fragment(), TagCreateDialogFragment.OnClickListener, Hom
     stateLayout.showEmptyState()
   }
 
+  override fun onClickItem(tag: Tag) {
+    startActivity(TagTweetSelectActivity
+        .createIntent(context, tag))
+  }
+
   override fun goToTagTweetSelectScreen(tag: Tag) {
-    toast("完了")
+    startActivity(TagTweetSelectActivity
+        .createIntent(context, tag))
   }
 
 }
