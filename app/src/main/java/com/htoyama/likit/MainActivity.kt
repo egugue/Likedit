@@ -16,6 +16,7 @@ import com.htoyama.likit.ui.common.tweet.OnTweetClickListener
 import com.htoyama.likit.ui.TweetAdapter
 import com.htoyama.likit.ui.auth.AuthActivity
 import com.htoyama.likit.ui.home.HomeActivity
+import com.twitter.sdk.android.core.TwitterCore
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -38,6 +39,11 @@ class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
+    if (TwitterCore.getInstance().sessionManager.activeSession == null) {
+      startActivity(AuthActivity.createIntent(this))
+      finish()
+      return
+    }
 
     App.component(this).inject(this)
 

@@ -12,8 +12,6 @@ import java.util.*
 import org.mockito.Mockito.`when` as When
 import rx.Observable
 import com.google.common.truth.Truth.assertThat
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricGradleTestRunner
 import rx.observers.TestSubscriber
 
 class LikedRepositoryImplTest {
