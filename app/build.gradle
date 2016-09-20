@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'io.fabric'
 apply plugin: 'realm-android'
+apply plugin: 'me.tatarka.retrolambda'
 apply from: rootProject.file('gradle/fabric-properties-generate.gradle')
 
 repositories {
@@ -38,6 +39,11 @@ android {
     dataBinding {
         enabled = true
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 kapt {
@@ -73,6 +79,8 @@ dependencies {
     compile('com.twitter.sdk.android:twitter:2.0.0@aar') {
         transitive = true;
     }
+
+    compile 'com.hannesdorfmann:adapterdelegates2:2.0.1'
 
     kapt 'com.android.databinding:compiler:1.0-rc5'
 
