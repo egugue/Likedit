@@ -2,6 +2,7 @@ package com.htoyama.likit
 
 import com.htoyama.likit.domain.liked.LikedRepository
 import com.htoyama.likit.domain.tag.TagRepository
+import com.htoyama.likit.domain.user.UserRepository
 import com.htoyama.likit.ui.auth.AuthActivity
 import dagger.Component
 import javax.inject.Singleton
@@ -14,4 +15,5 @@ interface  AppComponent {
 
   fun likedRepository(): LikedRepository
   fun tagRepository(): TagRepository
+  fun userRepository(): UserRepository
 }
