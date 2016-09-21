@@ -9,6 +9,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.htoyama.likit.R;
 import com.htoyama.likit.databinding.ActivitySearchBinding;
@@ -22,6 +26,8 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import rx.android.schedulers.AndroidSchedulers;
+
+import static com.htoyama.likit.common.Contract.requireNotNull;
 
 public class SearchActivity extends BaseRxActivity
     implements Presenter.View, AssistAdapter.OnItemClickListener {
@@ -46,6 +52,7 @@ public class SearchActivity extends BaseRxActivity
 
     initToolbar();
     initList();
+    initSearchEditText();
     presenter.setView(this);
   }
 
@@ -63,8 +70,16 @@ public class SearchActivity extends BaseRxActivity
     adapter = new AssistAdapter(this);
     listView.setAdapter(adapter);
     listView.setLayoutManager(new LinearLayoutManager(this));
+  }
 
-    RxTextView.afterTextChangeEvents(binding.searchQuery)
+  private void initSearchEditText() {
+    requireNotNull(adapter);
+    requireNotNull(presenter);
+
+    EditText searchView = binding.searchQuery;
+
+    // When user input search query.
+    RxTextView.afterTextChangeEvents(searchView)
         .compose(bindToLifecycle())
         .throttleLast(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
         .map(event -> event.editable().toString())
@@ -77,6 +92,20 @@ public class SearchActivity extends BaseRxActivity
           } else if (length >= 3) {
             presenter.loadAssist(query);
           }
+        });
+
+    // When user input search button.
+    RxTextView.editorActionEvents(searchView)
+        .filter(event -> event.actionId() == EditorInfo.IME_ACTION_SEARCH)
+        .compose(bindToLifecycle())
+        .subscribe(searchEvent -> {
+          TextView v = searchEvent.view();
+
+          InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+          imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+          String query = v.getText().toString();
+          Log.d("ーーー", query);
         });
   }
 

@@ -25,6 +25,9 @@
                 android:id="@+id/search_query"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:inputType="text"
+                android:imeOptions="actionSearch"
                 android:hint="お気に入りを検索"
                 />
 
