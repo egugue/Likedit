@@ -2,6 +2,7 @@ package com.htoyama.likit.data.user
 
 import com.htoyama.likit.data.liked.tweet.cache.RealmUser
 import com.htoyama.likit.domain.user.User
+import io.realm.Case
 import io.realm.Realm
 import io.realm.Sort
 
@@ -19,7 +20,7 @@ class UserRealmDao @Inject constructor(
   fun selectByNameContaining(part: String): List<User> {
     Realm.getDefaultInstance().use { realm ->
       val realmList = realm.where(RealmUser::class.java)
-          .contains("name", part)
+          .contains("name", part, Case.INSENSITIVE)
           .findAllSorted("name", Sort.ASCENDING)
 
       return realmList.map { realmUser -> mapFrom(realmUser) }
