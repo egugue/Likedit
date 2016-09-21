@@ -1,28 +1,21 @@
 package com.htoyama.likit.ui.search
 
-import com.htoyama.likit.data.tag.TagRealmDao
-import com.htoyama.likit.data.user.UserRealmDao
-import com.htoyama.likit.domain.tag.Tag
-import com.htoyama.likit.domain.user.User
+import com.htoyama.likit.domain.tag.TagRepository
+import com.htoyama.likit.domain.user.UserRepository
 import rx.Observable
 import javax.inject.Inject
 
-/**
- * Created by toyamaosamuyu on 2016/09/19.
- */
+@SearchScope
 internal class SearchAssistAction @Inject constructor(
-    private val realmUserRealmDao: UserRealmDao,
-    private val tagRealmDao: TagRealmDao
-){
+    private val userRepository: UserRepository,
+    private val tagRepository: TagRepository
+) {
 
-  fun search(query: String): Observable<Dto> {
-
+  fun getAssist(query: String): Observable<Assist> {
+    return tagRepository.findByNameContaining(query)
+        .zipWith(userRepository.findByNameContaining(query),
+            { tagList, userList ->
+              Assist.from(tagList, userList)
+            })
   }
-
-
-  data class Dto(
-      val userList: List<User>,
-      val tagList: List<Tag>
-  )
-
 }
