@@ -12,7 +12,6 @@ import android.util.Log;
 
 import com.htoyama.likit.R;
 import com.htoyama.likit.databinding.ActivitySearchBinding;
-import com.htoyama.likit.ui.common.DividerItemDecoration;
 import com.htoyama.likit.ui.common.activity.BaseRxActivity;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
@@ -57,7 +56,6 @@ public class SearchActivity extends BaseRxActivity implements Presenter.View {
   private void initList() {
     RecyclerView listView = binding.searchAssistList;
     listView.setAdapter(adapter);
-    listView.addItemDecoration(new DividerItemDecoration(this));
     listView.setLayoutManager(new LinearLayoutManager(this));
 
     RxTextView.afterTextChangeEvents(binding.searchQuery)
