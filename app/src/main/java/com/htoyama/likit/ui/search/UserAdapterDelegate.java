@@ -12,7 +12,16 @@ import com.htoyama.likit.domain.user.User;
 import com.htoyama.likit.ui.common.BindingHolder;
 
 public class UserAdapterDelegate implements AdapterDelegate<Assist> {
-  private static final String TAG = UserAdapterDelegate.class.getSimpleName();
+
+  interface OnUserClickListener {
+    void onUserClick(User user);
+  }
+
+  private final OnUserClickListener listener;
+
+  public UserAdapterDelegate(OnUserClickListener listener) {
+    this.listener = listener;
+  }
 
   @Override public boolean isForViewType(@NonNull Assist items, int position) {
     return items.get(position) instanceof User;
@@ -24,9 +33,10 @@ public class UserAdapterDelegate implements AdapterDelegate<Assist> {
 
   @Override
   public void onBindViewHolder(@NonNull Assist items, int position, @NonNull RecyclerView.ViewHolder holder) {
-    ((ViewHolder) holder).binding.setUser(
-        (User) items.get(position)
-    );
+    ViewSearchAssistUserBinding binding = ((ViewHolder) holder).binding;
+    User user = (User) items.get(position);
+    binding.setUser(user);
+    binding.getRoot().setOnClickListener(v -> listener.onUserClick(user));
   }
 
   private static class ViewHolder extends BindingHolder<ViewSearchAssistUserBinding> {

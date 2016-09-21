@@ -12,6 +12,8 @@ import android.util.Log;
 
 import com.htoyama.likit.R;
 import com.htoyama.likit.databinding.ActivitySearchBinding;
+import com.htoyama.likit.domain.tag.Tag;
+import com.htoyama.likit.domain.user.User;
 import com.htoyama.likit.ui.common.activity.BaseRxActivity;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
@@ -19,11 +21,13 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-public class SearchActivity extends BaseRxActivity implements Presenter.View {
+public class SearchActivity extends BaseRxActivity
+    implements Presenter.View, AssistAdapter.OnItemClickListener  {
+
+  @Inject Presenter presenter;
 
   private ActivitySearchBinding binding;
-  @Inject Presenter presenter;
-  @Inject AssistAdapter adapter;
+  private AssistAdapter adapter;
 
   public static Intent createIntent(Context context) {
     return new Intent(context, SearchActivity.class);
@@ -55,6 +59,7 @@ public class SearchActivity extends BaseRxActivity implements Presenter.View {
 
   private void initList() {
     RecyclerView listView = binding.searchAssistList;
+    adapter = new AssistAdapter(this);
     listView.setAdapter(adapter);
     listView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -81,4 +86,11 @@ public class SearchActivity extends BaseRxActivity implements Presenter.View {
     }
   }
 
+  @Override public void onTagClick(Tag tag) {
+    Log.d("ーーー", "OnTagClick. Tag = " + tag.toString());
+  }
+
+  @Override public void onUserClick(User user) {
+    Log.d("ーーー", "OnUserClick. User = " + user.toString());
+  }
 }

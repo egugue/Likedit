@@ -4,20 +4,24 @@ import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import com.hannesdorfmann.adapterdelegates2.AdapterDelegatesManager;
+import com.htoyama.likit.domain.tag.Tag;
+import com.htoyama.likit.domain.user.User;
 
-import javax.inject.Inject;
-
-@SearchScope
 class AssistAdapter extends RecyclerView.Adapter {
+
+  interface OnItemClickListener {
+    void onTagClick(Tag tag);
+    void onUserClick(User user);
+  }
 
   private final AdapterDelegatesManager<Assist> manager;
   private Assist assist = Assist.empty();
 
-  @Inject public AssistAdapter() {
+  public AssistAdapter(OnItemClickListener listener) {
     manager = new AdapterDelegatesManager<>();
     manager.addDelegate(new HeaderAdapterDelegate());
-    manager.addDelegate(new TagAdapterDelegate());
-    manager.addDelegate(new UserAdapterDelegate());
+    manager.addDelegate(new TagAdapterDelegate(listener::onTagClick));
+    manager.addDelegate(new UserAdapterDelegate(listener::onUserClick));
   }
 
   public void setAssist(Assist assist) {
