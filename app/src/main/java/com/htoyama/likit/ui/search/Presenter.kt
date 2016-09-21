@@ -16,7 +16,6 @@ internal class Presenter @Inject internal constructor(
 
   fun loadAssist(query: String) {
     val sub = searchAssistAction.getAssist(query)
-        .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
             { assist -> view?.showAssist(assist) },
