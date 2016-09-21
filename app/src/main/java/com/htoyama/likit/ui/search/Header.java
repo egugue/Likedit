@@ -13,7 +13,7 @@ public enum Header {
   },
   USER {
     @Override String displayingText(Context context) {
-      return context.getString(R.string.search_assist_header_tag);
+      return context.getString(R.string.search_assist_header_user);
     }
   };
 
