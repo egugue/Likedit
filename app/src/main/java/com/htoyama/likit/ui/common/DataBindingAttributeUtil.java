@@ -1,9 +1,11 @@
 package com.htoyama.likit.ui.common;
 
 import android.databinding.BindingAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.htoyama.likit.R;
+import com.squareup.picasso.Picasso;
 
 public final class DataBindingAttributeUtil {
 
@@ -14,5 +16,12 @@ public final class DataBindingAttributeUtil {
         .getString(R.string.home_tag_related_tweet_count, tweetCount);
 
     textView.setText(text);
+  }
+
+  @BindingAdapter("tweetAvatorUrl")
+  public static void setTweetAvatorUrl(ImageView imageView, String avatorUrl) {
+    Picasso.with(imageView.getContext())
+        .load(avatorUrl)
+        .into(imageView);
   }
 }
