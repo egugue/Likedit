@@ -8,9 +8,9 @@ import javax.inject.Inject
 /**
  * A implementation of [TagRepository]
  */
-class TagRepositoryImpl
-    @Inject internal constructor(private val dao: TagRealmDao)
-    : TagRepository {
+class TagRepositoryImpl @Inject internal constructor(
+    private val dao: TagRealmDao
+) : TagRepository {
 
   override fun publishNextIdentity(): Long {
     return dao.lastInsertedId() + 1

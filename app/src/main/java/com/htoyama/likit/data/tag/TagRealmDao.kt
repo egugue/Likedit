@@ -10,8 +10,9 @@ import javax.inject.Inject
 /**
  * A DAO handling Tag [Realm] database.
  */
-class TagRealmDao
-  @Inject internal constructor(private val mapper: TagMapper) {
+class TagRealmDao @Inject internal constructor(
+    private val mapper: TagMapper
+) {
 
   /**
    * Retrieve last inserted id.
