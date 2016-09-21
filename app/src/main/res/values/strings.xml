@@ -13,6 +13,9 @@
     <string name="tag_create_edit_hint">タグ名</string>
     <string name="home_tag_related_tweet_count">%1$d個のツイート</string>
 
+    <string name="search_assist_header_tag">タグ</string>
+    <string name="search_assist_header_user">ユーザー</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_search">SearchActivity</string>
