@@ -2,6 +2,7 @@ package com.htoyama.likit.data.tag
 
 import com.htoyama.likit.domain.tag.Tag
 import io.realm.Realm
+import io.realm.Sort
 import java.util.*
 import rx.Observable
 import javax.inject.Inject
@@ -62,6 +63,16 @@ class TagRealmDao
       it.executeTransaction {
         realmTag.deleteFromRealm()
       }
+    }
+  }
+
+  fun selectTagListByNameContaining(part: String): List<Tag> {
+    Realm.getDefaultInstance().use { realm ->
+      val realmTagList = realm.where(RealmTag::class.java)
+          .contains("name", part)
+          .findAllSorted("name", Sort.ASCENDING)
+
+      return realmTagList.map { realmTag -> mapper.mapFrom(realmTag) }
     }
   }
 

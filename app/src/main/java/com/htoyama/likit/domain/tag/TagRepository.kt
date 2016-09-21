@@ -5,7 +5,7 @@ import rx.Observable
 /**
  * A repository related to [Tag]
  */
-interface  TagRepository {
+interface TagRepository {
 
   /**
    * Publish a next [Tag]'s Identity.
@@ -26,4 +26,9 @@ interface  TagRepository {
    * remove a [Tag]
    */
   fun remove(tag: Tag): Observable<Void>
+
+  /**
+   * Retrieve some [Tag]s which have a name containing the given arg.
+   */
+  fun findByNameContaining(part: String): Observable<List<Tag>>
 }

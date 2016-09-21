@@ -33,4 +33,10 @@ class TagRepositoryImpl
     }
   }
 
+  override fun findByNameContaining(part: String): Observable<List<Tag>> {
+    return Observable.fromCallable {
+      dao.selectTagListByNameContaining(part)
+    }
+  }
+
 }
