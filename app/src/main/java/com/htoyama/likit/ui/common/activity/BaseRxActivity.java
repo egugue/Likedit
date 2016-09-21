@@ -16,6 +16,9 @@ import javax.annotation.Nonnull;
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
 
+/**
+ * A {@link BaseActivity} which is useful when Reactive Extensions.
+ */
 public abstract class BaseRxActivity extends BaseActivity implements LifecycleProvider<ActivityEvent> {
 
   private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
