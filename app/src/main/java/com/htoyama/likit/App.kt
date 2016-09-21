@@ -8,12 +8,13 @@ import io.fabric.sdk.android.Fabric
 import io.realm.Realm
 import io.realm.RealmConfiguration
 
-open class App : Application() {
+open class App :Application() {
 
   companion object {
     /**
      * Retrieves the [AppComponent]
      */
+    @JvmStatic
     fun component(context: Context): AppComponent = get(context).component
 
     /**

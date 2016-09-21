@@ -20,6 +20,8 @@ import rx.Observable;
 import rx.Scheduler;
 import rx.android.plugins.RxAndroidPlugins;
 import rx.android.plugins.RxAndroidSchedulersHook;
+import rx.functions.Func1;
+import rx.plugins.RxJavaHooks;
 import rx.plugins.RxJavaPlugins;
 import rx.plugins.RxJavaSchedulersHook;
 import rx.schedulers.Schedulers;
@@ -40,11 +42,7 @@ public class HomeTagPresenterTest {
       }
     });
 
-    RxJavaPlugins.getInstance().registerSchedulersHook(new RxJavaSchedulersHook() {
-      @Override public Scheduler getIOScheduler() {
-        return Schedulers.immediate();
-      }
-    });
+    RxJavaHooks.setOnIOScheduler(scheduler -> Schedulers.immediate());
   }
 
   @Before public void setUp() {

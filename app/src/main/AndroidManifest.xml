@@ -29,6 +29,11 @@
             android:name=".ui.tag.tweet.select.TagTweetSelectActivity"
             android:theme="@style/AppTheme">
         </activity>
+        <activity
+            android:name=".ui.search.SearchActivity"
+            android:label="@string/title_activity_search"
+            android:theme="@style/AppTheme">
+        </activity>
     </application>
 
 </manifest>

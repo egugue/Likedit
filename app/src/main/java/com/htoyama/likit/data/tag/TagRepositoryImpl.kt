@@ -8,9 +8,9 @@ import javax.inject.Inject
 /**
  * A implementation of [TagRepository]
  */
-class TagRepositoryImpl
-    @Inject internal constructor(private val dao: TagRealmDao)
-    : TagRepository {
+class TagRepositoryImpl @Inject internal constructor(
+    private val dao: TagRealmDao
+) : TagRepository {
 
   override fun publishNextIdentity(): Long {
     return dao.lastInsertedId() + 1
@@ -30,6 +30,12 @@ class TagRepositoryImpl
     return Observable.fromCallable {
       dao.delete(tag)
       null
+    }
+  }
+
+  override fun findByNameContaining(part: String): Observable<List<Tag>> {
+    return Observable.fromCallable {
+      dao.selectTagListByNameContaining(part)
     }
   }
 

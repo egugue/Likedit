@@ -7,8 +7,11 @@ import com.htoyama.likit.data.liked.LikedRepositoryImpl
 import com.htoyama.likit.data.tag.TagRealmDao
 import com.htoyama.likit.data.tag.TagRepositoryImpl
 import com.htoyama.likit.data.liked.tweet.LikedTweetDao
+import com.htoyama.likit.data.user.UserRealmDao
+import com.htoyama.likit.data.user.UserRepositoryImpl
 import com.htoyama.likit.domain.liked.LikedRepository
 import com.htoyama.likit.domain.tag.TagRepository
+import com.htoyama.likit.domain.user.UserRepository
 import dagger.Module
 import dagger.Provides
 
@@ -26,4 +29,6 @@ class DataModule {
       : LikedRepository
     = LikedRepositoryImpl(likedTweetDao, likedRealmGateway)
 
+  @Provides fun userRepository(userRealmDao: UserRealmDao)
+      : UserRepository = UserRepositoryImpl(userRealmDao)
 }

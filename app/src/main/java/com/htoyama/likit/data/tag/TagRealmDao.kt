@@ -1,7 +1,9 @@
 package com.htoyama.likit.data.tag
 
 import com.htoyama.likit.domain.tag.Tag
+import io.realm.Case
 import io.realm.Realm
+import io.realm.Sort
 import java.util.*
 import rx.Observable
 import javax.inject.Inject
@@ -9,8 +11,9 @@ import javax.inject.Inject
 /**
  * A DAO handling Tag [Realm] database.
  */
-class TagRealmDao
-  @Inject internal constructor(private val mapper: TagMapper) {
+class TagRealmDao @Inject internal constructor(
+    private val mapper: TagMapper
+) {
 
   /**
    * Retrieve last inserted id.
@@ -62,6 +65,16 @@ class TagRealmDao
       it.executeTransaction {
         realmTag.deleteFromRealm()
       }
+    }
+  }
+
+  fun selectTagListByNameContaining(part: String): List<Tag> {
+    Realm.getDefaultInstance().use { realm ->
+      val realmTagList = realm.where(RealmTag::class.java)
+          .contains("name", part, Case.INSENSITIVE)
+          .findAllSorted("name", Sort.ASCENDING)
+
+      return realmTagList.map { realmTag -> mapper.mapFrom(realmTag) }
     }
   }
 

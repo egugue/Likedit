@@ -6,10 +6,13 @@ import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.view.Menu
+import android.view.MenuItem
 import butterknife.bindView
 import com.htoyama.likit.App
 
 import com.htoyama.likit.R
+import com.htoyama.likit.ui.search.SearchActivity
 
 class HomeActivity : AppCompatActivity() {
 
@@ -33,6 +36,20 @@ class HomeActivity : AppCompatActivity() {
     viewPager.adapter = adapter
     viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
     viewPager.addOnPageChangeListener(FabSettingManageListener(fab, viewPager))
+  }
+
+  override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    menuInflater.inflate(R.menu.menu_home, menu)
+    return true
+  }
+
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    when (item.itemId) {
+      R.id.app_bar_search ->
+        startActivity(SearchActivity.createIntent(this))
+    }
+
+    return super.onOptionsItemSelected(item)
   }
 
 }
