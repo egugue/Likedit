@@ -1,12 +1,12 @@
 package com.htoyama.likit.data.liked.tweet.cache
 
+import com.htoyama.likit.data.user.UserMapper
 import com.htoyama.likit.domain.tweet.Tweet
 import com.htoyama.likit.domain.tweet.Url
 import com.htoyama.likit.domain.tweet.media.Photo
 import com.htoyama.likit.domain.tweet.media.Size
 import com.htoyama.likit.domain.tweet.media.Sizes
 import com.htoyama.likit.domain.tweet.media.Video
-import com.htoyama.likit.domain.user.User
 import io.realm.RealmList
 import java.util.*
 import javax.inject.Inject
@@ -14,7 +14,9 @@ import javax.inject.Inject
 /**
  * Transform between [Tweet] and [RealmTweet]
  */
-class TweetMapper @Inject constructor() {
+class TweetMapper @Inject constructor(
+
+) : UserMapper {
 
   /**
    * Transform [Tweet] into [RealmTweet]
@@ -75,24 +77,6 @@ class TweetMapper @Inject constructor() {
         photoList = photoList,
         urlList = urlList,
         video = video)
-  }
-
-  fun mapFrom(user: User): RealmUser {
-    return RealmUser(
-        id = user.id,
-        name = user.name,
-        screenName = user.screenName,
-        avatorUrl = user.avatorUrl
-    )
-  }
-
-  fun mapFrom(realmUser: RealmUser): User {
-    return User(
-        id = realmUser.id,
-        name = realmUser.name,
-        screenName = realmUser.screenName,
-        avatorUrl = realmUser.avatorUrl
-    )
   }
 
   fun mapFrom(photo: Photo): RealmPhoto {
