@@ -1,7 +1,6 @@
 package com.htoyama.likit.ui.common.activity;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
 
