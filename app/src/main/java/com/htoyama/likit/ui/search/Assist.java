@@ -10,6 +10,7 @@ import java.util.List;
 import static com.htoyama.likit.common.Contract.requireNotNull;
 
 class Assist {
+  private static final Assist EMPTY = new Assist(Collections.emptyList());
   private final List<Object> itemList;
 
   private Assist(List<Object> list) {
@@ -42,7 +43,7 @@ class Assist {
   }
 
   static Assist empty() {
-    return new Assist(Collections.emptyList());
+    return EMPTY;
   }
 
 }

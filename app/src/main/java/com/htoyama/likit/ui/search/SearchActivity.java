@@ -21,8 +21,10 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import rx.android.schedulers.AndroidSchedulers;
+
 public class SearchActivity extends BaseRxActivity
-    implements Presenter.View, AssistAdapter.OnItemClickListener  {
+    implements Presenter.View, AssistAdapter.OnItemClickListener {
 
   @Inject Presenter presenter;
 
@@ -53,7 +55,6 @@ public class SearchActivity extends BaseRxActivity
   }
 
   @Override public void showAssist(@NonNull Assist assist) {
-    Log.d("ーーー", assist.toString());
     adapter.setAssist(assist);
   }
 
@@ -65,12 +66,17 @@ public class SearchActivity extends BaseRxActivity
 
     RxTextView.afterTextChangeEvents(binding.searchQuery)
         .compose(bindToLifecycle())
-        .throttleLast(500, TimeUnit.MILLISECONDS)
+        .throttleLast(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
         .map(event -> event.editable().toString())
         .distinctUntilChanged()
-        .filter(query -> query.length() > 3)
         .subscribe(query -> {
-          presenter.loadAssist(query);
+          int length = query.length();
+
+          if (length == 0) {
+            adapter.setAssist(Assist.empty());
+          } else if (length >= 3) {
+            presenter.loadAssist(query);
+          }
         });
   }
 
