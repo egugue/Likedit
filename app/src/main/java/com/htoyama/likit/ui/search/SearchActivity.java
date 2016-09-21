@@ -65,6 +65,26 @@ public class SearchActivity extends BaseRxActivity
     adapter.setAssist(assist);
   }
 
+  @Override public void onTagClick(Tag tag) {
+    Log.d("ーーー", "OnTagClick. Tag = " + tag.toString());
+  }
+
+  @Override public void onUserClick(User user) {
+    Log.d("ーーー", "OnUserClick. User = " + user.toString());
+  }
+
+  private void initToolbar() {
+    setSupportActionBar(binding.toolbar);
+
+    ActionBar bar = getSupportActionBar();
+    if (bar != null) {
+      bar.setDisplayHomeAsUpEnabled(true);
+      bar.setDisplayShowHomeEnabled(true);
+      bar.setDisplayShowTitleEnabled(false);
+      bar.setHomeButtonEnabled(true);
+    }
+  }
+
   private void initList() {
     RecyclerView listView = binding.searchAssistList;
     adapter = new AssistAdapter(this);
@@ -107,25 +127,5 @@ public class SearchActivity extends BaseRxActivity
           String query = v.getText().toString();
           Log.d("ーーー", query);
         });
-  }
-
-  private void initToolbar() {
-    setSupportActionBar(binding.toolbar);
-
-    ActionBar bar = getSupportActionBar();
-    if (bar != null) {
-      bar.setDisplayHomeAsUpEnabled(true);
-      bar.setDisplayShowHomeEnabled(true);
-      bar.setDisplayShowTitleEnabled(false);
-      bar.setHomeButtonEnabled(true);
-    }
-  }
-
-  @Override public void onTagClick(Tag tag) {
-    Log.d("ーーー", "OnTagClick. Tag = " + tag.toString());
-  }
-
-  @Override public void onUserClick(User user) {
-    Log.d("ーーー", "OnUserClick. User = " + user.toString());
   }
 }
