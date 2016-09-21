@@ -28,7 +28,7 @@ open class LikedRealmGateway @Inject internal constructor(
     Realm.getDefaultInstance().use {
       it.executeTransaction {
         val likedList = tweetList.map { RealmLikedTweet(tweetMapper.mapFrom(it), RealmList()) }
-        it.insert(likedList)
+        it.insertOrUpdate(likedList)
       }
     }
   }
