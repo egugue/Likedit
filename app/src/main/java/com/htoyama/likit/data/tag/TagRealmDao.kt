@@ -1,6 +1,7 @@
 package com.htoyama.likit.data.tag
 
 import com.htoyama.likit.domain.tag.Tag
+import io.realm.Case
 import io.realm.Realm
 import io.realm.Sort
 import java.util.*
@@ -70,7 +71,7 @@ class TagRealmDao @Inject internal constructor(
   fun selectTagListByNameContaining(part: String): List<Tag> {
     Realm.getDefaultInstance().use { realm ->
       val realmTagList = realm.where(RealmTag::class.java)
-          .contains("name", part)
+          .contains("name", part, Case.INSENSITIVE)
           .findAllSorted("name", Sort.ASCENDING)
 
       return realmTagList.map { realmTag -> mapper.mapFrom(realmTag) }
