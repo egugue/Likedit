@@ -37,6 +37,30 @@ open class LikedTweetDao
      //TODO: https://github.com/egugue/Likedit/issues/24
      return Observable.concat(fromCache, fromNet)
              .first { cached -> cached.isNotEmpty() && cached.size >= count}
+
+    /*
+     val fromCache = cacheGateway.getList(page, count)
+     val fromNet: Single<List<Tweet>> = Single.fromCallable {
+       val call = favoriteService.list(null, null, count, null, null, true, page)
+       val response = call.execute()
+       if (response.isSuccessful) {
+         response.body()
+       } else {
+         throw HttpException(response)
+       }
+     }
+         .map {
+             it.map { tweetMapper.createFrom(it) }
+         }
+         .doOnSuccess { tweetList ->
+             likedRealmGateway.insertAsContainingNoTag(tweetList)
+         }
+
+     //TODO: https://github.com/egugue/Likedit/issues/24
+     return Single.concat(fromCache, fromNet)
+             .first { cached -> cached.isNotEmpty() && cached.size >= count}
+             .toSingle()
+             */
     }
 
 }
