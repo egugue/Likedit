@@ -57,8 +57,8 @@ public class SearchActivity extends BaseRxActivity
   }
 
   @Override protected void onDestroy() {
+    presenter.dispose();
     super.onDestroy();
-    presenter.unsubscribe();
   }
 
   @Override public void showAssist(@NonNull Assist assist) {
