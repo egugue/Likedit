@@ -65,7 +65,7 @@ class TagTweetSelectActivity : BaseActivity(), Presenter.View {
   }
 
   override fun onStop() {
-    presenter.unsubscribe()
+    presenter.dispose()
     super.onStop()
   }
 
