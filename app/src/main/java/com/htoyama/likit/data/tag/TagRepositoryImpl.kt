@@ -2,6 +2,7 @@ package com.htoyama.likit.data.tag
 
 import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.domain.tag.TagRepository
+import io.reactivex.Single
 import rx.Observable
 import javax.inject.Inject
 
@@ -33,8 +34,8 @@ class TagRepositoryImpl @Inject internal constructor(
     }
   }
 
-  override fun findByNameContaining(part: String): Observable<List<Tag>> {
-    return Observable.fromCallable {
+  override fun findByNameContaining(part: String): Single<List<Tag>> {
+    return Single.fromCallable {
       dao.selectTagListByNameContaining(part)
     }
   }

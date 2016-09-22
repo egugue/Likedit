@@ -1,5 +1,6 @@
 package com.htoyama.likit.domain.tag
 
+import io.reactivex.Single
 import rx.Observable
 
 /**
@@ -30,5 +31,5 @@ interface TagRepository {
   /**
    * Retrieve some [Tag]s which have a name containing the given arg.
    */
-  fun findByNameContaining(part: String): Observable<List<Tag>>
+  fun findByNameContaining(part: String): Single<List<Tag>>
 }
