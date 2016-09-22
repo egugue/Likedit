@@ -1,11 +1,11 @@
 package com.htoyama.likit.data.tag
 
 import com.htoyama.likit.domain.tag.Tag
+import io.reactivex.Single
 import io.realm.Case
 import io.realm.Realm
 import io.realm.Sort
 import java.util.*
-import rx.Observable
 import javax.inject.Inject
 
 /**
@@ -31,8 +31,8 @@ class TagRealmDao @Inject internal constructor(
     }
   }
 
-  fun selectAll(): Observable<List<Tag>> {
-    return Observable.fromCallable {
+  fun selectAll(): Single<List<Tag>> {
+    return Single.fromCallable {
       Realm.getDefaultInstance().use {
         val results = it.where(RealmTag::class.java)
             .findAll()

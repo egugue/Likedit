@@ -1,9 +1,9 @@
 package com.htoyama.likit.data.tag
 
+import com.htoyama.likit.common.Irrelevant
 import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.domain.tag.TagRepository
 import io.reactivex.Single
-import rx.Observable
 import javax.inject.Inject
 
 /**
@@ -17,20 +17,20 @@ class TagRepositoryImpl @Inject internal constructor(
     return dao.lastInsertedId() + 1
   }
 
-  override fun findAll(): Observable<List<Tag>>
+  override fun findAll(): Single<List<Tag>>
       = dao.selectAll()
 
-  override fun store(tag: Tag): Observable<Void> {
-    return Observable.fromCallable {
+  override fun store(tag: Tag): Single<Any> {
+    return Single.fromCallable {
       dao.insertOrUpdate(tag)
-      null
+      Irrelevant.get()
     }
   }
 
-  override fun remove(tag: Tag): Observable<Void> {
-    return Observable.fromCallable {
+  override fun remove(tag: Tag): Single<Any> {
+    return Single.fromCallable {
       dao.delete(tag)
-      null
+      Irrelevant.get()
     }
   }
 

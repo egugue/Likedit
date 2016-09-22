@@ -1,5 +1,6 @@
 package com.htoyama.likit.application.tag;
 
+import com.htoyama.likit.common.Irrelevant;
 import com.htoyama.likit.data.liked.LikedRealmGateway;
 import com.htoyama.likit.domain.tag.Tag;
 import com.htoyama.likit.domain.tag.TagRepository;
@@ -9,15 +10,14 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import rx.Observable;
-import rx.observers.TestSubscriber;
+import io.reactivex.Single;
+import io.reactivex.subscribers.TestSubscriber;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.when;
 
 public class TagAppServiceTest {
@@ -37,34 +37,30 @@ public class TagAppServiceTest {
     when(repository.publishNextIdentity())
         .thenReturn(expectedId);
     when(repository.store(any(Tag.class)))
-        .thenReturn(Observable.<Void>just(null));
+        .thenReturn(Single.just(Irrelevant.get()));
 
-    TestSubscriber<Tag> sub = new TestSubscriber<>();
-    service.registerNewTag(expectedName)
-        .subscribe(sub);
+    TestSubscriber<Tag> sub = service.registerNewTag(expectedName).test();
 
     sub.awaitTerminalEvent();
     sub.assertNoErrors();
-    sub.assertCompleted();
+    sub.assertComplete();
 
-    Tag tag = sub.getOnNextEvents().get(0);
+    Tag tag = (Tag) sub.getEvents().get(0).get(0);
     assertThat(tag.getId()).isEqualTo(expectedId);
     assertThat(tag.getName()).isEqualTo(expectedName);
   }
 
   @Test public void findAll() {
-    List<Tag> expected = new ArrayList<>();
+    List<Tag> expected = Collections.emptyList();
     when(repository.findAll())
-        .thenReturn(Observable.just(expected));
+        .thenReturn(Single.just(expected));
 
-    TestSubscriber<List<Tag>> sub = new TestSubscriber<>();
-    service.findAll().subscribe(sub);
+    TestSubscriber<List<Tag>> sub = service.findAll().test();
 
     sub.awaitTerminalEvent();
     sub.assertNoErrors();
-    sub.assertCompleted();
-    List<Tag> actual = sub.getOnNextEvents().get(0);
-    assertThat(actual).isEqualTo(expected);
+    sub.assertComplete();
+    sub.assertValue(expected);
   }
 
 }

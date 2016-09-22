@@ -5,8 +5,8 @@ import com.htoyama.likit.application.tag.TagTweetCountDto
 import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.ui.common.base.BasePresenter
 import com.htoyama.likit.ui.home.HomeScope
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 @HomeScope
@@ -24,7 +24,7 @@ class HomeTagPresenter @Inject internal constructor(
   fun loadAllTags() {
     view?.showProgress()
 
-    subs.add(tagAppService.findAllWithTweetCount()
+    disposables.add(tagAppService.findAllWithTweetCount()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
@@ -40,7 +40,7 @@ class HomeTagPresenter @Inject internal constructor(
   }
 
   fun registerNewTag(tagName: String) {
-    subs.add(tagAppService.registerNewTag(tagName)
+    disposables.add(tagAppService.registerNewTag(tagName)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
