@@ -15,7 +15,6 @@ import java.util.List;
 
 import io.reactivex.Single;
 import io.reactivex.observers.TestObserver;
-import io.reactivex.subscribers.TestSubscriber;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Matchers.any;
@@ -46,7 +45,7 @@ public class TagAppServiceTest {
     test.assertNoErrors();
     test.assertComplete();
 
-    Tag tag = (Tag) test.getEvents().get(0).get(0);
+    Tag tag = test.values().get(0);
     assertThat(tag.getId()).isEqualTo(expectedId);
     assertThat(tag.getName()).isEqualTo(expectedName);
   }

@@ -18,7 +18,6 @@ import java.util.List;
 
 import io.reactivex.Single;
 import io.reactivex.observers.TestObserver;
-import io.reactivex.subscribers.TestSubscriber;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
@@ -46,7 +45,7 @@ public class SearchAssistActionTest {
 
     test.assertNoErrors();
     test.assertComplete();
-    Assist emitted = (Assist) test.getEvents().get(0).get(0);
+    Assist emitted = test.values().get(0);
     assertThat(emitted.size()).isEqualTo(tagList.size() + 1); // 1 means tag header.
   }
 
