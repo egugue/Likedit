@@ -1,7 +1,6 @@
 package com.htoyama.likit.data.liked.tweet;
 
 import com.htoyama.likit.TweetBuilder;
-import com.htoyama.likit.common.Irrelevant;
 import com.htoyama.likit.data.common.net.FavoriteService;
 import com.htoyama.likit.data.liked.LikedRealmGateway;
 import com.htoyama.likit.data.liked.tweet.cache.LikedTweetCacheGateway;
@@ -15,7 +14,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
