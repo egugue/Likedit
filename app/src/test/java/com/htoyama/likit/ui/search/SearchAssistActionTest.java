@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Single;
+import io.reactivex.observers.TestObserver;
 import io.reactivex.subscribers.TestSubscriber;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -40,7 +41,7 @@ public class SearchAssistActionTest {
     when(tagRepository.findByNameContaining(query))
         .thenReturn(Single.just(tagList));
 
-    TestSubscriber<Assist> test = action.getAssist(query).test();
+    TestObserver<Assist> test = action.getAssist(query).test();
     test.awaitTerminalEvent();
 
     test.assertNoErrors();

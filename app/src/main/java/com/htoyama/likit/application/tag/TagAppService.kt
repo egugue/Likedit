@@ -45,7 +45,6 @@ open class TagAppService @Inject internal constructor(
           TagTweetCountDto(tag, count)
         }
         .toList()
-        .toSingle()
   }
 
 }
