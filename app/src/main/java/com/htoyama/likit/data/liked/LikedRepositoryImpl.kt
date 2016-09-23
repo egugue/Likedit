@@ -5,7 +5,6 @@ import com.htoyama.likit.domain.liked.LikedTweet
 import com.htoyama.likit.domain.liked.LikedRepository
 import com.htoyama.likit.domain.tag.Tag
 import io.reactivex.Single
-import rx.Observable
 
 /**
  * The implementation of [LikedRepository]

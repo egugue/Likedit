@@ -6,7 +6,6 @@ import io.realm.Realm
 import io.realm.Sort
 import java.util.*
 import javax.inject.Inject
-import rx.Observable
 
 /**
  * A gateway that handles cached liked-tweet data via cache repository.
@@ -31,7 +30,7 @@ open class LikedTweetCacheGateway
   }
 
   /**
-   * Retrive liked-tweet list as [Observable]
+   * Retrive liked-tweet list as [Single]
    */
   open fun getList(page: Int, count: Int): Single<List<Tweet>> {
     return Single.fromCallable {
