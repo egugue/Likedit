@@ -26,7 +26,7 @@ public abstract class BasePresenter<VIEW> implements Disposable {
 
   @Override public void dispose() {
     this.view = null;
-    disposables.dispose();
+    disposables.clear();
   }
 
   @Override public boolean isDisposed() {
