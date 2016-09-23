@@ -21,7 +21,7 @@ public class BasePresenterTest {
     assertThat(presenter.view).isEqualTo(expected);
   }
 
-  @Test public void unsubscribe() {
+  @Test public void dispose() {
     presenter.setView(new Object());
     presenter.disposables.add(new TestSubscriber<>());
 
