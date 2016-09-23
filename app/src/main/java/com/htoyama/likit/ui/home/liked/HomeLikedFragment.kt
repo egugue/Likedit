@@ -14,9 +14,8 @@ import com.htoyama.likit.domain.liked.LikedRepository
 import com.htoyama.likit.domain.liked.LikedTweet
 import com.htoyama.likit.ui.TweetAdapter
 import com.htoyama.likit.ui.home.HomeActivity
-import rx.Subscriber
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 /**
@@ -53,20 +52,11 @@ class HomeLikedFragment : Fragment() {
     likedRepisitory.find(1, 200)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(object : Subscriber<List<LikedTweet>>() {
-          override fun onCompleted() {
-            //throw UnsupportedOperationException()
-          }
-
-          override fun onError(e: Throwable?) {
-            e?.printStackTrace()
-          }
-
-          override fun onNext(t: List<LikedTweet>) {
-            adapter.setTweetList(t.map { it.tweet })
-          }
-
-        })
+        .subscribe(
+            { likedList ->
+              adapter.setTweetList(likedList.map(LikedTweet::tweet))
+            },
+            Throwable::printStackTrace
+        )
   }
-
 }

@@ -3,7 +3,8 @@ package com.htoyama.likit.ui.common.base;
 import org.junit.Before;
 import org.junit.Test;
 
-import rx.observers.TestSubscriber;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.subscribers.TestSubscriber;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -20,20 +21,21 @@ public class BasePresenterTest {
     assertThat(presenter.view).isEqualTo(expected);
   }
 
-  @Test public void unsubscribe() {
+  @Test public void dispose() {
     presenter.setView(new Object());
-    presenter.subs.add(new TestSubscriber<Void>());
+    presenter.disposables.add(new TestSubscriber<>());
 
-    presenter.unsubscribe();
+    presenter.dispose();
 
     assertThat(presenter.view).isNull();
-    assertThat(presenter.subs.hasSubscriptions()).isFalse();
-    assertThat(presenter.subs.isUnsubscribed()).isFalse();
+    CompositeDisposable dis = presenter.disposables;
+    assertThat(dis.size()).isEqualTo(0);
+    assertThat(dis.isDisposed()).isFalse();
   }
 
   @Test public void isUnsubscribed() {
-    assertThat(presenter.isUnsubscribed())
-        .isEqualTo(presenter.subs.isUnsubscribed());
+    assertThat(presenter.isDisposed())
+        .isEqualTo(presenter.disposables.isDisposed());
   }
 
 }

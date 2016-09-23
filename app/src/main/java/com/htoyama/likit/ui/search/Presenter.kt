@@ -1,8 +1,7 @@
 package com.htoyama.likit.ui.search
 
 import com.htoyama.likit.ui.common.base.BasePresenter
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
+import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 @SearchScope
@@ -15,7 +14,7 @@ internal class Presenter @Inject internal constructor(
   }
 
   fun loadAssist(query: String) {
-    val sub = searchAssistAction.getAssist(query)
+    val dis = searchAssistAction.getAssist(query)
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
             { assist -> view?.showAssist(assist) },
@@ -24,7 +23,7 @@ internal class Presenter @Inject internal constructor(
             }
         )
 
-    subs.add(sub)
+    disposables.add(dis)
   }
 
 }

@@ -3,16 +3,14 @@ package com.htoyama.likit.data.liked
 import com.htoyama.likit.TweetBuilder
 import com.htoyama.likit.data.liked.tweet.LikedTweetDao
 import com.htoyama.likit.domain.liked.LikedBuilder
-import com.htoyama.likit.domain.liked.LikedTweet
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import java.util.*
 import org.mockito.Mockito.`when` as When
-import rx.Observable
 import com.google.common.truth.Truth.assertThat
-import rx.observers.TestSubscriber
+import io.reactivex.Single
 
 class LikedRepositoryImplTest {
   @Mock lateinit private var dao: LikedTweetDao
@@ -27,7 +25,7 @@ class LikedRepositoryImplTest {
   @Test fun find() {
     val tweetList = Arrays.asList(
         TweetBuilder().setId(1).build())
-    val tweetListObs = Observable.just(tweetList)
+    val tweetListObs = Single.just(tweetList)
     When(dao.getTweetList(1, 1))
         .thenReturn(tweetListObs)
 
@@ -35,13 +33,11 @@ class LikedRepositoryImplTest {
     When(gateway.getBy(tweetList))
         .thenReturn(expected)
 
-    val actual = impl.find(1, 1)
+    val test = impl.find(1, 1).test()
+    test.awaitTerminalEvent()
 
-    val sub = TestSubscriber<List<LikedTweet>>();
-    actual.subscribe(sub)
-    sub.awaitTerminalEvent()
-    sub.assertCompleted()
-    val events = sub.onNextEvents
+    test.assertComplete()
+    val events = test.values()
     assertThat(events).hasSize(1)
     assertThat(events[0]).isEqualTo(expected)
   }

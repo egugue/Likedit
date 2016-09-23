@@ -1,6 +1,6 @@
 package com.htoyama.likit.domain.tag
 
-import rx.Observable
+import io.reactivex.Single
 
 /**
  * A repository related to [Tag]
@@ -15,20 +15,20 @@ interface TagRepository {
   /**
    * Retrieve all stored [Tag]s as [List].
    */
-  fun findAll(): Observable<List<Tag>>
+  fun findAll(): Single<List<Tag>>
 
   /**
    * Store a [Tag]
    */
-  fun store(tag: Tag): Observable<Void>
+  fun store(tag: Tag): Single<Any>
 
   /**
    * remove a [Tag]
    */
-  fun remove(tag: Tag): Observable<Void>
+  fun remove(tag: Tag): Single<Any>
 
   /**
    * Retrieve some [Tag]s which have a name containing the given arg.
    */
-  fun findByNameContaining(part: String): Observable<List<Tag>>
+  fun findByNameContaining(part: String): Single<List<Tag>>
 }

@@ -3,18 +3,18 @@ package com.htoyama.likit.ui.common.base;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Base class for all Presenter.
  *
- * a presenter inherited from it may not be {@link CompositeSubscription#clear()}
+ * a presenter inherited from it may not be {@link CompositeDisposable#clear()}
  * and release {@link VIEW}.
- * Those processes will perform when {@link #unsubscribe()} invoked.
+ * Those processes will perform when {@link #dispose()} invoked.
  */
-public abstract class BasePresenter<VIEW> implements Subscription {
-  protected final CompositeSubscription subs = new CompositeSubscription();
+public abstract class BasePresenter<VIEW> implements Disposable {
+  protected final CompositeDisposable disposables = new CompositeDisposable();
   @Nullable protected VIEW view;
 
   /**
@@ -24,13 +24,12 @@ public abstract class BasePresenter<VIEW> implements Subscription {
     this.view = view;
   }
 
-  @Override public boolean isUnsubscribed() {
-    return subs.isUnsubscribed();
-  }
-
-  @Override public void unsubscribe() {
+  @Override public void dispose() {
     this.view = null;
-    subs.clear();
+    disposables.clear();
   }
 
+  @Override public boolean isDisposed() {
+    return disposables.isDisposed();
+  }
 }

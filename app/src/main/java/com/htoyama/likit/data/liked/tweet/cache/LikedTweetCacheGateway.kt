@@ -1,16 +1,16 @@
 package com.htoyama.likit.data.liked.tweet.cache
 
 import com.htoyama.likit.domain.tweet.Tweet
+import io.reactivex.Single
 import io.realm.Realm
 import io.realm.Sort
 import java.util.*
 import javax.inject.Inject
-import rx.Observable
 
 /**
  * A gateway that handles cached liked-tweet data via cache repository.
  */
-class LikedTweetCacheGateway
+open class LikedTweetCacheGateway
   @Inject internal constructor(private val mapper: TweetMapper) {
 
   /**
@@ -19,7 +19,7 @@ class LikedTweetCacheGateway
    * Note: If the Cache already havs a tweet in the given list,
    * the cache updates the tweet data instead of ignoring.
    */
-  fun store(tweetList: List<Tweet>) {
+  open fun store(tweetList: List<Tweet>) {
     Realm.getDefaultInstance().use {
       it.executeTransaction {
         val realmTweetList = tweetList.map {
@@ -30,10 +30,10 @@ class LikedTweetCacheGateway
   }
 
   /**
-   * Retrive liked-tweet list as [Observable]
+   * Retrive liked-tweet list as [Single]
    */
-  fun getList(page: Int, count: Int): Observable<List<Tweet>> {
-    return Observable.fromCallable {
+  open fun getList(page: Int, count: Int): Single<List<Tweet>> {
+    return Single.fromCallable {
       Realm.getDefaultInstance().use { realm ->
         val allResults = realm.where(RealmTweet::class.java)
             .findAllSorted("id", Sort.DESCENDING)

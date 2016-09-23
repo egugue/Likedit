@@ -62,8 +62,8 @@ class HomeTagFragment : Fragment(), TagCreateDialogFragment.OnClickListener,
   }
 
   override fun onDetach() {
+    presenter.dispose()
     super.onDetach()
-    presenter.unsubscribe();
   }
 
   /** Called when FAB on attached Activity is clicked. */

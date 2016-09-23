@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import rx.Observable;
-import rx.observers.TestSubscriber;
+import io.reactivex.Single;
+import io.reactivex.observers.TestObserver;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
@@ -36,17 +36,16 @@ public class SearchAssistActionTest {
     String query = "foo";
     List<Tag> tagList = tagList(2);
     when(userRepository.findByNameContaining(query))
-        .thenReturn(Observable.just(Collections.emptyList()));
+        .thenReturn(Single.just(Collections.emptyList()));
     when(tagRepository.findByNameContaining(query))
-        .thenReturn(Observable.just(tagList));
+        .thenReturn(Single.just(tagList));
 
-    TestSubscriber<Assist> asssitSub = new TestSubscriber<>();
-    action.getAssist(query).subscribe(asssitSub);
-    asssitSub.awaitTerminalEvent();
+    TestObserver<Assist> test = action.getAssist(query).test();
+    test.awaitTerminalEvent();
 
-    asssitSub.assertNoErrors();
-    asssitSub.assertCompleted();
-    Assist emitted = asssitSub.getOnNextEvents().get(0);
+    test.assertNoErrors();
+    test.assertComplete();
+    Assist emitted = test.values().get(0);
     assertThat(emitted.size()).isEqualTo(tagList.size() + 1); // 1 means tag header.
   }
 
