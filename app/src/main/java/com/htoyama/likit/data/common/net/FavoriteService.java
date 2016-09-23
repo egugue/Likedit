@@ -21,6 +21,7 @@ import com.twitter.sdk.android.core.models.Tweet;
 
 import java.util.List;
 
+import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -48,7 +49,7 @@ public interface FavoriteService {
      */
     @GET("/1.1/favorites/list.json? +" +
         "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
-    Observable<List<Tweet>> list(
+    Call<List<Tweet>> list(
         @Query("user_id") Long userId,
         @Query("screen_name") String screenName,
         @Query("count") Integer count,

@@ -24,7 +24,7 @@ open class LikedRealmGateway @Inject internal constructor(
    * Note: If the Cache already havs a tweet in the given list,
    * the cache ignore the tweet data instead of updating.
    */
-  fun insertAsContainingNoTag(tweetList: List<Tweet>) {
+  open fun insertAsContainingNoTag(tweetList: List<Tweet>) {
     Realm.getDefaultInstance().use {
       it.executeTransaction {
         val likedList = tweetList.map { RealmLikedTweet(tweetMapper.mapFrom(it), RealmList()) }

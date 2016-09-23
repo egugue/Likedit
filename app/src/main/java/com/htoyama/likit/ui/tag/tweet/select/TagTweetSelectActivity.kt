@@ -55,12 +55,11 @@ class TagTweetSelectActivity : BaseActivity(), Presenter.View {
     listView.adapter = adapter
     listView.layoutManager = LinearLayoutManager(this)
     listView.addItemDecoration(DividerItemDecoration(this))
-
-    presenter.setView(this)
   }
 
   override fun onStart() {
     super.onStart()
+    presenter.setView(this)
     presenter.loadNextLikedList()
   }
 

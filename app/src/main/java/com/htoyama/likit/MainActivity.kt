@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.widget.Button
 import butterknife.bindView
 import com.htoyama.likit.domain.liked.LikedTweet
@@ -17,9 +16,8 @@ import com.htoyama.likit.ui.TweetAdapter
 import com.htoyama.likit.ui.auth.AuthActivity
 import com.htoyama.likit.ui.home.HomeActivity
 import com.twitter.sdk.android.core.TwitterCore
-import rx.Subscriber
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
@@ -65,21 +63,12 @@ class MainActivity : AppCompatActivity() {
     likedRepository.find(1, 200)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(object : Subscriber<List<LikedTweet>>() {
-          override fun onCompleted() {
-            //throw UnsupportedOperationException()
-          }
-
-          override fun onError(e: Throwable?) {
-            e?.printStackTrace()
-          }
-
-          override fun onNext(t: List<LikedTweet>) {
-            Log.d("ーーーー", " aaa " + t.size)
-            adapter.setTweetList(t.map { it.tweet })
-          }
-
-        })
+        .subscribe(
+            { likedList ->
+              adapter.setTweetList(likedList.map(LikedTweet::tweet))
+            },
+            Throwable::printStackTrace
+        )
   }
 
 }
