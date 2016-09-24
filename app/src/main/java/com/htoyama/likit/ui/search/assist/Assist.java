@@ -1,4 +1,4 @@
-package com.htoyama.likit.ui.search;
+package com.htoyama.likit.ui.search.assist;
 
 import com.htoyama.likit.domain.tag.Tag;
 import com.htoyama.likit.domain.user.User;
@@ -9,7 +9,7 @@ import java.util.List;
 
 import static com.htoyama.likit.common.Contract.requireNotNull;
 
-class Assist {
+public class Assist {
   private static final Assist EMPTY = new Assist(Collections.emptyList());
   private final List<Object> itemList;
 
@@ -17,15 +17,15 @@ class Assist {
     itemList = list;
   }
 
-  int size() {
+  public int size() {
     return itemList.size();
   }
 
-  Object get(int position) {
+  public Object get(int position) {
     return itemList.get(position);
   }
 
-  static Assist from(List<Tag> tagList, List<User> userList) {
+  public static Assist from(List<Tag> tagList, List<User> userList) {
     requireNotNull(tagList);
     requireNotNull(userList);
 
@@ -42,7 +42,7 @@ class Assist {
     return new Assist(itemList);
   }
 
-  static Assist empty() {
+  public static Assist empty() {
     return EMPTY;
   }
 

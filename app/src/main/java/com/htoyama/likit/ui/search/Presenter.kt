@@ -1,6 +1,7 @@
 package com.htoyama.likit.ui.search
 
 import com.htoyama.likit.ui.common.base.BasePresenter
+import com.htoyama.likit.ui.search.assist.Assist
 import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 

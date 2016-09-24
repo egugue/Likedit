@@ -1,4 +1,4 @@
-package com.htoyama.likit.ui.search;
+package com.htoyama.likit.ui.search.assist;
 
 import android.databinding.BindingAdapter;
 import android.support.annotation.LayoutRes;

@@ -19,6 +19,8 @@ import com.htoyama.likit.databinding.ActivitySearchBinding;
 import com.htoyama.likit.domain.tag.Tag;
 import com.htoyama.likit.domain.user.User;
 import com.htoyama.likit.ui.common.activity.BaseRxActivity;
+import com.htoyama.likit.ui.search.assist.Assist;
+import com.htoyama.likit.ui.search.assist.AssistAdapter;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
 import java.util.concurrent.TimeUnit;
