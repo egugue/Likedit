@@ -17,6 +17,7 @@ import com.htoyama.likit.domain.tag.Tag;
 import com.htoyama.likit.domain.user.User;
 import com.htoyama.likit.ui.common.base.BaseRxFragment;
 import com.htoyama.likit.ui.search.SearchActivity;
+import com.htoyama.likit.ui.search.assist.listitem.AssistAdapter;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
 import org.jetbrains.annotations.NotNull;

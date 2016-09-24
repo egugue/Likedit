@@ -1,4 +1,4 @@
-package com.htoyama.likit.ui.search.assist;
+package com.htoyama.likit.ui.search.assist.listitem;
 
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -10,6 +10,7 @@ import com.htoyama.likit.R;
 import com.htoyama.likit.databinding.ViewSearchAssistTagBinding;
 import com.htoyama.likit.domain.tag.Tag;
 import com.htoyama.likit.ui.common.BindingHolder;
+import com.htoyama.likit.ui.search.assist.Assist;
 
 import static com.htoyama.likit.common.Contract.requireNotNull;
 

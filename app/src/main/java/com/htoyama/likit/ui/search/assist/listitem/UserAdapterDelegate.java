@@ -1,4 +1,4 @@
-package com.htoyama.likit.ui.search.assist;
+package com.htoyama.likit.ui.search.assist.listitem;
 
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -10,6 +10,7 @@ import com.htoyama.likit.R;
 import com.htoyama.likit.databinding.ViewSearchAssistUserBinding;
 import com.htoyama.likit.domain.user.User;
 import com.htoyama.likit.ui.common.BindingHolder;
+import com.htoyama.likit.ui.search.assist.Assist;
 
 public class UserAdapterDelegate implements AdapterDelegate<Assist> {
 
@@ -19,7 +20,7 @@ public class UserAdapterDelegate implements AdapterDelegate<Assist> {
 
   private final OnUserClickListener listener;
 
-  public UserAdapterDelegate(OnUserClickListener listener) {
+  UserAdapterDelegate(OnUserClickListener listener) {
     this.listener = listener;
   }
 
