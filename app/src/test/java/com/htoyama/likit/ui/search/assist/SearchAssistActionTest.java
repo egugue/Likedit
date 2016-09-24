@@ -1,4 +1,4 @@
-package com.htoyama.likit.ui.search;
+package com.htoyama.likit.ui.search.assist;
 
 import com.htoyama.likit.UserBuilder;
 import com.htoyama.likit.domain.tag.Tag;
@@ -6,7 +6,6 @@ import com.htoyama.likit.domain.tag.TagBuilder;
 import com.htoyama.likit.domain.tag.TagRepository;
 import com.htoyama.likit.domain.user.User;
 import com.htoyama.likit.domain.user.UserRepository;
-import com.htoyama.likit.ui.search.assist.Assist;
 
 import org.junit.Before;
 import org.junit.Test;
