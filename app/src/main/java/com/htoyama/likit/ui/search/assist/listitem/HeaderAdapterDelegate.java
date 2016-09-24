@@ -1,4 +1,4 @@
-package com.htoyama.likit.ui.search;
+package com.htoyama.likit.ui.search.assist.listitem;
 
 import android.databinding.BindingAdapter;
 import android.support.annotation.LayoutRes;
@@ -11,6 +11,8 @@ import com.hannesdorfmann.adapterdelegates2.AdapterDelegate;
 import com.htoyama.likit.R;
 import com.htoyama.likit.databinding.ViewSearchAssistHeaderBinding;
 import com.htoyama.likit.ui.common.BindingHolder;
+import com.htoyama.likit.ui.search.assist.Assist;
+import com.htoyama.likit.ui.search.assist.Header;
 
 public class HeaderAdapterDelegate implements AdapterDelegate<Assist> {
 

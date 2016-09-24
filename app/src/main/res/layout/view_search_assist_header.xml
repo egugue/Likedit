@@ -9,7 +9,7 @@
 
         <variable
             name="header"
-            type="com.htoyama.likit.ui.search.Header"
+            type="com.htoyama.likit.ui.search.assist.Header"
             />
     </data>
 
