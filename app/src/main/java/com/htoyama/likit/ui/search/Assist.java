@@ -26,8 +26,8 @@ class Assist {
   }
 
   static Assist from(List<Tag> tagList, List<User> userList) {
-    requireNotNull(tagList);
-    requireNotNull(userList);
+    requireNotNull(tagList, "tagList");
+    requireNotNull(userList, "userList");
 
     List<Object> itemList = new ArrayList<>(tagList.size() + userList.size());
     if (!tagList.isEmpty()) {
