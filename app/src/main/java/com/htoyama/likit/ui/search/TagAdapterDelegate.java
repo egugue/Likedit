@@ -22,7 +22,7 @@ public class TagAdapterDelegate implements AdapterDelegate<Assist> {
   private final OnTagClickListener listener;
 
   public TagAdapterDelegate(OnTagClickListener listener) {
-    this.listener = requireNotNull(listener);
+    this.listener = requireNotNull(listener, "listener");
   }
 
   @Override public boolean isForViewType(@NonNull Assist items, int position) {

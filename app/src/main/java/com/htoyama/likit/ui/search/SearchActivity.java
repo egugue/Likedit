@@ -93,8 +93,8 @@ public class SearchActivity extends BaseRxActivity
   }
 
   private void initSearchEditText() {
-    requireNotNull(adapter);
-    requireNotNull(presenter);
+    requireNotNull(adapter, "adapter");
+    requireNotNull(presenter, "presenter");
 
     EditText searchView = binding.searchQuery;
 
