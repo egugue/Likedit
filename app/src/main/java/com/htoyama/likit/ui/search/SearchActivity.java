@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.htoyama.likit.R;
 import com.htoyama.likit.databinding.ActivitySearchBinding;
@@ -19,10 +18,10 @@ import com.htoyama.likit.domain.tag.Tag;
 import com.htoyama.likit.domain.user.User;
 import com.htoyama.likit.ui.common.activity.BaseRxActivity;
 import com.htoyama.likit.ui.search.assist.SearchAssistFragment;
-import com.jakewharton.rxbinding.widget.RxTextView;
+import com.htoyama.likit.ui.search.result.SearchResultFragment;
 
 public class SearchActivity extends BaseRxActivity
-    implements SearchAssistFragment.Listener {
+    implements SearchAssistFragment.Listener, SearchResultFragment.Listener {
 
   public ActivitySearchBinding binding;
   public SearchComponent component;
@@ -72,18 +71,26 @@ public class SearchActivity extends BaseRxActivity
   private void initSearchEditText() {
     EditText searchView = binding.searchQuery;
 
-    // When user input search button.
-    RxTextView.editorActionEvents(searchView)
-        .filter(event -> event.actionId() == EditorInfo.IME_ACTION_SEARCH)
-        .compose(bindToLifecycle())
-        .subscribe(searchEvent -> {
-          TextView v = searchEvent.view();
+    // When user inputs search button.
+    searchView.setOnEditorActionListener((v, actionId, event) -> {
+      if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        binding.getRoot().requestFocus();
 
-          InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-          imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        String query = v.getText().toString();
+        Fragment fragment = SearchResultFragment.newInstance(query);
+        replaceFragment(fragment);
+      }
+      return false;
+    });
 
-          String query = v.getText().toString();
-          Log.d("ーーー", query);
-        });
+    // When user touchs search edit view.
+    searchView.setOnFocusChangeListener((v, hasFocus) -> {
+      if (hasFocus) {
+        Fragment fragment = SearchAssistFragment.newInstance();
+        replaceFragment(fragment);
+      }
+    });
   }
 }
