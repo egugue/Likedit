@@ -1,4 +1,4 @@
-package com.htoyama.likit.ui.search;
+package com.htoyama.likit.ui.search.assist;
 
 import com.htoyama.likit.UserBuilder;
 import com.htoyama.likit.domain.tag.Tag;

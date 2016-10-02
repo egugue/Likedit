@@ -1,4 +1,4 @@
-package com.htoyama.likit.ui.search;
+package com.htoyama.likit.ui.search.assist.listitem;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
@@ -6,10 +6,11 @@ import android.view.ViewGroup;
 import com.hannesdorfmann.adapterdelegates2.AdapterDelegatesManager;
 import com.htoyama.likit.domain.tag.Tag;
 import com.htoyama.likit.domain.user.User;
+import com.htoyama.likit.ui.search.assist.Assist;
 
-class AssistAdapter extends RecyclerView.Adapter {
+public class AssistAdapter extends RecyclerView.Adapter {
 
-  interface OnItemClickListener {
+  public interface OnItemClickListener {
     void onTagClick(Tag tag);
     void onUserClick(User user);
   }

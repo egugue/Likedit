@@ -1,9 +1,11 @@
-package com.htoyama.likit.ui.search
+package com.htoyama.likit.ui.search.assist
 
 import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.domain.tag.TagRepository
 import com.htoyama.likit.domain.user.User
 import com.htoyama.likit.domain.user.UserRepository
+import com.htoyama.likit.ui.search.SearchScope
+import com.htoyama.likit.ui.search.assist.Assist
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers

@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
+        android:focusableInTouchMode="true"
         android:orientation="vertical"
         tools:context="com.htoyama.likit.ui.search.SearchActivity"
         >
@@ -25,16 +26,19 @@
                 android:id="@+id/search_query"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:inputType="text"
-                android:imeOptions="actionSearch"
                 android:hint="お気に入りを検索"
-                />
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:maxLines="1"
+                >
+
+                <requestFocus/>
+            </EditText>
 
         </android.support.v7.widget.Toolbar>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/search_assist_list"
+        <FrameLayout
+            android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             />

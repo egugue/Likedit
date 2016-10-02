@@ -59,7 +59,6 @@ public class TagAppServiceTest {
 
     test.awaitTerminalEvent();
     test.assertNoErrors();
-    test.assertComplete();
     test.assertValue(expected);
   }
 
