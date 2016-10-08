@@ -21,13 +21,12 @@ import com.twitter.sdk.android.core.models.Tweet;
 
 import java.util.List;
 
-import retrofit2.Call;
+import io.reactivex.Single;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
-import rx.Observable;
 
 public interface FavoriteService {
 
@@ -49,7 +48,7 @@ public interface FavoriteService {
      */
     @GET("/1.1/favorites/list.json? +" +
         "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
-    Call<List<Tweet>> list(
+    Single<List<Tweet>> list(
         @Query("user_id") Long userId,
         @Query("screen_name") String screenName,
         @Query("count") Integer count,
@@ -73,7 +72,7 @@ public interface FavoriteService {
     @FormUrlEncoded
     @POST("/1.1/favorites/destroy.json?" +
         "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
-    Observable<Tweet> destroy(
+    Single<Tweet> destroy(
         @Field("id") Long id,
         @Field("include_entities") Boolean includeEntities
     );
@@ -92,7 +91,7 @@ public interface FavoriteService {
     @FormUrlEncoded
     @POST("/1.1/favorites/create.json?" +
         "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
-    Observable<Tweet> create(
+    Single<Tweet> create(
         @Field("id") Long id,
         @Field("include_entities") Boolean includeEntities
     );
