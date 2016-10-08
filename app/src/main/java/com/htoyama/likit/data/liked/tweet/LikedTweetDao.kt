@@ -23,8 +23,8 @@ open class LikedTweetDao @Inject internal constructor(
    * Retrieve liked [Tweet]s List by current authenticated user.
    */
   open fun getTweetList(page: Int, count: Int): Single<List<Tweet>> {
-    Contract.require(page > 0, "page must be greater than or equal to 0")
-    Contract.require(count > 0, "count must be greater than or equal to 0")
+    Contract.require(page > 0, "page must be greater than 0")
+    Contract.require(count > 0, "count must be greater than 0")
 
     val fromCache = cacheGateway.getList(page, count)
 
