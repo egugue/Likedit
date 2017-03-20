@@ -1,7 +1,6 @@
 package com.htoyama.likit.data.common.net
 
 import com.google.gson.GsonBuilder
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.twitter.sdk.android.core.TwitterCore
 import com.twitter.sdk.android.core.internal.TwitterApi
 import com.twitter.sdk.android.core.internal.network.OkHttpClientHelper
@@ -13,6 +12,7 @@ import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton

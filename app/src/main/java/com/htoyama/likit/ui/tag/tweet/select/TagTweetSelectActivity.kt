@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import butterknife.bindView
+import com.htoyama.likit.App
 
 import com.htoyama.likit.R
 import com.htoyama.likit.domain.liked.LikedTweet
@@ -38,7 +39,10 @@ class TagTweetSelectActivity : BaseActivity(), Presenter.View {
   private val listView: RecyclerView by bindView(R.id.tag_tweet_select_list)
   private val adapter: ListAdapter = ListAdapter()
   private val component: TagTweetSelectComponent by lazy {
-    TagTweetSelectComponent.Initializer.init(this) }
+    DaggerTagTweetSelectComponent.builder()
+            .appComponent(App.component(this))
+            .build()
+  }
 
   @Inject lateinit internal var presenter: Presenter
 

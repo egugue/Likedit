@@ -12,9 +12,9 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import com.htoyama.likit.R
-import com.jakewharton.rxbinding.widget.RxTextView
-import rx.Subscription
-import rx.subscriptions.Subscriptions
+import com.jakewharton.rxbinding2.widget.RxTextView
+import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.Disposables
 
 /**
  * A [DialogFragment] that has responsi
@@ -33,7 +33,7 @@ class TagCreateDialogFragment : DialogFragment() {
     fun onTagCreateButtonClick(tagName: String)
   }
 
-  private var sub: Subscription = Subscriptions.empty()
+  private var dis: Disposable = Disposables.empty()
   private lateinit var inputLayout: TextInputLayout
 
   private val tagNameMaxCount: Int by lazy { resources.getInteger(R.integer.tag_name_max_count) }
@@ -84,7 +84,7 @@ class TagCreateDialogFragment : DialogFragment() {
 
   override fun onDestroy() {
     super.onDestroy()
-    sub.unsubscribe()
+    dis.dispose()
   }
 
   private fun createContentView(): View {
@@ -93,7 +93,7 @@ class TagCreateDialogFragment : DialogFragment() {
     val editText: EditText = view.findViewById(R.id.tag_create_edit_text) as EditText
 
     val countOverErrorMessage = resources.getString(R.string.tag_create_count_over_error)
-    sub = RxTextView.textChangeEvents(editText)
+    dis = RxTextView.textChangeEvents(editText)
         .map {event ->
           val length = event.text().length
           length > tagNameMaxCount

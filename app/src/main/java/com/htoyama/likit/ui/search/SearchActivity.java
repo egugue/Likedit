@@ -19,13 +19,13 @@ import com.htoyama.likit.databinding.ActivitySearchBinding;
 import com.htoyama.likit.domain.tag.Tag;
 import com.htoyama.likit.domain.user.User;
 import com.htoyama.likit.ui.common.activity.BaseRxActivity;
-import com.jakewharton.rxbinding.widget.RxTextView;
+import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import rx.android.schedulers.AndroidSchedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 import static com.htoyama.likit.common.Contract.requireNotNull;
 

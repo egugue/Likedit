@@ -66,8 +66,9 @@ class MainActivity : AppCompatActivity() {
         .subscribe(
             { likedList ->
               adapter.setTweetList(likedList.map(LikedTweet::tweet))
-            },
-            Throwable::printStackTrace
+            }//,
+            //TODO
+            //Throwable::printStackTrace
         )
   }
 
