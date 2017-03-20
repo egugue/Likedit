@@ -9,3 +9,7 @@ build:
         name: run gradle assembleDebug
         code: |
           ./gradlew --project-cache-dir=$WERCKER_CACHE_DIR assemble testDebugUnitTest -PdisablePreDex
+    after-steps:
+      - slack-notifier:
+          url: $SLACK_URL
+          username: likedit_bot
