@@ -45,11 +45,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
-    //TODO: remove when only use rxjava2 instead of rxjava2
-    packagingOptions {
-        exclude 'META-INF/rxjava.properties'
-    }
 }
 
 dependencies {
