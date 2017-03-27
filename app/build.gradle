@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'io.fabric'
 apply plugin: 'realm-android'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'com.squareup.sqldelight'
 apply plugin: 'kotlin-kapt'
 apply from: rootProject.file('gradle/fabric-properties-generate.gradle')
 
@@ -91,7 +92,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.9.5'
     testCompile 'com.google.truth:truth:0.28'
-    testCompile 'org.robolectric:robolectric:3.1'
+    testCompile 'org.robolectric:robolectric:3.3'
 
     androidTestCompile("com.android.support.test.espresso:espresso-core:2.2.2") {
         exclude module:'jsr305'

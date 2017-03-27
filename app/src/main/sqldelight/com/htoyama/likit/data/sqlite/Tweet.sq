@@ -1,0 +1,43 @@
+import java.util.List;
+import com.htoyama.likit.domain.tweet.media.Photo;
+import com.htoyama.likit.domain.tweet.media.Video;
+import com.htoyama.likit.domain.tweet.Url;
+
+CREATE TABLE tweet (
+  id INTEGER NOT NULL PRIMARY KEY,
+  user_id INTEGER NOT NULL,
+  text TEXT NOT NULL,
+  image_list TEXT AS List<Photo> NOT NULL,
+  url_list TEXT AS List<Url> NOT NULL,
+  video TEXT as Video,
+  created INTEGER NOT NULL,
+  FOREIGN KEY(user_id) REFERENCES user(id)
+);
+
+select_all:
+SELECT *
+FROM tweet
+INNER JOIN user ON tweet.user_id = user.id
+order by created desc
+;
+
+select_tweets:
+SELECT *
+FROM tweet
+INNER JOIN user ON tweet.user_id = user.id
+order by created desc
+limit ?
+offset ?
+;
+
+insert_tweet:
+INSERT OR REPLACE INTO tweet (
+    id,
+    user_id,
+    text,
+    image_list,
+    url_list,
+    video,
+    created
+) VALUES (?, ?, ?, ?, ?, ?, ?)
+;
