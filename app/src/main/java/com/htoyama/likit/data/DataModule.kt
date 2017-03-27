@@ -7,6 +7,7 @@ import com.htoyama.likit.data.liked.LikedRepositoryImpl
 import com.htoyama.likit.data.tag.TagRealmDao
 import com.htoyama.likit.data.tag.TagRepositoryImpl
 import com.htoyama.likit.data.liked.tweet.LikedTweetDao
+import com.htoyama.likit.data.sqlite.SqliteModule
 import com.htoyama.likit.data.user.UserRealmDao
 import com.htoyama.likit.data.user.UserRepositoryImpl
 import com.htoyama.likit.domain.liked.LikedRepository
@@ -17,7 +18,8 @@ import dagger.Provides
 
 @Module(includes = arrayOf(
     PrefModule::class,
-    NetModule::class
+    NetModule::class,
+    SqliteModule::class
 ))
 class DataModule {
 
