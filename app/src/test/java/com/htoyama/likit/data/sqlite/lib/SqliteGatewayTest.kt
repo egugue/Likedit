@@ -64,19 +64,19 @@ class SqliteGatewayTest {
     gateway.insertOrUpdateTweetList(expected3 + expected2 + expected1)
 
     // assert
-    val actual1 = gateway.selectTweetForTest(1, perPage)
+    val actual1 = gateway.selectTweet(1, perPage)
     assertThat(actual1).hasSize(perPage)
     assertThat(actual1).isEqualTo(expected1)
 
-    val actual2 = gateway.selectTweetForTest(2, perPage)
+    val actual2 = gateway.selectTweet(2, perPage)
     assertThat(actual2).hasSize(perPage)
     assertThat(actual2).isEqualTo(expected2)
 
-    val actual3 = gateway.selectTweetForTest(3, perPage)
+    val actual3 = gateway.selectTweet(3, perPage)
     assertThat(actual3).hasSize(2)
     assertThat(actual3).isEqualTo(expected3)
 
-    val actual4 = gateway.selectTweetForTest(4, perPage)
+    val actual4 = gateway.selectTweet(4, perPage)
     assertThat(actual4).isEmpty()
   }
 }

@@ -22,21 +22,16 @@ class SqliteGateway @Inject constructor(
   }
 
   /**
-   * Select some liked tweets as [List] by the given page.
-   *
+   * Select some liked tweets as [List].
    * The list is ordered by a time when the tweet was registered as like.
+   *
+   * @param page the number of page
+   * @param perPage the number of tweets to retrieve per a page
    */
-  fun selectTweet(page: Int): List<FullTweetEntity> {
+  fun selectTweet(page: Int, perPage: Int): List<FullTweetEntity> {
     Contract.require(page > 0, "page > 0 but it was $page")
+    Contract.require(perPage in 1..200, "0 < perpage < 201 but it was $perPage")
 
-    return h.readableDatabase.use {
-      val limit = 20L
-      val offset = (page - 1) * limit
-      SqliteScripts.selectTweets(limit, offset, it)
-    }
-  }
-
-  @VisibleForTesting internal fun selectTweetForTest(page: Int, perPage: Int): List<FullTweetEntity> {
     return h.readableDatabase.use {
       val limit = perPage.toLong()
       val offset = (page - 1) * limit
