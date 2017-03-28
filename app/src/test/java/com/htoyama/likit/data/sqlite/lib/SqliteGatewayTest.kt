@@ -54,23 +54,27 @@ class SqliteGatewayTest {
   }
 
   @Test fun shouldSelectByPage() {
-    //setUp
+    // setUp
     val perPage = 3
-    val expected1 = (8L..6L).map { fullTweetEntity(id = it, created = it) }
-    val expected2 = (5L..3L).map { fullTweetEntity(id = it, created = it) }
-    val expected3 = (2L..1L).map { fullTweetEntity(id = it, created = it) }
+    val expected1 = (8L downTo 6L).map { fullTweetEntity(id = it, created = it) }
+    val expected2 = (5L downTo 3L).map { fullTweetEntity(id = it, created = it) }
+    val expected3 = (2L downTo 1L).map { fullTweetEntity(id = it, created = it) }
 
-    gateway.insertOrUpdateTweetList(expected1 + expected2 + expected3)
+    // use reverse list to test whether select in descending order of created property
+    gateway.insertOrUpdateTweetList(expected3 + expected2 + expected1)
 
     // assert
     val actual1 = gateway.selectTweetForTest(1, perPage)
-    assertThat(actual1).containsExactlyElementsIn(expected1)
+    assertThat(actual1).hasSize(perPage)
+    assertThat(actual1).isEqualTo(expected1)
 
     val actual2 = gateway.selectTweetForTest(2, perPage)
-    assertThat(actual2).containsExactlyElementsIn(expected2)
+    assertThat(actual2).hasSize(perPage)
+    assertThat(actual2).isEqualTo(expected2)
 
     val actual3 = gateway.selectTweetForTest(3, perPage)
-    assertThat(actual3).containsExactlyElementsIn(expected3)
+    assertThat(actual3).hasSize(2)
+    assertThat(actual3).isEqualTo(expected3)
 
     val actual4 = gateway.selectTweetForTest(4, perPage)
     assertThat(actual4).isEmpty()
