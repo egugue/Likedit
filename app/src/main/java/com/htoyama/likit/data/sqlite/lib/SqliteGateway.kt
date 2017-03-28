@@ -29,8 +29,8 @@ class SqliteGateway @Inject constructor(
    * @param perPage the number of tweets to retrieve per a page
    */
   fun selectTweet(page: Int, perPage: Int): List<FullTweetEntity> {
-    Contract.require(page > 0, "page > 0 but it was $page")
-    Contract.require(perPage in 1..200, "0 < perpage < 201 but it was $perPage")
+    Contract.require(page > 0, "0 < page required but it was $page")
+    Contract.require(perPage in 1..200, "0 < perPage < 201 required but it was $perPage")
 
     return h.readableDatabase.use {
       val limit = perPage.toLong()

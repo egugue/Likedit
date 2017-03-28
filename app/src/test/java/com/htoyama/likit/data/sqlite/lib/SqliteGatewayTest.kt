@@ -3,6 +3,7 @@ package com.htoyama.likit.data.sqlite.lib
 import com.google.common.truth.Truth.assertThat
 import com.htoyama.likit.PhotoBuilder
 import com.htoyama.likit.data.sqlite.entity.fullTweetEntity
+import junit.framework.Assert.fail
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -78,5 +79,75 @@ class SqliteGatewayTest {
 
     val actual4 = gateway.selectTweet(4, perPage)
     assertThat(actual4).isEmpty()
+  }
+
+  @Suppress("JoinDeclarationAndAssignment")
+  @Test fun selectTweet_perPage() {
+    var perPage: Int
+
+    perPage = 0
+    try {
+      gateway.selectTweet(1, perPage)
+      fail()
+    } catch (e: IllegalArgumentException) {
+      assertThat(e).hasMessage("0 < perPage < 201 required but it was 0")
+    }
+
+    perPage = 1
+    gateway.selectTweet(1, perPage)
+
+    perPage = 200
+    gateway.selectTweet(1, perPage)
+
+    perPage = 201
+    try {
+      gateway.selectTweet(1, perPage)
+      fail()
+    } catch (e: IllegalArgumentException) {
+      assertThat(e).hasMessage("0 < perPage < 201 required but it was 201")
+    }
+
+    perPage = Int.MIN_VALUE
+    try {
+      gateway.selectTweet(1, perPage)
+      fail()
+    } catch (e: IllegalArgumentException) {
+      assertThat(e).hasMessage("0 < perPage < 201 required but it was ${Int.MIN_VALUE}")
+    }
+
+    perPage = Int.MAX_VALUE
+    try {
+      gateway.selectTweet(1, perPage)
+      fail()
+    } catch (e: IllegalArgumentException) {
+      assertThat(e).hasMessage("0 < perPage < 201 required but it was ${Int.MAX_VALUE}")
+    }
+  }
+
+  @Suppress("JoinDeclarationAndAssignment")
+  @Test fun selectTweet_page() {
+    var page: Int
+
+    page = 0
+    try {
+      gateway.selectTweet(page, 1)
+      fail()
+    } catch (e: IllegalArgumentException) {
+      assertThat(e).hasMessage("0 < page required but it was 0")
+    }
+
+    page = 1
+    gateway.selectTweet(page, 1)
+
+    page = Int.MIN_VALUE
+    try {
+      gateway.selectTweet(page, 1)
+      fail()
+    } catch (e: IllegalArgumentException) {
+      assertThat(e).hasMessage("0 < page required but it was ${Int.MIN_VALUE}")
+    }
+
+    page = Int.MAX_VALUE
+    gateway.selectTweet(page, 1)
   }
 }
