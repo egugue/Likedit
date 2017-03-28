@@ -61,7 +61,7 @@ class SqliteGatewayTest {
     val expected2 = (5L downTo 3L).map { fullTweetEntity(id = it, created = it) }
     val expected3 = (2L downTo 1L).map { fullTweetEntity(id = it, created = it) }
 
-    // use reverse list to test whether select in descending order of created property
+    // use a reverse list to test whether select in descending order of created property
     gateway.insertOrUpdateTweetList(expected3 + expected2 + expected1)
 
     // assert
