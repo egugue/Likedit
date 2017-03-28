@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'io.fabric'
 apply plugin: 'realm-android'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'com.squareup.sqldelight'
 apply plugin: 'kotlin-kapt'
 apply from: rootProject.file('gradle/fabric-properties-generate.gradle')
 
@@ -10,7 +11,6 @@ repositories {
     mavenCentral()
     maven { url 'https://maven.fabric.io/public' }
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-    maven { url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo' }
 }
 
 android {
@@ -82,16 +82,18 @@ dependencies {
 
     compile 'com.hannesdorfmann:adapterdelegates2:2.0.1'
 
+    // If it is missing, we can see error on CI https://github.com/square/sqldelight/issues/563
+    compile 'com.squareup.sqldelight:runtime:0.6.1'
+
     kapt 'com.android.databinding:compiler:2.3.0'
 
     debugCompile 'com.facebook.stetho:stetho:1.3.1'
     debugCompile 'com.facebook.stetho:stetho-okhttp3:1.3.1'
-    debugCompile 'com.uphyca:stetho_realm:0.9.0'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.9.5'
     testCompile 'com.google.truth:truth:0.28'
-    testCompile 'org.robolectric:robolectric:3.1'
+    testCompile 'org.robolectric:robolectric:3.3'
 
     androidTestCompile("com.android.support.test.espresso:espresso-core:2.2.2") {
         exclude module:'jsr305'
