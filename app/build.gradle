@@ -85,6 +85,7 @@ dependencies {
 
     compile 'com.hannesdorfmann:adapterdelegates2:2.0.1'
 
+    // If it is missing, we can see error on CI https://github.com/square/sqldelight/issues/563
     compile 'com.squareup.sqldelight:runtime:0.6.1'
 
     kapt 'com.android.databinding:compiler:2.3.0'
