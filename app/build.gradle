@@ -56,7 +56,9 @@ dependencies {
     compile "com.android.support:appcompat-v7:$supportLibVer"
     compile "com.android.support:recyclerview-v7:$supportLibVer"
     compile "com.android.support:design:$supportLibVer"
-    compile 'com.android.support.constraint:constraint-layout:1.0.1'
+
+    // https://github.com/square/sqldelight/issues/563
+    // compile 'com.android.support.constraint:constraint-layout:1.0.1'
 
     def retrofitVer = '2.2.0'
     compile "com.squareup.retrofit2:retrofit:$retrofitVer"
