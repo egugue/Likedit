@@ -11,4 +11,8 @@ data class TagEntity(
   override fun id(): Long = id
   override fun name(): String = name
   override fun created(): Long = created
+
+  companion object {
+    val FACTORY = TagModel.Factory(TagModel.Creator(::TagEntity))
+  }
 }

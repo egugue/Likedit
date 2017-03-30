@@ -4,3 +4,23 @@ CREATE TABLE tag (
   name TEXT NOT NULL,
   created INTEGER NOT NULL
 );
+
+select_by_id:
+SELECT *
+FROM tag
+WHERE id = ?
+;
+
+search_by_name:
+SELECT *
+FROM tag
+WHERE name LIKE '%' || ? || '%' escape '$' COLLATE NOCASE
+ORDER BY name ASC
+;
+
+insert_:
+INSERT INTO tag (
+    name,
+    created
+) VALUES (?, ?)
+;

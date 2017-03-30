@@ -3,6 +3,7 @@ package com.htoyama.likit.data.sqlite.lib
 import com.google.common.truth.Truth.assertThat
 import com.htoyama.likit.PhotoBuilder
 import com.htoyama.likit.data.sqlite.entity.fullTweetEntity
+import com.htoyama.likit.data.sqlite.entity.tagEntity
 import junit.framework.Assert.fail
 import org.junit.Before
 import org.junit.Test
@@ -149,5 +150,54 @@ class SqliteGatewayTest {
 
     page = Int.MAX_VALUE
     gateway.selectTweet(page, 1)
+  }
+
+  @Test fun selectTagById_whenTagInserted() {
+    val tagId = gateway.insertTag("foo", 1)
+    assertThat(tagId).isNotEqualTo(-1)
+
+    val actual = gateway.selectTagById(tagId)
+    assertThat(actual).isEqualTo(tagEntity(tagId, "foo", 1))
+  }
+
+  @Test fun selectTagById_whenNoTagInserted() {
+    val actual = gateway.selectTagById(1)
+    assertThat(actual).isNull()
+  }
+
+  @Test fun searchTagByName() {
+    gateway.insertTag("bb%_bbbbaacc", 1) // hit
+    gateway.insertTag("baaccb%_b", 1) // hit
+    gateway.insertTag("aaabbbccc", 1)
+    gateway.insertTag("aaaBBBccc", 1)
+    gateway.insertTag("aaaB%_Bccc", 1) // hit
+    gateway.insertTag("abc", 1)
+    gateway.insertTag("aabbc", 1)
+    gateway.insertTag("あああいいいううう", 1)
+
+    val actual = gateway.searchTagByName("B%_B")
+
+    assertThat(actual).isEqualTo(listOf(
+        tagEntity(5, "aaaB%_Bccc", 1),
+        tagEntity(2, "baaccb%_b", 1),
+        tagEntity(1, "bb%_bbbbaacc", 1)
+    ))
+  }
+
+  @Test fun searchTagNameName_multiByte() {
+    gateway.insertTag("あああいいいううう", 1)
+    gateway.insertTag("いいいいいいあああいいいううう", 1)
+    gateway.insertTag("いいあああ", 1)
+    gateway.insertTag("いいああ", 1)
+    gateway.insertTag("ああいいうう", 1)
+    gateway.insertTag("あｓｆｄｓｆｄｆｓ", 1)
+
+    val actual = gateway.searchTagByName("あああ")
+
+    assertThat(actual).isEqualTo(listOf(
+        tagEntity(1, "あああいいいううう", 1),
+        tagEntity(3, "いいあああ", 1),
+        tagEntity(2, "いいいいいいあああいいいううう", 1)
+    ))
   }
 }

@@ -1,8 +1,8 @@
 package com.htoyama.likit.data.sqlite.lib
 
-import android.support.annotation.VisibleForTesting
 import com.htoyama.likit.common.Contract
 import com.htoyama.likit.data.sqlite.entity.FullTweetEntity
+import com.htoyama.likit.data.sqlite.entity.TagEntity
 import javax.inject.Inject
 
 /**
@@ -59,6 +59,39 @@ class SqliteGateway @Inject constructor(
           SqliteScripts.insertOrUpdateIntoUser(db, ft.user)
         }
       }
+    }
+  }
+
+  /**
+   * Insert the given name and created as a Tag.
+   *
+   * @return the row ID of the last row inserted, if this insert is successful. -i otherwise.
+   */
+  fun insertTag(name: String, created: Long): Long =
+      h.writableDatabase.use {
+        it.transaction {
+          SqliteScripts.insertTag(it, name, created)
+        }
+      }
+
+  /**
+   * Select the tag which has the given id.
+   * If there is no such tag, return null.
+   */
+  fun selectTagById(id: Long): TagEntity? {
+    return h.readableDatabase.use {
+      SqliteScripts.selectTagById(it, id)
+    }
+  }
+
+  /**
+   * Search tags which name contains the given name.
+   */
+  fun searchTagByName(name: String): List<TagEntity> {
+    val escaped = name.replace("%", "$%")
+        .replace("_", "\$_")
+    return h.readableDatabase.use {
+      SqliteScripts.searchTagByName(it, escaped)
     }
   }
 }

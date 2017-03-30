@@ -1,10 +1,12 @@
 package com.htoyama.likit.data.sqlite.lib
 
 import android.database.sqlite.SQLiteDatabase
+import com.htoyama.likit.data.sqlite.TagModel
 import com.htoyama.likit.data.sqlite.TweetModel
 import com.htoyama.likit.data.sqlite.UserModel
 import com.htoyama.likit.data.sqlite.entity.TweetEntity
 import com.htoyama.likit.data.sqlite.entity.FullTweetEntity
+import com.htoyama.likit.data.sqlite.entity.TagEntity
 import com.htoyama.likit.data.sqlite.entity.UserEntity
 
 /**
@@ -45,5 +47,23 @@ internal object SqliteScripts {
       stmt.bind(id, name, screenName, avatarUrl)
     }
     stmt.program.executeInsert()
+  }
+
+  fun insertTag(writable: SQLiteDatabase, name: String, created: Long): Long =
+      TagModel.Insert_(writable).run {
+        bind(name, created)
+        program.executeInsert()
+      }
+
+  fun selectTagById(readable: SQLiteDatabase, id: Long): TagEntity? {
+    val stmt = TagEntity.FACTORY.select_by_id(id)
+    return readable.rawQuery(stmt.statement, stmt.args)
+        .mapToOne { TagEntity.FACTORY.select_by_idMapper().map(it) }
+  }
+
+  fun searchTagByName(readable: SQLiteDatabase, name: String): List<TagEntity> {
+    val stmt = TagEntity.FACTORY.search_by_name(name)
+    return readable.rawQuery(stmt.statement, stmt.args)
+        .mapToList { TagEntity.FACTORY.search_by_nameMapper().map(it) }
   }
 }
