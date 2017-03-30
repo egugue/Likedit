@@ -24,3 +24,9 @@ INSERT INTO tag (
     created
 ) VALUES (?, ?)
 ;
+
+update_name:
+UPDATE tag
+SET name = ?
+WHERE id = ?
+;

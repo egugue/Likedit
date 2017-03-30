@@ -55,6 +55,12 @@ internal object SqliteScripts {
         program.executeInsert()
       }
 
+  fun updateTagNameById(writable: SQLiteDatabase, name: String, id: Long) =
+      TagModel.Update_name(writable).run {
+        bind(name, id)
+        program.executeUpdateDelete()
+      }
+
   fun selectTagById(readable: SQLiteDatabase, id: Long): TagEntity? {
     val stmt = TagEntity.FACTORY.select_by_id(id)
     return readable.rawQuery(stmt.statement, stmt.args)

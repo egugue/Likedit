@@ -3,6 +3,7 @@ package com.htoyama.likit.data.sqlite.lib
 import com.htoyama.likit.common.Contract
 import com.htoyama.likit.data.sqlite.entity.FullTweetEntity
 import com.htoyama.likit.data.sqlite.entity.TagEntity
+import java.lang.IllegalArgumentException
 import javax.inject.Inject
 
 /**
@@ -75,7 +76,24 @@ class SqliteGateway @Inject constructor(
       }
 
   /**
-   * Select the tag which has the given id.
+   * Update the name of the tag with the given id.
+   *
+   * @throws IllegalStateException if the tag with the id has not inserted.
+   */
+  fun updateTagNameById(id: Long, name: String)  {
+    h.writableDatabase.use {
+      it.transaction {
+        if (SqliteScripts.selectTagById(it, id) == null) {
+          throw IllegalArgumentException("tried to update the name of the tag with id($id). but it has not inserted.")
+        }
+
+        SqliteScripts.updateTagNameById(it, name, id)
+      }
+    }
+  }
+
+  /**
+   * Select the tag with the given id.
    * If there is no such tag, return null.
    */
   fun selectTagById(id: Long): TagEntity? {

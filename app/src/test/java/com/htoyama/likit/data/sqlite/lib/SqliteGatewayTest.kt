@@ -200,4 +200,23 @@ class SqliteGatewayTest {
         tagEntity(2, "いいいいいいあああいいいううう", 1)
     ))
   }
+
+  @Test fun updateTagName() {
+    val id = gateway.insertTag("before update", 1)
+    gateway.updateTagNameById(id, "after update")
+
+    val actual = gateway.selectTagById(id)
+
+    assertThat(actual).isEqualTo(tagEntity(id, "after update", 1))
+  }
+
+  @Test fun updateTagName_whenInvalidIdSpecified() {
+    try {
+      gateway.updateTagNameById(1, "the tag with the id has not yet inserted")
+      fail()
+    } catch (e: IllegalArgumentException) {
+      assertThat(e).hasMessage(
+          "tried to update the name of the tag with id(1). but it has not inserted.")
+    }
+  }
 }
