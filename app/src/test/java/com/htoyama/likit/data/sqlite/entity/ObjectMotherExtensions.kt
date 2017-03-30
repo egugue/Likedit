@@ -15,11 +15,19 @@ fun fullTweetEntity(
     urlList: List<Url> = emptyList(),
     video: Video? = null,
     created: Long = 1L
-)= FullTweetEntity(
+) = FullTweetEntity(
     TweetEntity(
         id, userId, text, imageList, urlList, video, created
     ),
     UserEntity(
         userId, userName, userScreenName, userAvatarUrl
     )
+)
+
+fun tagEntity(
+    id: Long,
+    name: String,
+    created: Long
+) = TagEntity(
+    id, name, created
 )
