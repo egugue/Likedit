@@ -91,7 +91,7 @@ class SqliteGatewayTest {
       gateway.selectTweet(1, pp)
       fail()
     } catch (e: IllegalArgumentException) {
-      assertThat(e).hasMessage("0 < pp < 201 required but it was 0")
+      assertThat(e).hasMessage("0 < perPage < 201 required but it was 0")
     }
 
     pp = 1
@@ -105,7 +105,7 @@ class SqliteGatewayTest {
       gateway.selectTweet(1, pp)
       fail()
     } catch (e: IllegalArgumentException) {
-      assertThat(e).hasMessage("0 < pp < 201 required but it was 201")
+      assertThat(e).hasMessage("0 < perPage < 201 required but it was 201")
     }
 
     pp = Int.MIN_VALUE
@@ -113,7 +113,7 @@ class SqliteGatewayTest {
       gateway.selectTweet(1, pp)
       fail()
     } catch (e: IllegalArgumentException) {
-      assertThat(e).hasMessage("0 < pp < 201 required but it was ${Int.MIN_VALUE}")
+      assertThat(e).hasMessage("0 < perPage < 201 required but it was ${Int.MIN_VALUE}")
     }
 
     pp = Int.MAX_VALUE
@@ -121,7 +121,7 @@ class SqliteGatewayTest {
       gateway.selectTweet(1, pp)
       fail()
     } catch (e: IllegalArgumentException) {
-      assertThat(e).hasMessage("0 < pp < 201 required but it was ${Int.MAX_VALUE}")
+      assertThat(e).hasMessage("0 < perPage < 201 required but it was ${Int.MAX_VALUE}")
     }
   }
 
@@ -134,7 +134,7 @@ class SqliteGatewayTest {
       gateway.selectTweet(p, 1)
       fail()
     } catch (e: IllegalArgumentException) {
-      assertThat(e).hasMessage("0 < p required but it was 0")
+      assertThat(e).hasMessage("0 < page required but it was 0")
     }
 
     p = 1
@@ -145,7 +145,7 @@ class SqliteGatewayTest {
       gateway.selectTweet(p, 1)
       fail()
     } catch (e: IllegalArgumentException) {
-      assertThat(e).hasMessage("0 < p required but it was ${Int.MIN_VALUE}")
+      assertThat(e).hasMessage("0 < page required but it was ${Int.MIN_VALUE}")
     }
 
     p = Int.MAX_VALUE
