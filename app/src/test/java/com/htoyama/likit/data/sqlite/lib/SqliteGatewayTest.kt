@@ -84,72 +84,72 @@ class SqliteGatewayTest {
 
   @Suppress("JoinDeclarationAndAssignment")
   @Test fun selectTweet_perPage() {
-    var perPage: Int
+    var pp: Int // means per page
 
-    perPage = 0
+    pp = 0
     try {
-      gateway.selectTweet(1, perPage)
+      gateway.selectTweet(1, pp)
       fail()
     } catch (e: IllegalArgumentException) {
-      assertThat(e).hasMessage("0 < perPage < 201 required but it was 0")
+      assertThat(e).hasMessage("0 < pp < 201 required but it was 0")
     }
 
-    perPage = 1
-    gateway.selectTweet(1, perPage)
+    pp = 1
+    gateway.selectTweet(1, pp)
 
-    perPage = 200
-    gateway.selectTweet(1, perPage)
+    pp = 200
+    gateway.selectTweet(1, pp)
 
-    perPage = 201
+    pp = 201
     try {
-      gateway.selectTweet(1, perPage)
+      gateway.selectTweet(1, pp)
       fail()
     } catch (e: IllegalArgumentException) {
-      assertThat(e).hasMessage("0 < perPage < 201 required but it was 201")
+      assertThat(e).hasMessage("0 < pp < 201 required but it was 201")
     }
 
-    perPage = Int.MIN_VALUE
+    pp = Int.MIN_VALUE
     try {
-      gateway.selectTweet(1, perPage)
+      gateway.selectTweet(1, pp)
       fail()
     } catch (e: IllegalArgumentException) {
-      assertThat(e).hasMessage("0 < perPage < 201 required but it was ${Int.MIN_VALUE}")
+      assertThat(e).hasMessage("0 < pp < 201 required but it was ${Int.MIN_VALUE}")
     }
 
-    perPage = Int.MAX_VALUE
+    pp = Int.MAX_VALUE
     try {
-      gateway.selectTweet(1, perPage)
+      gateway.selectTweet(1, pp)
       fail()
     } catch (e: IllegalArgumentException) {
-      assertThat(e).hasMessage("0 < perPage < 201 required but it was ${Int.MAX_VALUE}")
+      assertThat(e).hasMessage("0 < pp < 201 required but it was ${Int.MAX_VALUE}")
     }
   }
 
   @Suppress("JoinDeclarationAndAssignment")
   @Test fun selectTweet_page() {
-    var page: Int
+    var p: Int // means page
 
-    page = 0
+    p = 0
     try {
-      gateway.selectTweet(page, 1)
+      gateway.selectTweet(p, 1)
       fail()
     } catch (e: IllegalArgumentException) {
-      assertThat(e).hasMessage("0 < page required but it was 0")
+      assertThat(e).hasMessage("0 < p required but it was 0")
     }
 
-    page = 1
-    gateway.selectTweet(page, 1)
+    p = 1
+    gateway.selectTweet(p, 1)
 
-    page = Int.MIN_VALUE
+    p = Int.MIN_VALUE
     try {
-      gateway.selectTweet(page, 1)
+      gateway.selectTweet(p, 1)
       fail()
     } catch (e: IllegalArgumentException) {
-      assertThat(e).hasMessage("0 < page required but it was ${Int.MIN_VALUE}")
+      assertThat(e).hasMessage("0 < p required but it was ${Int.MIN_VALUE}")
     }
 
-    page = Int.MAX_VALUE
-    gateway.selectTweet(page, 1)
+    p = Int.MAX_VALUE
+    gateway.selectTweet(p, 1)
   }
 
   @Test fun selectTagById_whenTagInserted() {
