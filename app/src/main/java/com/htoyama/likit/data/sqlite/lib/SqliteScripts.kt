@@ -61,6 +61,12 @@ internal object SqliteScripts {
         program.executeUpdateDelete()
       }
 
+  fun deleteTagById(writable: SQLiteDatabase, id: Long) =
+      TagModel.Delete_by_id(writable).run {
+        bind(id)
+        program.executeUpdateDelete()
+      }
+
   fun selectTagById(readable: SQLiteDatabase, id: Long): TagEntity? {
     val stmt = TagEntity.FACTORY.select_by_id(id)
     return readable.rawQuery(stmt.statement, stmt.args)

@@ -219,4 +219,25 @@ class SqliteGatewayTest {
           "tried to update the name of the tag with id(1). but it has not inserted.")
     }
   }
+
+  @Test fun deleteTagById() {
+    val id = gateway.insertTag("any", 1)
+
+    val beforeDelete = gateway.selectTagById(id)
+    assertThat(beforeDelete).isNotNull()
+
+    gateway.deleteTagById(id)
+
+    val afterDelete = gateway.selectTagById(id)
+    assertThat(afterDelete).isNull()
+  }
+
+  @Test fun deleteTagById_whenInvaildIdSpecified() {
+    try {
+      gateway.deleteTagById(1)
+      fail()
+    } catch (e: IllegalStateException) {
+      assertThat(e).hasMessage("tried to delete the tag with id(1). but there is no such tag.")
+    }
+  }
 }

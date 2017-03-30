@@ -30,3 +30,8 @@ UPDATE tag
 SET name = ?
 WHERE id = ?
 ;
+
+delete_by_id:
+DELETE FROM tag
+WHERE id = ?
+;

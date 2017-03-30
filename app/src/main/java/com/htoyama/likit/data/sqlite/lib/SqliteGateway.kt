@@ -3,7 +3,6 @@ package com.htoyama.likit.data.sqlite.lib
 import com.htoyama.likit.common.Contract
 import com.htoyama.likit.data.sqlite.entity.FullTweetEntity
 import com.htoyama.likit.data.sqlite.entity.TagEntity
-import java.lang.IllegalArgumentException
 import javax.inject.Inject
 
 /**
@@ -88,6 +87,22 @@ class SqliteGateway @Inject constructor(
         }
 
         SqliteScripts.updateTagNameById(it, name, id)
+      }
+    }
+  }
+
+  /**
+   * Delete the tag with the given id.
+   *
+   * @throws IllegalStateException if there is no such tag
+   */
+  fun deleteTagById(id: Long) {
+    h.writableDatabase.use {
+      it.transaction {
+        if (SqliteScripts.selectTagById(it, id) == null) {
+          throw IllegalStateException("tried to delete the tag with id($id). but there is no such tag.")
+        }
+        SqliteScripts.deleteTagById(it, id)
       }
     }
   }
