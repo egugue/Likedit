@@ -63,6 +63,27 @@ class SqliteGateway @Inject constructor(
   }
 
   /**
+   * Select the tag with the given id.
+   * If there is no such tag, return null.
+   */
+  fun selectTagById(id: Long): TagEntity? {
+    return h.readableDatabase.use {
+      SqliteScripts.selectTagById(it, id)
+    }
+  }
+
+  /**
+   * Search tags which name contains the given name.
+   */
+  fun searchTagByName(name: String): List<TagEntity> {
+    val escaped = name.replace("%", "$%")
+        .replace("_", "\$_")
+    return h.readableDatabase.use {
+      SqliteScripts.searchTagByName(it, escaped)
+    }
+  }
+
+  /**
    * Insert the given name and created as a Tag.
    *
    * @return the row ID of the last row inserted, if this insert is successful. -i otherwise.
@@ -104,27 +125,6 @@ class SqliteGateway @Inject constructor(
         }
         SqliteScripts.deleteTagById(it, id)
       }
-    }
-  }
-
-  /**
-   * Select the tag with the given id.
-   * If there is no such tag, return null.
-   */
-  fun selectTagById(id: Long): TagEntity? {
-    return h.readableDatabase.use {
-      SqliteScripts.selectTagById(it, id)
-    }
-  }
-
-  /**
-   * Search tags which name contains the given name.
-   */
-  fun searchTagByName(name: String): List<TagEntity> {
-    val escaped = name.replace("%", "$%")
-        .replace("_", "\$_")
-    return h.readableDatabase.use {
-      SqliteScripts.searchTagByName(it, escaped)
     }
   }
 }
