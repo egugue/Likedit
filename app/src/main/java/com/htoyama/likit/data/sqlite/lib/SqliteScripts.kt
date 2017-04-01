@@ -3,11 +3,9 @@ package com.htoyama.likit.data.sqlite.lib
 import android.database.sqlite.SQLiteDatabase
 import com.htoyama.likit.data.sqlite.TagModel
 import com.htoyama.likit.data.sqlite.TweetModel
+import com.htoyama.likit.data.sqlite.TweetTagRelationModel
 import com.htoyama.likit.data.sqlite.UserModel
-import com.htoyama.likit.data.sqlite.entity.TweetEntity
-import com.htoyama.likit.data.sqlite.entity.FullTweetEntity
-import com.htoyama.likit.data.sqlite.entity.TagEntity
-import com.htoyama.likit.data.sqlite.entity.UserEntity
+import com.htoyama.likit.data.sqlite.entity.*
 
 /**
  * A collection which has a lot of simple SQLite scripts.
@@ -77,5 +75,25 @@ internal object SqliteScripts {
     val stmt = TagEntity.FACTORY.search_by_name(name)
     return readable.rawQuery(stmt.statement, stmt.args)
         .mapToList { TagEntity.FACTORY.search_by_nameMapper().map(it) }
+  }
+
+  fun insertTweetTagRelation(writable: SQLiteDatabase, tweetId: Long, tagId: Long) {
+    TweetTagRelationModel.Insert_or_ignore(writable).run {
+      bind(tweetId, tagId)
+      program.executeInsert()
+    }
+  }
+
+  fun deleteTweetTagRelation(writable: SQLiteDatabase, tweetId: Long, tagId: Long) {
+    TweetTagRelationModel.Delete_(writable).run {
+      bind(tweetId, tagId)
+      program.executeUpdateDelete()
+    }
+  }
+
+  fun selectAllTweetTagRelations(readable: SQLiteDatabase): List<TweetTagRelation> {
+    val stmt = TweetTagRelation.FACTORY.select_all()
+    return readable.rawQuery(stmt.statement, stmt.args)
+        .mapToList { TweetTagRelation.FACTORY.select_allMapper().map(it) }
   }
 }
