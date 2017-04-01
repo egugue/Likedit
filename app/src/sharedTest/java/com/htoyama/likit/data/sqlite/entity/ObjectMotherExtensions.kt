@@ -31,3 +31,8 @@ fun tagEntity(
 ) = TagEntity(
     id, name, created
 )
+
+fun tweetTagRelation(
+    tweetId: Long,
+    tagId: Long
+) = TweetTagRelation(tweetId, tagId)
