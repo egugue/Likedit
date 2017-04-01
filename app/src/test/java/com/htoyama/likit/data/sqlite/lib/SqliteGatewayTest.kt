@@ -358,6 +358,10 @@ class SqliteGatewayTest {
         tweetTagRelation(tweetId = 2, tagId = deletingId))
   }
 
+  /**
+   * Because of defining "ON DELETE CASCADE" on CREATE statement,
+   * it should delete relations when a tweet is deleted.
+   */
   @Test fun shouldDeleteRelations_whenTweetIsDeleted() {
     // given
     val deletingId = 1L
