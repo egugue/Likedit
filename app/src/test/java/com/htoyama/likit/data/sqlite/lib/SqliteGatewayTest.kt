@@ -335,7 +335,7 @@ class SqliteGatewayTest {
    * Because of defining "ON DELETE CASCADE" on CREATE statement,
    * it should delete relations when a tag is deleted.
    */
-  @Test fun shouldDeleteRelations_whenTagIsDeleted() {
+  @Test fun shouldDeleteTweetTagRelations_whenTagIsDeleted() {
     // given
     gateway.insertOrUpdateTweetList(listOf(
         fullTweetEntity(id = 1),
@@ -362,7 +362,7 @@ class SqliteGatewayTest {
    * Because of defining "ON DELETE CASCADE" on CREATE statement,
    * it should delete relations when a tweet is deleted.
    */
-  @Test fun shouldDeleteRelations_whenTweetIsDeleted() {
+  @Test fun shouldDeleteTweetTagRelations_whenTweetIsDeleted() {
     // given
     val deletingId = 1L
     gateway.insertOrUpdateTweetList(listOf(
