@@ -6,9 +6,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.htoyama.likit.data.sqlite.TagModel;
 import com.htoyama.likit.data.sqlite.TweetModel;
+import com.htoyama.likit.data.sqlite.TweetTagRelationModel;
 import com.htoyama.likit.data.sqlite.UserModel;
-import com.htoyama.likit.data.sqlite.entity.TweetEntity;
-import com.htoyama.likit.data.sqlite.entity.UserEntity;
 
 public class SqliteOpenHelper extends SQLiteOpenHelper {
 
@@ -20,6 +19,12 @@ public class SqliteOpenHelper extends SQLiteOpenHelper {
     db.execSQL(TweetModel.CREATE_TABLE);
     db.execSQL(UserModel.CREATE_TABLE);
     db.execSQL(TagModel.CREATE_TABLE);
+    db.execSQL(TweetTagRelationModel.CREATE_TABLE);
+  }
+
+  @Override public void onConfigure(SQLiteDatabase db) {
+    super.onConfigure(db);
+    db.setForeignKeyConstraintsEnabled(true);
   }
 
   @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

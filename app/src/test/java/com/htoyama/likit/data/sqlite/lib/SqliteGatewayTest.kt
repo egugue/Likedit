@@ -1,10 +1,13 @@
 package com.htoyama.likit.data.sqlite.lib
 
+import android.database.sqlite.SQLiteConstraintException
 import com.google.common.truth.Truth.assertThat
 import com.htoyama.likit.PhotoBuilder
 import com.htoyama.likit.data.sqlite.entity.fullTweetEntity
 import com.htoyama.likit.data.sqlite.entity.tagEntity
+import com.htoyama.likit.data.sqlite.entity.tweetTagRelation
 import junit.framework.Assert.fail
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -14,11 +17,16 @@ import org.robolectric.RuntimeEnvironment
 @RunWith(RobolectricTestRunner::class)
 class SqliteGatewayTest {
   lateinit var gateway: SqliteGateway
+  lateinit var helper: SqliteOpenHelper
 
   @Before fun setUp() {
-    gateway = SqliteGateway(
-        SqliteOpenHelper(RuntimeEnvironment.application)
-    )
+    helper = SqliteOpenHelper(RuntimeEnvironment.application)
+    gateway = SqliteGateway(helper)
+  }
+
+  @After fun tearDown() {
+    helper.close()
+    RuntimeEnvironment.application.deleteDatabase("likedit")
   }
 
   @Test fun shouldInsertTweet() {
@@ -53,6 +61,15 @@ class SqliteGatewayTest {
     val actual = gateway.selectAllTweets()
 
     assertThat(actual).containsExactlyElementsIn(list)
+  }
+
+  @Test fun shouldDeleteTweet() {
+    val id = 1L
+    gateway.insertOrUpdateTweet(fullTweetEntity(id))
+    gateway.deleteTweetById(id)
+
+    val tweets = gateway.selectAllTweets()
+    assertThat(tweets).isEmpty()
   }
 
   @Test fun shouldSelectByPage() {
@@ -239,5 +256,133 @@ class SqliteGatewayTest {
     } catch (e: IllegalStateException) {
       assertThat(e).hasMessage("tried to delete the tag with id(1). but there is no such tag.")
     }
+  }
+
+  @Test fun shouldInsertTweetTagRelations() {
+    // given
+    gateway.insertOrUpdateTweetList(listOf(
+        fullTweetEntity(id = 1),
+        fullTweetEntity(id = 2)))
+
+    val tagId = gateway.insertTag("id-1", 1)
+
+    // when
+    gateway.insertTweetTagRelation(listOf(1, 2), tagId)
+
+    // then
+    val relations = gateway.selectAllTweetTagRelations()
+    assertThat(relations).isEqualTo(listOf(
+        tweetTagRelation(1, tagId),
+        tweetTagRelation(2, tagId)
+    ))
+  }
+
+  @Test fun shouldNotInsertTweetTagRelations_whenNoTagInserted() {
+    // given
+    gateway.insertOrUpdateTweetList(listOf(
+        fullTweetEntity(id = 1),
+        fullTweetEntity(id = 2)))
+
+    // not insert
+    // val tagId = gateway.insertTag("id-1", 1)
+    val invalidTagId = 1L
+
+    // when
+    try {
+      gateway.insertTweetTagRelation(listOf(1, 2), invalidTagId)
+      fail()
+    } catch (e: SQLiteConstraintException) {
+    }
+  }
+
+  @Test fun shouldNotInsertTweetTagRelations_whenNoTweetInserted() {
+    // given
+    /* not insert
+    gateway.insertOrUpdateTweetList(listOf(
+        fullTweetEntity(id = 1),
+        fullTweetEntity(id = 2)))
+        */
+
+    val tagId = gateway.insertTag("id-1", 1)
+
+    // when
+    try {
+      gateway.insertTweetTagRelation(listOf(1), tagId)
+      fail()
+    } catch (e: SQLiteConstraintException) {
+    }
+  }
+
+  @Test fun shouldDeleteTweetTagRelations() {
+    // given
+    val deletingId = 1L
+    gateway.insertOrUpdateTweetList(listOf(
+        fullTweetEntity(id = deletingId),
+        fullTweetEntity(id = 2)))
+
+    val tagId = gateway.insertTag("id-1", 1)
+    gateway.insertTweetTagRelation(listOf(deletingId, 2), tagId)
+
+    // when
+    gateway.deleteTweetTagRelation(listOf(deletingId), tagId)
+
+    // then
+    val rels = gateway.selectAllTweetTagRelations()
+    assertThat(rels).doesNotContain(tweetTagRelation(deletingId, tagId))
+  }
+
+  /**
+   * Because of defining "ON DELETE CASCADE" on CREATE statement,
+   * it should delete relations when a tag is deleted.
+   */
+  @Test fun shouldDeleteTweetTagRelations_whenTagIsDeleted() {
+    // given
+    gateway.insertOrUpdateTweetList(listOf(
+        fullTweetEntity(id = 1),
+        fullTweetEntity(id = 2),
+        fullTweetEntity(id = 3))
+    )
+    val deletingId = gateway.insertTag("will delete", 1)
+    val tagId1 = gateway.insertTag("a tag 1", 1)
+
+    gateway.insertTweetTagRelation(listOf(1, 2), deletingId)
+    gateway.insertTweetTagRelation(listOf(1, 2), tagId1)
+
+    // when
+    gateway.deleteTagById(deletingId)
+    val rels = gateway.selectAllTweetTagRelations()
+
+    // then
+    assertThat(rels).containsNoneOf(
+        tweetTagRelation(tweetId = 1, tagId = deletingId),
+        tweetTagRelation(tweetId = 2, tagId = deletingId))
+  }
+
+  /**
+   * Because of defining "ON DELETE CASCADE" on CREATE statement,
+   * it should delete relations when a tweet is deleted.
+   */
+  @Test fun shouldDeleteTweetTagRelations_whenTweetIsDeleted() {
+    // given
+    val deletingId = 1L
+    gateway.insertOrUpdateTweetList(listOf(
+        fullTweetEntity(id = deletingId),
+        fullTweetEntity(id = 2),
+        fullTweetEntity(id = 3))
+    )
+    val tagId1 = gateway.insertTag("a tag 1", 1)
+    val tagId2 = gateway.insertTag("a tag 2", 1)
+
+    gateway.insertTweetTagRelation(listOf(deletingId, 2), tagId1)
+    gateway.insertTweetTagRelation(listOf(deletingId, 2), tagId2)
+
+    // when
+    gateway.deleteTweetById(deletingId)
+    val rels = gateway.selectAllTweetTagRelations()
+
+    // then
+    assertThat(rels).containsNoneOf(
+        tweetTagRelation(tweetId = deletingId, tagId = tagId1),
+        tweetTagRelation(tweetId = deletingId, tagId = tagId2))
   }
 }

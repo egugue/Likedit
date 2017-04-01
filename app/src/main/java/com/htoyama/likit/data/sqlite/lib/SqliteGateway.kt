@@ -3,6 +3,7 @@ package com.htoyama.likit.data.sqlite.lib
 import com.htoyama.likit.common.Contract
 import com.htoyama.likit.data.sqlite.entity.FullTweetEntity
 import com.htoyama.likit.data.sqlite.entity.TagEntity
+import com.htoyama.likit.data.sqlite.entity.TweetTagRelation
 import javax.inject.Inject
 
 /**
@@ -55,9 +56,20 @@ class SqliteGateway @Inject constructor(
     h.writableDatabase.use { db ->
       db.transaction {
         fullTweetList.forEach { ft ->
-          SqliteScripts.insertOrUpdateIntoTweet(db, ft.tweet)
           SqliteScripts.insertOrUpdateIntoUser(db, ft.user)
+          SqliteScripts.insertOrUpdateIntoTweet(db, ft.tweet)
         }
+      }
+    }
+  }
+
+  /**
+   * Delete the tweet with the given id.
+   */
+  fun deleteTweetById(tweetId: Long) {
+    h.writableDatabase.use {
+      it.transaction {
+        SqliteScripts.deleteTweetById(it, tweetId)
       }
     }
   }
@@ -100,7 +112,7 @@ class SqliteGateway @Inject constructor(
    *
    * @throws IllegalStateException if the tag with the id has not inserted.
    */
-  fun updateTagNameById(id: Long, name: String)  {
+  fun updateTagNameById(id: Long, name: String) {
     h.writableDatabase.use {
       it.transaction {
         if (SqliteScripts.selectTagById(it, id) == null) {
@@ -124,6 +136,41 @@ class SqliteGateway @Inject constructor(
           throw IllegalStateException("tried to delete the tag with id($id). but there is no such tag.")
         }
         SqliteScripts.deleteTagById(it, id)
+      }
+    }
+  }
+
+  /**
+   * Select all relations between a tweet and a tag.
+   */
+  fun selectAllTweetTagRelations(): List<TweetTagRelation> {
+    return h.readableDatabase.use {
+      SqliteScripts.selectAllTweetTagRelations(it)
+    }
+  }
+
+  /**
+   * Insert relations between a tweet and a tag.
+   */
+  fun insertTweetTagRelation(tweetIdlist: List<Long>, tagId: Long) {
+    h.writableDatabase.use { db ->
+      db.transaction {
+        tweetIdlist.forEach { tweetId ->
+          SqliteScripts.insertTweetTagRelation(db, tweetId, tagId)
+        }
+      }
+    }
+  }
+
+  /**
+   * Delete relations between a tweet and a tag.
+   */
+  fun deleteTweetTagRelation(tweetIdlist: List<Long>, tagId: Long) {
+    h.writableDatabase.use { db ->
+      db.transaction {
+        tweetIdlist.forEach { tweetId ->
+          SqliteScripts.deleteTweetTagRelation(db, tweetId, tagId)
+        }
       }
     }
   }
