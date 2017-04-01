@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.htoyama.likit.data.sqlite.TagModel;
 import com.htoyama.likit.data.sqlite.TweetModel;
+import com.htoyama.likit.data.sqlite.TweetTagRelationModel;
 import com.htoyama.likit.data.sqlite.UserModel;
 
 public class SqliteOpenHelper extends SQLiteOpenHelper {
@@ -18,6 +19,7 @@ public class SqliteOpenHelper extends SQLiteOpenHelper {
     db.execSQL(TweetModel.CREATE_TABLE);
     db.execSQL(UserModel.CREATE_TABLE);
     db.execSQL(TagModel.CREATE_TABLE);
+    db.execSQL(TweetTagRelationModel.CREATE_TABLE);
   }
 
   @Override public void onConfigure(SQLiteDatabase db) {
