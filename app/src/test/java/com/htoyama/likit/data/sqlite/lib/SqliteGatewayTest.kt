@@ -357,4 +357,28 @@ class SqliteGatewayTest {
         tweetTagRelation(tweetId = 1, tagId = deletingId),
         tweetTagRelation(tweetId = 2, tagId = deletingId))
   }
+
+  @Test fun shouldDeleteRelations_whenTweetIsDeleted() {
+    // given
+    val deletingId = 1L
+    gateway.insertOrUpdateTweetList(listOf(
+        fullTweetEntity(id = deletingId),
+        fullTweetEntity(id = 2),
+        fullTweetEntity(id = 3))
+    )
+    val tagId1 = gateway.insertTag("a tag 1", 1)
+    val tagId2 = gateway.insertTag("a tag 2", 1)
+
+    gateway.insertTweetTagRelation(listOf(deletingId, 2), tagId1)
+    gateway.insertTweetTagRelation(listOf(deletingId, 2), tagId2)
+
+    // when
+    gateway.deleteTweetById(deletingId)
+    val rels = gateway.selectAllTweetTagRelations()
+
+    // then
+    assertThat(rels).containsNoneOf(
+        tweetTagRelation(tweetId = deletingId, tagId = tagId1),
+        tweetTagRelation(tweetId = deletingId, tagId = tagId2))
+  }
 }
