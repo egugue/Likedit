@@ -55,8 +55,8 @@ class SqliteGateway @Inject constructor(
     h.writableDatabase.use { db ->
       db.transaction {
         fullTweetList.forEach { ft ->
-          SqliteScripts.insertOrUpdateIntoTweet(db, ft.tweet)
           SqliteScripts.insertOrUpdateIntoUser(db, ft.user)
+          SqliteScripts.insertOrUpdateIntoTweet(db, ft.tweet)
         }
       }
     }
@@ -100,7 +100,7 @@ class SqliteGateway @Inject constructor(
    *
    * @throws IllegalStateException if the tag with the id has not inserted.
    */
-  fun updateTagNameById(id: Long, name: String)  {
+  fun updateTagNameById(id: Long, name: String) {
     h.writableDatabase.use {
       it.transaction {
         if (SqliteScripts.selectTagById(it, id) == null) {
