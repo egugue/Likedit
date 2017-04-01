@@ -39,6 +39,12 @@ internal object SqliteScripts {
     stmt.program.executeInsert()
   }
 
+  fun deleteTweetById(writable: SQLiteDatabase, tweetId: Long) =
+      TweetModel.Delete_by_id(writable).run {
+        bind(tweetId)
+        program.executeUpdateDelete()
+      }
+
   fun insertOrUpdateIntoUser(writable: SQLiteDatabase, user: UserEntity) {
     val stmt = UserModel.Insert_user(writable)
     user.apply {

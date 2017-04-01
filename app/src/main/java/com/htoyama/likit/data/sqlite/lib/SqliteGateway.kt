@@ -64,6 +64,17 @@ class SqliteGateway @Inject constructor(
   }
 
   /**
+   * Delete the tweet with the given id.
+   */
+  fun deleteTweetById(tweetId: Long) {
+    h.writableDatabase.use {
+      it.transaction {
+        SqliteScripts.deleteTweetById(it, tweetId)
+      }
+    }
+  }
+
+  /**
    * Select the tag with the given id.
    * If there is no such tag, return null.
    */

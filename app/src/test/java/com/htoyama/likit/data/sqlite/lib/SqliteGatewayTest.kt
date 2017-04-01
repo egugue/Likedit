@@ -63,6 +63,15 @@ class SqliteGatewayTest {
     assertThat(actual).containsExactlyElementsIn(list)
   }
 
+  @Test fun shouldDeleteTweet() {
+    val id = 1L
+    gateway.insertOrUpdateTweet(fullTweetEntity(id))
+    gateway.deleteTweetById(id)
+
+    val tweets = gateway.selectAllTweets()
+    assertThat(tweets).isEmpty()
+  }
+
   @Test fun shouldSelectByPage() {
     // setUp
     val perPage = 3

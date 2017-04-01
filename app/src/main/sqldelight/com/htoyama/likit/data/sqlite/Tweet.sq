@@ -41,3 +41,8 @@ INSERT OR REPLACE INTO tweet (
     created
 ) VALUES (?, ?, ?, ?, ?, ?, ?)
 ;
+
+delete_by_id:
+DELETE FROM tweet
+WHERE id = ?
+;
