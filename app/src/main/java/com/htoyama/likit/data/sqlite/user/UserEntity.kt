@@ -1,4 +1,4 @@
-package com.htoyama.likit.data.sqlite.entity
+package com.htoyama.likit.data.sqlite.user
 
 import com.htoyama.likit.data.sqlite.UserModel
 

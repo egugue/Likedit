@@ -1,6 +1,7 @@
-package com.htoyama.likit.data.sqlite.entity
+package com.htoyama.likit.data.sqlite.tweet
 
 import com.htoyama.likit.data.sqlite.TweetModel
+import com.htoyama.likit.data.sqlite.user.UserEntity
 
 /**
  * An entity which has both [TweetEntity] and [UserEntity]
@@ -12,4 +13,8 @@ data class FullTweetEntity(
 
   override fun tweet(): TweetEntity = tweet
   override fun user(): UserEntity = user
+
+  companion object {
+    val MAPPER = TweetEntity.FACTORY.select_allMapper(::FullTweetEntity, UserEntity.FACTORY)!!
+  }
 }

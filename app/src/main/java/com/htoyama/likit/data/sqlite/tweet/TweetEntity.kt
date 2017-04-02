@@ -1,8 +1,9 @@
-package com.htoyama.likit.data.sqlite.entity
+package com.htoyama.likit.data.sqlite.tweet
 
 import com.google.gson.reflect.TypeToken
 import com.htoyama.likit.data.sqlite.lib.GsonProvider
 import com.htoyama.likit.data.sqlite.TweetModel
+import com.htoyama.likit.data.sqlite.user.UserEntity
 import com.htoyama.likit.domain.tweet.Url
 import com.htoyama.likit.domain.tweet.media.Photo
 import com.htoyama.likit.domain.tweet.media.Video
@@ -71,7 +72,5 @@ data class TweetEntity(
         PHOTO_LIST_ADAPTER,
         URL_LIST_ADAPTER,
         VIDEO_ADAPTER)
-
-    val FULL_TWEET_MAPPER = TweetEntity.FACTORY.select_allMapper(::FullTweetEntity, UserEntity.FACTORY)!!
   }
 }
