@@ -1,5 +1,10 @@
-package com.htoyama.likit.data.sqlite.entity
+package com.htoyama.likit.data.sqlite
 
+import com.htoyama.likit.data.sqlite.relation.TweetTagRelation
+import com.htoyama.likit.data.sqlite.tag.TagEntity
+import com.htoyama.likit.data.sqlite.tweet.FullTweetEntity
+import com.htoyama.likit.data.sqlite.tweet.TweetEntity
+import com.htoyama.likit.data.sqlite.user.UserEntity
 import com.htoyama.likit.domain.tweet.Url
 import com.htoyama.likit.domain.tweet.media.Photo
 import com.htoyama.likit.domain.tweet.media.Video

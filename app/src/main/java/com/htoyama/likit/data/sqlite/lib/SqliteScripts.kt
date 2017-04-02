@@ -5,7 +5,11 @@ import com.htoyama.likit.data.sqlite.TagModel
 import com.htoyama.likit.data.sqlite.TweetModel
 import com.htoyama.likit.data.sqlite.TweetTagRelationModel
 import com.htoyama.likit.data.sqlite.UserModel
-import com.htoyama.likit.data.sqlite.entity.*
+import com.htoyama.likit.data.sqlite.relation.TweetTagRelation
+import com.htoyama.likit.data.sqlite.tag.TagEntity
+import com.htoyama.likit.data.sqlite.tweet.FullTweetEntity
+import com.htoyama.likit.data.sqlite.tweet.TweetEntity
+import com.htoyama.likit.data.sqlite.user.UserEntity
 
 /**
  * A collection which has a lot of simple SQLite scripts.
@@ -22,13 +26,13 @@ internal object SqliteScripts {
   fun selectAllTweets(readable: SQLiteDatabase): List<FullTweetEntity> {
     val stmt = TweetEntity.FACTORY.select_all()
     return readable.rawQuery(stmt.statement, stmt.args)
-        .mapToList { TweetEntity.FULL_TWEET_MAPPER.map(it) }
+        .mapToList { FullTweetEntity.MAPPER.map(it) }
   }
 
   fun selectTweets(limit: Long, offset: Long, readable: SQLiteDatabase): List<FullTweetEntity> {
     val stmt = TweetEntity.FACTORY.select_tweets(limit, offset)
     return readable.rawQuery(stmt.statement, stmt.args)
-        .mapToList { TweetEntity.FULL_TWEET_MAPPER.map(it) }
+        .mapToList { FullTweetEntity.MAPPER.map(it) }
   }
 
   fun insertOrUpdateIntoTweet(writable: SQLiteDatabase, tweet: TweetEntity) {
