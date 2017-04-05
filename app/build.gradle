@@ -86,7 +86,7 @@ dependencies {
     compile 'com.google.dagger:dagger:2.9'
     kapt 'com.google.dagger:dagger-compiler:2.9'
 
-    compile('com.twitter.sdk.android:twitter:2.0.0@aar') {
+    compile('com.twitter.sdk.android:twitter:2.3.2@aar') {
         transitive = true;
     }
 
