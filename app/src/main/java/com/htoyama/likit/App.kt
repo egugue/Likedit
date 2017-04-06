@@ -31,6 +31,8 @@ open class App :Application() {
     buildComponent()
     buildFabric()
     buildRealm()
+
+    TweetSyncService.scheduleJob(this)
   }
 
   override fun onTerminate() {
