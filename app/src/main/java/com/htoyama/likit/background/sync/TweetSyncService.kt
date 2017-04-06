@@ -1,4 +1,4 @@
-package com.htoyama.likit
+package com.htoyama.likit.background.sync
 
 import android.annotation.SuppressLint
 import android.app.job.JobInfo
@@ -20,6 +20,10 @@ import io.reactivex.schedulers.Schedulers
  */
 class TweetSyncService : JobService() {
 
+  override fun onCreate() {
+    super.onCreate()
+  }
+
   @SuppressLint("NewApi")
   override fun onStartJob(params: JobParameters?): Boolean {
     Log.d("ーーー", "onStartJob")
@@ -34,12 +38,12 @@ class TweetSyncService : JobService() {
         .subscribe(
             {
               jobFinished(params, false)
-              TweetSyncService.scheduleJob(this@TweetSyncService)
+              scheduleJob(this@TweetSyncService)
             },
             { t ->
               t.printStackTrace()
               jobFinished(params, false)
-              TweetSyncService.scheduleJob(this@TweetSyncService)
+              scheduleJob(this@TweetSyncService)
             }
         )
     return true
@@ -62,7 +66,7 @@ class TweetSyncService : JobService() {
               .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
               //.setPeriodic(TimeUnit.MINUTES.toMillis(15))
               .setRequiresCharging(true)
-              .setRequiresDeviceIdle(true)
+              //.setRequiresDeviceIdle(true)
               .build())
 
       Log.d("ーーー", a.toString())
