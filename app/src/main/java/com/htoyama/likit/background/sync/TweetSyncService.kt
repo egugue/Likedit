@@ -1,6 +1,5 @@
 package com.htoyama.likit.background.sync
 
-import android.annotation.SuppressLint
 import android.app.job.JobInfo
 import android.app.job.JobParameters
 import android.app.job.JobService
@@ -24,7 +23,6 @@ class TweetSyncService : JobService() {
     super.onCreate()
   }
 
-  @SuppressLint("NewApi")
   override fun onStartJob(params: JobParameters?): Boolean {
     Log.d("ーーー", "onStartJob")
 
@@ -57,7 +55,6 @@ class TweetSyncService : JobService() {
   companion object {
     const val ID: Int = 10000
 
-    @SuppressLint("NewApi")
     fun scheduleJob(context: Context) {
       val jobScheduler = context.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
 
@@ -66,7 +63,7 @@ class TweetSyncService : JobService() {
               .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
               //.setPeriodic(TimeUnit.MINUTES.toMillis(15))
               .setRequiresCharging(true)
-              //.setRequiresDeviceIdle(true)
+              .setRequiresDeviceIdle(true)
               .build())
 
       Log.d("ーーー", a.toString())
