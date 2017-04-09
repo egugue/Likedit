@@ -12,7 +12,7 @@ import javax.inject.Inject
 class LikesPullTask @Inject constructor(
     private val favoriteService: FavoriteService,
     private val tweetTableGateway: TweetTableGateway
-) {
+) : Task {
 
   @VisibleForTesting
   fun executeForTest() {
@@ -24,13 +24,13 @@ class LikesPullTask @Inject constructor(
   /**
    * Execute this task
    */
-  fun execute() {
+  override fun execute(): Throwable? {
     try {
       //TODO: retrieve user's liked tweet count from twitter's server
       (1..4).forEach {
         val likedList = fetchLikedList(it)
         if (likedList.isEmpty()) {
-          return
+          return null
         }
 
         insertOrUpdateLikedList(likedList)
@@ -38,7 +38,9 @@ class LikesPullTask @Inject constructor(
     } catch (e: Exception) {
       //TODO
       e.printStackTrace()
+      return e
     }
+    return null
   }
 
   private fun fetchLikedList(page: Int): List<Tweet> {

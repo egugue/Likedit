@@ -8,9 +8,10 @@ import javax.inject.Inject
  */
 class NonLikesRemoveTask @Inject constructor(
     private val tweetTableGateway: TweetTableGateway
-){
+) : Task {
 
-  fun execute() {
+  override fun execute(): Throwable? {
     // TODO
+    return null
   }
 }
