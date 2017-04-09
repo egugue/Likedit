@@ -1,7 +1,10 @@
 package com.htoyama.likit.data.prefs
 
 import com.htoyama.likit.data.common.pref.PrefModule
+import com.htoyama.likit.testutil.CurrentTimeRule
+import com.htoyama.likit.testutil.Now
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -10,6 +13,8 @@ import org.threeten.bp.LocalDateTime
 
 @RunWith(RobolectricTestRunner::class)
 class AppSettingTest {
+  @Rule @JvmField val rule: CurrentTimeRule = CurrentTimeRule()
+
   lateinit var setting: AppSetting
 
   @Before fun setUp() {
@@ -18,14 +23,13 @@ class AppSettingTest {
     setting = AppSetting(prefs, module.rxPrefs(prefs))
   }
 
+  @Now(2017, 2, 28, 2, 30)
   @Test fun lastSyncedDate() {
-    val lastSynced = LocalDateTime.of(2017, 2, 28, 2, 30)
-
-    setting.setLastSyncedDate(lastSynced)
+    setting.setLastSyncedDateAsNow()
 
     setting.getLastSyncedDate()
         .test()
-        .assertValue(lastSynced)
+        .assertValue(LocalDateTime.of(2017, 2, 28, 2, 30))
   }
 
   @Test fun lastSyncedDate_whenSetMethodNeverInvoked() {

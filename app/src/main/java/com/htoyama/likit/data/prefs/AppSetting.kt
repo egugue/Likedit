@@ -2,6 +2,7 @@ package com.htoyama.likit.data.prefs
 
 import android.content.SharedPreferences
 import com.f2prateek.rx.preferences2.RxSharedPreferences
+import com.htoyama.likit.common.CurrentTime
 import io.reactivex.Observable
 import org.threeten.bp.*
 import javax.inject.Inject
@@ -16,12 +17,13 @@ class AppSetting @Inject constructor(
     private val rxPrefs: RxSharedPreferences
 ) {
 
-  fun setLastSyncedDate(date: LocalDateTime) {
-    val dateLong = ZonedDateTime.of(date, ZoneId.systemDefault())
-        .toInstant().toEpochMilli()
+  fun setLastSyncedDateAsNow() {
+    val currentDateLong = ZonedDateTime.of(CurrentTime.get(), ZoneId.systemDefault())
+        .toInstant()
+        .toEpochMilli()
 
     prefs.edit()
-        .putLong("lastSyncedDate", dateLong)
+        .putLong("lastSyncedDate", currentDateLong)
         .apply()
   }
 
