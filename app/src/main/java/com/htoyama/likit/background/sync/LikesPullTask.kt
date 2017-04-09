@@ -7,7 +7,7 @@ import com.twitter.sdk.android.core.models.Tweet
 import javax.inject.Inject
 
 /**
- * A task which fetches likes list on twitter's server and stores the fetched list.
+ * A task which fetches likes list on twitter's server and stores the fetched list to SQLite on local.
  */
 class LikesPullTask @Inject constructor(
     private val favoriteService: FavoriteService,
