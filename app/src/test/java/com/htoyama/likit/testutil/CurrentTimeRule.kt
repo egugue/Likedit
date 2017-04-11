@@ -4,7 +4,7 @@ import com.htoyama.likit.common.CurrentTime
 import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
-import org.threeten.bp.LocalDateTime
+import org.threeten.bp.*
 
 /**
  * A test rule which we can override a value returned by [CurrentTime.get]
@@ -25,8 +25,7 @@ class CurrentTimeRule : TestRule {
         }
 
         try {
-          val p = createCurrentTimeProvider(now)
-          lockCurrentTime(p)
+          lockCurrentTime(now)
           base.evaluate()
         } finally {
           unlockCurrentTime()
@@ -35,22 +34,16 @@ class CurrentTimeRule : TestRule {
     }
   }
 
-  fun createCurrentTimeProvider(a: Now): CurrentTime.Provider {
-    return object : CurrentTime.Provider {
-      override fun now(): LocalDateTime {
-        return LocalDateTime.of(
-            a.year, a.month, a.dayOfMonth, a.hour, a.minute, a.second, a.nanoOfSecond)
-      }
-    }
-  }
-
-  private fun lockCurrentTime(provider: CurrentTime.Provider) {
+  private fun lockCurrentTime(a: Now) {
     if (locked) {
       throw IllegalMonitorStateException()
     }
 
     locked = true
-    CurrentTime.overrideTime(provider)
+    val zoneId = ZoneId.systemDefault()
+    val instant = ZonedDateTime.of(a.year, a.month, a.dayOfMonth, a.hour, a.minute, a.second, a.nanoOfSecond, zoneId)
+        .toInstant()
+    CurrentTime.overrideTime(Clock.fixed(instant, zoneId))
   }
 
   private fun unlockCurrentTime() {

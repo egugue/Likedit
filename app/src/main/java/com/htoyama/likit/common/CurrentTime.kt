@@ -1,35 +1,29 @@
 package com.htoyama.likit.common
 
 import android.support.annotation.VisibleForTesting
+import org.threeten.bp.Clock
 import org.threeten.bp.LocalDateTime
 
 /**
  * A provider which provides the current [LocalDateTime]
  */
 object CurrentTime {
-  private val SYSTEM_PROVIDER: Provider = object : Provider {
-    override fun now(): LocalDateTime = LocalDateTime.now()
-  }
+  private val SYSTEM_CLOCK = Clock.systemDefaultZone()
 
-  private var provider: Provider = SYSTEM_PROVIDER
+  private var clock: Clock = SYSTEM_CLOCK
 
   /**
-   * Return the current [LocalDateTime]
+   * Return the current millisecond
    */
-  fun get(): LocalDateTime = provider.now()
+  fun get(): Long = clock.millis()
 
   @VisibleForTesting @JvmStatic
-  fun overrideTime(provider: Provider) {
-    this.provider = provider
+  internal fun overrideTime(clock: Clock) {
+    this.clock = clock
   }
 
   @VisibleForTesting @JvmStatic
-  fun resetTime() {
-    provider = SYSTEM_PROVIDER
-  }
-
-  @VisibleForTesting
-  interface Provider {
-    fun now(): LocalDateTime
+  internal fun resetTime() {
+    clock = SYSTEM_CLOCK
   }
 }

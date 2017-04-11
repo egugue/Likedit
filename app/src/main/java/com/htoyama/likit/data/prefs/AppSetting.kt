@@ -18,9 +18,7 @@ class AppSetting @Inject constructor(
 ) {
 
   fun setLastSyncedDateAsNow() {
-    val currentDateLong = ZonedDateTime.of(CurrentTime.get(), ZoneId.systemDefault())
-        .toInstant()
-        .toEpochMilli()
+    val currentDateLong = CurrentTime.get()
 
     prefs.edit()
         .putLong("lastSyncedDate", currentDateLong)
