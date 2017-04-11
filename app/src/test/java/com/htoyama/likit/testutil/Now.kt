@@ -1,7 +1,7 @@
 package com.htoyama.likit.testutil
 
 /**
- * An annotation which define the [LocalDateTime] which is returned by [CurrentTime.get]
+ * An annotation which defines the current timemills which is returned by [CurrentTime.get]
  */
 @Retention
 @Target(AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER)
