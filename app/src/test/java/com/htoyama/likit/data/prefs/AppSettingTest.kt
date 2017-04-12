@@ -24,7 +24,7 @@ class AppSettingTest {
   }
 
   @Now(2017, 2, 28, 2, 30)
-  @Test fun lastSyncedDate() {
+  @Test fun lastSyncedDate_shouldSaveCurrentTime() {
     setting.setLastSyncedDateAsNow()
 
     setting.getLastSyncedDate()
@@ -36,5 +36,17 @@ class AppSettingTest {
     setting.getLastSyncedDate()
         .test()
         .assertEmpty()
+  }
+
+  @Test fun lastSyncedDate_shouldReceiveSpecifiedNumber() {
+    val test = setting.getLastSyncedDate().test()
+
+    setting.setLastSyncedDateAsNow()
+    Thread.sleep(10) // seems like sleep is needed here to test emitted count correctly.
+    setting.setLastSyncedDateAsNow()
+    Thread.sleep(10)
+    setting.setLastSyncedDateAsNow()
+
+    test.assertValueCount(3)
   }
 }
