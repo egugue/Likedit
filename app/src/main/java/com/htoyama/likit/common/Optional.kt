@@ -9,7 +9,7 @@ sealed class Optional<out T> {
 }
 
 object None : Optional<Nothing>() {
-  override fun get(): Nothing = throw NoSuchElementException()
+  override fun get(): Nothing = throw NoSuchElementException("None.get invoked.")
   override fun isEmpty(): Boolean = true
 }
 
