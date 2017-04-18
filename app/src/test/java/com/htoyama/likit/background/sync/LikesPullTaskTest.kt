@@ -25,7 +25,7 @@ class LikesPullTaskTest {
    * It should not store to SQLite when first emitted item is empty.
    */
   @Test fun execute_whenFirstEmittedIsEmpty() {
-    whenFavoriteApiIsInvokedByPage(1).thenReturn(Single.just(emptyList()))
+    whenFavoriteApiIsInvokedWithPage(1).thenReturn(Single.just(emptyList()))
 
     val test = task.execute().test()
 
@@ -38,9 +38,9 @@ class LikesPullTaskTest {
    * It should store to SQLite as many as until emptyList is emitted.
    */
   @Test fun execute_whenIntermediateEmittedValueIsEmptyList() {
-    whenFavoriteApiIsInvokedByPage(1).thenReturn(Single.just(listOf(twitterTweet())))
-    whenFavoriteApiIsInvokedByPage(2).thenReturn(Single.just(listOf(twitterTweet())))
-    whenFavoriteApiIsInvokedByPage(3).thenReturn(Single.just(emptyList()))
+    whenFavoriteApiIsInvokedWithPage(1).thenReturn(Single.just(listOf(twitterTweet())))
+    whenFavoriteApiIsInvokedWithPage(2).thenReturn(Single.just(listOf(twitterTweet())))
+    whenFavoriteApiIsInvokedWithPage(3).thenReturn(Single.just(emptyList()))
 
     val test = task.execute().test()
 
@@ -50,11 +50,11 @@ class LikesPullTaskTest {
   }
 
   @Test fun execute_whenNetworkErrorIsCaused() {
-    whenFavoriteApiIsInvokedByPage(1).thenReturn(Single.just(listOf(twitterTweet())))
-    whenFavoriteApiIsInvokedByPage(2).thenReturn(Single.just(listOf(twitterTweet())))
+    whenFavoriteApiIsInvokedWithPage(1).thenReturn(Single.just(listOf(twitterTweet())))
+    whenFavoriteApiIsInvokedWithPage(2).thenReturn(Single.just(listOf(twitterTweet())))
 
     val aNetworkError = IllegalStateException("foo")
-    whenFavoriteApiIsInvokedByPage(3).thenReturn(Single.error(aNetworkError))
+    whenFavoriteApiIsInvokedWithPage(3).thenReturn(Single.error(aNetworkError))
 
     val test = task.execute().test()
 
@@ -63,10 +63,10 @@ class LikesPullTaskTest {
   }
 
   @Test fun execute_whenAllApiAcessesAreSucess() {
-    whenFavoriteApiIsInvokedByPage(1).thenReturn(Single.just(listOf(twitterTweet())))
-    whenFavoriteApiIsInvokedByPage(2).thenReturn(Single.just(listOf(twitterTweet())))
-    whenFavoriteApiIsInvokedByPage(3).thenReturn(Single.just(listOf(twitterTweet())))
-    whenFavoriteApiIsInvokedByPage(4).thenReturn(Single.just(listOf(twitterTweet())))
+    whenFavoriteApiIsInvokedWithPage(1).thenReturn(Single.just(listOf(twitterTweet())))
+    whenFavoriteApiIsInvokedWithPage(2).thenReturn(Single.just(listOf(twitterTweet())))
+    whenFavoriteApiIsInvokedWithPage(3).thenReturn(Single.just(listOf(twitterTweet())))
+    whenFavoriteApiIsInvokedWithPage(4).thenReturn(Single.just(listOf(twitterTweet())))
 
     val test = task.execute().test()
 
@@ -75,6 +75,6 @@ class LikesPullTaskTest {
     verify(gateway, times(4)).insertOrUpdateTweetList(any())
   }
 
-  private fun whenFavoriteApiIsInvokedByPage(page: Int) =
+  private fun whenFavoriteApiIsInvokedWithPage(page: Int) =
     whenever(service.list(null, null, 200, null, null, true, page))
 }
