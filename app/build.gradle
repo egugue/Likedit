@@ -5,12 +5,17 @@ apply plugin: 'realm-android'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.squareup.sqldelight'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-allopen'
 apply from: rootProject.file('gradle/fabric-properties-generate.gradle')
 
 repositories {
     mavenCentral()
     maven { url 'https://maven.fabric.io/public' }
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+}
+
+allOpen {
+    annotation("com.htoyama.likit.common.AllOpen")
 }
 
 android {
