@@ -1,5 +1,7 @@
 package com.htoyama.likit.background.sync
 
+import io.reactivex.Single
+
 /**
  * Representing a task
  */
@@ -10,5 +12,5 @@ interface Task {
    *
    * @return an [Throwable] if executing the task is failure or null if executing it is success.
    */
-  fun execute(): Throwable?
+  fun execute(): Single<Any>
 }
