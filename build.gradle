@@ -26,6 +26,18 @@ allprojects {
     }
 }
 
+// https://github.com/nhaarman/mockito-kotlin/wiki/FAQ#dependencyconflict
+subprojects {
+    configurations.all {
+        resolutionStrategy {
+            forcedModules = [
+                    "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
+                    "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+            ]
+        }
+    }
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
