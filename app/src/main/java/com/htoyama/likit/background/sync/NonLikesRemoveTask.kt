@@ -13,6 +13,6 @@ class NonLikesRemoveTask @Inject constructor(
 
   override fun execute(): Single<Any> {
     // TODO
-    return null
+    return Single.never()
   }
 }
