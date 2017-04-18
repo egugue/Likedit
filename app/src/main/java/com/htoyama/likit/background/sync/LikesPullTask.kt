@@ -1,9 +1,12 @@
 package com.htoyama.likit.background.sync
 
 import android.support.annotation.VisibleForTesting
+import com.htoyama.likit.common.Irrelevant
 import com.htoyama.likit.data.common.net.FavoriteService
 import com.htoyama.likit.data.sqlite.tweet.TweetTableGateway
 import com.twitter.sdk.android.core.models.Tweet
+import io.reactivex.Observable
+import io.reactivex.Single
 import javax.inject.Inject
 
 /**
@@ -17,38 +20,26 @@ class LikesPullTask @Inject constructor(
   @VisibleForTesting
   fun executeForTest() {
     Thread {
-      execute()
+      execute().subscribe()
     }.start()
   }
 
-  /**
-   * Execute this task
-   */
-  override fun execute(): Throwable? {
-    try {
-      //TODO: retrieve user's liked tweet count from twitter's server
-      (1..4).forEach {
-        val likedList = fetchLikedList(it)
-        if (likedList.isEmpty()) {
-          return null
-        }
+  override fun execute(): Single<Any> {
+    val seriesOfTask =
+        Observable.fromIterable(1..4) //TODO: use specific page number
+        .flatMap { favoriteService.list(null, null, 200, null, null, true, it).toObservable() }
+        .takeUntil { it.isEmpty() }
+        .doOnNext { insertOrUpdateLikedList(it) }
 
-        insertOrUpdateLikedList(likedList)
-      }
-    } catch (e: Exception) {
-      //TODO
-      e.printStackTrace()
-      return e
-    }
-    return null
-  }
-
-  private fun fetchLikedList(page: Int): List<Tweet> {
-    return favoriteService.list(null, null, 200, null, null, true, page)
-        .blockingGet()
+    return seriesOfTask
+        .map { Irrelevant.get() }
+        .lastOrError()
   }
 
   private fun insertOrUpdateLikedList(list: List<Tweet>) {
+    if (list.isEmpty()) {
+      return
+    }
     tweetTableGateway.insertOrUpdateTweetList(
         Mapper.mapToFullTweetEntityList(list)
     )
