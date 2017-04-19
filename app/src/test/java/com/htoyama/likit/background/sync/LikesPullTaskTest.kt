@@ -62,7 +62,7 @@ class LikesPullTaskTest {
     verify(gateway, times(2)).insertOrUpdateTweetList(any())
   }
 
-  @Test fun execute_whenAllApiAcessesAreSucess() {
+  @Test fun execute_whenAllApisAreSuccess() {
     whenFavoriteApiIsInvokedWithPage(1).thenReturn(Single.just(listOf(twitterTweet())))
     whenFavoriteApiIsInvokedWithPage(2).thenReturn(Single.just(listOf(twitterTweet())))
     whenFavoriteApiIsInvokedWithPage(3).thenReturn(Single.just(listOf(twitterTweet())))
