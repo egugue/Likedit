@@ -75,6 +75,20 @@ class LikesPullTaskTest {
     verify(gateway, times(4)).insertOrUpdateTweetList(any())
   }
 
+  @Test fun execute_whenFetchingLikesIsBeingLimited() {
+    val limited = IllegalArgumentException()// TODO
+    whenFavoriteApiIsInvokedWithPage(1).thenReturn(Single.just(listOf(twitterTweet())))
+    whenFavoriteApiIsInvokedWithPage(2).thenReturn(Single.just(listOf(twitterTweet())))
+    whenFavoriteApiIsInvokedWithPage(3).thenReturn(Single.just(listOf(twitterTweet())))
+    whenFavoriteApiIsInvokedWithPage(4).thenReturn(Single.error(limited))
+
+    val test = task.execute().test()
+
+    test.assertNoErrors()
+        .assertComplete()
+    verify(gateway, times(3)).insertOrUpdateTweetList(any())
+  }
+
   private fun whenFavoriteApiIsInvokedWithPage(page: Int) =
     whenever(service.list(null, null, 200, null, null, true, page))
 }
