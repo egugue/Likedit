@@ -7,9 +7,9 @@ import io.reactivex.disposables.Disposable
 /**
  * Extensions for classes related to RxJava
  */
+
 fun <T> Observable<T>.onErrorReturnOrJustThrow(
-    predicate: (Throwable) -> Boolean,
-    valueSupplier: (Throwable) -> T
+    valueSupplier: (Throwable) -> T?
 ): Observable<T> = lift({
   object : Observer<T> {
     override fun onComplete() {
@@ -25,11 +25,16 @@ fun <T> Observable<T>.onErrorReturnOrJustThrow(
     }
 
     override fun onError(e: Throwable) {
-      if (predicate.invoke(e)) {
-        it.onNext(valueSupplier.invoke(e))
-        it.onComplete()
-      } else {
-        it.onError(e)
+      try {
+        val v = valueSupplier.invoke(e)
+        if (v != null) {
+          it.onNext(v)
+          it.onComplete()
+        } else {
+          it.onError(e)
+        }
+      } catch (t: Throwable) {
+        it.onError(t)
       }
     }
   }

@@ -36,7 +36,9 @@ class LikesPullTask @Inject constructor(
 
     return seriesOfTask
         .map { Irrelevant.get() }
-        .onErrorReturnOrJustThrow({ it is IllegalArgumentException }, { Irrelevant.get() })
+        .onErrorReturnOrJustThrow {
+          if (it is IllegalArgumentException) Irrelevant.get() else throw it
+        }
         .lastOrError()
   }
 
