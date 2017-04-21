@@ -8,6 +8,11 @@ import io.reactivex.disposables.Disposable
  * Extensions for classes related to RxJava
  */
 
+/**
+ * Basically, this method is the same as [Observable.onErrorReturn].
+ * But this method doesn't wrap an error with [CompositeException].
+ * Instead, it just throws the error.
+ */
 fun <T> Observable<T>.onErrorReturnOrJustThrow(
     valueSupplier: (Throwable) -> T?
 ): Observable<T> = lift({
