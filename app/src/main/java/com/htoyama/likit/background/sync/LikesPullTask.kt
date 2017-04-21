@@ -7,10 +7,7 @@ import com.htoyama.likit.data.common.net.FavoriteService
 import com.htoyama.likit.data.sqlite.tweet.TweetTableGateway
 import com.twitter.sdk.android.core.models.Tweet
 import io.reactivex.Observable
-import io.reactivex.ObservableOperator
-import io.reactivex.Observer
 import io.reactivex.Single
-import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
 /**
