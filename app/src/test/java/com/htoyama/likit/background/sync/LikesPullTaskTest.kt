@@ -9,6 +9,8 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+import retrofit2.HttpException
+import retrofit2.Response
 import java.lang.IllegalStateException
 
 class LikesPullTaskTest {
@@ -76,7 +78,7 @@ class LikesPullTaskTest {
   }
 
   @Test fun execute_whenFetchingLikesIsBeingLimited() {
-    val limited = IllegalArgumentException()// TODO
+    val limited = HttpException(Response.error<Any>(429, mock()))
     whenFavoriteApiIsInvokedWithPage(1).thenReturn(Single.just(listOf(twitterTweet())))
     whenFavoriteApiIsInvokedWithPage(2).thenReturn(Single.just(listOf(twitterTweet())))
     whenFavoriteApiIsInvokedWithPage(3).thenReturn(Single.just(listOf(twitterTweet())))

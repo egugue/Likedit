@@ -2,6 +2,7 @@ package com.htoyama.likit.background.sync
 
 import android.support.annotation.VisibleForTesting
 import com.htoyama.likit.common.Irrelevant
+import com.htoyama.likit.common.extensions.isTwitterRateLimitException
 import com.htoyama.likit.common.extensions.onErrorReturnOrJustThrow
 import com.htoyama.likit.data.common.net.FavoriteService
 import com.htoyama.likit.data.sqlite.tweet.TweetTableGateway
@@ -34,7 +35,7 @@ class LikesPullTask @Inject constructor(
     return seriesOfTask
         .map { Irrelevant.get() }
         .onErrorReturnOrJustThrow {
-          if (it is IllegalArgumentException) Irrelevant.get() else throw it
+          if (it.isTwitterRateLimitException()) Irrelevant.get() else throw it
         }
         .lastOrError()
   }
