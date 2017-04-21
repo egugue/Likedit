@@ -14,7 +14,7 @@ import io.reactivex.disposables.Disposable
  * Instead, it just throws the error.
  */
 fun <T> Observable<T>.onErrorReturnOrJustThrow(
-    valueSupplier: (Throwable) -> T?
+    valueSupplier: (Throwable) -> T
 ): Observable<T> = lift({
   object : Observer<T> {
     override fun onComplete() {
@@ -31,13 +31,8 @@ fun <T> Observable<T>.onErrorReturnOrJustThrow(
 
     override fun onError(e: Throwable) {
       try {
-        val v = valueSupplier.invoke(e)
-        if (v != null) {
-          it.onNext(v)
+          it.onNext(valueSupplier.invoke(e))
           it.onComplete()
-        } else {
-          it.onError(e)
-        }
       } catch (t: Throwable) {
         it.onError(t)
       }
