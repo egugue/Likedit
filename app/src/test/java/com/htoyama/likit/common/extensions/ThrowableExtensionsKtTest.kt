@@ -13,7 +13,7 @@ class ThrowableExtensionsKtTest {
     assertTrue(rateLimit.isTwitterRateLimitException())
 
     val aException = Exception()
-    assertFalse(rateLimit.isTwitterRateLimitException())
+    assertFalse(aException.isTwitterRateLimitException())
   }
 
 }
