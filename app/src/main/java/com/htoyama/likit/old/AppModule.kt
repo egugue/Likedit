@@ -1,4 +1,4 @@
-package com.htoyama.likit;
+package com.htoyama.likit.old;
 
 import android.app.Application
 import com.htoyama.likit.data.DataModule

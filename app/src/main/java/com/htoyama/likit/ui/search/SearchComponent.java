@@ -3,7 +3,7 @@ package com.htoyama.likit.ui.search;
 import android.content.Context;
 
 import com.htoyama.likit.App;
-import com.htoyama.likit.AppComponent;
+import com.htoyama.likit.old.AppComponent;
 
 import dagger.Component;
 

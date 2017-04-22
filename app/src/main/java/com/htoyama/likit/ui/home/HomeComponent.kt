@@ -1,6 +1,6 @@
 package com.htoyama.likit.ui.home
 
-import com.htoyama.likit.AppComponent
+import com.htoyama.likit.old.AppComponent
 import com.htoyama.likit.ui.home.liked.HomeLikedFragment
 import com.htoyama.likit.ui.home.tag.HomeTagFragment
 import dagger.Component

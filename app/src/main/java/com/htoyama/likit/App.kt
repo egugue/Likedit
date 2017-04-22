@@ -3,6 +3,9 @@ package com.htoyama.likit
 import android.app.Application
 import android.content.Context
 import com.htoyama.likit.background.sync.TweetSyncService
+import com.htoyama.likit.old.AppComponent
+import com.htoyama.likit.old.AppModule
+import com.htoyama.likit.old.DaggerAppComponent
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.twitter.sdk.android.Twitter
 import com.twitter.sdk.android.core.TwitterAuthConfig

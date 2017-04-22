@@ -1,6 +1,6 @@
 package com.htoyama.likit.ui.tag.tweet.select
 
-import com.htoyama.likit.AppComponent
+import com.htoyama.likit.old.AppComponent
 import dagger.Component
 
 @TagTweetSelectScope

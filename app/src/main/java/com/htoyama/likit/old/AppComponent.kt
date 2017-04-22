@@ -1,5 +1,6 @@
-package com.htoyama.likit
+package com.htoyama.likit.old
 
+import com.htoyama.likit.MainActivity
 import com.htoyama.likit.domain.liked.LikedRepository
 import com.htoyama.likit.domain.tag.TagRepository
 import com.htoyama.likit.domain.user.UserRepository
