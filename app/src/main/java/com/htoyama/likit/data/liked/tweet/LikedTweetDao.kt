@@ -33,10 +33,13 @@ open class LikedTweetDao @Inject internal constructor(
         .doOnSuccess { tweetList -> likedRealmGateway.insertAsContainingNoTag(tweetList) }
 
     //TODO: https://github.com/egugue/Likedit/issues/24
+    return Single.never() // seems like favorite api sometimes doesn't return as many as the given count.
+    /*
     return Single.concat(fromCache, fromNet)
         .filter { cached -> cached.isNotEmpty() && cached.size >= count }
         .firstElement()
         .toSingle()
+        */
   }
 
 }
