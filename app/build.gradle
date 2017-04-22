@@ -90,8 +90,12 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
     compile 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
 
-    compile 'com.google.dagger:dagger:2.9'
-    kapt 'com.google.dagger:dagger-compiler:2.9'
+    def daggerVer = '2.10'
+    compile "com.google.dagger:dagger:$daggerVer"
+    kapt "com.google.dagger:dagger-compiler:$daggerVer"
+    compile "com.google.dagger:dagger-android:$daggerVer"
+    compile "com.google.dagger:dagger-android-support:$daggerVer"
+    kapt "com.google.dagger:dagger-android-processor:$daggerVer"
 
     compile('com.twitter.sdk.android:twitter:2.3.2@aar') {
         transitive = true;
