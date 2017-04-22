@@ -18,8 +18,7 @@ import dagger.Provides
 
 @Module(includes = arrayOf(
     PrefModule::class,
-    NetModule::class,
-    SqliteModule::class
+    NetModule::class
 ))
 class DataModule {
 

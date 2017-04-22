@@ -8,9 +8,12 @@ import android.os.SystemClock
 import android.app.job.JobScheduler
 import android.content.ComponentName
 import android.util.Log
+import com.htoyama.likit.data.prefs.AppSetting
+import dagger.android.AndroidInjection
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
 
 /**
@@ -19,8 +22,13 @@ import io.reactivex.schedulers.Schedulers
  */
 class TweetSyncService : JobService() {
 
+  @Inject lateinit var taskExecutor: TaskExecutor
+  @Inject lateinit var appSetting: AppSetting
+
   override fun onCreate() {
+    AndroidInjection.inject(this)
     super.onCreate()
+    Log.d("ーーー", "taskEx" + taskExecutor.toString())
   }
 
   override fun onStartJob(params: JobParameters?): Boolean {
@@ -62,8 +70,8 @@ class TweetSyncService : JobService() {
           JobInfo.Builder(ID, ComponentName(context, TweetSyncService::class.java))
               .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
               //.setPeriodic(TimeUnit.MINUTES.toMillis(15))
-              .setRequiresCharging(true)
-              .setRequiresDeviceIdle(true)
+              //.setRequiresCharging(true)
+              //.setRequiresDeviceIdle(true)
               .build())
 
       Log.d("ーーー", a.toString())

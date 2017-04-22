@@ -15,7 +15,7 @@ public interface SearchComponent {
   class Initializer {
     static SearchComponent init(Context context) {
       return DaggerSearchComponent.builder()
-          .appComponent(App.component(context))
+          .appComponent(App.oldComponent(context))
           .build();
     }
   }

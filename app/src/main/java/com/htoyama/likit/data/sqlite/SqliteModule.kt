@@ -1,14 +1,12 @@
 package com.htoyama.likit.data.sqlite
 
-import android.app.Application
-import com.htoyama.likit.data.sqlite.lib.SqliteOpenHelper
 import dagger.Module
-import dagger.Provides
-import javax.inject.Singleton
 
 @Module class SqliteModule {
 
+  /*
   @Provides @Singleton fun openHelper(app: Application) = SqliteOpenHelper(app)
+  */
 
   /*
   @Provides @Singleton fun sqlBrite(): SqlBrite {

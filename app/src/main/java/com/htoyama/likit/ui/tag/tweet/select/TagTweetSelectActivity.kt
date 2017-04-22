@@ -40,7 +40,7 @@ class TagTweetSelectActivity : BaseActivity(), Presenter.View {
   private val adapter: ListAdapter = ListAdapter()
   private val component: TagTweetSelectComponent by lazy {
     DaggerTagTweetSelectComponent.builder()
-            .appComponent(App.component(this))
+            .appComponent(App.oldComponent(this))
             .build()
   }
 

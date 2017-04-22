@@ -1,26 +1,30 @@
 package com.htoyama.likit
 
 import android.app.Application
+import android.app.Service
 import android.content.Context
 import com.htoyama.likit.background.sync.TweetSyncService
 import com.htoyama.likit.old.AppComponent
 import com.htoyama.likit.old.AppModule
-import com.htoyama.likit.old.DaggerAppComponent
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.twitter.sdk.android.Twitter
 import com.twitter.sdk.android.core.TwitterAuthConfig
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasDispatchingServiceInjector
 import io.fabric.sdk.android.Fabric
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import javax.inject.Inject
 
-open class App :Application() {
+open class App :Application(), HasDispatchingServiceInjector{
 
   companion object {
     /**
      * Retrieves the [AppComponent]
      */
     @JvmStatic
-    fun component(context: Context): AppComponent = get(context).component
+    @Deprecated("use commponent builded by Dagger2.10")
+    fun oldComponent(context: Context): AppComponent = get(context).component
 
     /**
      * Retrieves the [App]
@@ -30,6 +34,8 @@ open class App :Application() {
 
   lateinit var component: AppComponent
   var realm: Realm? = null
+  @Inject lateinit var serviceInjecter: DispatchingAndroidInjector<Service>
+  //@Inject lateinit var helper: SqliteOpenHelper
 
   override fun onCreate() {
     super.onCreate()
@@ -45,6 +51,8 @@ open class App :Application() {
     super.onTerminate()
     realm?.close()
   }
+
+  override fun serviceInjector(): DispatchingAndroidInjector<Service> = serviceInjecter
 
   private fun buildRealm() {
     try {
@@ -63,9 +71,14 @@ open class App :Application() {
   }
 
   private fun buildComponent() {
-    component = DaggerAppComponent.builder()
+    component = com.htoyama.likit.old.DaggerAppComponent.builder()
         .appModule(AppModule(this))
         .build()
+
+    DaggerAppComponent.builder()
+        .application(this)
+        .build()
+        .inject(this)
   }
 
   private fun buildFabric() {

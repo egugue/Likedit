@@ -39,7 +39,7 @@ class AuthActivity : AppCompatActivity() {
       }
     }
 
-    App.component(this)
+    App.oldComponent(this)
         .inject(this)
   }
 

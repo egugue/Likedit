@@ -8,6 +8,8 @@ import dagger.Provides;
 @Module(includes = arrayOf(DataModule::class))
 class AppModule(val app: Application) {
 
+  /*
   @Provides fun app(): Application = app
+  */
 
 }

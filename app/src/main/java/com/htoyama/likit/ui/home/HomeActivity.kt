@@ -18,7 +18,7 @@ class HomeActivity : AppCompatActivity() {
 
   val component: HomeComponent by lazy {
     DaggerHomeComponent.builder()
-        .appComponent(App.component(this))
+        .appComponent(App.oldComponent(this))
         .build()
   }
 

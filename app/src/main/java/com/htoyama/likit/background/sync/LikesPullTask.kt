@@ -15,8 +15,8 @@ import javax.inject.Inject
  * A task which fetches likes list on twitter's server and stores the fetched list to SQLite on local.
  */
 class LikesPullTask @Inject constructor(
-    private val favoriteService: FavoriteService,
-    private val tweetTableGateway: TweetTableGateway
+    private val favoriteService: FavoriteService
+    //,private val tweetTableGateway: TweetTableGateway
 ) : Task {
 
   @VisibleForTesting
@@ -44,8 +44,10 @@ class LikesPullTask @Inject constructor(
     if (list.isEmpty()) {
       return
     }
+    /*
     tweetTableGateway.insertOrUpdateTweetList(
         Mapper.mapToFullTweetEntityList(list)
     )
+    */
   }
 }

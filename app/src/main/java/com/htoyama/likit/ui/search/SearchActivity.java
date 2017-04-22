@@ -32,7 +32,7 @@ import static com.htoyama.likit.common.Contract.requireNotNull;
 public class SearchActivity extends BaseRxActivity
     implements Presenter.View, AssistAdapter.OnItemClickListener {
 
-  @Inject Presenter presenter;
+  /*@Inject*/ Presenter presenter;
 
   private ActivitySearchBinding binding;
   private AssistAdapter adapter;

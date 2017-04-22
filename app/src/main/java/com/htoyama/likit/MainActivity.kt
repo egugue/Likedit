@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
       return
     }
 
-    App.component(this).inject(this)
+    App.oldComponent(this).inject(this)
 
     authButton.setOnClickListener {
       startActivity(AuthActivity.createIntent(this))
