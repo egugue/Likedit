@@ -37,7 +37,7 @@ fun Tweet.extractAllMedias(): List<MediaEntity> {
  * Extract all urls as [Url].
  */
 fun Tweet.extractUrlList(): List<Url> {
-  if (entities.urls == null) {
+  if (entities == null || entities.urls == null) {
     return emptyList()
   }
   return entities.urls.map { Url.from(it) }
@@ -48,6 +48,10 @@ fun Tweet.extractUrlList(): List<Url> {
  */
 fun Tweet.textForDisplay(): String {
   var text = this.text
+
+  if (entities == null) {
+    return text
+  }
 
   if (entities.urls != null) {
     for (url in entities.urls) {

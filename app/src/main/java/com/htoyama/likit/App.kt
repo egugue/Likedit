@@ -3,6 +3,7 @@ package com.htoyama.likit
 import android.app.Application
 import android.content.Context
 import com.htoyama.likit.background.sync.TweetSyncService
+import com.jakewharton.threetenabp.AndroidThreeTen
 import com.twitter.sdk.android.Twitter
 import com.twitter.sdk.android.core.TwitterAuthConfig
 import io.fabric.sdk.android.Fabric
@@ -32,6 +33,7 @@ open class App :Application() {
     buildComponent()
     buildFabric()
     buildRealm()
+    AndroidThreeTen.init(this)
 
     TweetSyncService.scheduleJob(this)
   }

@@ -5,12 +5,17 @@ apply plugin: 'realm-android'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.squareup.sqldelight'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-allopen'
 apply from: rootProject.file('gradle/fabric-properties-generate.gradle')
 
 repositories {
     mavenCentral()
     maven { url 'https://maven.fabric.io/public' }
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+}
+
+allOpen {
+    annotation("com.htoyama.likit.common.AllOpen")
 }
 
 android {
@@ -79,6 +84,8 @@ dependencies {
     compile 'com.trello.rxlifecycle2:rxlifecycle-android:2.0.1'
     compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.0.1'
     compile 'com.trello.rxlifecycle2:rxlifecycle-kotlin:2.0.1'
+    compile 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0-RC1'
+    compile 'com.jakewharton.threetenabp:threetenabp:1.0.5'
 
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
     compile 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
@@ -104,6 +111,7 @@ dependencies {
     testCompile 'org.mockito:mockito-core:1.9.5'
     testCompile 'com.google.truth:truth:0.32'
     testCompile 'org.robolectric:robolectric:3.3'
+    testCompile 'com.nhaarman:mockito-kotlin:1.4.0'
 
     androidTestCompile("com.android.support.test.espresso:espresso-core:2.2.2") {
         exclude module:'jsr305'

@@ -1,5 +1,6 @@
 package com.htoyama.likit.data.sqlite.tweet
 
+import com.htoyama.likit.common.AllOpen
 import com.htoyama.likit.common.Contract
 import com.htoyama.likit.data.sqlite.lib.SqliteOpenHelper
 import com.htoyama.likit.data.sqlite.lib.SqliteScripts
@@ -9,6 +10,7 @@ import javax.inject.Inject
 /**
  * A gateway that handles data via mainly tweet table.
  */
+@AllOpen
 class TweetTableGateway @Inject constructor(
     private val h: SqliteOpenHelper
 ) {

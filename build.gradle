@@ -12,6 +12,7 @@ buildscript {
 
         classpath 'com.android.tools.build:gradle:2.3.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version"
         classpath 'io.fabric.tools:gradle:1.+'
         classpath 'io.realm:realm-gradle-plugin:1.1.0'
         classpath 'me.tatarka:gradle-retrolambda:3.3.0'
@@ -22,6 +23,18 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+    }
+}
+
+// https://github.com/nhaarman/mockito-kotlin/wiki/FAQ#dependencyconflict
+subprojects {
+    configurations.all {
+        resolutionStrategy {
+            forcedModules = [
+                    "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
+                    "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+            ]
+        }
     }
 }
 

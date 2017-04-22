@@ -9,7 +9,7 @@ class Irrelevant private constructor() {
     private val INSTANCE = Irrelevant()
 
     /** Retrieve the instance. */
-    @JvmStatic fun get(): Irrelevant {
+    @JvmStatic fun get(): Any {
       return INSTANCE
     }
   }
