@@ -30,9 +30,10 @@ class TaskExecutorTest {
     whenever(likedPullTask.execute()).thenReturn(Single.just(Irrelevant.get()))
     whenever(nonLikesRemoveTask.execute()).thenReturn(Single.just(Irrelevant))
 
-    executer.execute().test()
+    val test = executer.execute().test()
 
     verify(appSetting).setLastSyncedDateAsNow()
+    test.assertValue(Irrelevant.get())
   }
 
   @Test fun execute_whenATaskIsFailed() {
