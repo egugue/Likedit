@@ -12,7 +12,6 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-
 /**
  * A [JobService] which syncs cached liked tweets on user's device
  * with liked tweets on twitter's server.
