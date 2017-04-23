@@ -3,7 +3,7 @@ package com.htoyama.likit.background.sync
 import com.htoyama.likit.background.SerivceScope
 import com.htoyama.likit.common.Irrelevant
 import com.htoyama.likit.data.prefs.AppSetting
-import io.reactivex.disposables.Disposable
+import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -18,13 +18,10 @@ class TaskExecutor @Inject constructor(
     private val appSetting: AppSetting
 ) {
 
-  fun execute(): Disposable {
+  fun execute(): Single<Any> {
     return likedPullTask.execute()
         .zipWith(nonLikesRemoveTask.execute(), BiFunction<Any, Any, Any> { _, _ -> Irrelevant.get() })
         .subscribeOn(Schedulers.newThread())
-        .subscribe(
-            { appSetting.setLastSyncedDateAsNow() },
-            { } // TODO
-        )
+        .doOnSuccess { appSetting.setLastSyncedDateAsNow() }
   }
 }

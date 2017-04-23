@@ -30,26 +30,30 @@ class TaskExecutorTest {
     whenever(likedPullTask.execute()).thenReturn(Single.just(Irrelevant.get()))
     whenever(nonLikesRemoveTask.execute()).thenReturn(Single.just(Irrelevant))
 
-    executer.execute()
+    executer.execute().test()
 
     verify(appSetting).setLastSyncedDateAsNow()
   }
 
   @Test fun execute_whenATaskIsFailed() {
-    whenever(likedPullTask.execute()).thenReturn(Single.error(Exception()))
+    val failed = Exception()
+    whenever(likedPullTask.execute()).thenReturn(Single.error(failed))
     whenever(nonLikesRemoveTask.execute()).thenReturn(Single.just(Irrelevant))
 
-    executer.execute()
+    val test = executer.execute().test()
 
     verify(appSetting, never()).setLastSyncedDateAsNow()
+    test.assertError(failed)
   }
 
   @Test fun execute_whenRemoveTaskIsFailed() {
+    val failed = Exception()
     whenever(likedPullTask.execute()).thenReturn(Single.just(Irrelevant.get()))
-    whenever(nonLikesRemoveTask.execute()).thenReturn(Single.error(Exception()))
+    whenever(nonLikesRemoveTask.execute()).thenReturn(Single.error(failed))
 
-    executer.execute()
+    val test = executer.execute().test()
 
     verify(appSetting, never()).setLastSyncedDateAsNow()
+    test.assertError(failed)
   }
 }
