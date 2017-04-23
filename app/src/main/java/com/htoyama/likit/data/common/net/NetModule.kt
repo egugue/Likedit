@@ -17,9 +17,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
 
-/**
- * Created by toyamaosamuyu on 2016/06/15.
- */
 @Module class NetModule {
 
   @Provides @Singleton fun twitterCore() =

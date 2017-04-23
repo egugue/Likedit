@@ -1,6 +1,7 @@
 package com.htoyama.likit.background.sync
 
 import android.support.annotation.VisibleForTesting
+import com.htoyama.likit.background.SerivceScope
 import com.htoyama.likit.common.AllOpen
 import com.htoyama.likit.common.Irrelevant
 import com.htoyama.likit.common.extensions.isTwitterRateLimitException
@@ -15,6 +16,7 @@ import javax.inject.Inject
 /**
  * A task which fetches likes list on twitter's server and stores the fetched list to SQLite on local.
  */
+@SerivceScope
 @AllOpen
 class LikesPullTask @Inject constructor(
     private val favoriteService: FavoriteService,

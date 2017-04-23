@@ -1,5 +1,6 @@
 package com.htoyama.likit.background.sync
 
+import com.htoyama.likit.background.SerivceScope
 import com.htoyama.likit.common.Irrelevant
 import com.htoyama.likit.data.prefs.AppSetting
 import io.reactivex.disposables.Disposable
@@ -10,6 +11,7 @@ import javax.inject.Inject
 /**
  * A class which executes all tasks related to likes sync
  */
+@SerivceScope
 class TaskExecutor @Inject constructor(
     private val likedPullTask: LikesPullTask,
     private val nonLikesRemoveTask: NonLikesRemoveTask,

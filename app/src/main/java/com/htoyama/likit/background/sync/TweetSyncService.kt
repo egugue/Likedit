@@ -8,9 +8,12 @@ import android.os.SystemClock
 import android.app.job.JobScheduler
 import android.content.ComponentName
 import android.util.Log
+import com.htoyama.likit.App
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 /**
  * A [JobService] which syncs cached liked tweets on user's device
@@ -18,8 +21,15 @@ import io.reactivex.schedulers.Schedulers
  */
 class TweetSyncService : JobService() {
 
+  @Inject lateinit var taskExecutor: TaskExecutor
+
   override fun onCreate() {
     super.onCreate()
+
+    DaggerSyncComponent.builder()
+        .appComponent(App.component(this))
+        .build()
+        .inject(this)
   }
 
   override fun onStartJob(params: JobParameters?): Boolean {
@@ -60,7 +70,7 @@ class TweetSyncService : JobService() {
       val a = jobScheduler.schedule(
           JobInfo.Builder(ID, ComponentName(context, TweetSyncService::class.java))
               .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
-              //.setPeriodic(TimeUnit.MINUTES.toMillis(15))
+              .setPeriodic(TimeUnit.HOURS.toMillis(3))
               .setRequiresCharging(true)
               .setRequiresDeviceIdle(true)
               .build())
