@@ -32,6 +32,15 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/last_sycned_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        tools:text="foo"
+        android:gravity="center"
+        />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list"
         android:layout_width="match_parent"
