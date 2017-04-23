@@ -1,6 +1,10 @@
 package com.htoyama.likit.background.sync
 
+import com.htoyama.likit.common.Irrelevant
 import com.htoyama.likit.data.prefs.AppSetting
+import io.reactivex.disposables.Disposable
+import io.reactivex.functions.BiFunction
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 /**
@@ -10,16 +14,15 @@ class TaskExecutor @Inject constructor(
     private val likedPullTask: LikesPullTask,
     private val nonLikesRemoveTask: NonLikesRemoveTask,
     private val appSetting: AppSetting
-){
+) {
 
-  fun execute() {
-    Thread {
-      val t1 = likedPullTask.execute()
-      val t2 = nonLikesRemoveTask.execute()
-
-      if (t1 != null || t2 !== null) {
-        appSetting.setLastSyncedDateAsNow()
-      }
-    }
+  fun execute(): Disposable {
+    return likedPullTask.execute()
+        .zipWith(nonLikesRemoveTask.execute(), BiFunction<Any, Any, Any> { _, _ -> Irrelevant.get() })
+        .subscribeOn(Schedulers.newThread())
+        .subscribe(
+            { appSetting.setLastSyncedDateAsNow() },
+            { } // TODO
+        )
   }
 }
