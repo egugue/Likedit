@@ -1,5 +1,6 @@
 package com.htoyama.likit.background.sync
 
+import com.htoyama.likit.common.Irrelevant
 import com.htoyama.likit.data.sqlite.tweet.TweetTableGateway
 import io.reactivex.Single
 import javax.inject.Inject
@@ -12,7 +13,6 @@ class NonLikesRemoveTask @Inject constructor(
 ) : Task {
 
   override fun execute(): Single<Any> {
-    // TODO
-    return Single.never()
+    return Single.just(Irrelevant.get())
   }
 }
