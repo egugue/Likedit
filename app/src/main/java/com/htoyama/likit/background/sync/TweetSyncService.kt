@@ -4,14 +4,12 @@ import android.app.job.JobInfo
 import android.app.job.JobParameters
 import android.app.job.JobService
 import android.content.Context
-import android.os.SystemClock
 import android.app.job.JobScheduler
 import android.content.ComponentName
 import android.util.Log
 import com.htoyama.likit.App
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -22,6 +20,7 @@ import javax.inject.Inject
 class TweetSyncService : JobService() {
 
   @Inject lateinit var taskExecutor: TaskExecutor
+  lateinit private var disposable: Disposable
 
   override fun onCreate() {
     super.onCreate()
@@ -35,30 +34,27 @@ class TweetSyncService : JobService() {
   override fun onStartJob(params: JobParameters?): Boolean {
     Log.d("ーーー", "onStartJob")
 
-    Observable.fromCallable {
-      Log.d("ーーーー", "fromCallable")
-
-      SystemClock.sleep(3000)
-    }
-        .subscribeOn(Schedulers.newThread())
+    disposable = taskExecutor.execute()
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
             {
               jobFinished(params, false)
-              scheduleJob(this@TweetSyncService)
+              scheduleJob(applicationContext)
             },
-            { t ->
-              t.printStackTrace()
+            { e ->
+              e.printStackTrace() //TODO: https://github.com/egugue/Likedit/issues/95
               jobFinished(params, false)
-              scheduleJob(this@TweetSyncService)
+              scheduleJob(applicationContext)
             }
         )
     return true
   }
 
   override fun onStopJob(params: JobParameters?): Boolean {
-    // TODO: unsubscribe observable
-    return false
+    if (!disposable.isDisposed) {
+      disposable.dispose()
+    }
+    return true
   }
 
   companion object {
