@@ -2,6 +2,7 @@ package com.htoyama.likit.data.prefs
 
 import android.content.SharedPreferences
 import com.f2prateek.rx.preferences2.RxSharedPreferences
+import com.htoyama.likit.common.AllOpen
 import com.htoyama.likit.common.CurrentTime
 import io.reactivex.Observable
 import org.threeten.bp.*
@@ -11,7 +12,7 @@ import javax.inject.Singleton
 /**
  * A setting related to the whole application.
  */
-@Singleton
+@Singleton @AllOpen
 class AppSetting @Inject constructor(
     private val prefs: SharedPreferences,
     private val rxPrefs: RxSharedPreferences

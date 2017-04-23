@@ -1,25 +1,27 @@
 package com.htoyama.likit.background.sync
 
+import com.htoyama.likit.background.SerivceScope
+import com.htoyama.likit.common.Irrelevant
 import com.htoyama.likit.data.prefs.AppSetting
+import io.reactivex.Single
+import io.reactivex.functions.BiFunction
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 /**
  * A class which executes all tasks related to likes sync
  */
+@SerivceScope
 class TaskExecutor @Inject constructor(
     private val likedPullTask: LikesPullTask,
     private val nonLikesRemoveTask: NonLikesRemoveTask,
     private val appSetting: AppSetting
-){
+) {
 
-  fun execute() {
-    Thread {
-      val t1 = likedPullTask.execute()
-      val t2 = nonLikesRemoveTask.execute()
-
-      if (t1 != null || t2 !== null) {
-        appSetting.setLastSyncedDateAsNow()
-      }
-    }
+  fun execute(): Single<Any> {
+    return likedPullTask.execute()
+        .zipWith(nonLikesRemoveTask.execute(), BiFunction<Any, Any, Any> { _, _ -> Irrelevant.get() })
+        .subscribeOn(Schedulers.newThread())
+        .doOnSuccess { appSetting.setLastSyncedDateAsNow() }
   }
 }

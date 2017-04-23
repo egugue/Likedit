@@ -2,12 +2,13 @@ package com.htoyama.likit
 
 import android.content.Intent
 import android.net.Uri
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.Button
+import android.widget.TextView
 import butterknife.bindView
+import com.htoyama.likit.data.prefs.AppSetting
 import com.htoyama.likit.domain.liked.LikedTweet
 import com.htoyama.likit.domain.liked.LikedRepository
 import com.htoyama.likit.domain.tag.TagRepository
@@ -15,12 +16,13 @@ import com.htoyama.likit.ui.common.tweet.OnTweetClickListener
 import com.htoyama.likit.ui.TweetAdapter
 import com.htoyama.likit.ui.auth.AuthActivity
 import com.htoyama.likit.ui.home.HomeActivity
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
 import com.twitter.sdk.android.core.TwitterCore
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : RxAppCompatActivity() {
 
   @Inject lateinit var likedRepository: LikedRepository
   @Inject lateinit var tagRepository: TagRepository
@@ -70,6 +72,16 @@ class MainActivity : AppCompatActivity() {
             //TODO
             //Throwable::printStackTrace
         )
+
+    initLastSyncedTimeText()
   }
 
+  @Inject lateinit var appSetting: AppSetting
+
+  private fun initLastSyncedTimeText() {
+    val view = findViewById(R.id.last_sycned_time) as TextView
+    appSetting.getLastSyncedDate()
+        .compose(bindToLifecycle())
+        .subscribe { view.text = it.toString() }
+  }
 }

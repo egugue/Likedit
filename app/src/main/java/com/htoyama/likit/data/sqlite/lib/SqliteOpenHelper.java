@@ -9,8 +9,13 @@ import com.htoyama.likit.data.sqlite.TweetModel;
 import com.htoyama.likit.data.sqlite.TweetTagRelationModel;
 import com.htoyama.likit.data.sqlite.UserModel;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class SqliteOpenHelper extends SQLiteOpenHelper {
 
+  @Inject
   public SqliteOpenHelper(Application app) {
     super(app, "likedit", null, 1);
   }
