@@ -58,7 +58,7 @@ class TweetTableGateway @Inject constructor(
       db.transaction {
         fullTweetList.forEach { ft ->
           SqliteScripts.insertOrUpdateIntoUser(db, ft.user)
-          SqliteScripts.insertOrUpdateIntoTweet(db, ft.tweet)
+          SqliteScripts.insertOrIgnoreIntoTweet(db, ft.tweet)
         }
       }
     }

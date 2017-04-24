@@ -31,7 +31,7 @@ offset ?
 ;
 
 insert_tweet:
-INSERT OR REPLACE INTO tweet (
+INSERT OR IGNORE INTO tweet (
     id,
     user_id,
     text,
