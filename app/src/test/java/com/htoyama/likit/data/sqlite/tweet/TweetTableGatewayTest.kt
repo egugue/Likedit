@@ -36,7 +36,7 @@ class TweetTableGatewayTest {
     assertThat(list).containsExactly(tweet)
   }
 
-  @Test fun shouldUpdateTweet() {
+  @Test fun `should ignore to update tweet` () {
     val original = fullTweetEntity(id = 1, userId = 1)
     val updated = fullTweetEntity(id = 1, userId = 1,
         userName = "updated user name",
@@ -46,7 +46,11 @@ class TweetTableGatewayTest {
     gateway.insertOrUpdateTweet(updated)
 
     val list = gateway.selectAllTweets()
-    assertThat(list).containsExactly(updated)
+    assertThat(list).containsExactly(
+        fullTweetEntity(id = 1, userId = 1,
+            userName = "updated user name"
+            // text = "updated tweet text"   this is expected to ignore
+        ))
   }
 
   @Test fun shouldInsertSomeTweets() {
