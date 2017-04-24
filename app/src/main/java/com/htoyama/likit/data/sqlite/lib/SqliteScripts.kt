@@ -35,7 +35,7 @@ internal object SqliteScripts {
         .mapToList { FullTweetEntity.MAPPER.map(it) }
   }
 
-  fun insertOrUpdateIntoTweet(writable: SQLiteDatabase, tweet: TweetEntity) {
+  fun insertOrIgnoreIntoTweet(writable: SQLiteDatabase, tweet: TweetEntity) {
     val stmt = TweetModel.Insert_tweet(writable, TweetEntity.FACTORY)
     tweet.apply {
       stmt.bind(id, userId, text, imageList, urlList, video, created)
