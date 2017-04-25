@@ -18,7 +18,7 @@ class TweetTableGateway @Inject constructor(
   /**
    * Select all liked tweets as [List].
    */
-  fun selectAllTweets(): List<FullTweetEntity> =
+  fun selectAllTweets(): List<FullLikedTweetEntity> =
       h.readableDatabase.use {
         SqliteScripts.selectAllTweets(it)
       }
@@ -30,7 +30,7 @@ class TweetTableGateway @Inject constructor(
    * @param page the number of page
    * @param perPage the number of tweets to retrieve per a page
    */
-  fun selectTweet(page: Int, perPage: Int): List<FullTweetEntity> {
+  fun selectTweet(page: Int, perPage: Int): List<FullLikedTweetEntity> {
     Contract.require(page > 0, "0 < page required but it was $page")
     Contract.require(perPage in 1..200, "0 < perPage < 201 required but it was $perPage")
 
@@ -44,14 +44,14 @@ class TweetTableGateway @Inject constructor(
   /**
    * Insert or update the given tweet.
    */
-  fun insertOrUpdateTweet(fullTweet: FullTweetEntity) {
+  fun insertOrUpdateTweet(fullTweet: FullLikedTweetEntity) {
     insertOrUpdateTweetList(listOf(fullTweet))
   }
 
   /**
    * Insert or update the given tweet.
    */
-  fun insertOrUpdateTweetList(fullTweetList: List<FullTweetEntity>) {
+  fun insertOrUpdateTweetList(fullTweetList: List<FullLikedTweetEntity>) {
     Contract.require(fullTweetList.isNotEmpty(), "fullTweetList must not be emtpy. but it's size was " + fullTweetList.size)
 
     h.writableDatabase.use { db ->

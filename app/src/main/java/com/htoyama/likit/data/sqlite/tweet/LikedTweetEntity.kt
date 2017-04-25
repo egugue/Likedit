@@ -2,23 +2,22 @@ package com.htoyama.likit.data.sqlite.tweet
 
 import com.google.gson.reflect.TypeToken
 import com.htoyama.likit.data.sqlite.lib.GsonProvider
-import com.htoyama.likit.data.sqlite.TweetModel
-import com.htoyama.likit.data.sqlite.user.UserEntity
+import com.htoyama.likit.data.sqlite.LikedTweetModel
 import com.htoyama.likit.domain.tweet.Url
 import com.htoyama.likit.domain.tweet.media.Photo
 import com.htoyama.likit.domain.tweet.media.Video
 import com.squareup.sqldelight.ColumnAdapter
 
 /**
- * An entity which has only Tweet table's data.
+ * An entity which has only liked_tweet table's data.
  *
  * An actual tweet has also a info about a user who tweeted.
- * But Tweet table has only user identifier, not the whole user information.
+ * But like_tweet table has only user identifier, not the whole user information.
  * That's why this class has also only user identifier.
  *
- * @see [FullTweetEntity]
+ * @see [FullLikedTweetEntity]
  */
-data class TweetEntity(
+data class LikedTweetEntity(
     val id: Long,
     val userId: Long,
     val text: String,
@@ -26,7 +25,7 @@ data class TweetEntity(
     val urlList: List<Url>,
     val video: Video?,
     val created: Long
-) : TweetModel {
+) : LikedTweetModel {
 
   override fun id(): Long = id
   override fun user_id(): Long = userId
@@ -67,8 +66,8 @@ data class TweetEntity(
       override fun encode(value: Video): String = GsonProvider.gson.toJson(value)
     }
 
-    @JvmField val FACTORY: TweetModel.Factory<TweetEntity> = TweetModel.Factory(
-        TweetModel.Creator<TweetEntity>(::TweetEntity),
+    @JvmField val FACTORY: LikedTweetModel.Factory<LikedTweetEntity> = LikedTweetModel.Factory(
+        LikedTweetModel.Creator<LikedTweetEntity>(::LikedTweetEntity),
         PHOTO_LIST_ADAPTER,
         URL_LIST_ADAPTER,
         VIDEO_ADAPTER)

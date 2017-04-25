@@ -1,14 +1,14 @@
 package com.htoyama.likit.data.sqlite.lib
 
 import android.database.sqlite.SQLiteDatabase
+import com.htoyama.likit.data.sqlite.LikedTweetModel
 import com.htoyama.likit.data.sqlite.TagModel
-import com.htoyama.likit.data.sqlite.TweetModel
 import com.htoyama.likit.data.sqlite.TweetTagRelationModel
 import com.htoyama.likit.data.sqlite.UserModel
 import com.htoyama.likit.data.sqlite.relation.TweetTagRelation
 import com.htoyama.likit.data.sqlite.tag.TagEntity
-import com.htoyama.likit.data.sqlite.tweet.FullTweetEntity
-import com.htoyama.likit.data.sqlite.tweet.TweetEntity
+import com.htoyama.likit.data.sqlite.tweet.FullLikedTweetEntity
+import com.htoyama.likit.data.sqlite.tweet.LikedTweetEntity
 import com.htoyama.likit.data.sqlite.user.UserEntity
 
 /**
@@ -23,20 +23,20 @@ internal object SqliteScripts {
   /**
    * Select all stored liked tweets as list.
    */
-  fun selectAllTweets(readable: SQLiteDatabase): List<FullTweetEntity> {
-    val stmt = TweetEntity.FACTORY.select_all()
+  fun selectAllTweets(readable: SQLiteDatabase): List<FullLikedTweetEntity> {
+    val stmt = LikedTweetEntity.FACTORY.select_all()
     return readable.rawQuery(stmt.statement, stmt.args)
-        .mapToList { FullTweetEntity.MAPPER.map(it) }
+        .mapToList { FullLikedTweetEntity.MAPPER.map(it) }
   }
 
-  fun selectTweets(limit: Long, offset: Long, readable: SQLiteDatabase): List<FullTweetEntity> {
-    val stmt = TweetEntity.FACTORY.select_tweets(limit, offset)
+  fun selectTweets(limit: Long, offset: Long, readable: SQLiteDatabase): List<FullLikedTweetEntity> {
+    val stmt = LikedTweetEntity.FACTORY.select_liked_tweets(limit, offset)
     return readable.rawQuery(stmt.statement, stmt.args)
-        .mapToList { FullTweetEntity.MAPPER.map(it) }
+        .mapToList { FullLikedTweetEntity.MAPPER.map(it) }
   }
 
-  fun insertOrIgnoreIntoTweet(writable: SQLiteDatabase, tweet: TweetEntity) {
-    val stmt = TweetModel.Insert_tweet(writable, TweetEntity.FACTORY)
+  fun insertOrIgnoreIntoTweet(writable: SQLiteDatabase, tweet: LikedTweetEntity) {
+    val stmt = LikedTweetModel.Insert_liked_tweet(writable, LikedTweetEntity.FACTORY)
     tweet.apply {
       stmt.bind(id, userId, text, imageList, urlList, video, created)
     }
@@ -44,7 +44,7 @@ internal object SqliteScripts {
   }
 
   fun deleteTweetById(writable: SQLiteDatabase, tweetId: Long) =
-      TweetModel.Delete_by_id(writable).run {
+      LikedTweetModel.Delete_by_id(writable).run {
         bind(tweetId)
         program.executeUpdateDelete()
       }
