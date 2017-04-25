@@ -11,7 +11,7 @@ import javax.inject.Inject
  * A gateway that handles data via mainly tweet table.
  */
 @AllOpen
-class TweetTableGateway @Inject constructor(
+class LikedTweetTableGateway @Inject constructor(
     private val h: SqliteOpenHelper
 ) {
 

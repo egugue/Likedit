@@ -1,7 +1,7 @@
 package com.htoyama.likit.background.sync
 
 import com.htoyama.likit.data.common.net.FavoriteService
-import com.htoyama.likit.data.sqlite.tweet.TweetTableGateway
+import com.htoyama.likit.data.sqlite.tweet.LikedTweetTableGateway
 import com.htoyama.likit.twitterTweet
 import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Single
@@ -15,7 +15,7 @@ import java.lang.IllegalStateException
 
 class LikesPullTaskTest {
   @Mock lateinit var service: FavoriteService
-  @Mock lateinit var gateway: TweetTableGateway
+  @Mock lateinit var gateway: LikedTweetTableGateway
   lateinit var task: LikesPullTask
 
   @Before fun setUp() {

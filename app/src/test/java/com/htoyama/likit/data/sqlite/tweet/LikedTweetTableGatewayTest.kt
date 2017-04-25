@@ -13,13 +13,13 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
-class TweetTableGatewayTest {
-  lateinit var gateway: TweetTableGateway
+class LikedTweetTableGatewayTest {
+  lateinit var gateway: LikedTweetTableGateway
   lateinit var helper: SqliteOpenHelper
 
   @Before fun setUp() {
     helper = SqliteOpenHelper(RuntimeEnvironment.application)
-    gateway = TweetTableGateway(helper)
+    gateway = LikedTweetTableGateway(helper)
   }
 
   @After fun tearDown() {

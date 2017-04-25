@@ -2,7 +2,7 @@ package com.htoyama.likit.background.sync
 
 import com.htoyama.likit.common.AllOpen
 import com.htoyama.likit.common.Irrelevant
-import com.htoyama.likit.data.sqlite.tweet.TweetTableGateway
+import com.htoyama.likit.data.sqlite.tweet.LikedTweetTableGateway
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -11,7 +11,7 @@ import javax.inject.Inject
  */
 @AllOpen
 class NonLikesRemoveTask @Inject constructor(
-    private val tweetTableGateway: TweetTableGateway
+    private val tweetTableGateway: LikedTweetTableGateway
 ) : Task {
 
   override fun execute(): Single<Any> {
