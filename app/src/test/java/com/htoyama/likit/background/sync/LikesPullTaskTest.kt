@@ -1,7 +1,7 @@
 package com.htoyama.likit.background.sync
 
 import com.htoyama.likit.data.common.net.FavoriteService
-import com.htoyama.likit.data.sqlite.tweet.LikedTweetTableGateway
+import com.htoyama.likit.data.sqlite.likedtweet.LikedTweetTableGateway
 import com.htoyama.likit.twitterTweet
 import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Single

@@ -2,7 +2,7 @@ package com.htoyama.likit.background.sync
 
 import com.htoyama.likit.common.AllOpen
 import com.htoyama.likit.common.Irrelevant
-import com.htoyama.likit.data.sqlite.tweet.LikedTweetTableGateway
+import com.htoyama.likit.data.sqlite.likedtweet.LikedTweetTableGateway
 import io.reactivex.Single
 import javax.inject.Inject
 

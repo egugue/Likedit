@@ -1,8 +1,8 @@
 package com.htoyama.likit.background.sync
 
 import com.htoyama.likit.common.extensions.*
-import com.htoyama.likit.data.sqlite.tweet.FullLikedTweetEntity
-import com.htoyama.likit.data.sqlite.tweet.LikedTweetEntity
+import com.htoyama.likit.data.sqlite.likedtweet.FullLikedTweetEntity
+import com.htoyama.likit.data.sqlite.likedtweet.LikedTweetEntity
 import com.htoyama.likit.data.sqlite.user.UserEntity
 import com.twitter.sdk.android.core.models.Tweet
 import com.twitter.sdk.android.core.models.User

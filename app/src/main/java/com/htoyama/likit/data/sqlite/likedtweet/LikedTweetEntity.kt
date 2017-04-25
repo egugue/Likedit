@@ -1,4 +1,4 @@
-package com.htoyama.likit.data.sqlite.tweet
+package com.htoyama.likit.data.sqlite.likedtweet
 
 import com.google.gson.reflect.TypeToken
 import com.htoyama.likit.data.sqlite.lib.GsonProvider

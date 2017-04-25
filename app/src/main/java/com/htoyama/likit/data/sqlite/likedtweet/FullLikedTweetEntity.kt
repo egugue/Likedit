@@ -1,4 +1,4 @@
-package com.htoyama.likit.data.sqlite.tweet
+package com.htoyama.likit.data.sqlite.likedtweet
 
 import com.htoyama.likit.data.sqlite.LikedTweetModel
 import com.htoyama.likit.data.sqlite.user.UserEntity

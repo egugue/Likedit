@@ -1,4 +1,4 @@
-package com.htoyama.likit.data.sqlite.tweet
+package com.htoyama.likit.data.sqlite.likedtweet
 
 import com.htoyama.likit.PhotoBuilder
 import com.htoyama.likit.data.sqlite.fullTweetEntity

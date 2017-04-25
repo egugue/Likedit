@@ -5,7 +5,7 @@ import com.google.common.truth.Truth.assertThat
 import com.htoyama.likit.data.sqlite.fullTweetEntity
 import com.htoyama.likit.data.sqlite.lib.SqliteOpenHelper
 import com.htoyama.likit.data.sqlite.tag.TagTableGateway
-import com.htoyama.likit.data.sqlite.tweet.LikedTweetTableGateway
+import com.htoyama.likit.data.sqlite.likedtweet.LikedTweetTableGateway
 import com.htoyama.likit.data.sqlite.tweetTagRelation
 import org.junit.After
 import org.junit.Assert.*
