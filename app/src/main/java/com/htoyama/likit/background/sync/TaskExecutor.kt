@@ -13,7 +13,7 @@ import javax.inject.Inject
  */
 @SerivceScope
 class TaskExecutor @Inject constructor(
-    private val likedPullTask: LikesPullTask,
+    private val likedPullTask: LikedTweetPullTask,
     private val nonLikesRemoveTask: NonLikesRemoveTask,
     private val appSetting: AppSetting
 ) {

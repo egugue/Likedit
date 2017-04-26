@@ -18,7 +18,7 @@ import javax.inject.Inject
  */
 @SerivceScope
 @AllOpen
-class LikesPullTask @Inject constructor(
+class LikedTweetPullTask @Inject constructor(
     private val favoriteService: FavoriteService,
     private val tweetTableGateway: LikedTweetTableGateway
 ) : Task {

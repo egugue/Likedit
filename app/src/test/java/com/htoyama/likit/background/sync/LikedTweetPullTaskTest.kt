@@ -13,14 +13,14 @@ import retrofit2.HttpException
 import retrofit2.Response
 import java.lang.IllegalStateException
 
-class LikesPullTaskTest {
+class LikedTweetPullTaskTest {
   @Mock lateinit var service: FavoriteService
   @Mock lateinit var gateway: LikedTweetTableGateway
-  lateinit var task: LikesPullTask
+  lateinit var task: LikedTweetPullTask
 
   @Before fun setUp() {
     MockitoAnnotations.initMocks(this)
-    task = LikesPullTask(service, gateway)
+    task = LikedTweetPullTask(service, gateway)
   }
 
   /**
