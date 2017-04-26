@@ -8,7 +8,7 @@ import javax.inject.Inject
 /**
  * An application service related to [LikedTweet]
  */
-class LikedAppService @Inject internal constructor(
+class LikedTweetAppService @Inject internal constructor(
     private val likedRepository: LikedRepository
 ){
 
