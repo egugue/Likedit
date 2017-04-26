@@ -1,4 +1,4 @@
-package com.htoyama.likit.application.liked
+package com.htoyama.likit.application.likedtweet
 
 import com.htoyama.likit.domain.likedtweet.LikedRepository
 import com.htoyama.likit.domain.likedtweet.LikedTweet

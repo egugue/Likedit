@@ -1,6 +1,6 @@
 package com.htoyama.likit.ui.tag.tweet.select
 
-import com.htoyama.likit.application.liked.LikedTweetAppService
+import com.htoyama.likit.application.likedtweet.LikedTweetAppService
 import com.htoyama.likit.domain.likedtweet.LikedTweet
 import com.htoyama.likit.ui.common.base.BasePresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
