@@ -7,13 +7,15 @@ import javax.inject.Inject
 
 /**
  * A gateway that handles data via mainly tweet_tag_relation table.
+ *
+ * NOTE: Tweet of this class name means "Liked Tweet".
  */
 class TweetTagRelationTableGateway @Inject constructor(
     private val h: SqliteOpenHelper
 ) {
 
   /**
-   * Select all relations between a tweet and a tag.
+   * Select all relations between a liked tweet and a tag.
    */
   fun selectAllTweetTagRelations(): List<TweetTagRelation> {
     return h.readableDatabase.use {
@@ -22,7 +24,7 @@ class TweetTagRelationTableGateway @Inject constructor(
   }
 
   /**
-   * Insert relations between a tweet and a tag.
+   * Insert relations between a liked tweet and a tag.
    */
   fun insertTweetTagRelation(tweetIdlist: List<Long>, tagId: Long) {
     h.writableDatabase.use { db ->
@@ -35,7 +37,7 @@ class TweetTagRelationTableGateway @Inject constructor(
   }
 
   /**
-   * Delete relations between a tweet and a tag.
+   * Delete relations between a liked tweet and a tag.
    */
   fun deleteTweetTagRelation(tweetIdlist: List<Long>, tagId: Long) {
     h.writableDatabase.use { db ->
