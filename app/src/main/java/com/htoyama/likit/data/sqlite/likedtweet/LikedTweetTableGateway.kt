@@ -20,7 +20,7 @@ class LikedTweetTableGateway @Inject constructor(
    */
   fun selectAllTweets(): List<FullLikedTweetEntity> =
       h.readableDatabase.use {
-        SqliteScripts.selectAllTweets(it)
+        SqliteScripts.selectAllLikedTweets(it)
       }
 
   /**
@@ -37,7 +37,7 @@ class LikedTweetTableGateway @Inject constructor(
     return h.readableDatabase.use {
       val limit = perPage.toLong()
       val offset = (page - 1) * limit
-      SqliteScripts.selectTweets(limit, offset, it)
+      SqliteScripts.selectLikedTweets(limit, offset, it)
     }
   }
 
@@ -58,7 +58,7 @@ class LikedTweetTableGateway @Inject constructor(
       db.transaction {
         fullTweetList.forEach { ft ->
           SqliteScripts.insertOrUpdateIntoUser(db, ft.user)
-          SqliteScripts.insertOrIgnoreIntoTweet(db, ft.tweet)
+          SqliteScripts.insertOrIgnoreIntoLikedTweet(db, ft.tweet)
         }
       }
     }
@@ -70,7 +70,7 @@ class LikedTweetTableGateway @Inject constructor(
   fun deleteTweetById(tweetId: Long) {
     h.writableDatabase.use {
       it.transaction {
-        SqliteScripts.deleteTweetById(it, tweetId)
+        SqliteScripts.deleteLikedTweetById(it, tweetId)
       }
     }
   }

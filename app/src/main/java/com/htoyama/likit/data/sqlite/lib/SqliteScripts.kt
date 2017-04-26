@@ -23,19 +23,19 @@ internal object SqliteScripts {
   /**
    * Select all stored liked tweets as list.
    */
-  fun selectAllTweets(readable: SQLiteDatabase): List<FullLikedTweetEntity> {
+  fun selectAllLikedTweets(readable: SQLiteDatabase): List<FullLikedTweetEntity> {
     val stmt = LikedTweetEntity.FACTORY.select_all()
     return readable.rawQuery(stmt.statement, stmt.args)
         .mapToList { FullLikedTweetEntity.MAPPER.map(it) }
   }
 
-  fun selectTweets(limit: Long, offset: Long, readable: SQLiteDatabase): List<FullLikedTweetEntity> {
+  fun selectLikedTweets(limit: Long, offset: Long, readable: SQLiteDatabase): List<FullLikedTweetEntity> {
     val stmt = LikedTweetEntity.FACTORY.select_liked_tweets(limit, offset)
     return readable.rawQuery(stmt.statement, stmt.args)
         .mapToList { FullLikedTweetEntity.MAPPER.map(it) }
   }
 
-  fun insertOrIgnoreIntoTweet(writable: SQLiteDatabase, tweet: LikedTweetEntity) {
+  fun insertOrIgnoreIntoLikedTweet(writable: SQLiteDatabase, tweet: LikedTweetEntity) {
     val stmt = LikedTweetModel.Insert_liked_tweet(writable, LikedTweetEntity.FACTORY)
     tweet.apply {
       stmt.bind(id, userId, text, imageList, urlList, video, created)
@@ -43,7 +43,7 @@ internal object SqliteScripts {
     stmt.program.executeInsert()
   }
 
-  fun deleteTweetById(writable: SQLiteDatabase, tweetId: Long) =
+  fun deleteLikedTweetById(writable: SQLiteDatabase, tweetId: Long) =
       LikedTweetModel.Delete_by_id(writable).run {
         bind(tweetId)
         program.executeUpdateDelete()
