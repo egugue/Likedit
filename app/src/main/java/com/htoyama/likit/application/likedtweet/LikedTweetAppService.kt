@@ -1,14 +1,14 @@
-package com.htoyama.likit.application.liked
+package com.htoyama.likit.application.likedtweet
 
-import com.htoyama.likit.domain.liked.LikedRepository
-import com.htoyama.likit.domain.liked.LikedTweet
+import com.htoyama.likit.domain.likedtweet.LikedRepository
+import com.htoyama.likit.domain.likedtweet.LikedTweet
 import io.reactivex.Single
 import javax.inject.Inject
 
 /**
  * An application service related to [LikedTweet]
  */
-class LikedAppService @Inject internal constructor(
+class LikedTweetAppService @Inject internal constructor(
     private val likedRepository: LikedRepository
 ){
 

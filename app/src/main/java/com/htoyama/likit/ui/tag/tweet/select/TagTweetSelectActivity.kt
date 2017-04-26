@@ -12,7 +12,7 @@ import butterknife.bindView
 import com.htoyama.likit.App
 
 import com.htoyama.likit.R
-import com.htoyama.likit.domain.liked.LikedTweet
+import com.htoyama.likit.domain.likedtweet.LikedTweet
 import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.ui.common.DividerItemDecoration
 import com.htoyama.likit.ui.common.StateLayout

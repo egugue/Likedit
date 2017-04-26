@@ -2,7 +2,7 @@ package com.htoyama.likit.data.liked
 
 import com.htoyama.likit.TweetBuilder
 import com.htoyama.likit.data.liked.tweet.LikedTweetDao
-import com.htoyama.likit.domain.liked.LikedBuilder
+import com.htoyama.likit.domain.likedtweet.LikedBuilder
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock

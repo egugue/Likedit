@@ -1,28 +1,28 @@
 package com.htoyama.likit.background.sync
 
 import com.htoyama.likit.common.extensions.*
-import com.htoyama.likit.data.sqlite.tweet.FullTweetEntity
-import com.htoyama.likit.data.sqlite.tweet.TweetEntity
+import com.htoyama.likit.data.sqlite.likedtweet.FullLikedTweetEntity
+import com.htoyama.likit.data.sqlite.likedtweet.LikedTweetEntity
 import com.htoyama.likit.data.sqlite.user.UserEntity
 import com.twitter.sdk.android.core.models.Tweet
 import com.twitter.sdk.android.core.models.User
 
 /**
- * Transform between [FullTweetEntity] and [Tweet]
+ * Transform between [FullLikedTweetEntity] and [Tweet]
  */
 object Mapper {
 
   /**
-   * Map the given [Tweet] list into [FullTweetEntity] list
+   * Map the given [Tweet] list into [FullLikedTweetEntity] list
    */
-  fun mapToFullTweetEntityList(dtoList: List<Tweet>): List<FullTweetEntity> {
+  fun mapToFullTweetEntityList(dtoList: List<Tweet>): List<FullLikedTweetEntity> {
     return dtoList.map { it -> mapToFullTweetEntity(it) }
   }
 
   /**
-   * Map the given [Tweet] into [FullTweetEntity]
+   * Map the given [Tweet] into [FullLikedTweetEntity]
    */
-  fun mapToFullTweetEntity(d: Tweet): FullTweetEntity {
+  fun mapToFullTweetEntity(d: Tweet): FullLikedTweetEntity {
     var dto = d
     if (d.retweetedStatus != null) {
       dto = d.retweetedStatus
@@ -36,8 +36,8 @@ object Mapper {
     val urlsList = dto.extractUrlList()
     val createdAt = dto.createdToLong()
 
-    return FullTweetEntity(
-        TweetEntity(
+    return FullLikedTweetEntity(
+        LikedTweetEntity(
             d.id,
             user.id,
             text,

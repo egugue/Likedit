@@ -7,7 +7,7 @@ import com.htoyama.likit.common.Irrelevant
 import com.htoyama.likit.common.extensions.isTwitterRateLimitException
 import com.htoyama.likit.common.extensions.onErrorReturnOrJustThrow
 import com.htoyama.likit.data.common.net.FavoriteService
-import com.htoyama.likit.data.sqlite.tweet.TweetTableGateway
+import com.htoyama.likit.data.sqlite.likedtweet.LikedTweetTableGateway
 import com.twitter.sdk.android.core.models.Tweet
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -18,9 +18,9 @@ import javax.inject.Inject
  */
 @SerivceScope
 @AllOpen
-class LikesPullTask @Inject constructor(
+class LikedTweetPullTask @Inject constructor(
     private val favoriteService: FavoriteService,
-    private val tweetTableGateway: TweetTableGateway
+    private val tweetTableGateway: LikedTweetTableGateway
 ) : Task {
 
   @VisibleForTesting

@@ -1,7 +1,7 @@
 package com.htoyama.likit.ui.tag.tweet.select
 
-import com.htoyama.likit.application.liked.LikedAppService
-import com.htoyama.likit.domain.liked.LikedTweet
+import com.htoyama.likit.application.likedtweet.LikedTweetAppService
+import com.htoyama.likit.domain.likedtweet.LikedTweet
 import com.htoyama.likit.ui.common.base.BasePresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 @TagTweetSelectScope
 internal class Presenter @Inject constructor(
-  private val appService: LikedAppService
+  private val appService: LikedTweetAppService
 ) : BasePresenter<Presenter.View>() {
 
   interface View {

@@ -5,7 +5,7 @@ import com.google.common.truth.Truth.assertThat
 import com.htoyama.likit.data.sqlite.fullTweetEntity
 import com.htoyama.likit.data.sqlite.lib.SqliteOpenHelper
 import com.htoyama.likit.data.sqlite.tag.TagTableGateway
-import com.htoyama.likit.data.sqlite.tweet.TweetTableGateway
+import com.htoyama.likit.data.sqlite.likedtweet.LikedTweetTableGateway
 import com.htoyama.likit.data.sqlite.tweetTagRelation
 import org.junit.After
 import org.junit.Assert.*
@@ -19,14 +19,14 @@ import org.robolectric.RuntimeEnvironment
 class TweetTagRelationTableGatewayTest {
   lateinit var gateway: TweetTagRelationTableGateway
   lateinit var tagGateway: TagTableGateway
-  lateinit var tweetGateway: TweetTableGateway
+  lateinit var tweetGateway: LikedTweetTableGateway
   lateinit var helper: SqliteOpenHelper
 
   @Before fun setUp() {
     helper = SqliteOpenHelper(RuntimeEnvironment.application)
     gateway = TweetTagRelationTableGateway(helper)
     tagGateway = TagTableGateway(helper)
-    tweetGateway = TweetTableGateway(helper)
+    tweetGateway = LikedTweetTableGateway(helper)
   }
 
   @After fun tearDown() {

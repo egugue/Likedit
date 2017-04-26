@@ -16,7 +16,7 @@ import org.mockito.MockitoAnnotations
 class TaskExecutorTest {
   @Rule @JvmField val rule = TestSchedulerRule()
 
-  @Mock lateinit var likedPullTask: LikesPullTask
+  @Mock lateinit var likedPullTask: LikedTweetPullTask
   @Mock lateinit var nonLikesRemoveTask: NonLikesRemoveTask
   @Mock lateinit var appSetting: AppSetting
   lateinit var executer: TaskExecutor
