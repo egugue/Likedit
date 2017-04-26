@@ -26,10 +26,10 @@ class TweetTagRelationTableGateway @Inject constructor(
   /**
    * Insert relations between a liked tweet and a tag.
    */
-  fun insertTweetTagRelation(tweetIdlist: List<Long>, tagId: Long) {
+  fun insertTweetTagRelation(tweetIdList: List<Long>, tagId: Long) {
     h.writableDatabase.use { db ->
       db.transaction {
-        tweetIdlist.forEach { tweetId ->
+        tweetIdList.forEach { tweetId ->
           SqliteScripts.insertTweetTagRelation(db, tweetId, tagId)
         }
       }
@@ -39,10 +39,10 @@ class TweetTagRelationTableGateway @Inject constructor(
   /**
    * Delete relations between a liked tweet and a tag.
    */
-  fun deleteTweetTagRelation(tweetIdlist: List<Long>, tagId: Long) {
+  fun deleteTweetTagRelation(tweetIdList: List<Long>, tagId: Long) {
     h.writableDatabase.use { db ->
       db.transaction {
-        tweetIdlist.forEach { tweetId ->
+        tweetIdList.forEach { tweetId ->
           SqliteScripts.deleteTweetTagRelation(db, tweetId, tagId)
         }
       }
