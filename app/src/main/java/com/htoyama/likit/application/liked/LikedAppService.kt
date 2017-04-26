@@ -1,7 +1,7 @@
 package com.htoyama.likit.application.liked
 
-import com.htoyama.likit.domain.liked.LikedRepository
-import com.htoyama.likit.domain.liked.LikedTweet
+import com.htoyama.likit.domain.likedtweet.LikedRepository
+import com.htoyama.likit.domain.likedtweet.LikedTweet
 import io.reactivex.Single
 import javax.inject.Inject
 

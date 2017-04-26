@@ -1,8 +1,8 @@
 package com.htoyama.likit.data.liked
 
 import com.htoyama.likit.data.liked.tweet.LikedTweetDao
-import com.htoyama.likit.domain.liked.LikedTweet
-import com.htoyama.likit.domain.liked.LikedRepository
+import com.htoyama.likit.domain.likedtweet.LikedTweet
+import com.htoyama.likit.domain.likedtweet.LikedRepository
 import com.htoyama.likit.domain.tag.Tag
 import io.reactivex.Single
 

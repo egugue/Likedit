@@ -10,7 +10,7 @@ import com.htoyama.likit.data.liked.tweet.LikedTweetDao
 import com.htoyama.likit.data.sqlite.SqliteModule
 import com.htoyama.likit.data.user.UserRealmDao
 import com.htoyama.likit.data.user.UserRepositoryImpl
-import com.htoyama.likit.domain.liked.LikedRepository
+import com.htoyama.likit.domain.likedtweet.LikedRepository
 import com.htoyama.likit.domain.tag.TagRepository
 import com.htoyama.likit.domain.user.UserRepository
 import dagger.Module

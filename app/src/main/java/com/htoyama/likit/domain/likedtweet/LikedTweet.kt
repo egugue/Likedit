@@ -1,4 +1,4 @@
-package com.htoyama.likit.domain.liked
+package com.htoyama.likit.domain.likedtweet
 
 import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.domain.tweet.Tweet

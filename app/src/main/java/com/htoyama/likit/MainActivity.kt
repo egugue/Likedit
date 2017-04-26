@@ -9,8 +9,8 @@ import android.widget.Button
 import android.widget.TextView
 import butterknife.bindView
 import com.htoyama.likit.data.prefs.AppSetting
-import com.htoyama.likit.domain.liked.LikedTweet
-import com.htoyama.likit.domain.liked.LikedRepository
+import com.htoyama.likit.domain.likedtweet.LikedTweet
+import com.htoyama.likit.domain.likedtweet.LikedRepository
 import com.htoyama.likit.domain.tag.TagRepository
 import com.htoyama.likit.ui.common.tweet.OnTweetClickListener
 import com.htoyama.likit.ui.TweetAdapter

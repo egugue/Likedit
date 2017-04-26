@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.htoyama.likit.R
-import com.htoyama.likit.domain.liked.LikedTweet
+import com.htoyama.likit.domain.likedtweet.LikedTweet
 import com.htoyama.likit.ui.common.tweet.TweetView
 import java.util.*
 

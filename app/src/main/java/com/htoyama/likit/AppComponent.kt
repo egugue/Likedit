@@ -3,7 +3,7 @@ package com.htoyama.likit
 import com.htoyama.likit.data.common.net.FavoriteService
 import com.htoyama.likit.data.prefs.AppSetting
 import com.htoyama.likit.data.sqlite.likedtweet.LikedTweetTableGateway
-import com.htoyama.likit.domain.liked.LikedRepository
+import com.htoyama.likit.domain.likedtweet.LikedRepository
 import com.htoyama.likit.domain.tag.TagRepository
 import com.htoyama.likit.domain.user.UserRepository
 import com.htoyama.likit.ui.auth.AuthActivity

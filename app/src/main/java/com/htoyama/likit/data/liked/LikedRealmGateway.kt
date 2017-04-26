@@ -3,7 +3,7 @@ package com.htoyama.likit.data.liked
 import android.util.LongSparseArray
 import com.htoyama.likit.data.liked.tweet.cache.TweetMapper
 import com.htoyama.likit.data.tag.TagMapper
-import com.htoyama.likit.domain.liked.LikedTweet
+import com.htoyama.likit.domain.likedtweet.LikedTweet
 import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.domain.tweet.Tweet
 import io.realm.Realm

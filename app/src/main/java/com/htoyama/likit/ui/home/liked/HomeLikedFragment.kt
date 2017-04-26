@@ -10,8 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.htoyama.likit.R
-import com.htoyama.likit.domain.liked.LikedRepository
-import com.htoyama.likit.domain.liked.LikedTweet
+import com.htoyama.likit.domain.likedtweet.LikedRepository
+import com.htoyama.likit.domain.likedtweet.LikedTweet
 import com.htoyama.likit.ui.TweetAdapter
 import com.htoyama.likit.ui.home.HomeActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
