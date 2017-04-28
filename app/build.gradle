@@ -100,6 +100,7 @@ dependencies {
 
     // If it is missing, we can see error on CI https://github.com/square/sqldelight/issues/563
     compile 'com.squareup.sqldelight:runtime:0.6.1'
+    compile 'com.squareup.sqlbrite:sqlbrite:1.1.1'
 
     kapt 'com.android.databinding:compiler:2.3.0'
 
