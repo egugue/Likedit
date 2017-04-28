@@ -16,7 +16,7 @@ import javax.inject.Inject
  */
 @AllOpen
 class LikedTweetTableGateway @Inject constructor(
-    private val b: BriteDatabase
+    private val db: BriteDatabase
 ) {
 
   /**
@@ -25,7 +25,7 @@ class LikedTweetTableGateway @Inject constructor(
   fun selectAllTweets(): Observable<List<FullLikedTweetEntity>> {
     val stmt = LikedTweetEntity.FACTORY.select_all()
 
-    return b.createQuery(LikedTweetModel.TABLE_NAME, stmt.statement, stmt.args)
+    return db.createQuery(LikedTweetModel.TABLE_NAME, stmt.statement, stmt.args)
         .mapToList { FullLikedTweetEntity.MAPPER.map(it) }
         .toV2Observable()
   }
@@ -45,7 +45,7 @@ class LikedTweetTableGateway @Inject constructor(
     val offset = (page - 1) * limit
     val stmt = LikedTweetEntity.FACTORY.select_liked_tweets(limit, offset)
 
-    return b.createQuery(LikedTweetModel.TABLE_NAME, stmt.statement, stmt.args)
+    return db.createQuery(LikedTweetModel.TABLE_NAME, stmt.statement, stmt.args)
         .mapToList { FullLikedTweetEntity.MAPPER.map(it) }
         .toV2Observable()
   }
@@ -63,7 +63,7 @@ class LikedTweetTableGateway @Inject constructor(
   fun insertOrUpdateTweetList(fullTweetList: List<FullLikedTweetEntity>) {
     Contract.require(fullTweetList.isNotEmpty(), "fullTweetList must not be emtpy. but it's size was " + fullTweetList.size)
 
-    b.writableDatabase.use { db ->
+    db.writableDatabase.use { db ->
       db.transaction {
         fullTweetList.forEach { ft ->
           SqliteScripts.insertOrUpdateIntoUser(db, ft.user)
@@ -77,7 +77,7 @@ class LikedTweetTableGateway @Inject constructor(
    * Delete the tweet with the given id.
    */
   fun deleteTweetById(tweetId: Long) {
-    b.writableDatabase.use {
+    db.writableDatabase.use {
       it.transaction {
         SqliteScripts.deleteLikedTweetById(it, tweetId)
       }
