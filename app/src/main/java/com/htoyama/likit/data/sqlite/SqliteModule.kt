@@ -24,7 +24,7 @@ import javax.inject.Singleton
   }
 
   @Provides @Singleton fun database(helper: SqliteOpenHelper, sqlBrite: SqlBrite): BriteDatabase {
-    val db = sqlBrite.wrapDatabaseHelper(helper, Schedulers.io())
+    val db = sqlBrite.wrapDatabaseHelper(helper, Schedulers.immediate())
     if (BuildConfig.DEBUG) {
       db.setLoggingEnabled(true)
     }
