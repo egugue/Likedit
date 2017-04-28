@@ -6,7 +6,7 @@ import io.reactivex.Single
 /**
  * A repository related to [LikedTweet]
  */
-interface LikedRepository {
+interface LikedTweetRepository {
 
   /**
    * Retrieves all [LikedTweet] as list.

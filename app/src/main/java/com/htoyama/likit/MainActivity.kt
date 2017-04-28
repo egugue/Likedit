@@ -10,7 +10,7 @@ import android.widget.TextView
 import butterknife.bindView
 import com.htoyama.likit.data.prefs.AppSetting
 import com.htoyama.likit.domain.likedtweet.LikedTweet
-import com.htoyama.likit.domain.likedtweet.LikedRepository
+import com.htoyama.likit.domain.likedtweet.LikedTweetRepository
 import com.htoyama.likit.domain.tag.TagRepository
 import com.htoyama.likit.ui.common.tweet.OnTweetClickListener
 import com.htoyama.likit.ui.TweetAdapter
@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 class MainActivity : RxAppCompatActivity() {
 
-  @Inject lateinit var likedRepository: LikedRepository
+  @Inject lateinit var likedRepository: LikedTweetRepository
   @Inject lateinit var tagRepository: TagRepository
   val authButton: Button by bindView(R.id.auth_button)
   val homeButton: Button by bindView(R.id.home_button)
