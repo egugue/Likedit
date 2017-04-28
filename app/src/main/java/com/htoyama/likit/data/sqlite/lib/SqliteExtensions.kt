@@ -4,6 +4,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import com.squareup.sqlbrite.BriteDatabase
 import com.squareup.sqlbrite.QueryObservable
+import com.squareup.sqldelight.SqlDelightStatement
 
 /* Cursor extensions */
 
@@ -75,5 +76,5 @@ fun <T> BriteDatabase.transaction(unitOfWork: () -> T): T {
 
 }
 
-fun BriteDatabase.createQuery(tableName: String, query: String, args: Array<out String>): QueryObservable
-    = createQuery(tableName, query, *args)
+fun BriteDatabase.createQuery(stmt: SqlDelightStatement): QueryObservable
+    = createQuery(stmt.tables, stmt.statement, *stmt.args)
