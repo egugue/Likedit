@@ -1,6 +1,6 @@
 package com.htoyama.likit.background.sync
 
-import com.htoyama.likit.data.common.net.FavoriteService
+import com.htoyama.likit.data.net.FavoriteService
 import com.htoyama.likit.data.sqlite.likedtweet.LikedTweetTableGateway
 import com.htoyama.likit.twitterTweet
 import com.nhaarman.mockito_kotlin.*

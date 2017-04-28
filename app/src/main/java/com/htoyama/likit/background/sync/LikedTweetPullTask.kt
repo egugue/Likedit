@@ -6,7 +6,7 @@ import com.htoyama.likit.common.AllOpen
 import com.htoyama.likit.common.Irrelevant
 import com.htoyama.likit.common.extensions.isTwitterRateLimitException
 import com.htoyama.likit.common.extensions.onErrorReturnOrJustThrow
-import com.htoyama.likit.data.common.net.FavoriteService
+import com.htoyama.likit.data.net.FavoriteService
 import com.htoyama.likit.data.sqlite.likedtweet.LikedTweetTableGateway
 import com.twitter.sdk.android.core.models.Tweet
 import io.reactivex.Observable

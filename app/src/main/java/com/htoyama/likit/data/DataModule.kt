@@ -1,7 +1,7 @@
 package com.htoyama.likit.data
 
-import com.htoyama.likit.data.common.net.NetModule
-import com.htoyama.likit.data.common.pref.PrefModule
+import com.htoyama.likit.data.net.NetModule
+import com.htoyama.likit.data.prefs.PrefModule
 import com.htoyama.likit.data.sqlite.SqliteModule
 import com.htoyama.likit.domain.likedtweet.LikedTweetRepository
 import com.htoyama.likit.domain.tag.TagRepository

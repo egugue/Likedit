@@ -1,6 +1,6 @@
 package com.htoyama.likit.data.prefs
 
-import com.htoyama.likit.data.common.pref.PrefModule
+import com.htoyama.likit.data.prefs.PrefModule
 import com.htoyama.likit.testutil.CurrentTimeRule
 import com.htoyama.likit.testutil.Now
 import org.junit.Before
