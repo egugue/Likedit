@@ -2,9 +2,13 @@ package com.htoyama.likit.data.sqlite.likedtweet
 
 import com.htoyama.likit.common.AllOpen
 import com.htoyama.likit.common.Contract
-import com.htoyama.likit.data.sqlite.lib.SqliteOpenHelper
+import com.htoyama.likit.common.extensions.toV2Observable
+import com.htoyama.likit.data.sqlite.LikedTweetModel
 import com.htoyama.likit.data.sqlite.lib.SqliteScripts
+import com.htoyama.likit.data.sqlite.lib.createQuery
 import com.htoyama.likit.data.sqlite.lib.transaction
+import com.squareup.sqlbrite.BriteDatabase
+import io.reactivex.Observable
 import javax.inject.Inject
 
 /**
@@ -12,16 +16,19 @@ import javax.inject.Inject
  */
 @AllOpen
 class LikedTweetTableGateway @Inject constructor(
-    private val h: SqliteOpenHelper
+    private val b: BriteDatabase
 ) {
 
   /**
    * Select all liked tweets as [List].
    */
-  fun selectAllTweets(): List<FullLikedTweetEntity> =
-      h.readableDatabase.use {
-        SqliteScripts.selectAllLikedTweets(it)
-      }
+  fun selectAllTweets(): Observable<List<FullLikedTweetEntity>> {
+    val stmt = LikedTweetEntity.FACTORY.select_all()
+
+    return b.createQuery(LikedTweetModel.TABLE_NAME, stmt.statement, stmt.args)
+        .mapToList { FullLikedTweetEntity.MAPPER.map(it) }
+        .toV2Observable()
+  }
 
   /**
    * Select some liked tweets as [List].
@@ -30,15 +37,17 @@ class LikedTweetTableGateway @Inject constructor(
    * @param page the number of page
    * @param perPage the number of tweets to retrieve per a page
    */
-  fun selectTweet(page: Int, perPage: Int): List<FullLikedTweetEntity> {
+  fun selectTweet(page: Int, perPage: Int): Observable<List<FullLikedTweetEntity>> {
     Contract.require(page > 0, "0 < page required but it was $page")
     Contract.require(perPage in 1..200, "0 < perPage < 201 required but it was $perPage")
 
-    return h.readableDatabase.use {
-      val limit = perPage.toLong()
-      val offset = (page - 1) * limit
-      SqliteScripts.selectLikedTweets(limit, offset, it)
-    }
+    val limit = perPage.toLong()
+    val offset = (page - 1) * limit
+    val stmt = LikedTweetEntity.FACTORY.select_liked_tweets(limit, offset)
+
+    return b.createQuery(LikedTweetModel.TABLE_NAME, stmt.statement, stmt.args)
+        .mapToList { FullLikedTweetEntity.MAPPER.map(it) }
+        .toV2Observable()
   }
 
   /**
@@ -54,7 +63,7 @@ class LikedTweetTableGateway @Inject constructor(
   fun insertOrUpdateTweetList(fullTweetList: List<FullLikedTweetEntity>) {
     Contract.require(fullTweetList.isNotEmpty(), "fullTweetList must not be emtpy. but it's size was " + fullTweetList.size)
 
-    h.writableDatabase.use { db ->
+    b.writableDatabase.use { db ->
       db.transaction {
         fullTweetList.forEach { ft ->
           SqliteScripts.insertOrUpdateIntoUser(db, ft.user)
@@ -68,7 +77,7 @@ class LikedTweetTableGateway @Inject constructor(
    * Delete the tweet with the given id.
    */
   fun deleteTweetById(tweetId: Long) {
-    h.writableDatabase.use {
+    b.writableDatabase.use {
       it.transaction {
         SqliteScripts.deleteLikedTweetById(it, tweetId)
       }

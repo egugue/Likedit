@@ -2,6 +2,7 @@ package com.htoyama.likit.data.sqlite.relation
 
 import android.database.sqlite.SQLiteConstraintException
 import com.google.common.truth.Truth.assertThat
+import com.htoyama.likit.data.sqlite.briteDatabaseForTest
 import com.htoyama.likit.data.sqlite.fullTweetEntity
 import com.htoyama.likit.data.sqlite.lib.SqliteOpenHelper
 import com.htoyama.likit.data.sqlite.tag.TagTableGateway
@@ -26,7 +27,7 @@ class TweetTagRelationTableGatewayTest {
     helper = SqliteOpenHelper(RuntimeEnvironment.application)
     gateway = TweetTagRelationTableGateway(helper)
     tagGateway = TagTableGateway(helper)
-    tweetGateway = LikedTweetTableGateway(helper)
+    tweetGateway = LikedTweetTableGateway(briteDatabaseForTest())
   }
 
   @After fun tearDown() {
