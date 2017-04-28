@@ -4,6 +4,7 @@ import com.htoyama.likit.PhotoBuilder
 import com.htoyama.likit.data.sqlite.fullTweetEntity
 import com.google.common.truth.Truth.assertThat
 import com.htoyama.likit.data.sqlite.briteDatabaseForTest
+import com.squareup.sqlbrite.BriteDatabase
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
@@ -14,14 +15,16 @@ import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class LikedTweetTableGatewayTest {
+  lateinit var db: BriteDatabase
   lateinit var gateway: LikedTweetTableGateway
 
   @Before fun setUp() {
-    gateway = LikedTweetTableGateway(briteDatabaseForTest())
+    db = briteDatabaseForTest()
+    gateway = LikedTweetTableGateway(db)
   }
 
   @After fun tearDown() {
-    briteDatabaseForTest().close()
+    db.close()
     RuntimeEnvironment.application.deleteDatabase("likedit")
   }
 

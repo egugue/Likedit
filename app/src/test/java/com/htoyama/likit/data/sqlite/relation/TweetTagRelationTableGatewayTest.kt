@@ -8,6 +8,7 @@ import com.htoyama.likit.data.sqlite.lib.SqliteOpenHelper
 import com.htoyama.likit.data.sqlite.tag.TagTableGateway
 import com.htoyama.likit.data.sqlite.likedtweet.LikedTweetTableGateway
 import com.htoyama.likit.data.sqlite.tweetTagRelation
+import com.squareup.sqlbrite.BriteDatabase
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
@@ -22,12 +23,14 @@ class TweetTagRelationTableGatewayTest {
   lateinit var tagGateway: TagTableGateway
   lateinit var tweetGateway: LikedTweetTableGateway
   lateinit var helper: SqliteOpenHelper
+  lateinit var db: BriteDatabase
 
   @Before fun setUp() {
     helper = SqliteOpenHelper(RuntimeEnvironment.application)
+    db = briteDatabaseForTest()
     gateway = TweetTagRelationTableGateway(helper)
-    tagGateway = TagTableGateway(helper)
-    tweetGateway = LikedTweetTableGateway(briteDatabaseForTest())
+    tagGateway = TagTableGateway(db)
+    tweetGateway = LikedTweetTableGateway(db)
   }
 
   @After fun tearDown() {
