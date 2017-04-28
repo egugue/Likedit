@@ -8,7 +8,9 @@ import com.htoyama.likit.data.sqlite.lib.SqliteScripts
 import com.htoyama.likit.data.sqlite.lib.createQuery
 import com.htoyama.likit.data.sqlite.lib.transaction
 import com.squareup.sqlbrite.BriteDatabase
+import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 import javax.inject.Inject
 
 /**
@@ -22,7 +24,7 @@ class TagTableGateway @Inject constructor(
    * Select the tag with the given id.
    * If there is no such tag, return null.
    */
-  fun selectTagById(id: Long):Observable<Optional<TagEntity>> {
+  fun selectTagById(id: Long): Observable<Optional<TagEntity>> {
     val stmt = TagEntity.FACTORY.select_by_id(id)
     return db.createQuery(stmt)
         .mapToOneOrDefault(
@@ -51,26 +53,31 @@ class TagTableGateway @Inject constructor(
    *
    * @return the row ID of the last row inserted, if this insert is successful. -i otherwise.
    */
-  fun insertTag(name: String, created: Long): Long =
+  fun insertTag(name: String, created: Long): Single<Long> {
+    return Single.fromCallable {
       db.writableDatabase.use {
         it.transaction {
           SqliteScripts.insertTag(it, name, created)
         }
       }
+    }
+  }
 
   /**
    * Update the name of the tag with the given id.
    *
    * @throws IllegalStateException if the tag with the id has not inserted.
    */
-  fun updateTagNameById(id: Long, name: String) {
-    db.writableDatabase.use {
-      it.transaction {
-        if (SqliteScripts.selectTagById(it, id) == null) {
-          throw IllegalArgumentException("tried to update the name of the tag with id($id). but it has not inserted.")
-        }
+  fun updateTagNameById(id: Long, name: String): Completable {
+    return Completable.fromAction {
+      db.writableDatabase.use {
+        it.transaction {
+          if (SqliteScripts.selectTagById(it, id) == null) {
+            throw IllegalArgumentException("tried to update the name of the tag with id($id). but it has not inserted.")
+          }
 
-        SqliteScripts.updateTagNameById(it, name, id)
+          SqliteScripts.updateTagNameById(it, name, id)
+        }
       }
     }
   }
@@ -80,13 +87,15 @@ class TagTableGateway @Inject constructor(
    *
    * @throws IllegalStateException if there is no such tag
    */
-  fun deleteTagById(id: Long) {
-    db.writableDatabase.use {
-      it.transaction {
-        if (SqliteScripts.selectTagById(it, id) == null) {
-          throw IllegalStateException("tried to delete the tag with id($id). but there is no such tag.")
+  fun deleteTagById(id: Long): Completable {
+    return Completable.fromAction {
+      db.writableDatabase.use {
+        it.transaction {
+          if (SqliteScripts.selectTagById(it, id) == null) {
+            throw IllegalStateException("tried to delete the tag with id($id). but there is no such tag.")
+          }
+          SqliteScripts.deleteTagById(it, id)
         }
-        SqliteScripts.deleteTagById(it, id)
       }
     }
   }

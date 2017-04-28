@@ -31,7 +31,7 @@ class LikedTweetTableGatewayTest {
   @Test fun shouldInsertTweet() {
     val photoB = PhotoBuilder()
     val tweet = fullTweetEntity(id = 1, userId = 1, imageList = listOf(photoB.build(), photoB.build()))
-    gateway.insertOrUpdateTweet(tweet)
+    gateway.insertOrUpdateTweet(tweet).subscribe()
 
     val actual = gateway.selectAllTweets().test()
     actual.assertValue(listOf(tweet))
@@ -43,8 +43,8 @@ class LikedTweetTableGatewayTest {
         userName = "updated user name",
         text = "updated tweet text")
 
-    gateway.insertOrUpdateTweet(original)
-    gateway.insertOrUpdateTweet(updated)
+    gateway.insertOrUpdateTweet(original).subscribe()
+    gateway.insertOrUpdateTweet(updated).subscribe()
 
     val actual = gateway.selectAllTweets().test()
     actual.assertValue(listOf(
@@ -60,7 +60,7 @@ class LikedTweetTableGatewayTest {
         fullTweetEntity(id = 10, userId = 1),
         fullTweetEntity(id = 20, userId = 10)
     )
-    gateway.insertOrUpdateTweetList(list)
+    gateway.insertOrUpdateTweetList(list).subscribe()
 
     val actual = gateway.selectAllTweets().test()
 
@@ -84,7 +84,7 @@ class LikedTweetTableGatewayTest {
     val expected3 = (2L downTo 1L).map { fullTweetEntity(id = it, created = it) }
 
     // use a reverse list to test whether select in descending order of created property
-    gateway.insertOrUpdateTweetList(expected3 + expected2 + expected1)
+    gateway.insertOrUpdateTweetList(expected3 + expected2 + expected1).subscribe()
 
     // assert
     val actual1 = gateway.selectTweet(1, perPage).test()
