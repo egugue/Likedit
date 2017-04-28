@@ -1,6 +1,5 @@
 package com.htoyama.likit.application.tag
 
-import com.htoyama.likit.data.liked.LikedRealmGateway
 import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.domain.tag.TagRepository
 import io.reactivex.Single
@@ -12,8 +11,7 @@ import io.reactivex.Observable
  * An application service related to Tag
  */
 open class TagAppService @Inject internal constructor(
-    private val tagRepository: TagRepository,
-    private val likedRealmGateway: LikedRealmGateway
+    private val tagRepository: TagRepository
 ) {
 
   /**
@@ -36,12 +34,14 @@ open class TagAppService @Inject internal constructor(
     return tagRepository.findAll()
   }
 
+  // TODO
   open fun findAllWithTweetCount(): Single<List<TagTweetCountDto>> {
     return tagRepository.findAll()
         .toObservable()
         .flatMap { tagList -> Observable.fromIterable(tagList) }
         .map { tag ->
-          val count = likedRealmGateway.getTweetCountBy(tag)
+          val count = 1
+          //val count = likedRealmGateway.getTweetCountBy(tag)
           TagTweetCountDto(tag, count)
         }
         .toList()
