@@ -12,14 +12,14 @@ import org.mockito.Mockito.`when` as When
 import com.google.common.truth.Truth.assertThat
 import io.reactivex.Single
 
-class LikedRepositoryImplTest {
+class LikedTweetRepositoryImplTest {
   @Mock lateinit private var dao: LikedTweetDao
   @Mock lateinit private var gateway: LikedRealmGateway
-  lateinit private var impl: LikedRepositoryImpl
+  lateinit private var impl: LikedTweetRepositoryImpl
 
   @Before fun setUp() {
     MockitoAnnotations.initMocks(this)
-    impl = LikedRepositoryImpl(dao, gateway)
+    impl = LikedTweetRepositoryImpl(dao, gateway)
   }
 
   @Test fun find() {

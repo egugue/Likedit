@@ -1,6 +1,6 @@
 package com.htoyama.likit.application.likedtweet
 
-import com.htoyama.likit.domain.likedtweet.LikedRepository
+import com.htoyama.likit.domain.likedtweet.LikedTweetRepository
 import com.htoyama.likit.domain.likedtweet.LikedTweet
 import io.reactivex.Single
 import javax.inject.Inject
@@ -9,7 +9,7 @@ import javax.inject.Inject
  * An application service related to [LikedTweet]
  */
 class LikedTweetAppService @Inject internal constructor(
-    private val likedRepository: LikedRepository
+    private val likedRepository: LikedTweetRepository
 ){
 
   fun find(page: Int): Single<List<LikedTweet>> {
