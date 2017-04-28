@@ -1,4 +1,4 @@
-package com.htoyama.likit.data.common.net;
+package com.htoyama.likit.data.net;
 
 import okhttp3.OkHttpClient;
 

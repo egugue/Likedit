@@ -1,6 +1,6 @@
 package com.htoyama.likit
 
-import com.htoyama.likit.data.common.net.FavoriteService
+import com.htoyama.likit.data.net.FavoriteService
 import com.htoyama.likit.data.prefs.AppSetting
 import com.htoyama.likit.data.sqlite.likedtweet.LikedTweetTableGateway
 import com.htoyama.likit.domain.likedtweet.LikedTweetRepository
