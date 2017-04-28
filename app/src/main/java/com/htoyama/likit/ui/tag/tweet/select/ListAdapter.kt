@@ -32,7 +32,7 @@ internal class ListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(liked: LikedTweet) {
-      (itemView as TweetView).setTweet(liked.tweet)
+      (itemView as TweetView).setTweet(liked.tweet())
     }
 
   }

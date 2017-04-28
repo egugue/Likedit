@@ -2,14 +2,7 @@ package com.htoyama.likit.data
 
 import com.htoyama.likit.data.common.net.NetModule
 import com.htoyama.likit.data.common.pref.PrefModule
-import com.htoyama.likit.data.liked.LikedRealmGateway
-import com.htoyama.likit.data.liked.LikedTweetRepositoryImpl
-import com.htoyama.likit.data.tag.TagRealmDao
-import com.htoyama.likit.data.tag.TagRepositoryImpl
-import com.htoyama.likit.data.liked.tweet.LikedTweetDao
 import com.htoyama.likit.data.sqlite.SqliteModule
-import com.htoyama.likit.data.user.UserRealmDao
-import com.htoyama.likit.data.user.UserRepositoryImpl
 import com.htoyama.likit.domain.likedtweet.LikedTweetRepository
 import com.htoyama.likit.domain.tag.TagRepository
 import com.htoyama.likit.domain.user.UserRepository
@@ -23,14 +16,9 @@ import dagger.Provides
 ))
 class DataModule {
 
-  @Provides fun tagRepository(tagRealmDao: TagRealmDao)
-      : TagRepository = TagRepositoryImpl(tagRealmDao)
+  @Provides fun tagRepository(): TagRepository = TagRepositoryImpl()
 
-  @Provides fun likedTweetRepository(likedTweetDao: LikedTweetDao,
-                                     likedRealmGateway: LikedRealmGateway)
-      : LikedTweetRepository
-    = LikedTweetRepositoryImpl(likedTweetDao, likedRealmGateway)
+  @Provides fun likedTweetRepository(): LikedTweetRepository = LikedTweetRepositoryImpl()
 
-  @Provides fun userRepository(userRealmDao: UserRealmDao)
-      : UserRepository = UserRepositoryImpl(userRealmDao)
+  @Provides fun userRepository(): UserRepository = UserRepositoryImpl()
 }

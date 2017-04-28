@@ -7,8 +7,6 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import com.twitter.sdk.android.Twitter
 import com.twitter.sdk.android.core.TwitterAuthConfig
 import io.fabric.sdk.android.Fabric
-import io.realm.Realm
-import io.realm.RealmConfiguration
 
 open class App :Application() {
 
@@ -26,37 +24,14 @@ open class App :Application() {
   }
 
   lateinit var component: AppComponent
-  var realm: Realm? = null
 
   override fun onCreate() {
     super.onCreate()
     buildComponent()
     buildFabric()
-    buildRealm()
     AndroidThreeTen.init(this)
 
     TweetSyncService.scheduleJob(this)
-  }
-
-  override fun onTerminate() {
-    super.onTerminate()
-    realm?.close()
-  }
-
-  private fun buildRealm() {
-    try {
-      Realm.setDefaultConfiguration(
-          RealmConfiguration.Builder(this)
-              .schemaVersion(1)
-              .build())
-      realm = Realm.getDefaultInstance()
-    } catch(e: UnsatisfiedLinkError) {
-      // when using Robolectric, Realm throw this error.
-      // So we ignore it only when debug
-      if (!BuildConfig.DEBUG) {
-        throw e
-      }
-    }
   }
 
   private fun buildComponent() {
@@ -71,5 +46,4 @@ open class App :Application() {
         BuildConfig.TWITTER_CONSUMER_SECRET)
     Fabric.with(this, Twitter(c))
   }
-
 }
