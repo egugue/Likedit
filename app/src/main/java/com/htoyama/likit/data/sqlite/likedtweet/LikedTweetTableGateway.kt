@@ -3,7 +3,6 @@ package com.htoyama.likit.data.sqlite.likedtweet
 import com.htoyama.likit.common.AllOpen
 import com.htoyama.likit.common.Contract
 import com.htoyama.likit.common.extensions.toV2Observable
-import com.htoyama.likit.data.sqlite.LikedTweetModel
 import com.htoyama.likit.data.sqlite.lib.SqliteScripts
 import com.htoyama.likit.data.sqlite.lib.createQuery
 import com.htoyama.likit.data.sqlite.lib.transaction
@@ -25,7 +24,7 @@ class LikedTweetTableGateway @Inject constructor(
   fun selectAllTweets(): Observable<List<FullLikedTweetEntity>> {
     val stmt = LikedTweetEntity.FACTORY.select_all()
 
-    return db.createQuery(LikedTweetModel.TABLE_NAME, stmt.statement, stmt.args)
+    return db.createQuery(stmt)
         .mapToList { FullLikedTweetEntity.MAPPER.map(it) }
         .toV2Observable()
   }
@@ -45,7 +44,7 @@ class LikedTweetTableGateway @Inject constructor(
     val offset = (page - 1) * limit
     val stmt = LikedTweetEntity.FACTORY.select_liked_tweets(limit, offset)
 
-    return db.createQuery(LikedTweetModel.TABLE_NAME, stmt.statement, stmt.args)
+    return db.createQuery(stmt)
         .mapToList { FullLikedTweetEntity.MAPPER.map(it) }
         .toV2Observable()
   }
