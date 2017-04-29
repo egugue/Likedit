@@ -64,9 +64,9 @@ class LikedTweetTableGateway @Inject constructor(
 
     db.writableDatabase.use { db ->
       db.transaction {
-        fullTweetList.forEach { ft ->
-          SqliteScripts.insertOrUpdateIntoUser(db, ft.user)
-          SqliteScripts.insertOrIgnoreIntoLikedTweet(db, ft.tweet)
+        fullTweetList.forEach { (tweet, user) ->
+          SqliteScripts.insertOrUpdateIntoUser(db, user)
+          SqliteScripts.insertOrIgnoreIntoLikedTweet(db, tweet)
         }
       }
     }
