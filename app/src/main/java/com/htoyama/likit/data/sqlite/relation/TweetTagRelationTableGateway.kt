@@ -17,6 +17,14 @@ class TweetTagRelationTableGateway @Inject constructor(
     private val db: BriteDatabase
 ) {
 
+  fun selectRelationsBy(tweetIdList: List<Long>): Observable<List<TweetTagRelation>> {
+    val stmt = TweetTagRelation.FACTORY.select_by_tweet_id_list(tweetIdList.toLongArray())
+
+    return db.createQuery(stmt)
+        .mapToList { TweetTagRelation.FACTORY.select_by_tweet_id_listMapper().map(it) }
+        .toV2Observable()
+  }
+
   /**
    * Select all relations between a liked tweet and a tag.
    */
