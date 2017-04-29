@@ -60,7 +60,7 @@ android {
         }
     }
 
-    //TODO: remove when only use rxjava2 instead of rxjava2
+    //TODO: remove when only use rxjava2
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
     }
