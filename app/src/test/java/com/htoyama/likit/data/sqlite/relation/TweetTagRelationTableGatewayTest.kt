@@ -2,11 +2,12 @@ package com.htoyama.likit.data.sqlite.relation
 
 import android.database.sqlite.SQLiteConstraintException
 import com.google.common.truth.Truth.assertThat
+import com.htoyama.likit.data.sqlite.briteDatabaseForTest
 import com.htoyama.likit.data.sqlite.fullTweetEntity
-import com.htoyama.likit.data.sqlite.lib.SqliteOpenHelper
 import com.htoyama.likit.data.sqlite.tag.TagTableGateway
 import com.htoyama.likit.data.sqlite.likedtweet.LikedTweetTableGateway
 import com.htoyama.likit.data.sqlite.tweetTagRelation
+import com.squareup.sqlbrite.BriteDatabase
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
@@ -20,17 +21,17 @@ class TweetTagRelationTableGatewayTest {
   lateinit var gateway: TweetTagRelationTableGateway
   lateinit var tagGateway: TagTableGateway
   lateinit var tweetGateway: LikedTweetTableGateway
-  lateinit var helper: SqliteOpenHelper
+  lateinit var db: BriteDatabase
 
   @Before fun setUp() {
-    helper = SqliteOpenHelper(RuntimeEnvironment.application)
-    gateway = TweetTagRelationTableGateway(helper)
-    tagGateway = TagTableGateway(helper)
-    tweetGateway = LikedTweetTableGateway(helper)
+    db = briteDatabaseForTest()
+    gateway = TweetTagRelationTableGateway(db)
+    tagGateway = TagTableGateway(db)
+    tweetGateway = LikedTweetTableGateway(db)
   }
 
   @After fun tearDown() {
-    helper.close()
+    db.close()
     RuntimeEnvironment.application.deleteDatabase("likedit")
   }
 
@@ -46,8 +47,8 @@ class TweetTagRelationTableGatewayTest {
     gateway.insertTweetTagRelation(listOf(1, 2), tagId)
 
     // then
-    val relations = gateway.selectAllTweetTagRelations()
-    assertThat(relations).isEqualTo(listOf(
+    val relations = gateway.selectAllTweetTagRelations().test()
+    relations.assertValue(listOf(
         tweetTagRelation(1, tagId),
         tweetTagRelation(2, tagId)
     ))
@@ -103,7 +104,7 @@ class TweetTagRelationTableGatewayTest {
     gateway.deleteTweetTagRelation(listOf(deletingId), tagId)
 
     // then
-    val rels = gateway.selectAllTweetTagRelations()
+    val rels = gateway.selectAllTweetTagRelations().test().values().first()
     assertThat(rels).doesNotContain(tweetTagRelation(deletingId, tagId))
   }
 
@@ -126,7 +127,7 @@ class TweetTagRelationTableGatewayTest {
 
     // when
     tagGateway.deleteTagById(deletingId)
-    val rels = gateway.selectAllTweetTagRelations()
+    val rels = gateway.selectAllTweetTagRelations().test().values().first()
 
     // then
     assertThat(rels).containsNoneOf(
@@ -154,12 +155,11 @@ class TweetTagRelationTableGatewayTest {
 
     // when
     tweetGateway.deleteTweetById(deletingId)
-    val rels = gateway.selectAllTweetTagRelations()
+    val rels = gateway.selectAllTweetTagRelations().test().values().first()
 
     // then
     assertThat(rels).containsNoneOf(
         tweetTagRelation(tweetId = deletingId, tagId = tagId1),
         tweetTagRelation(tweetId = deletingId, tagId = tagId2))
   }
-
 }

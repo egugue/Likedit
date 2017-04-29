@@ -1,8 +1,13 @@
 package com.htoyama.likit.data.sqlite.tag
 
 import com.google.common.truth.Truth.assertThat
+import com.htoyama.likit.common.None
+import com.htoyama.likit.common.Optional
+import com.htoyama.likit.common.toOptional
+import com.htoyama.likit.data.sqlite.briteDatabaseForTest
 import com.htoyama.likit.data.sqlite.lib.SqliteOpenHelper
 import com.htoyama.likit.data.sqlite.tagEntity
+import com.squareup.sqlbrite.BriteDatabase
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
@@ -14,15 +19,15 @@ import org.robolectric.RuntimeEnvironment
 @RunWith(RobolectricTestRunner::class)
 class TagTableGatewayTest {
   lateinit var gateway: TagTableGateway
-  lateinit var helper: SqliteOpenHelper
+  lateinit var db: BriteDatabase
 
   @Before fun setUp() {
-    helper = SqliteOpenHelper(RuntimeEnvironment.application)
-    gateway = TagTableGateway(helper)
+    db = briteDatabaseForTest()
+    gateway = TagTableGateway(db)
   }
 
   @After fun tearDown() {
-    helper.close()
+    db.close()
     RuntimeEnvironment.application.deleteDatabase("likedit")
   }
 
@@ -30,13 +35,13 @@ class TagTableGatewayTest {
     val tagId = gateway.insertTag("foo", 1)
     assertThat(tagId).isNotEqualTo(-1)
 
-    val actual = gateway.selectTagById(tagId)
-    assertThat(actual).isEqualTo(tagEntity(tagId, "foo", 1))
+    val actual = gateway.selectTagById(tagId).test()
+    actual.assertValue(tagEntity(tagId, "foo", 1).toOptional())
   }
 
   @Test fun selectTagById_whenNoTagInserted() {
-    val actual = gateway.selectTagById(1)
-    assertThat(actual).isNull()
+    val actual = gateway.selectTagById(1).test()
+    actual.assertValue(None as Optional<TagEntity>)
   }
 
   @Test fun searchTagByName() {
@@ -49,9 +54,9 @@ class TagTableGatewayTest {
     gateway.insertTag("aabbc", 1)
     gateway.insertTag("あああいいいううう", 1)
 
-    val actual = gateway.searchTagByName("B%_B")
+    val actual = gateway.searchTagByName("B%_B").test()
 
-    assertThat(actual).isEqualTo(listOf(
+    actual.assertValue(listOf(
         tagEntity(5, "aaaB%_Bccc", 1),
         tagEntity(2, "baaccb%_b", 1),
         tagEntity(1, "bb%_bbbbaacc", 1)
@@ -66,9 +71,9 @@ class TagTableGatewayTest {
     gateway.insertTag("ああいいうう", 1)
     gateway.insertTag("あｓｆｄｓｆｄｆｓ", 1)
 
-    val actual = gateway.searchTagByName("あああ")
+    val actual = gateway.searchTagByName("あああ").test()
 
-    assertThat(actual).isEqualTo(listOf(
+    actual.assertValue(listOf(
         tagEntity(1, "あああいいいううう", 1),
         tagEntity(3, "いいあああ", 1),
         tagEntity(2, "いいいいいいあああいいいううう", 1)
@@ -79,9 +84,9 @@ class TagTableGatewayTest {
     val id = gateway.insertTag("before update", 1)
     gateway.updateTagNameById(id, "after update")
 
-    val actual = gateway.selectTagById(id)
+    val actual = gateway.selectTagById(id).test()
 
-    assertThat(actual).isEqualTo(tagEntity(id, "after update", 1))
+    actual.assertValue(tagEntity(id, "after update", 1).toOptional())
   }
 
   @Test fun updateTagName_whenInvalidIdSpecified() {
@@ -102,8 +107,8 @@ class TagTableGatewayTest {
 
     gateway.deleteTagById(id)
 
-    val afterDelete = gateway.selectTagById(id)
-    assertThat(afterDelete).isNull()
+    val afterDelete = gateway.selectTagById(id).test()
+    afterDelete.assertValue(None)
   }
 
   @Test fun deleteTagById_whenInvaildIdSpecified() {

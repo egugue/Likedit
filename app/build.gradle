@@ -59,6 +59,11 @@ android {
             java.srcDir sharedTestDir
         }
     }
+
+    //TODO: remove when only use rxjava2 instead of rxjava2
+    packagingOptions {
+        exclude 'META-INF/rxjava.properties'
+    }
 }
 
 dependencies {
@@ -85,6 +90,7 @@ dependencies {
     compile 'com.trello.rxlifecycle2:rxlifecycle-kotlin:2.0.1'
     compile 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0-RC1'
     compile 'com.jakewharton.threetenabp:threetenabp:1.0.5'
+    compile "com.github.akarnokd:rxjava2-interop:0.9.6"
 
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
     compile 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
@@ -100,6 +106,7 @@ dependencies {
 
     // If it is missing, we can see error on CI https://github.com/square/sqldelight/issues/563
     compile 'com.squareup.sqldelight:runtime:0.6.1'
+    compile 'com.squareup.sqlbrite:sqlbrite:1.1.1'
 
     kapt 'com.android.databinding:compiler:2.3.0'
 
@@ -113,7 +120,7 @@ dependencies {
     testCompile 'com.nhaarman:mockito-kotlin:1.4.0'
 
     androidTestCompile("com.android.support.test.espresso:espresso-core:2.2.2") {
-        exclude module:'jsr305'
+        exclude module: 'jsr305'
     }
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile "com.android.support:support-annotations:$supportLibVer"

@@ -16,4 +16,15 @@ object None : Optional<Nothing>() {
 class Some<out T>(val t: T) : Optional<T>() {
   override fun get(): T = t
   override fun isEmpty(): Boolean = false
+
+  override fun equals(other: Any?): Boolean = when (other) {
+    is Some<*> -> t == other.get()
+    else -> false
+  }
+
+  override fun hashCode(): Int {
+    return t?.hashCode() ?: 0
+  }
 }
+
+fun <T> T?.toOptional(): Optional<T> = if (this == null) None else Some(this)

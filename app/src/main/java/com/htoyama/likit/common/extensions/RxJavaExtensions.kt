@@ -1,5 +1,6 @@
 package com.htoyama.likit.common.extensions
 
+import hu.akarnokd.rxjava.interop.RxJavaInterop
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
@@ -39,3 +40,6 @@ fun <T> Observable<T>.onErrorReturnOrJustThrow(
     }
   }
 })
+
+fun <T> rx.Observable<T>.toV2Observable(): Observable<T> =
+    RxJavaInterop.toV2Observable(this)

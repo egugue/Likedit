@@ -2,6 +2,9 @@ package com.htoyama.likit.data.sqlite.lib
 
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import com.squareup.sqlbrite.BriteDatabase
+import com.squareup.sqlbrite.QueryObservable
+import com.squareup.sqldelight.SqlDelightStatement
 
 /* Cursor extensions */
 
@@ -58,3 +61,20 @@ fun <T> SQLiteDatabase.transaction(unitOfWork: () -> T): T {
     endTransaction()
   }
 }
+
+/* BriteDatabase extensions */
+
+fun <T> BriteDatabase.transaction(unitOfWork: () -> T): T {
+  val transaction = newTransaction()
+  try {
+    val r = unitOfWork.invoke()
+    transaction.markSuccessful()
+    return r
+  } finally {
+    transaction.end()
+  }
+
+}
+
+fun BriteDatabase.createQuery(stmt: SqlDelightStatement): QueryObservable
+    = createQuery(stmt.tables, stmt.statement, *stmt.args)

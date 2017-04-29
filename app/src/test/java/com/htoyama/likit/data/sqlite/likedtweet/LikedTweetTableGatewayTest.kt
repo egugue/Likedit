@@ -2,8 +2,9 @@ package com.htoyama.likit.data.sqlite.likedtweet
 
 import com.htoyama.likit.PhotoBuilder
 import com.htoyama.likit.data.sqlite.fullTweetEntity
-import com.htoyama.likit.data.sqlite.lib.SqliteOpenHelper
 import com.google.common.truth.Truth.assertThat
+import com.htoyama.likit.data.sqlite.briteDatabaseForTest
+import com.squareup.sqlbrite.BriteDatabase
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
@@ -14,16 +15,16 @@ import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class LikedTweetTableGatewayTest {
+  lateinit var db: BriteDatabase
   lateinit var gateway: LikedTweetTableGateway
-  lateinit var helper: SqliteOpenHelper
 
   @Before fun setUp() {
-    helper = SqliteOpenHelper(RuntimeEnvironment.application)
-    gateway = LikedTweetTableGateway(helper)
+    db = briteDatabaseForTest()
+    gateway = LikedTweetTableGateway(db)
   }
 
   @After fun tearDown() {
-    helper.close()
+    db.close()
     RuntimeEnvironment.application.deleteDatabase("likedit")
   }
 
@@ -32,8 +33,8 @@ class LikedTweetTableGatewayTest {
     val tweet = fullTweetEntity(id = 1, userId = 1, imageList = listOf(photoB.build(), photoB.build()))
     gateway.insertOrUpdateTweet(tweet)
 
-    val list = gateway.selectAllTweets()
-    assertThat(list).containsExactly(tweet)
+    val actual = gateway.selectAllTweets().test()
+    actual.assertValue(listOf(tweet))
   }
 
   @Test fun `should ignore to update tweet` () {
@@ -45,12 +46,13 @@ class LikedTweetTableGatewayTest {
     gateway.insertOrUpdateTweet(original)
     gateway.insertOrUpdateTweet(updated)
 
-    val list = gateway.selectAllTweets()
-    assertThat(list).containsExactly(
+    val actual = gateway.selectAllTweets().test()
+    actual.assertValue(listOf(
         fullTweetEntity(id = 1, userId = 1,
             userName = "updated user name"
             // text = "updated tweet text"   this is expected to ignore
         ))
+    )
   }
 
   @Test fun shouldInsertSomeTweets() {
@@ -60,9 +62,9 @@ class LikedTweetTableGatewayTest {
     )
     gateway.insertOrUpdateTweetList(list)
 
-    val actual = gateway.selectAllTweets()
+    val actual = gateway.selectAllTweets().test()
 
-    assertThat(actual).containsExactlyElementsIn(list)
+    actual.assertValue(list)
   }
 
   @Test fun shouldDeleteTweet() {
@@ -70,8 +72,8 @@ class LikedTweetTableGatewayTest {
     gateway.insertOrUpdateTweet(fullTweetEntity(id))
     gateway.deleteTweetById(id)
 
-    val tweets = gateway.selectAllTweets()
-    assertThat(tweets).isEmpty()
+    val actual = gateway.selectAllTweets().test()
+    actual.assertValue(emptyList())
   }
 
   @Test fun shouldSelectByPage() {
@@ -85,20 +87,17 @@ class LikedTweetTableGatewayTest {
     gateway.insertOrUpdateTweetList(expected3 + expected2 + expected1)
 
     // assert
-    val actual1 = gateway.selectTweet(1, perPage)
-    assertThat(actual1).hasSize(perPage)
-    assertThat(actual1).isEqualTo(expected1)
+    val actual1 = gateway.selectTweet(1, perPage).test()
+    actual1.assertValue(expected1)
 
-    val actual2 = gateway.selectTweet(2, perPage)
-    assertThat(actual2).hasSize(perPage)
-    assertThat(actual2).isEqualTo(expected2)
+    val actual2 = gateway.selectTweet(2, perPage).test()
+    actual2.assertValue(expected2)
 
-    val actual3 = gateway.selectTweet(3, perPage)
-    assertThat(actual3).hasSize(2)
-    assertThat(actual3).isEqualTo(expected3)
+    val actual3 = gateway.selectTweet(3, perPage).test()
+    actual3.assertValue(expected3)
 
-    val actual4 = gateway.selectTweet(4, perPage)
-    assertThat(actual4).isEmpty()
+    val actual4 = gateway.selectTweet(4, perPage).test()
+    actual4.assertValue(emptyList())
   }
 
   @Suppress("JoinDeclarationAndAssignment")
