@@ -25,3 +25,15 @@ WHERE tweet_id = ? AND tag_id = ?
 select_all:
 SELECT * FROM tweet_tag_relation
 ;
+
+select_by_tweet_id_list:
+SELECT * FROM tweet_tag_relation
+WHERE tweet_id IN ?
+ORDER BY tweet_id DESC, tag_id ASC
+;
+
+select_by_tag_id_list:
+SELECT * FROM tweet_tag_relation
+WHERE tag_id IN ?
+ORDER BY tag_id DESC, tweet_id DESC
+;

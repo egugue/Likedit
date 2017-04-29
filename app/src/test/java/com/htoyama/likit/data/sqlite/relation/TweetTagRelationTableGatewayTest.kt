@@ -162,4 +162,66 @@ class TweetTagRelationTableGatewayTest {
         tweetTagRelation(tweetId = deletingId, tagId = tagId1),
         tweetTagRelation(tweetId = deletingId, tagId = tagId2))
   }
+
+  @Test fun `should select relations related to the given tweet id list`() {
+    // given
+    tweetGateway.insertOrUpdateTweetList(listOf(
+        fullTweetEntity(id = 1),
+        fullTweetEntity(id = 2)))
+
+    val tagId1 = tagGateway.insertTag("id-1", 1)
+    val tagId2 = tagGateway.insertTag("id-2", 2)
+
+    gateway.insertTweetTagRelation(listOf(1), tagId1)
+    gateway.insertTweetTagRelation(listOf(1, 2), tagId2)
+
+    // when
+    val relations = gateway.selectRelationsByTweetIdList(listOf(1, 2)).blockingFirst()
+
+    // then
+    assertThat(relations).containsExactly(
+        tweetTagRelation(tweetId = 1, tagId = tagId1),
+        tweetTagRelation(tweetId = 1, tagId = tagId2),
+        tweetTagRelation(tweetId = 2, tagId = tagId2)
+    )
+  }
+
+  @Test fun `should throw an exception when tweet id list is empty`() {
+    try {
+      gateway.selectRelationsByTweetIdList(emptyList())
+    } catch (e: IllegalArgumentException) {
+      assertThat(e).hasMessageThat().isEqualTo("the given list must not empty")
+    }
+  }
+
+  @Test fun `should select relations related to the given tag id list`() {
+    // given
+    tweetGateway.insertOrUpdateTweetList(listOf(
+        fullTweetEntity(id = 1),
+        fullTweetEntity(id = 2)))
+
+    val tagId1 = tagGateway.insertTag("id-1", 1)
+    val tagId2 = tagGateway.insertTag("id-2", 2)
+
+    gateway.insertTweetTagRelation(listOf(1), tagId1)
+    gateway.insertTweetTagRelation(listOf(1, 2), tagId2)
+
+    // when
+    val relations = gateway.selectRelationsByTagIdList(listOf(tagId1, tagId2)).blockingFirst()
+
+    // then
+    assertThat(relations).containsExactly(
+        tweetTagRelation(tweetId = 1, tagId = tagId1),
+        tweetTagRelation(tweetId = 1, tagId = tagId2),
+        tweetTagRelation(tweetId = 2, tagId = tagId2)
+    )
+  }
+
+  @Test fun `should throw an exception when tag id list is empty`() {
+    try {
+      gateway.selectRelationsByTagIdList(emptyList())
+    } catch (e: IllegalArgumentException) {
+      assertThat(e).hasMessageThat().isEqualTo("the given list must not empty")
+    }
+  }
 }
