@@ -176,7 +176,7 @@ class TweetTagRelationTableGatewayTest {
     gateway.insertTweetTagRelation(listOf(1, 2), tagId2)
 
     // when
-    val relations = gateway.selectRelationsBy(listOf(1, 2)).blockingFirst()
+    val relations = gateway.selectRelationsByTweetIdList(listOf(1, 2)).blockingFirst()
 
     // then
     assertThat(relations).containsExactly(
@@ -188,7 +188,7 @@ class TweetTagRelationTableGatewayTest {
 
   @Test fun `should throw an exception when tweet id list is empty` () {
     try {
-      gateway.selectRelationsBy(emptyList())
+      gateway.selectRelationsByTweetIdList(emptyList())
     } catch (e: IllegalArgumentException) {
       assertThat(e).hasMessageThat().isEqualTo("the given list must not empty")
     }
