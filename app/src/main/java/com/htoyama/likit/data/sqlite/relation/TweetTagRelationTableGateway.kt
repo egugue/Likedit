@@ -32,6 +32,19 @@ class TweetTagRelationTableGateway @Inject constructor(
   }
 
   /**
+   * Select some relations related to the given tag id list
+   */
+  fun selectRelationsByTagIdList(tagIdList: List<Long>): Observable<List<TweetTagRelation>> {
+    Contract.require(tagIdList.isNotEmpty(), "the given list must not empty")
+
+    val stmt = TweetTagRelation.FACTORY.select_by_tag_id_list(tagIdList.toLongArray())
+
+    return db.createQuery(stmt)
+        .mapToList { TweetTagRelation.FACTORY.select_by_tag_id_listMapper().map(it) }
+        .toV2Observable()
+  }
+
+  /**
    * Select all relations between a liked tweet and a tag.
    */
   fun selectAllTweetTagRelations(): Observable<List<TweetTagRelation>> {
