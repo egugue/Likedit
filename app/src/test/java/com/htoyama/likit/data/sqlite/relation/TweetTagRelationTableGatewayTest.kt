@@ -40,12 +40,11 @@ class TweetTagRelationTableGatewayTest {
     tweetGateway.insertOrUpdateTweetList(listOf(
         fullTweetEntity(id = 1),
         fullTweetEntity(id = 2)))
-        .subscribe()
 
-    val tagId = tagGateway.insertTag("id-1", 1).blockingGet()
+    val tagId = tagGateway.insertTag("id-1", 1)
 
     // when
-    gateway.insertTweetTagRelation(listOf(1, 2), tagId).subscribe()
+    gateway.insertTweetTagRelation(listOf(1, 2), tagId)
 
     // then
     val relations = gateway.selectAllTweetTagRelations().test()
@@ -60,14 +59,17 @@ class TweetTagRelationTableGatewayTest {
     tweetGateway.insertOrUpdateTweetList(listOf(
         fullTweetEntity(id = 1),
         fullTweetEntity(id = 2)))
-        .subscribe()
+
     // not insert
     // val tagId = gateway.insertTag("id-1", 1)
     val invalidTagId = 1L
 
     // when
-    gateway.insertTweetTagRelation(listOf(1, 2), invalidTagId).test()
-        .assertError(SQLiteConstraintException::class.java)
+    try {
+      gateway.insertTweetTagRelation(listOf(1, 2), invalidTagId)
+      fail()
+    } catch (e: SQLiteConstraintException) {
+    }
   }
 
   @Test fun shouldNotInsertTweetTagRelations_whenNoTweetInserted() {
@@ -78,11 +80,14 @@ class TweetTagRelationTableGatewayTest {
         fullTweetEntity(id = 2)))
         */
 
-    val tagId = tagGateway.insertTag("id-1", 1).blockingGet()
+    val tagId = tagGateway.insertTag("id-1", 1)
 
     // when
-    gateway.insertTweetTagRelation(listOf(1), tagId).test()
-        .assertError(SQLiteConstraintException::class.java)
+    try {
+      gateway.insertTweetTagRelation(listOf(1), tagId)
+      fail()
+    } catch (e: SQLiteConstraintException) {
+    }
   }
 
   @Test fun shouldDeleteTweetTagRelations() {
@@ -92,11 +97,11 @@ class TweetTagRelationTableGatewayTest {
         fullTweetEntity(id = deletingId),
         fullTweetEntity(id = 2)))
 
-    val tagId = tagGateway.insertTag("id-1", 1).blockingGet()
+    val tagId = tagGateway.insertTag("id-1", 1)
     gateway.insertTweetTagRelation(listOf(deletingId, 2), tagId)
 
     // when
-    gateway.deleteTweetTagRelation(listOf(deletingId), tagId).subscribe()
+    gateway.deleteTweetTagRelation(listOf(deletingId), tagId)
 
     // then
     val rels = gateway.selectAllTweetTagRelations().test().values().first()
@@ -114,15 +119,15 @@ class TweetTagRelationTableGatewayTest {
         fullTweetEntity(id = 2),
         fullTweetEntity(id = 3))
     )
-    val deletingId = tagGateway.insertTag("will delete", 1).blockingGet()
-    val tagId1 = tagGateway.insertTag("a tag 1", 1).blockingGet()
+    val deletingId = tagGateway.insertTag("will delete", 1)
+    val tagId1 = tagGateway.insertTag("a tag 1", 1)
 
     gateway.insertTweetTagRelation(listOf(1, 2), deletingId)
     gateway.insertTweetTagRelation(listOf(1, 2), tagId1)
 
     // when
     tagGateway.deleteTagById(deletingId)
-    val rels = gateway.selectAllTweetTagRelations().blockingFirst()
+    val rels = gateway.selectAllTweetTagRelations().test().values().first()
 
     // then
     assertThat(rels).containsNoneOf(
@@ -142,8 +147,8 @@ class TweetTagRelationTableGatewayTest {
         fullTweetEntity(id = 2),
         fullTweetEntity(id = 3))
     )
-    val tagId1 = tagGateway.insertTag("a tag 1", 1).blockingGet()
-    val tagId2 = tagGateway.insertTag("a tag 2", 1).blockingGet()
+    val tagId1 = tagGateway.insertTag("a tag 1", 1)
+    val tagId2 = tagGateway.insertTag("a tag 2", 1)
 
     gateway.insertTweetTagRelation(listOf(deletingId, 2), tagId1)
     gateway.insertTweetTagRelation(listOf(deletingId, 2), tagId2)

@@ -5,6 +5,7 @@ import com.htoyama.likit.common.None
 import com.htoyama.likit.common.Optional
 import com.htoyama.likit.common.toOptional
 import com.htoyama.likit.data.sqlite.briteDatabaseForTest
+import com.htoyama.likit.data.sqlite.lib.SqliteOpenHelper
 import com.htoyama.likit.data.sqlite.tagEntity
 import com.squareup.sqlbrite.BriteDatabase
 import org.junit.After
@@ -31,7 +32,7 @@ class TagTableGatewayTest {
   }
 
   @Test fun selectTagById_whenTagInserted() {
-    val tagId = gateway.insertTag("foo", 1).blockingGet()
+    val tagId = gateway.insertTag("foo", 1)
     assertThat(tagId).isNotEqualTo(-1)
 
     val actual = gateway.selectTagById(tagId).test()
@@ -44,14 +45,14 @@ class TagTableGatewayTest {
   }
 
   @Test fun searchTagByName() {
-    gateway.insertTag("bb%_bbbbaacc", 1).subscribe() // hit
-    gateway.insertTag("baaccb%_b", 1).subscribe() // hit
-    gateway.insertTag("aaabbbccc", 1).subscribe()
-    gateway.insertTag("aaaBBBccc", 1).subscribe()
-    gateway.insertTag("aaaB%_Bccc", 1).subscribe() // hit
-    gateway.insertTag("abc", 1).subscribe()
-    gateway.insertTag("aabbc", 1).subscribe()
-    gateway.insertTag("あああいいいううう", 1).subscribe()
+    gateway.insertTag("bb%_bbbbaacc", 1) // hit
+    gateway.insertTag("baaccb%_b", 1) // hit
+    gateway.insertTag("aaabbbccc", 1)
+    gateway.insertTag("aaaBBBccc", 1)
+    gateway.insertTag("aaaB%_Bccc", 1) // hit
+    gateway.insertTag("abc", 1)
+    gateway.insertTag("aabbc", 1)
+    gateway.insertTag("あああいいいううう", 1)
 
     val actual = gateway.searchTagByName("B%_B").test()
 
@@ -63,12 +64,12 @@ class TagTableGatewayTest {
   }
 
   @Test fun searchTagNameName_multiByte() {
-    gateway.insertTag("あああいいいううう", 1).subscribe()
-    gateway.insertTag("いいいいいいあああいいいううう", 1).subscribe()
-    gateway.insertTag("いいあああ", 1).subscribe()
-    gateway.insertTag("いいああ", 1).subscribe()
-    gateway.insertTag("ああいいうう", 1).subscribe()
-    gateway.insertTag("あｓｆｄｓｆｄｆｓ", 1).subscribe()
+    gateway.insertTag("あああいいいううう", 1)
+    gateway.insertTag("いいいいいいあああいいいううう", 1)
+    gateway.insertTag("いいあああ", 1)
+    gateway.insertTag("いいああ", 1)
+    gateway.insertTag("ああいいうう", 1)
+    gateway.insertTag("あｓｆｄｓｆｄｆｓ", 1)
 
     val actual = gateway.searchTagByName("あああ").test()
 
@@ -80,8 +81,8 @@ class TagTableGatewayTest {
   }
 
   @Test fun updateTagName() {
-    val id = gateway.insertTag("before update", 1).blockingGet()
-    gateway.updateTagNameById(id, "after update").subscribe()
+    val id = gateway.insertTag("before update", 1)
+    gateway.updateTagNameById(id, "after update")
 
     val actual = gateway.selectTagById(id).test()
 
@@ -89,26 +90,33 @@ class TagTableGatewayTest {
   }
 
   @Test fun updateTagName_whenInvalidIdSpecified() {
-    gateway.updateTagNameById(1, "the tag with the id has not yet inserted").test()
-        .assertError(IllegalArgumentException::class.java)
-        .assertErrorMessage("tried to update the name of the tag with id(1). but it has not inserted.")
+    try {
+      gateway.updateTagNameById(1, "the tag with the id has not yet inserted")
+      fail()
+    } catch (e: IllegalArgumentException) {
+      assertThat(e).hasMessage(
+          "tried to update the name of the tag with id(1). but it has not inserted.")
+    }
   }
 
   @Test fun deleteTagById() {
-    val id = gateway.insertTag("any", 1).blockingGet()
+    val id = gateway.insertTag("any", 1)
 
     val beforeDelete = gateway.selectTagById(id)
     assertThat(beforeDelete).isNotNull()
 
-    gateway.deleteTagById(id).subscribe()
+    gateway.deleteTagById(id)
 
     val afterDelete = gateway.selectTagById(id).test()
     afterDelete.assertValue(None)
   }
 
   @Test fun deleteTagById_whenInvaildIdSpecified() {
-    gateway.deleteTagById(1).test()
-        .assertError(IllegalStateException::class.java)
-        .assertErrorMessage("tried to delete the tag with id(1). but there is no such tag.")
+    try {
+      gateway.deleteTagById(1)
+      fail()
+    } catch (e: IllegalStateException) {
+      assertThat(e).hasMessage("tried to delete the tag with id(1). but there is no such tag.")
+    }
   }
 }

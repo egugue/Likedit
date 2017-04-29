@@ -5,7 +5,6 @@ import com.htoyama.likit.data.sqlite.lib.SqliteScripts
 import com.htoyama.likit.data.sqlite.lib.createQuery
 import com.htoyama.likit.data.sqlite.lib.transaction
 import com.squareup.sqlbrite.BriteDatabase
-import io.reactivex.Completable
 import io.reactivex.Observable
 import javax.inject.Inject
 
@@ -32,13 +31,11 @@ class TweetTagRelationTableGateway @Inject constructor(
   /**
    * Insert relations between a liked tweet and a tag.
    */
-  fun insertTweetTagRelation(tweetIdList: List<Long>, tagId: Long): Completable {
-    return Completable.fromAction {
-      db.writableDatabase.use { db ->
-        db.transaction {
-          tweetIdList.forEach { tweetId ->
-            SqliteScripts.insertTweetTagRelation(db, tweetId, tagId)
-          }
+  fun insertTweetTagRelation(tweetIdList: List<Long>, tagId: Long) {
+    db.writableDatabase.use { db ->
+      db.transaction {
+        tweetIdList.forEach { tweetId ->
+          SqliteScripts.insertTweetTagRelation(db, tweetId, tagId)
         }
       }
     }
@@ -47,13 +44,11 @@ class TweetTagRelationTableGateway @Inject constructor(
   /**
    * Delete relations between a liked tweet and a tag.
    */
-  fun deleteTweetTagRelation(tweetIdList: List<Long>, tagId: Long): Completable {
-    return Completable.fromAction {
-      db.writableDatabase.use { db ->
-        db.transaction {
-          tweetIdList.forEach { tweetId ->
-            SqliteScripts.deleteTweetTagRelation(db, tweetId, tagId)
-          }
+  fun deleteTweetTagRelation(tweetIdList: List<Long>, tagId: Long) {
+    db.writableDatabase.use { db ->
+      db.transaction {
+        tweetIdList.forEach { tweetId ->
+          SqliteScripts.deleteTweetTagRelation(db, tweetId, tagId)
         }
       }
     }

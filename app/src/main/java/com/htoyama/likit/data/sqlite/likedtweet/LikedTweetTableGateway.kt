@@ -7,7 +7,6 @@ import com.htoyama.likit.data.sqlite.lib.SqliteScripts
 import com.htoyama.likit.data.sqlite.lib.createQuery
 import com.htoyama.likit.data.sqlite.lib.transaction
 import com.squareup.sqlbrite.BriteDatabase
-import io.reactivex.Completable
 import io.reactivex.Observable
 import javax.inject.Inject
 
@@ -53,23 +52,21 @@ class LikedTweetTableGateway @Inject constructor(
   /**
    * Insert or update the given tweet.
    */
-  fun insertOrUpdateTweet(fullTweet: FullLikedTweetEntity): Completable {
-    return insertOrUpdateTweetList(listOf(fullTweet))
+  fun insertOrUpdateTweet(fullTweet: FullLikedTweetEntity) {
+    insertOrUpdateTweetList(listOf(fullTweet))
   }
 
   /**
    * Insert or update the given tweet.
    */
-  fun insertOrUpdateTweetList(fullTweetList: List<FullLikedTweetEntity>): Completable {
+  fun insertOrUpdateTweetList(fullTweetList: List<FullLikedTweetEntity>) {
     Contract.require(fullTweetList.isNotEmpty(), "fullTweetList must not be emtpy. but it's size was " + fullTweetList.size)
 
-    return Completable.fromAction {
-      db.writableDatabase.use { db ->
-        db.transaction {
-          fullTweetList.forEach { (tweet, user) ->
-            SqliteScripts.insertOrUpdateIntoUser(db, user)
-            SqliteScripts.insertOrIgnoreIntoLikedTweet(db, tweet)
-          }
+    db.writableDatabase.use { db ->
+      db.transaction {
+        fullTweetList.forEach { ft ->
+          SqliteScripts.insertOrUpdateIntoUser(db, ft.user)
+          SqliteScripts.insertOrIgnoreIntoLikedTweet(db, ft.tweet)
         }
       }
     }
@@ -78,12 +75,10 @@ class LikedTweetTableGateway @Inject constructor(
   /**
    * Delete the tweet with the given id.
    */
-  fun deleteTweetById(tweetId: Long): Completable {
-    return Completable.fromAction {
-      db.writableDatabase.use {
-        it.transaction {
-          SqliteScripts.deleteLikedTweetById(it, tweetId)
-        }
+  fun deleteTweetById(tweetId: Long) {
+    db.writableDatabase.use {
+      it.transaction {
+        SqliteScripts.deleteLikedTweetById(it, tweetId)
       }
     }
   }

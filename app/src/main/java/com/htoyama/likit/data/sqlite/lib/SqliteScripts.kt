@@ -20,6 +20,21 @@ import com.htoyama.likit.data.sqlite.user.UserEntity
  */
 internal object SqliteScripts {
 
+  /**
+   * Select all stored liked tweets as list.
+   */
+  fun selectAllLikedTweets(readable: SQLiteDatabase): List<FullLikedTweetEntity> {
+    val stmt = LikedTweetEntity.FACTORY.select_all()
+    return readable.rawQuery(stmt.statement, stmt.args)
+        .mapToList { FullLikedTweetEntity.MAPPER.map(it) }
+  }
+
+  fun selectLikedTweets(limit: Long, offset: Long, readable: SQLiteDatabase): List<FullLikedTweetEntity> {
+    val stmt = LikedTweetEntity.FACTORY.select_liked_tweets(limit, offset)
+    return readable.rawQuery(stmt.statement, stmt.args)
+        .mapToList { FullLikedTweetEntity.MAPPER.map(it) }
+  }
+
   fun insertOrIgnoreIntoLikedTweet(writable: SQLiteDatabase, tweet: LikedTweetEntity) {
     val stmt = LikedTweetModel.Insert_liked_tweet(writable, LikedTweetEntity.FACTORY)
     tweet.apply {
@@ -66,6 +81,12 @@ internal object SqliteScripts {
         .mapToOne { TagEntity.FACTORY.select_by_idMapper().map(it) }
   }
 
+  fun searchTagByName(readable: SQLiteDatabase, name: String): List<TagEntity> {
+    val stmt = TagEntity.FACTORY.search_by_name(name)
+    return readable.rawQuery(stmt.statement, stmt.args)
+        .mapToList { TagEntity.FACTORY.search_by_nameMapper().map(it) }
+  }
+
   fun insertTweetTagRelation(writable: SQLiteDatabase, tweetId: Long, tagId: Long) {
     TweetTagRelationModel.Insert_or_ignore(writable).run {
       bind(tweetId, tagId)
@@ -78,5 +99,11 @@ internal object SqliteScripts {
       bind(tweetId, tagId)
       program.executeUpdateDelete()
     }
+  }
+
+  fun selectAllTweetTagRelations(readable: SQLiteDatabase): List<TweetTagRelation> {
+    val stmt = TweetTagRelation.FACTORY.select_all()
+    return readable.rawQuery(stmt.statement, stmt.args)
+        .mapToList { TweetTagRelation.FACTORY.select_allMapper().map(it) }
   }
 }
