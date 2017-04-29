@@ -5,9 +5,7 @@ import com.htoyama.likit.data.sqlite.LikedTweetModel
 import com.htoyama.likit.data.sqlite.TagModel
 import com.htoyama.likit.data.sqlite.TweetTagRelationModel
 import com.htoyama.likit.data.sqlite.UserModel
-import com.htoyama.likit.data.sqlite.relation.TweetTagRelation
 import com.htoyama.likit.data.sqlite.tag.TagEntity
-import com.htoyama.likit.data.sqlite.likedtweet.FullLikedTweetEntity
 import com.htoyama.likit.data.sqlite.likedtweet.LikedTweetEntity
 import com.htoyama.likit.data.sqlite.user.UserEntity
 
