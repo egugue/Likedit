@@ -1,5 +1,6 @@
 package com.htoyama.likit.data.sqlite.relation
 
+import com.htoyama.likit.common.Contract
 import com.htoyama.likit.common.extensions.toV2Observable
 import com.htoyama.likit.data.sqlite.lib.SqliteScripts
 import com.htoyama.likit.data.sqlite.lib.createQuery
@@ -21,6 +22,8 @@ class TweetTagRelationTableGateway @Inject constructor(
    * Select some relations related to the given tweet id list.
    */
   fun selectRelationsBy(tweetIdList: List<Long>): Observable<List<TweetTagRelation>> {
+    Contract.require(tweetIdList.isNotEmpty(), "the given list must not empty")
+
     val stmt = TweetTagRelation.FACTORY.select_by_tweet_id_list(tweetIdList.toLongArray())
 
     return db.createQuery(stmt)

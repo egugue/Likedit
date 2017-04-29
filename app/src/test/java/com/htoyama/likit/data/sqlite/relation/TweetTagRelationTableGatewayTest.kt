@@ -185,4 +185,12 @@ class TweetTagRelationTableGatewayTest {
         tweetTagRelation(tweetId = 2, tagId = tagId2)
     )
   }
+
+  @Test fun `should throw an exception when tweet id list is empty` () {
+    try {
+      gateway.selectRelationsBy(emptyList())
+    } catch (e: IllegalArgumentException) {
+      assertThat(e).hasMessageThat().isEqualTo("the given list must not empty")
+    }
+  }
 }
