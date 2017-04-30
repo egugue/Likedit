@@ -50,7 +50,7 @@ fun twitterTweet(
     id: Long = 1,
     createdAt: String = "Tue Sep 04 15:55:52 +0000 2012",
     text: String = "text",
-    user: TwitterUser = tweetUser()
+    user: TwitterUser = twitterUser()
 ) = TwitterTweet(
     null,
     createdAt,
@@ -97,7 +97,7 @@ fun twitterTweet(
     null
 )
 
-fun tweetUser(
+fun twitterUser(
     id: Long = 1,
     name: String = "name",
     screenName: String = "screenName",
