@@ -22,7 +22,7 @@ class TagTableGateway @Inject constructor(
    * Select the tag with the given id.
    * If there is no such tag, return null.
    */
-  fun selectTagById(id: Long):Observable<Optional<TagEntity>> {
+  fun selectTagById(id: Long): Observable<Optional<TagEntity>> {
     val stmt = TagEntity.FACTORY.select_by_id(id)
     return db.createQuery(stmt)
         .mapToOneOrDefault(
@@ -51,12 +51,13 @@ class TagTableGateway @Inject constructor(
    *
    * @return the row ID of the last row inserted, if this insert is successful. -i otherwise.
    */
-  fun insertTag(name: String, created: Long): Long =
-      db.writableDatabase.use {
-        it.transaction {
-          SqliteScripts.insertTag(it, name, created)
-        }
+  fun insertTag(name: String, created: Long): Long {
+    return db.writableDatabase.use {
+      db.transaction {
+        SqliteScripts.insertTag(db, name, created)
       }
+    }
+  }
 
   /**
    * Update the name of the tag with the given id.
@@ -65,12 +66,12 @@ class TagTableGateway @Inject constructor(
    */
   fun updateTagNameById(id: Long, name: String) {
     db.writableDatabase.use {
-      it.transaction {
+      db.transaction {
         if (SqliteScripts.selectTagById(it, id) == null) {
           throw IllegalArgumentException("tried to update the name of the tag with id($id). but it has not inserted.")
         }
 
-        SqliteScripts.updateTagNameById(it, name, id)
+        SqliteScripts.updateTagNameById(db, name, id)
       }
     }
   }
@@ -82,11 +83,11 @@ class TagTableGateway @Inject constructor(
    */
   fun deleteTagById(id: Long) {
     db.writableDatabase.use {
-      it.transaction {
+      db.transaction {
         if (SqliteScripts.selectTagById(it, id) == null) {
           throw IllegalStateException("tried to delete the tag with id($id). but there is no such tag.")
         }
-        SqliteScripts.deleteTagById(it, id)
+        SqliteScripts.deleteTagById(db, id)
       }
     }
   }

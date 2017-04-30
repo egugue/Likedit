@@ -15,14 +15,14 @@ import com.squareup.sqldelight.SqlDelightStatement
  * @throws IllegalArgumentException throw it if the Cursor has more than 1 row.
  */
 fun <T> Cursor.mapToOne(transform: (Cursor) -> T): T? =
-  if (count == 1) {
-    moveToFirst()
-    transform.invoke(this)
-  } else if (count == 0) {
-    null
-  } else {
-    throw IllegalStateException("Cursor must have a row. but was " + count)
-  }
+    if (count == 1) {
+      moveToFirst()
+      transform.invoke(this)
+    } else if (count == 0) {
+      null
+    } else {
+      throw IllegalStateException("Cursor must have a row. but was " + count)
+    }
 
 /**
  * Convert [Cursor] into a list with given transform.
@@ -73,7 +73,6 @@ fun <T> BriteDatabase.transaction(unitOfWork: () -> T): T {
   } finally {
     transaction.end()
   }
-
 }
 
 fun BriteDatabase.createQuery(stmt: SqlDelightStatement): QueryObservable

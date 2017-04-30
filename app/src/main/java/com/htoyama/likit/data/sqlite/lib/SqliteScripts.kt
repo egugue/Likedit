@@ -8,6 +8,7 @@ import com.htoyama.likit.data.sqlite.UserModel
 import com.htoyama.likit.data.sqlite.tag.TagEntity
 import com.htoyama.likit.data.sqlite.likedtweet.LikedTweetEntity
 import com.htoyama.likit.data.sqlite.user.UserEntity
+import com.squareup.sqlbrite.BriteDatabase
 
 /**
  * A collection which has a lot of simple SQLite scripts.
@@ -18,45 +19,45 @@ import com.htoyama.likit.data.sqlite.user.UserEntity
  */
 internal object SqliteScripts {
 
-  fun insertOrIgnoreIntoLikedTweet(writable: SQLiteDatabase, tweet: LikedTweetEntity) {
-    val stmt = LikedTweetModel.Insert_liked_tweet(writable, LikedTweetEntity.FACTORY)
+  fun insertOrIgnoreIntoLikedTweet(db: BriteDatabase, tweet: LikedTweetEntity) {
+    val stmt = LikedTweetModel.Insert_liked_tweet(db.writableDatabase, LikedTweetEntity.FACTORY)
     tweet.apply {
       stmt.bind(id, userId, text, imageList, urlList, video, created)
     }
-    stmt.program.executeInsert()
+    db.executeInsert(stmt.table, stmt.program)
   }
 
-  fun deleteLikedTweetById(writable: SQLiteDatabase, tweetId: Long) =
-      LikedTweetModel.Delete_by_id(writable).run {
-        bind(tweetId)
-        program.executeUpdateDelete()
-      }
+  fun deleteLikedTweetById(db: BriteDatabase, tweetId: Long) {
+    val stmt = LikedTweetModel.Delete_by_id(db.writableDatabase)
+    stmt.bind(tweetId)
+    db.executeUpdateDelete(stmt.table, stmt.program)
+  }
 
-  fun insertOrUpdateIntoUser(writable: SQLiteDatabase, user: UserEntity) {
-    val stmt = UserModel.Insert_user(writable)
+  fun insertOrUpdateIntoUser(db: BriteDatabase, user: UserEntity) {
+    val stmt = UserModel.Insert_user(db.writableDatabase)
     user.apply {
       stmt.bind(id, name, screenName, avatarUrl)
     }
-    stmt.program.executeInsert()
+    db.executeInsert(stmt.table, stmt.program)
   }
 
-  fun insertTag(writable: SQLiteDatabase, name: String, created: Long): Long =
-      TagModel.Insert_(writable).run {
-        bind(name, created)
-        program.executeInsert()
-      }
+  fun insertTag(db: BriteDatabase, name: String, created: Long): Long {
+    val stmt = TagModel.Insert_(db.writableDatabase)
+    stmt.bind(name, created)
+    return db.executeInsert(stmt.table, stmt.program)
+  }
 
-  fun updateTagNameById(writable: SQLiteDatabase, name: String, id: Long) =
-      TagModel.Update_name(writable).run {
-        bind(name, id)
-        program.executeUpdateDelete()
-      }
+  fun updateTagNameById(db: BriteDatabase, name: String, id: Long) {
+    val stmt = TagModel.Update_name(db.writableDatabase)
+    stmt.bind(name, id)
+    db.executeUpdateDelete(stmt.table, stmt.program)
+  }
 
-  fun deleteTagById(writable: SQLiteDatabase, id: Long) =
-      TagModel.Delete_by_id(writable).run {
-        bind(id)
-        program.executeUpdateDelete()
-      }
+  fun deleteTagById(db: BriteDatabase, id: Long) {
+    val stmt = TagModel.Delete_by_id(db.writableDatabase)
+    stmt.bind(id)
+    db.executeUpdateDelete(stmt.table, stmt.program)
+  }
 
   fun selectTagById(readable: SQLiteDatabase, id: Long): TagEntity? {
     val stmt = TagEntity.FACTORY.select_by_id(id)
@@ -64,17 +65,15 @@ internal object SqliteScripts {
         .mapToOne { TagEntity.FACTORY.select_by_idMapper().map(it) }
   }
 
-  fun insertTweetTagRelation(writable: SQLiteDatabase, tweetId: Long, tagId: Long) {
-    TweetTagRelationModel.Insert_or_ignore(writable).run {
-      bind(tweetId, tagId)
-      program.executeInsert()
-    }
+  fun insertTweetTagRelation(db: BriteDatabase, tweetId: Long, tagId: Long) {
+    val stmt = TweetTagRelationModel.Insert_or_ignore(db.writableDatabase)
+    stmt.bind(tweetId, tagId)
+    db.executeInsert(stmt.table, stmt.program)
   }
 
-  fun deleteTweetTagRelation(writable: SQLiteDatabase, tweetId: Long, tagId: Long) {
-    TweetTagRelationModel.Delete_(writable).run {
-      bind(tweetId, tagId)
-      program.executeUpdateDelete()
-    }
+  fun deleteTweetTagRelation(db: BriteDatabase, tweetId: Long, tagId: Long) {
+    val stmt = TweetTagRelationModel.Delete_(db.writableDatabase)
+    stmt.bind(tweetId, tagId)
+    db.executeUpdateDelete(stmt.table, stmt.program)
   }
 }

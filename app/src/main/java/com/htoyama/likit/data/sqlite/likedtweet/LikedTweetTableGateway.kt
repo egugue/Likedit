@@ -62,7 +62,7 @@ class LikedTweetTableGateway @Inject constructor(
   fun insertOrUpdateTweetList(fullTweetList: List<FullLikedTweetEntity>) {
     Contract.require(fullTweetList.isNotEmpty(), "fullTweetList must not be emtpy. but it's size was " + fullTweetList.size)
 
-    db.writableDatabase.use { db ->
+    db.writableDatabase.use {
       db.transaction {
         fullTweetList.forEach { (tweet, user) ->
           SqliteScripts.insertOrUpdateIntoUser(db, user)
@@ -76,9 +76,15 @@ class LikedTweetTableGateway @Inject constructor(
    * Delete the tweet with the given id.
    */
   fun deleteTweetById(tweetId: Long) {
+    deleteTweetByIdList(listOf(tweetId))
+  }
+
+  fun deleteTweetByIdList(tweetIdList: List<Long>) {
     db.writableDatabase.use {
-      it.transaction {
-        SqliteScripts.deleteLikedTweetById(it, tweetId)
+      db.transaction {
+        tweetIdList.map {
+          SqliteScripts.deleteLikedTweetById(db, it)
+        }
       }
     }
   }
