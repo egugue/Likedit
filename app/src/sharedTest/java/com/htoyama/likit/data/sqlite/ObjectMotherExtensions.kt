@@ -29,6 +29,13 @@ fun fullTweetEntity(
     )
 )
 
+fun userEntity(
+    id: Long = 0,
+    name: String = "name",
+    screenName: String = "screen name",
+    avatarUrl: String = "avatar url"
+) = UserEntity(id, name, screenName, avatarUrl)
+
 fun tagEntity(
     id: Long,
     name: String,
