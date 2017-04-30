@@ -5,7 +5,6 @@ import com.htoyama.likit.common.Irrelevant
 import com.htoyama.likit.common.extensions.zipWith
 import com.htoyama.likit.data.prefs.AppSetting
 import io.reactivex.Single
-import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
