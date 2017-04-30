@@ -10,7 +10,7 @@ import com.twitter.sdk.android.core.models.Tweet as TwitterTweet
 import com.twitter.sdk.android.core.models.User as TwitterUser
 
 /**
- * Extensions which creates instance for testing.
+ * Extensions which create instance for testing.
  */
 
 fun likedTweet(
