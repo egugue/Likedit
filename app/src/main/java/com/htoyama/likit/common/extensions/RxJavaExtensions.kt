@@ -1,13 +1,19 @@
 package com.htoyama.likit.common.extensions
 
 import hu.akarnokd.rxjava.interop.RxJavaInterop
-import io.reactivex.Observable
-import io.reactivex.Observer
+import io.reactivex.*
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.BiFunction
 
 /**
  * Extensions for classes related to RxJava
  */
+
+/**
+ * A extension to apply SAM conversion
+ */
+fun <T, U, R> Observable<T>.zipWith(other: ObservableSource<U>, zipper: (T, U) -> R) =
+    zipWith(other, BiFunction<T, U, R> { t1, t2 -> zipper.invoke(t1, t2) })
 
 /**
  * Basically, this method is the same as [Observable.onErrorReturn].
@@ -43,3 +49,9 @@ fun <T> Observable<T>.onErrorReturnOrJustThrow(
 
 fun <T> rx.Observable<T>.toV2Observable(): Observable<T> =
     RxJavaInterop.toV2Observable(this)
+
+/**
+ * A extension to apply SAM conversion
+ */
+fun <T, U, R> Single<T>.zipWith(other: SingleSource<U>, zipper: (T, U) -> R) =
+    zipWith(other, BiFunction<T, U, R> { t1, t2 -> zipper.invoke(t1, t2) })
