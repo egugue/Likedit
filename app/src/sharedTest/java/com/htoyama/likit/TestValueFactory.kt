@@ -1,12 +1,43 @@
 package com.htoyama.likit
 
+import com.htoyama.likit.domain.likedtweet.LikedTweet
+import com.htoyama.likit.domain.tweet.Tweet
+import com.htoyama.likit.domain.tweet.Url
+import com.htoyama.likit.domain.tweet.media.Photo
+import com.htoyama.likit.domain.tweet.media.Video
 import com.htoyama.likit.domain.user.User
-import com.twitter.sdk.android.core.models.Tweet
+import com.twitter.sdk.android.core.models.Tweet as TwitterTweet
 import com.twitter.sdk.android.core.models.User as TwitterUser
 
 /**
  * Extensions which creates instance for testing.
  */
+
+fun likedTweet(
+    tweet: Tweet = tweet(),
+    tagIdList: List<Long> = emptyList()
+) = LikedTweet(
+    tweet,
+    tagIdList
+)
+
+fun tweet(
+    id: Long = 1,
+    user: User = user(),
+    text: String = "text",
+    photoList: List<Photo> = emptyList(),
+    urlList: List<Url> = emptyList(),
+    video: Video? = null,
+    createdAt: Long = 1L
+) = Tweet(
+    id,
+    user,
+    createdAt,
+    text,
+    photoList,
+    urlList,
+    video
+)
 
 fun user(
     id: Long = 0,
@@ -20,7 +51,7 @@ fun twitterTweet(
     createdAt: String = "Tue Sep 04 15:55:52 +0000 2012",
     text: String = "text",
     user: TwitterUser = tweetUser()
-) = Tweet(
+) = TwitterTweet(
     null,
     createdAt,
     null,
@@ -128,4 +159,3 @@ fun tweetUser(
 
     "withheldScope"
 )
-
