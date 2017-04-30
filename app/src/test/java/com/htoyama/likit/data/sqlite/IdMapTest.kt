@@ -14,11 +14,8 @@ class IdMapTest {
 
     val actual = IdMap.basedOnTweetId(relationsList)
 
-    assertThat(actual.getOrEmptyList(1))
-        .containsExactly(1L, 2L)
-
-    assertThat(actual.getOrEmptyList(2))
-        .containsExactly(1L)
+    assertThat(actual.getOrEmptyList(1)).containsExactly(1L, 2L)
+    assertThat(actual.getOrEmptyList(2)).containsExactly(1L)
   }
 
   @Test fun `get empty list if the given key is not present`() {
