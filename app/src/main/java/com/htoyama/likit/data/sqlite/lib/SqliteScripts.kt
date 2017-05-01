@@ -17,6 +17,7 @@ import com.squareup.sqlbrite.BriteDatabase
  * Each script is expected to be used in combination with other class
  * so that they should not close a given [SQLiteDatabase].
  */
+//TODO: probably should close writable database in almost all methods. but If so, don't know why but unit test is failed...
 internal object SqliteScripts {
 
   fun insertOrIgnoreIntoLikedTweet(db: BriteDatabase, tweet: LikedTweetEntity) {
