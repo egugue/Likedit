@@ -63,11 +63,10 @@ class TagTableGateway @Inject constructor(
    * @throws IllegalStateException if the tag with the id has not inserted.
    */
   fun updateTagNameById(id: Long, name: String) {
+    if (SqliteScripts.selectTagById(db, id) == null) {
+      throw IllegalArgumentException("tried to update the name of the tag with id($id). but it has not inserted.")
+    }
     db.transaction {
-      if (SqliteScripts.selectTagById(db, id) == null) {
-        throw IllegalArgumentException("tried to update the name of the tag with id($id). but it has not inserted.")
-      }
-
       SqliteScripts.updateTagNameById(db, name, id)
     }
   }
@@ -78,10 +77,10 @@ class TagTableGateway @Inject constructor(
    * @throws IllegalStateException if there is no such tag
    */
   fun deleteTagById(id: Long) {
+    if (SqliteScripts.selectTagById(db, id) == null) {
+      throw IllegalStateException("tried to delete the tag with id($id). but there is no such tag.")
+    }
     db.transaction {
-      if (SqliteScripts.selectTagById(db, id) == null) {
-        throw IllegalStateException("tried to delete the tag with id($id). but there is no such tag.")
-      }
       SqliteScripts.deleteTagById(db, id)
     }
   }
