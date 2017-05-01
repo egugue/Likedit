@@ -2,16 +2,20 @@ package com.htoyama.likit.data.sqlite.likedtweet
 
 import com.htoyama.likit.common.Contract
 import com.htoyama.likit.data.sqlite.IdMap
+import com.htoyama.likit.data.sqlite.lib.transaction
 import com.htoyama.likit.data.sqlite.relation.TweetTagRelation
 import com.htoyama.likit.data.sqlite.relation.TweetTagRelationTableGateway
 import com.htoyama.likit.domain.likedtweet.LikedTweet
+import com.squareup.sqlbrite.BriteDatabase
 import io.reactivex.Observable
+import java.util.ArrayList
 import javax.inject.Inject
 
 /**
  * A Data Access Object that handles liked Tweets.
  */
 class LikedTweetSqliteDao @Inject constructor(
+    private val briteDatabase: BriteDatabase,
     private val likedTweetGateway: LikedTweetTableGateway,
     private val relationGateway: TweetTagRelationTableGateway
 ) {
@@ -41,7 +45,33 @@ class LikedTweetSqliteDao @Inject constructor(
         }
   }
 
+  fun insertOrUpdate(list: List<LikedTweet>) {
+    val entityList = ArrayList<FullLikedTweetEntity>(list.size)
+    val relationList = ArrayList<TweetTagRelation>(list.size)
+
+    list.forEach {
+      entityList.add(FullLikedTweetEntity.fromLikedTweet(it))
+
+      val tweetId = it.tweet.id
+      val intermediate = it.tagIdList.map { TweetTagRelation(tweetId, it) }
+      relationList.addAll(intermediate)
+    }
+
+    briteDatabase.transaction {
+      likedTweetGateway.insertOrUpdateTweetList(entityList)
+      relationGateway.insertTweetTagRelation(relationList)
+    }
+  }
+
+  fun delete(tweetIdList: List<Long>) {
+    likedTweetGateway.deleteTweetByIdList(tweetIdList)
+  }
+
   private fun selectRelationsByTweetEntityList(tweetList: List<FullLikedTweetEntity>): Observable<List<TweetTagRelation>> {
+    if (tweetList.isEmpty()) {
+      return Observable.just(emptyList())
+    }
+
     val idList = tweetList.map { it.tweet.id }
     return relationGateway.selectRelationsByTweetIdList(idList)
   }
