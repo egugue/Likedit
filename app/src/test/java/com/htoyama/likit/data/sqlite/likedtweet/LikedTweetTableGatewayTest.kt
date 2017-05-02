@@ -3,29 +3,21 @@ package com.htoyama.likit.data.sqlite.likedtweet
 import com.htoyama.likit.PhotoBuilder
 import com.htoyama.likit.data.sqlite.fullTweetEntity
 import com.google.common.truth.Truth.assertThat
-import com.htoyama.likit.data.sqlite.briteDatabaseForTest
-import com.squareup.sqlbrite.BriteDatabase
-import org.junit.After
+import com.htoyama.likit.testutil.SqliteTestingRule
 import org.junit.Assert.*
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class LikedTweetTableGatewayTest {
-  lateinit var db: BriteDatabase
+  @Rule @JvmField val rule = SqliteTestingRule()
   lateinit var gateway: LikedTweetTableGateway
 
   @Before fun setUp() {
-    db = briteDatabaseForTest()
-    gateway = LikedTweetTableGateway(db)
-  }
-
-  @After fun tearDown() {
-    db.close()
-    RuntimeEnvironment.application.deleteDatabase("likedit")
+    gateway = LikedTweetTableGateway(rule.briteDB)
   }
 
   @Test fun shouldInsertTweet() {

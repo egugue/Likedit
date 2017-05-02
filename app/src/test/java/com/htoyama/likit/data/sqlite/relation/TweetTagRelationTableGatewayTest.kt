@@ -2,37 +2,29 @@ package com.htoyama.likit.data.sqlite.relation
 
 import android.database.sqlite.SQLiteConstraintException
 import com.google.common.truth.Truth.assertThat
-import com.htoyama.likit.data.sqlite.briteDatabaseForTest
 import com.htoyama.likit.data.sqlite.fullTweetEntity
 import com.htoyama.likit.data.sqlite.tag.TagTableGateway
 import com.htoyama.likit.data.sqlite.likedtweet.LikedTweetTableGateway
 import com.htoyama.likit.data.sqlite.tweetTagRelation
-import com.squareup.sqlbrite.BriteDatabase
-import org.junit.After
+import com.htoyama.likit.testutil.SqliteTestingRule
 import org.junit.Assert.*
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class TweetTagRelationTableGatewayTest {
+  @Rule @JvmField val rule = SqliteTestingRule()
   lateinit var gateway: TweetTagRelationTableGateway
   lateinit var tagGateway: TagTableGateway
   lateinit var tweetGateway: LikedTweetTableGateway
-  lateinit var db: BriteDatabase
 
   @Before fun setUp() {
-    db = briteDatabaseForTest()
-    gateway = TweetTagRelationTableGateway(db)
-    tagGateway = TagTableGateway(db)
-    tweetGateway = LikedTweetTableGateway(db)
-  }
-
-  @After fun tearDown() {
-    db.close()
-    RuntimeEnvironment.application.deleteDatabase("likedit")
+    gateway = TweetTagRelationTableGateway(rule.briteDB)
+    tagGateway = TagTableGateway(rule.briteDB)
+    tweetGateway = LikedTweetTableGateway(rule.briteDB)
   }
 
   /*********************

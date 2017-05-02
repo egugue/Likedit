@@ -1,31 +1,31 @@
 package com.htoyama.likit.data.sqlite.likedtweet
 
-import com.htoyama.likit.data.sqlite.briteDatabaseForTest
 import com.htoyama.likit.data.sqlite.relation.TweetTagRelationTableGateway
 import com.htoyama.likit.data.sqlite.tag.TagTableGateway
 import com.htoyama.likit.likedTweet
+import com.htoyama.likit.testutil.SqliteTestingRule
 import com.htoyama.likit.tweet
-import com.squareup.sqlbrite.BriteDatabase
 import org.junit.Before
 import org.junit.Ignore
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 class LikedTweetSqliteDaoTest {
+  @Rule @JvmField val rule = SqliteTestingRule()
+
   lateinit var gateway: TweetTagRelationTableGateway
   lateinit var tagGateway: TagTableGateway
   lateinit var tweetGateway: LikedTweetTableGateway
-  lateinit var db: BriteDatabase
   lateinit var dao: LikedTweetSqliteDao
 
   @Before fun setUp() {
-    db = briteDatabaseForTest()
-    gateway = TweetTagRelationTableGateway(db)
-    tagGateway = TagTableGateway(db)
-    tweetGateway = LikedTweetTableGateway(db)
-    dao = LikedTweetSqliteDao(db, tweetGateway, gateway)
+    gateway = TweetTagRelationTableGateway(rule.briteDB)
+    tagGateway = TagTableGateway(rule.briteDB)
+    tweetGateway = LikedTweetTableGateway(rule.briteDB)
+    dao = LikedTweetSqliteDao(rule.briteDB, tweetGateway, gateway)
   }
 
   @Ignore("until sqlite dao classes is created")
