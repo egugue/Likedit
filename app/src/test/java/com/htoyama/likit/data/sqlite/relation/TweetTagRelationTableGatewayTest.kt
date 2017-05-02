@@ -166,6 +166,7 @@ class TweetTagRelationTableGatewayTest {
     }
   }
 
+
   /************************
    * about delete method
    *************************/
@@ -191,6 +192,7 @@ class TweetTagRelationTableGatewayTest {
     assertThat(rels).doesNotContain(tweetTagRelation(deletingId, tagId))
   }
 
+
   /************************
    * about delete cascade
    *************************/
@@ -203,8 +205,7 @@ class TweetTagRelationTableGatewayTest {
     // given
     tweetGateway.insertOrUpdateTweetList(listOf(
         fullTweetEntity(id = 1),
-        fullTweetEntity(id = 2),
-        fullTweetEntity(id = 3))
+        fullTweetEntity(id = 2))
     )
     val deletingId = tagGateway.insertTag("will delete", 1)
     val tagId1 = tagGateway.insertTag("a tag 1", 1)
@@ -234,8 +235,7 @@ class TweetTagRelationTableGatewayTest {
     val deletingId = 1L
     tweetGateway.insertOrUpdateTweetList(listOf(
         fullTweetEntity(id = deletingId),
-        fullTweetEntity(id = 2),
-        fullTweetEntity(id = 3))
+        fullTweetEntity(id = 2))
     )
     val tagId1 = tagGateway.insertTag("a tag 1", 1)
     val tagId2 = tagGateway.insertTag("a tag 2", 1)
