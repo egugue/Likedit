@@ -8,7 +8,8 @@ import java.util.*
 class Tag(
     val id: Long,
     name: String,
-    var createdAt: Date
+    var createdAt: Date,
+    val tweetIdList: List<Long>
 ) {
 
   var name: String = ""

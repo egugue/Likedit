@@ -22,7 +22,7 @@ open class TagAppService @Inject internal constructor(
    */
   open fun registerNewTag(name: String): Single<Tag> {
     val id = tagRepository.publishNextIdentity()
-    val tag = Tag(id = id, name = name, createdAt = Date())
+    val tag = Tag(id = id, name = name, createdAt = Date(), tweetIdList = emptyList())
     return tagRepository.store(tag)
         .map { tag }
   }
