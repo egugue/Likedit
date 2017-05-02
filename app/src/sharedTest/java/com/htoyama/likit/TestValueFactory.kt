@@ -1,18 +1,57 @@
 package com.htoyama.likit
 
-import com.twitter.sdk.android.core.models.Tweet
-import com.twitter.sdk.android.core.models.User
+import com.htoyama.likit.domain.likedtweet.LikedTweet
+import com.htoyama.likit.domain.tweet.Tweet
+import com.htoyama.likit.domain.tweet.Url
+import com.htoyama.likit.domain.tweet.media.Photo
+import com.htoyama.likit.domain.tweet.media.Video
+import com.htoyama.likit.domain.user.User
+import com.twitter.sdk.android.core.models.Tweet as TwitterTweet
+import com.twitter.sdk.android.core.models.User as TwitterUser
 
 /**
- * Extensions which creates instance for testing.
+ * Extensions which create instance for testing.
  */
+
+fun likedTweet(
+    tweet: Tweet = tweet(),
+    tagIdList: List<Long> = emptyList()
+) = LikedTweet(
+    tweet,
+    tagIdList
+)
+
+fun tweet(
+    id: Long = 1,
+    user: User = user(),
+    text: String = "text",
+    photoList: List<Photo> = emptyList(),
+    urlList: List<Url> = emptyList(),
+    video: Video? = null,
+    createdAt: Long = 1L
+) = Tweet(
+    id,
+    user,
+    createdAt,
+    text,
+    photoList,
+    urlList,
+    video
+)
+
+fun user(
+    id: Long = 0,
+    name: String = "name",
+    screenName: String = "screen name",
+    avatarUrl: String = "avatar url"
+) = User(id, name, screenName, avatarUrl)
 
 fun twitterTweet(
     id: Long = 1,
     createdAt: String = "Tue Sep 04 15:55:52 +0000 2012",
     text: String = "text",
-    user: User = tweetUser()
-) = Tweet(
+    user: TwitterUser = twitterUser()
+) = TwitterTweet(
     null,
     createdAt,
     null,
@@ -58,12 +97,12 @@ fun twitterTweet(
     null
 )
 
-fun tweetUser(
+fun twitterUser(
     id: Long = 1,
     name: String = "name",
     screenName: String = "screenName",
     profileImageUrlHttps: String = "https://si0.twimg.com/profile_images/1812284389/allseeingeye_normal.jpg"
-) = User(
+) = TwitterUser(
     false,
     "createdAt",
     false,
@@ -120,4 +159,3 @@ fun tweetUser(
 
     "withheldScope"
 )
-

@@ -10,7 +10,7 @@ import com.htoyama.likit.domain.tweet.media.Photo
 import com.htoyama.likit.domain.tweet.media.Video
 
 fun fullTweetEntity(
-    id: Long,
+    id: Long = 1,
     userId: Long = 1,
     userName: String = "userName",
     userScreenName: String = "userScreenName",
@@ -28,6 +28,13 @@ fun fullTweetEntity(
         userId, userName, userScreenName, userAvatarUrl
     )
 )
+
+fun userEntity(
+    id: Long = 0,
+    name: String = "name",
+    screenName: String = "screen name",
+    avatarUrl: String = "avatar url"
+) = UserEntity(id, name, screenName, avatarUrl)
 
 fun tagEntity(
     id: Long,

@@ -1,6 +1,7 @@
 package com.htoyama.likit.data.sqlite.user
 
 import com.htoyama.likit.data.sqlite.UserModel
+import com.htoyama.likit.domain.user.User
 
 /**
  * An entity which represents a user who has tweeted.
@@ -19,5 +20,9 @@ data class UserEntity(
 
   companion object {
     val FACTORY = UserModel.Factory<UserEntity>(::UserEntity)
+
+    fun from(u: User) = UserEntity(u.id, u.name, u.screenName, u.avatorUrl)
   }
 }
+
+fun UserEntity.toUser() = User(id, name, screenName, avatarUrl)

@@ -22,7 +22,7 @@ class TagTableGateway @Inject constructor(
    * Select the tag with the given id.
    * If there is no such tag, return null.
    */
-  fun selectTagById(id: Long):Observable<Optional<TagEntity>> {
+  fun selectTagById(id: Long): Observable<Optional<TagEntity>> {
     val stmt = TagEntity.FACTORY.select_by_id(id)
     return db.createQuery(stmt)
         .mapToOneOrDefault(
@@ -51,12 +51,11 @@ class TagTableGateway @Inject constructor(
    *
    * @return the row ID of the last row inserted, if this insert is successful. -i otherwise.
    */
-  fun insertTag(name: String, created: Long): Long =
-      db.writableDatabase.use {
-        it.transaction {
-          SqliteScripts.insertTag(it, name, created)
-        }
-      }
+  fun insertTag(name: String, created: Long): Long {
+    return db.transaction {
+      SqliteScripts.insertTag(db, name, created)
+    }
+  }
 
   /**
    * Update the name of the tag with the given id.
@@ -64,14 +63,11 @@ class TagTableGateway @Inject constructor(
    * @throws IllegalStateException if the tag with the id has not inserted.
    */
   fun updateTagNameById(id: Long, name: String) {
-    db.writableDatabase.use {
-      it.transaction {
-        if (SqliteScripts.selectTagById(it, id) == null) {
-          throw IllegalArgumentException("tried to update the name of the tag with id($id). but it has not inserted.")
-        }
-
-        SqliteScripts.updateTagNameById(it, name, id)
-      }
+    if (SqliteScripts.selectTagById(db, id) == null) {
+      throw IllegalArgumentException("tried to update the name of the tag with id($id). but it has not inserted.")
+    }
+    db.transaction {
+      SqliteScripts.updateTagNameById(db, name, id)
     }
   }
 
@@ -81,13 +77,11 @@ class TagTableGateway @Inject constructor(
    * @throws IllegalStateException if there is no such tag
    */
   fun deleteTagById(id: Long) {
-    db.writableDatabase.use {
-      it.transaction {
-        if (SqliteScripts.selectTagById(it, id) == null) {
-          throw IllegalStateException("tried to delete the tag with id($id). but there is no such tag.")
-        }
-        SqliteScripts.deleteTagById(it, id)
-      }
+    if (SqliteScripts.selectTagById(db, id) == null) {
+      throw IllegalStateException("tried to delete the tag with id($id). but there is no such tag.")
+    }
+    db.transaction {
+      SqliteScripts.deleteTagById(db, id)
     }
   }
 }
