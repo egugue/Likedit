@@ -45,6 +45,9 @@ class LikedTweetSqliteDao @Inject constructor(
         }
   }
 
+  /**
+   * Insert or update the given list of [LikedTweet]
+   */
   fun insertOrUpdate(list: List<LikedTweet>) {
     val entityList = ArrayList<FullLikedTweetEntity>(list.size)
     val relationList = ArrayList<TweetTagRelation>(list.size)
@@ -63,6 +66,9 @@ class LikedTweetSqliteDao @Inject constructor(
     }
   }
 
+  /**
+   * Delete the given of [LikedTweet]
+   */
   fun delete(tweetIdList: List<Long>) {
     likedTweetGateway.deleteTweetByIdList(tweetIdList)
   }
