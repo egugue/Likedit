@@ -89,7 +89,7 @@ class TweetTagRelationTableGatewayTest {
     }
   }
 
-  @Test fun shouldDeleteTweetTagRelations() {
+  @Test fun `delete relations`() {
     // given
     val deletingId = 1L
     tweetGateway.insertOrUpdateTweetList(listOf(
@@ -114,7 +114,7 @@ class TweetTagRelationTableGatewayTest {
    * Because of defining "ON DELETE CASCADE" on CREATE statement,
    * it should delete relations when a tag is deleted.
    */
-  @Test fun shouldDeleteTweetTagRelations_whenTagIsDeleted() {
+  @Test fun `delete relations automatically when a tag is deleted`() {
     // given
     tweetGateway.insertOrUpdateTweetList(listOf(
         fullTweetEntity(id = 1),
@@ -144,7 +144,7 @@ class TweetTagRelationTableGatewayTest {
    * Because of defining "ON DELETE CASCADE" on CREATE statement,
    * it should delete relations when a tweet is deleted.
    */
-  @Test fun shouldDeleteTweetTagRelations_whenTweetIsDeleted() {
+  @Test fun `should delete relations automatically when a tweet is deleted`() {
     // given
     val deletingId = 1L
     tweetGateway.insertOrUpdateTweetList(listOf(
