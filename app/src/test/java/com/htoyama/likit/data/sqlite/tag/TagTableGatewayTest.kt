@@ -85,7 +85,7 @@ class TagTableGatewayTest {
       gateway.updateTagNameById(1, "the tag with the id has not yet inserted")
       fail()
     } catch (e: IllegalArgumentException) {
-      assertThat(e).hasMessage(
+      assertThat(e).hasMessageThat().isEqualTo(
           "tried to update the name of the tag with id(1). but it has not inserted.")
     }
   }
@@ -107,7 +107,7 @@ class TagTableGatewayTest {
       gateway.deleteTagById(1)
       fail()
     } catch (e: IllegalStateException) {
-      assertThat(e).hasMessage("tried to delete the tag with id(1). but there is no such tag.")
+      assertThat(e).hasMessageThat().isEqualTo("tried to delete the tag with id(1). but there is no such tag.")
     }
   }
 }
