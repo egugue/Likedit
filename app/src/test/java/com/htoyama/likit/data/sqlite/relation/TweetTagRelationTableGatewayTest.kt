@@ -39,7 +39,7 @@ class TweetTagRelationTableGatewayTest {
    * about select method
    *********************/
 
-  @Test fun `should select relations related to the given tweet id list`() {
+  @Test fun `select relations related to the given tweet id list`() {
     // given
     tweetGateway.insertOrUpdateTweetList(listOf(
         fullTweetEntity(id = 1),
@@ -64,7 +64,7 @@ class TweetTagRelationTableGatewayTest {
     )
   }
 
-  @Test fun `should throw an exception when tweet id list is empty`() {
+  @Test fun `throw an exception when tweet id list is empty`() {
     try {
       gateway.selectRelationsByTweetIdList(emptyList())
     } catch (e: IllegalArgumentException) {
@@ -72,7 +72,7 @@ class TweetTagRelationTableGatewayTest {
     }
   }
 
-  @Test fun `should select relations related to the given tag id list`() {
+  @Test fun `select relations related to the given tag id list`() {
     // given
     tweetGateway.insertOrUpdateTweetList(listOf(
         fullTweetEntity(id = 1),
@@ -98,7 +98,7 @@ class TweetTagRelationTableGatewayTest {
     )
   }
 
-  @Test fun `should throw an exception when tag id list is empty`() {
+  @Test fun `throw an exception when tag id list is empty`() {
     try {
       gateway.selectRelationsByTagIdList(emptyList())
     } catch (e: IllegalArgumentException) {
