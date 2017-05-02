@@ -60,8 +60,8 @@ class TweetTagRelationTableGateway @Inject constructor(
    */
   fun insertTweetTagRelation(list: List<TweetTagRelation>) {
     db.transaction {
-      list.forEach {
-        SqliteScripts.insertTweetTagRelation(db, it.tweetId, it.tagId)
+      list.forEach { (tweetId, tagId) ->
+        SqliteScripts.insertTweetTagRelation(db, tweetId, tagId)
       }
     }
   }
