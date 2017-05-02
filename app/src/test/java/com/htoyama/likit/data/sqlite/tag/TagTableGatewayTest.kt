@@ -4,31 +4,22 @@ import com.google.common.truth.Truth.assertThat
 import com.htoyama.likit.common.None
 import com.htoyama.likit.common.Optional
 import com.htoyama.likit.common.toOptional
-import com.htoyama.likit.data.sqlite.briteDatabaseForTest
-import com.htoyama.likit.data.sqlite.lib.SqliteOpenHelper
 import com.htoyama.likit.data.sqlite.tagEntity
-import com.squareup.sqlbrite.BriteDatabase
-import org.junit.After
+import com.htoyama.likit.testutil.SqliteTestingRule
 import org.junit.Assert.*
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class TagTableGatewayTest {
+  @Rule @JvmField val rule = SqliteTestingRule()
   lateinit var gateway: TagTableGateway
-  lateinit var db: BriteDatabase
 
   @Before fun setUp() {
-    db = briteDatabaseForTest()
-    gateway = TagTableGateway(db)
-  }
-
-  @After fun tearDown() {
-    db.close()
-    RuntimeEnvironment.application.deleteDatabase("likedit")
+    gateway = TagTableGateway(rule.briteDB)
   }
 
   @Test fun selectTagById_whenTagInserted() {
