@@ -1,7 +1,6 @@
 package com.htoyama.likit.data.sqlite.tag
 
 import com.htoyama.likit.common.None
-import com.htoyama.likit.common.Optional
 import com.htoyama.likit.common.extensions.toV2Observable
 import com.htoyama.likit.common.toOptional
 import com.htoyama.likit.data.sqlite.lib.SqliteScripts
@@ -20,15 +19,18 @@ class TagTableGateway @Inject constructor(
 
   /**
    * Select the tag with the given id.
-   * If there is no such tag, return null.
+   *
+   * @throws RuntimeException if there is no such tag with the given id
    */
-  fun selectTagById(id: Long): Observable<Optional<TagEntity>> {
+  fun selectTagById(id: Long): Observable<TagEntity> {
     val stmt = TagEntity.FACTORY.select_by_id(id)
     return db.createQuery(stmt)
         .mapToOneOrDefault(
             { TagEntity.FACTORY.select_by_idMapper().map(it).toOptional() },
             None
         )
+        .doOnNext { if (it is None) throw RuntimeException("No such tag which has id($id)") }
+        .map { it.get() }
         .toV2Observable()
   }
 

@@ -34,5 +34,20 @@ class IdMap private constructor(
 
       return IdMap(map.toMap())
     }
+
+    /**
+     * Create [IdMap] based on tag id, which means
+     * key is tag id,
+     * value is list of tweet id.
+     */
+    fun basedOnTagId(list: List<TweetTagRelation>): IdMap {
+      val map = mutableMapOf<Long, MutableList<Long>>()
+      list.forEach { (value, key) ->
+        map.putIfAbsent(key, mutableListOf())
+        map[key]!!.add(value)
+      }
+
+      return IdMap(map.toMap())
+    }
   }
 }

@@ -37,12 +37,10 @@ fun userEntity(
 ) = UserEntity(id, name, screenName, avatarUrl)
 
 fun tagEntity(
-    id: Long,
-    name: String,
-    created: Long
-) = TagEntity(
-    id, name, created
-)
+    id: Long = 0,
+    name: String = "name",
+    created: Long = 1493770273
+) = TagEntity(id, name, created)
 
 fun tweetTagRelation(
     tweetId: Long,

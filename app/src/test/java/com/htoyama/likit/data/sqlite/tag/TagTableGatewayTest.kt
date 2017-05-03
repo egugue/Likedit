@@ -1,9 +1,6 @@
 package com.htoyama.likit.data.sqlite.tag
 
 import com.google.common.truth.Truth.assertThat
-import com.htoyama.likit.common.None
-import com.htoyama.likit.common.Optional
-import com.htoyama.likit.common.toOptional
 import com.htoyama.likit.data.sqlite.tagEntity
 import com.htoyama.likit.testutil.SqliteTestingRule
 import org.junit.Assert.*
@@ -27,12 +24,14 @@ class TagTableGatewayTest {
     assertThat(tagId).isNotEqualTo(-1)
 
     val actual = gateway.selectTagById(tagId).test()
-    actual.assertValue(tagEntity(tagId, "foo", 1).toOptional())
+    actual.assertValue(tagEntity(tagId, "foo", 1))
   }
 
   @Test fun selectTagById_whenNoTagInserted() {
-    val actual = gateway.selectTagById(1).test()
-    actual.assertValue(None as Optional<TagEntity>)
+    val tagId = 1L
+    gateway.selectTagById(tagId).test()
+        .assertError(RuntimeException::class.java)
+        .assertErrorMessage("No such tag which has id($tagId)")
   }
 
   @Test fun searchTagByName() {
@@ -77,7 +76,7 @@ class TagTableGatewayTest {
 
     val actual = gateway.selectTagById(id).test()
 
-    actual.assertValue(tagEntity(id, "after update", 1).toOptional())
+    actual.assertValue(tagEntity(id, "after update", 1))
   }
 
   @Test fun updateTagName_whenInvalidIdSpecified() {
@@ -99,7 +98,10 @@ class TagTableGatewayTest {
     gateway.deleteTagById(id)
 
     val afterDelete = gateway.selectTagById(id).test()
-    afterDelete.assertValue(None)
+    //afterDelete.assertValue(None)
+    afterDelete
+        .assertError(RuntimeException::class.java)
+        .assertErrorMessage("No such tag which has id($id)")
   }
 
   @Test fun deleteTagById_whenInvaildIdSpecified() {

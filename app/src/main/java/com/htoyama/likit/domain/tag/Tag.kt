@@ -8,7 +8,8 @@ import java.util.*
 class Tag(
     val id: Long,
     name: String,
-    var createdAt: Date
+    var createdAt: Date,
+    val tweetIdList: List<Long>
 ) {
 
   var name: String = ""
@@ -39,4 +40,12 @@ class Tag(
     return id.hashCode()
   }
 
+  companion object {
+    /**
+     * the id representing unassigned
+     *
+     * this is expected to use when you want to create a tag which is not yet stored.
+     */
+    const val UNASSIGNED_ID: Long = -1L
+  }
 }
