@@ -85,7 +85,7 @@ class LikedTweetSqliteDaoTest {
   }
 
   /**
-   * this test is failed because of updating a liked tweet.
+   * this test is failed because cannot updating relations between a tweet and a tag.
    * The reason for it is, the current implementation doesn't delete old relations.
    *
    * But I don't know whether I use this update feature or not.
