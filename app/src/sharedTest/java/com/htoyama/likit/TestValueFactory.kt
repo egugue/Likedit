@@ -1,11 +1,13 @@
 package com.htoyama.likit
 
 import com.htoyama.likit.domain.likedtweet.LikedTweet
+import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.domain.tweet.Tweet
 import com.htoyama.likit.domain.tweet.Url
 import com.htoyama.likit.domain.tweet.media.Photo
 import com.htoyama.likit.domain.tweet.media.Video
 import com.htoyama.likit.domain.user.User
+import java.util.*
 import com.twitter.sdk.android.core.models.Tweet as TwitterTweet
 import com.twitter.sdk.android.core.models.User as TwitterUser
 
@@ -45,6 +47,13 @@ fun user(
     screenName: String = "screen name",
     avatarUrl: String = "avatar url"
 ) = User(id, name, screenName, avatarUrl)
+
+fun tag(
+    id: Long = 1,
+    name: String = "name",
+    createdAt: Date = Date(),
+    tweetIdList: List<Long> = emptyList()
+) = Tag(id, name, createdAt, tweetIdList)
 
 fun twitterTweet(
     id: Long = 1,
