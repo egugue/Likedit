@@ -30,7 +30,7 @@ class IdMapTest {
         tweetTagRelation(tagId = 2, tweetId = 1)
     )
 
-    val actual = IdMap.basedOnTweetId(relationsList)
+    val actual = IdMap.basedOnTagId(relationsList)
 
     assertThat(actual.getOrEmptyList(1)).containsExactly(1L, 2L)
     assertThat(actual.getOrEmptyList(2)).containsExactly(1L)
