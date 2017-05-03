@@ -20,11 +20,14 @@ fun likedTweetTableGateway(db: BriteDatabase) = LikedTweetTableGateway(db)
 fun tagTableGateway(db: BriteDatabase) = TagTableGateway(db)
 fun tweetTagRelationTableGateway(db: BriteDatabase) = TweetTagRelationTableGateway(db)
 
-fun likedTweetSqliDao(db: BriteDatabase) = LikedTweetSqliteDao(
-        db,
-        likedTweetTableGateway(db),
-        tweetTagRelationTableGateway(db)
-)
+fun likedTweetSqliDao(
+    db: BriteDatabase,
+    likedTweetTableGateway: LikedTweetTableGateway = likedTweetTableGateway(db),
+    tweetTagRelationTableGateway: TweetTagRelationTableGateway = tweetTagRelationTableGateway(db)
+) = LikedTweetSqliteDao(
+    db,
+    likedTweetTableGateway,
+    tweetTagRelationTableGateway)
 
 fun tagSqliteDao(db: BriteDatabase) = TagSqliteDao(
     db,
