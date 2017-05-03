@@ -64,6 +64,13 @@ class TagSqliteDao @Inject constructor(
     }
   }
 
+  /**
+   * Delete a tag with the given tag id
+   */
+  fun deleteById(tagId: Long) {
+    tagGateway.deleteTagById(tagId)
+  }
+
   private fun selectRelationsBy(tagEntityList: List<TagEntity>): Observable<List<TweetTagRelation>> {
     if (tagEntityList.isEmpty()) {
       return Observable.just(emptyList())
