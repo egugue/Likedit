@@ -11,7 +11,7 @@ import io.reactivex.Observable
 import javax.inject.Inject
 
 class TagSqliteDao @Inject constructor(
-    private val briteDatabase: BriteDatabase,
+    private val db: BriteDatabase,
     private val tagGateway: TagTableGateway,
     private val relationGateway: TweetTagRelationTableGateway
 ) {
@@ -55,7 +55,7 @@ class TagSqliteDao @Inject constructor(
   fun insert(tag: Tag): Long {
     Contract.require(tag.id == Tag.UNASSIGNED_ID, "tag id must be TAG.UNASSIGNED_ID. but was [${tag.id}")
 
-    return briteDatabase.transaction {
+    return db.transaction {
       val newlyAssignedId = tagGateway.insertTag(tag.name, tag.createdAt.time)
 
       val relationList = tag.tweetIdList.map { TweetTagRelation(it, tag.id) }
@@ -71,7 +71,7 @@ class TagSqliteDao @Inject constructor(
   fun updateName(tag: Tag) {
     Contract.require(tag.id != Tag.UNASSIGNED_ID, "tag id must not be TAG.UNASSIGNED_ID.")
 
-    briteDatabase.transaction {
+    db.transaction {
       tagGateway.updateTagNameById(tag.id, tag.name)
 
       val relationList = tag.tweetIdList.map { TweetTagRelation(it, tag.id) }
