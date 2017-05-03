@@ -15,3 +15,7 @@ build:
       - slack-notifier:
           url: $SLACK_URL
           username: likedit_bot
+      - script:
+          name: upload to codecov
+          code: |
+            bash <(curl -s https://codecov.io/bash)
