@@ -9,6 +9,8 @@ build:
         name: run gradle assembleDebug
         code: |
           ./gradlew --project-cache-dir=$WERCKER_CACHE_DIR assemble testDebugUnitTest -PdisablePreDex
+          ./gradlew jacocoTestDebugUnitTestReport
+          cp -r ./app/build/reports/jacoco/* $WERCKER_REPORT_ARTIFACTS_DIR/
     after-steps:
       - slack-notifier:
           url: $SLACK_URL
