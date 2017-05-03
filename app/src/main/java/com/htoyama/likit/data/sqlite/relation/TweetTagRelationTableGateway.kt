@@ -1,5 +1,6 @@
 package com.htoyama.likit.data.sqlite.relation
 
+import com.htoyama.likit.common.AllOpen
 import com.htoyama.likit.common.Contract
 import com.htoyama.likit.common.extensions.toV2Observable
 import com.htoyama.likit.data.sqlite.lib.SqliteScripts
@@ -14,6 +15,7 @@ import javax.inject.Inject
  *
  * NOTE: Tweet of this class name means "Liked Tweet".
  */
+@AllOpen
 class TweetTagRelationTableGateway @Inject constructor(
     private val db: BriteDatabase
 ) {
