@@ -138,8 +138,11 @@ dependencies {
 
 jacocoAndroidUnitTestReport {
     excludes += [
-            '**/*Module*.*',
+            // sqlibrite
             '**/sqlite/*Model*.*',
+
+            // dagger
+            '**/*Module*.*',
             '**/Dagger*.*',
             '**/*_Factory.*',
             '**/*_MembersInjector.*',
