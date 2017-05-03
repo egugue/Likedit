@@ -40,4 +40,12 @@ class Tag(
     return id.hashCode()
   }
 
+  companion object {
+    /**
+     * the id representing unassigned
+     *
+     * this is expected to use when you want to create a tag which is not yet stored.
+     */
+    const val UNASSIGNED_ID: Long = -1L
+  }
 }

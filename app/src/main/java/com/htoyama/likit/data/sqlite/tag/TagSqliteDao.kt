@@ -1,6 +1,8 @@
 package com.htoyama.likit.data.sqlite.tag
 
+import com.htoyama.likit.common.Contract
 import com.htoyama.likit.data.sqlite.IdMap
+import com.htoyama.likit.data.sqlite.lib.transaction
 import com.htoyama.likit.data.sqlite.relation.TweetTagRelation
 import com.htoyama.likit.data.sqlite.relation.TweetTagRelationTableGateway
 import com.htoyama.likit.domain.tag.Tag
@@ -12,7 +14,7 @@ class TagSqliteDao @Inject constructor(
     private val briteDatabase: BriteDatabase,
     private val tagGateway: TagTableGateway,
     private val relationGateway: TweetTagRelationTableGateway
-){
+) {
 
   /**
    * Search tags which name contains the given name.
@@ -28,6 +30,38 @@ class TagSqliteDao @Inject constructor(
         .map { (tagEntityList, idMap) ->
           tagEntityList.map { it.toTag(idMap) }
         }
+  }
+
+  /**
+   * Insert a tag
+   *
+   * @return the newly assigned id
+   */
+  fun insert(tag: Tag): Long {
+    Contract.require(tag.id == Tag.UNASSIGNED_ID, "tag id must be TAG.UNASSIGNED_ID. but was [${tag.id}")
+
+    return briteDatabase.transaction {
+      val newlyAssignedId = tagGateway.insertTag(tag.name, tag.createdAt.time)
+
+      val relationList = tag.tweetIdList.map { TweetTagRelation(it, tag.id) }
+      relationGateway.insertTweetTagRelation(relationList)
+
+      newlyAssignedId
+    }
+  }
+
+  /**
+   * Update the given tag name by the given tag id
+   */
+  fun updateName(tag: Tag) {
+    Contract.require(tag.id != Tag.UNASSIGNED_ID, "tag id must not be TAG.UNASSIGNED_ID.")
+
+    briteDatabase.transaction {
+      tagGateway.updateTagNameById(tag.id, tag.name)
+
+      val relationList = tag.tweetIdList.map { TweetTagRelation(it, tag.id) }
+      relationGateway.insertTweetTagRelation(relationList)
+    }
   }
 
   private fun selectRelationsBy(tagEntityList: List<TagEntity>): Observable<List<TweetTagRelation>> {
