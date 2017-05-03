@@ -14,6 +14,9 @@ class TagSqliteDao @Inject constructor(
     private val relationGateway: TweetTagRelationTableGateway
 ){
 
+  /**
+   * Search tags which name contains the given name.
+   */
   fun searchTagBy(name: String): Observable<List<Tag>> {
     val tagEntityList = tagGateway.searchTagByName(name)
     val tweetEntityListAndIdMap = tagEntityList
