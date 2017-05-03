@@ -42,6 +42,13 @@ class LikedTweetSqliteDao @Inject constructor(
   }
 
   /**
+   * Insert or update the given [LikedTweet]
+   */
+  fun insertOrUpdate(tweet: LikedTweet) {
+    insertOrUpdate(listOf(tweet))
+  }
+
+  /**
    * Insert or update the given list of [LikedTweet]
    */
   fun insertOrUpdate(list: List<LikedTweet>) {
