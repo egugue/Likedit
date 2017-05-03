@@ -2,10 +2,9 @@ package com.htoyama.likit.data.sqlite.relation
 
 import android.database.sqlite.SQLiteConstraintException
 import com.google.common.truth.Truth.assertThat
-import com.htoyama.likit.data.sqlite.fullTweetEntity
+import com.htoyama.likit.data.sqlite.*
 import com.htoyama.likit.data.sqlite.tag.TagTableGateway
 import com.htoyama.likit.data.sqlite.likedtweet.LikedTweetTableGateway
-import com.htoyama.likit.data.sqlite.tweetTagRelation
 import com.htoyama.likit.testutil.SqliteTestingRule
 import org.junit.Assert.*
 import org.junit.Before
@@ -22,9 +21,9 @@ class TweetTagRelationTableGatewayTest {
   lateinit var tweetGateway: LikedTweetTableGateway
 
   @Before fun setUp() {
-    gateway = TweetTagRelationTableGateway(rule.briteDB)
-    tagGateway = TagTableGateway(rule.briteDB)
-    tweetGateway = LikedTweetTableGateway(rule.briteDB)
+    gateway = tweetTagRelationTableGateway(rule.briteDB)
+    tagGateway = tagTableGateway(rule.briteDB)
+    tweetGateway = likedTweetTableGateway(rule.briteDB)
   }
 
   /*********************
