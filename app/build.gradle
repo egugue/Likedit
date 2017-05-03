@@ -146,5 +146,13 @@ jacocoAndroidUnitTestReport {
             '**/Dagger*.*',
             '**/*_Factory.*',
             '**/*_MembersInjector.*',
+
+            // Android
+            '**/App.*',
+            '**/DebugApp.*',
+            '**/MainActivity*',
+            '**/ui/**',
+            '**/TweetSyncService.*',
+            '**/databinding/*',
     ]
 }
