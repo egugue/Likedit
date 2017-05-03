@@ -1,6 +1,5 @@
 package com.htoyama.likit.data.sqlite.likedtweet
 
-import com.htoyama.likit.common.Contract
 import com.htoyama.likit.data.sqlite.IdMap
 import com.htoyama.likit.data.sqlite.lib.transaction
 import com.htoyama.likit.data.sqlite.relation.TweetTagRelation
@@ -30,9 +29,6 @@ class LikedTweetSqliteDao @Inject constructor(
    *    which must be between 1 and 200
    */
   fun select(page: Int, perPage: Int): Observable<List<LikedTweet>> {
-    Contract.require(page > 0, "0 < page required but it was $page")
-    Contract.require(perPage in 1..200, "0 < perPage < 201 required but it was $perPage")
-
     val tweetEntityList = likedTweetGateway.selectTweet(page, perPage)
     val tweetEntityListAndIdMap = tweetEntityList
         .flatMap(
