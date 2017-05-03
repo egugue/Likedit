@@ -17,6 +17,21 @@ class TagSqliteDao @Inject constructor(
 ) {
 
   /**
+   * Select a tag with the given id.
+   *
+   * @throws RuntimeException if there is no such tag with the given id
+   */
+  fun selectTagBy(tagId: Long): Observable<Tag> {
+    val tagEntityAndIdMap = tagGateway.selectTagById(tagId)
+        .flatMap(
+            { selectRelationsBy(listOf(it)) },
+            { tagEntity, relations -> tagEntity to IdMap.basedOnTagId(relations) })
+
+    return tagEntityAndIdMap
+        .map { (tagEntity, idMap) -> tagEntity.toTag(idMap) }
+  }
+
+  /**
    * Search tags which name contains the given name.
    */
   fun searchTagBy(name: String): Observable<List<Tag>> {
