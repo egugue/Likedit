@@ -58,7 +58,7 @@ class TagSqliteDao @Inject constructor(
     return db.transaction {
       val newlyAssignedId = tagGateway.insertTag(tag.name, tag.createdAt.time)
 
-      val relationList = tag.tweetIdList.map { TweetTagRelation(it, tag.id) }
+      val relationList = tag.tweetIdList.map { TweetTagRelation(it, newlyAssignedId) }
       relationGateway.insertTweetTagRelation(relationList)
 
       newlyAssignedId
