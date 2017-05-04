@@ -31,7 +31,6 @@ class TagSqliteDaoTest {
   @Suppress("UNUSED_VARIABLE")
   @Test fun `search tag by name`() {
     val searchWord = "B%_B"
-
     val id1 = tagDao.insert(tag(name = "bb%_bbbbaacc", id = Tag.UNASSIGNED_ID)) // hit
     val id2 = tagDao.insert(tag(name = "baaccb%_b", id = Tag.UNASSIGNED_ID)) // hit
     val id3 = tagDao.insert(tag(name = "aaabbbccc", id = Tag.UNASSIGNED_ID))
@@ -95,14 +94,17 @@ class TagSqliteDaoTest {
   }
 
   @Test fun `update a tag`() {
+    // given
     tweetDao.insertOrUpdate(likedTweet(tweet(id = 10)))
 
     val insertedTag = tag(id = Tag.UNASSIGNED_ID, tweetIdList = listOf(10))
     val newlyAssignedId = tagDao.insert(insertedTag)
 
+    // when
     val updatedTag = tag(id = newlyAssignedId, name = "updated", tweetIdList = emptyList())
     tagDao.updateName(updatedTag)
 
+    // then
     val actual = tagDao.selectTagBy(newlyAssignedId).blockingFirst()
     actual.run {
       assertThat(name).isEqualTo(updatedTag.name)
