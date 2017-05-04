@@ -59,7 +59,7 @@ class TweetTagRelationTableGatewayTest {
     try {
       gateway.selectRelationsByTweetIdList(emptyList())
     } catch (e: IllegalArgumentException) {
-      assertThat(e).hasMessageThat().isEqualTo("the given list must not empty")
+      assertThat(e).hasMessageThat().isEqualTo("the given list must not be empty")
     }
   }
 
@@ -93,7 +93,7 @@ class TweetTagRelationTableGatewayTest {
     try {
       gateway.selectRelationsByTagIdList(emptyList())
     } catch (e: IllegalArgumentException) {
-      assertThat(e).hasMessageThat().isEqualTo("the given list must not empty")
+      assertThat(e).hasMessageThat().isEqualTo("the given list must not be empty")
     }
   }
 
