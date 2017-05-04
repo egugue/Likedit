@@ -1,7 +1,6 @@
 package com.htoyama.likit.data.sqlite.lib
 
 import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
 import com.squareup.sqlbrite.BriteDatabase
 import com.squareup.sqlbrite.QueryObservable
 import com.squareup.sqldelight.SqlDelightStatement
@@ -31,43 +30,7 @@ fun <T> Cursor.mapToOne(transform: (Cursor) -> T): T? =
       throw IllegalStateException("Cursor must have a row. but was " + count)
     }
 
-/**
- * Convert [Cursor] into a list with given transform.
- * If cursor has no row, then return emtpy list.
- */
-fun <T> Cursor.mapToList(transform: (Cursor) -> T): List<T> {
-  if (count == 0) {
-    return emptyList()
-  }
-
-  val list = ArrayList<T>(count)
-  val pos = position
-
-  moveToFirst()
-  do {
-    list.add(transform.invoke(this))
-  } while (moveToNext())
-
-  moveToPosition(pos)
-  return list
-}
-
-
 /* SQLiteDataBase extensions */
-
-/**
- * This method begins transaction, run the given arg, and end transaction.
- */
-fun <T> SQLiteDatabase.transaction(unitOfWork: () -> T): T {
-  beginTransaction()
-  try {
-    val r = unitOfWork.invoke()
-    setTransactionSuccessful()
-    return r
-  } finally {
-    endTransaction()
-  }
-}
 
 /* BriteDatabase extensions */
 
