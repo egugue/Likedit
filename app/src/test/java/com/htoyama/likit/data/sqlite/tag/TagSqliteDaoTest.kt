@@ -86,7 +86,7 @@ class TagSqliteDaoTest {
     }
   }
 
-  @Test fun `throw an exception when inserting a tag with a specific id`() {
+  @Test fun `not insert a tag when the tag's id is a specific one`() {
     try {
       tagDao.insert(tag(id = 1))
     } catch(e: IllegalArgumentException) {
