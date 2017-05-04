@@ -3,7 +3,6 @@ package com.htoyama.likit.data.sqlite.relation
 import com.htoyama.likit.common.AllOpen
 import com.htoyama.likit.common.Contract
 import com.htoyama.likit.common.extensions.toV2Observable
-import com.htoyama.likit.data.sqlite.TweetTagRelationModel
 import com.htoyama.likit.data.sqlite.lib.SqliteScripts
 import com.htoyama.likit.data.sqlite.lib.createQuery
 import com.htoyama.likit.data.sqlite.lib.transaction
