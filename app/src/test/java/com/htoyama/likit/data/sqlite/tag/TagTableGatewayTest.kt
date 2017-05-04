@@ -2,6 +2,7 @@ package com.htoyama.likit.data.sqlite.tag
 
 import com.google.common.truth.Truth.assertThat
 import com.htoyama.likit.data.sqlite.tagEntity
+import com.htoyama.likit.data.sqlite.tagTableGateway
 import com.htoyama.likit.testutil.SqliteTestingRule
 import org.junit.Assert.*
 import org.junit.Before
@@ -16,7 +17,7 @@ class TagTableGatewayTest {
   lateinit var gateway: TagTableGateway
 
   @Before fun setUp() {
-    gateway = TagTableGateway(rule.briteDB)
+    gateway = tagTableGateway(rule.briteDB)
   }
 
   @Test fun selectTagById_whenTagInserted() {

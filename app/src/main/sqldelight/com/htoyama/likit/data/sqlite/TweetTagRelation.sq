@@ -22,6 +22,11 @@ DELETE FROM tweet_tag_relation
 WHERE tweet_id = ? AND tag_id = ?
 ;
 
+delete_by_tag_id_list:
+DELETE FROM tweet_tag_relation
+WHERE tag_id IN ?
+;
+
 select_all:
 SELECT * FROM tweet_tag_relation
 ;

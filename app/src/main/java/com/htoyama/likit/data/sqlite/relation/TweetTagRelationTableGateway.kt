@@ -1,5 +1,6 @@
 package com.htoyama.likit.data.sqlite.relation
 
+import com.htoyama.likit.common.AllOpen
 import com.htoyama.likit.common.Contract
 import com.htoyama.likit.common.extensions.toV2Observable
 import com.htoyama.likit.data.sqlite.lib.SqliteScripts
@@ -14,6 +15,7 @@ import javax.inject.Inject
  *
  * NOTE: Tweet of this class name means "Liked Tweet".
  */
+@AllOpen
 class TweetTagRelationTableGateway @Inject constructor(
     private val db: BriteDatabase
 ) {
@@ -22,7 +24,7 @@ class TweetTagRelationTableGateway @Inject constructor(
    * Select some relations related to the given tweet id list.
    */
   fun selectRelationsByTweetIdList(tweetIdList: List<Long>): Observable<List<TweetTagRelation>> {
-    Contract.require(tweetIdList.isNotEmpty(), "the given list must not empty")
+    Contract.require(tweetIdList.isNotEmpty(), "the given list must not be empty")
 
     val stmt = TweetTagRelation.FACTORY.select_by_tweet_id_list(tweetIdList.toLongArray())
 
@@ -35,7 +37,7 @@ class TweetTagRelationTableGateway @Inject constructor(
    * Select some relations related to the given tag id list
    */
   fun selectRelationsByTagIdList(tagIdList: List<Long>): Observable<List<TweetTagRelation>> {
-    Contract.require(tagIdList.isNotEmpty(), "the given list must not empty")
+    Contract.require(tagIdList.isNotEmpty(), "the given list must not be empty")
 
     val stmt = TweetTagRelation.FACTORY.select_by_tag_id_list(tagIdList.toLongArray())
 
@@ -75,5 +77,10 @@ class TweetTagRelationTableGateway @Inject constructor(
         SqliteScripts.deleteTweetTagRelation(db, tweetId, tagId)
       }
     }
+  }
+
+  fun deleteByTweetIdList(list: List<Long>) {
+    val stmt = TweetTagRelation.FACTORY.delete_by_tag_id_list(list.toLongArray())
+    db.executeUpdateDelete(stmt.tables, db.writableDatabase.compileStatement(stmt.statement))
   }
 }

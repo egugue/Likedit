@@ -53,12 +53,12 @@ class TagSqliteDao @Inject constructor(
    * @return the newly assigned id
    */
   fun insert(tag: Tag): Long {
-    Contract.require(tag.id == Tag.UNASSIGNED_ID, "tag id must be TAG.UNASSIGNED_ID. but was [${tag.id}")
+    Contract.require(tag.id == Tag.UNASSIGNED_ID, "tag id must be TAG.UNASSIGNED_ID. but was ${tag.id}")
 
     return db.transaction {
       val newlyAssignedId = tagGateway.insertTag(tag.name, tag.createdAt.time)
 
-      val relationList = tag.tweetIdList.map { TweetTagRelation(it, tag.id) }
+      val relationList = tag.tweetIdList.map { TweetTagRelation(it, newlyAssignedId) }
       relationGateway.insertTweetTagRelation(relationList)
 
       newlyAssignedId
@@ -69,12 +69,13 @@ class TagSqliteDao @Inject constructor(
    * Update the given tag name by the given tag id
    */
   fun updateName(tag: Tag) {
-    Contract.require(tag.id != Tag.UNASSIGNED_ID, "tag id must not be TAG.UNASSIGNED_ID.")
+    Contract.require(tag.id != Tag.UNASSIGNED_ID, "tag id must not be TAG.UNASSIGNED_ID")
 
     db.transaction {
       tagGateway.updateTagNameById(tag.id, tag.name)
 
       val relationList = tag.tweetIdList.map { TweetTagRelation(it, tag.id) }
+      relationGateway.deleteByTweetIdList(listOf(tag.id))
       relationGateway.insertTweetTagRelation(relationList)
     }
   }

@@ -3,6 +3,7 @@ package com.htoyama.likit.data.sqlite.likedtweet
 import com.htoyama.likit.PhotoBuilder
 import com.htoyama.likit.data.sqlite.fullTweetEntity
 import com.google.common.truth.Truth.assertThat
+import com.htoyama.likit.data.sqlite.likedTweetTableGateway
 import com.htoyama.likit.testutil.SqliteTestingRule
 import org.junit.Assert.*
 import org.junit.Before
@@ -17,7 +18,7 @@ class LikedTweetTableGatewayTest {
   lateinit var gateway: LikedTweetTableGateway
 
   @Before fun setUp() {
-    gateway = LikedTweetTableGateway(rule.briteDB)
+    gateway = likedTweetTableGateway(rule.briteDB)
   }
 
   @Test fun shouldInsertTweet() {
