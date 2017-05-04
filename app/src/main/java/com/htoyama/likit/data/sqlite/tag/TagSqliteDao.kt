@@ -75,6 +75,7 @@ class TagSqliteDao @Inject constructor(
       tagGateway.updateTagNameById(tag.id, tag.name)
 
       val relationList = tag.tweetIdList.map { TweetTagRelation(it, tag.id) }
+      relationGateway.deleteByTweetIdList(listOf(tag.id))
       relationGateway.insertTweetTagRelation(relationList)
     }
   }
