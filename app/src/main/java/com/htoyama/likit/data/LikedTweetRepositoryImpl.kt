@@ -7,6 +7,9 @@ import com.htoyama.likit.domain.likedtweet.LikedTweetRepository
 import io.reactivex.Observable
 import javax.inject.Inject
 
+/**
+ * An implementation of [LikedTweetRepository]
+ */
 class LikedTweetRepositoryImpl @Inject constructor(
     private val likedTweetSqliteDao: LikedTweetSqliteDao
 ): LikedTweetRepository {
