@@ -43,4 +43,27 @@ class TagSqliteDaoTest {
     }
   }
 
+  @Test fun `throw an exception when inserting a tag with a specific id`() {
+    try {
+      tagDao.insert(tag(id = 1))
+    } catch(e: IllegalArgumentException) {
+      assertThat(e).hasMessageThat().isEqualTo("tag id must be TAG.UNASSIGNED_ID. but was 1")
+    }
+  }
+
+  @Test fun `update a tag`() {
+    tweetDao.insertOrUpdate(likedTweet(tweet(id = 10)))
+
+    val insertedTag = tag(id = Tag.UNASSIGNED_ID, tweetIdList = listOf(10))
+    val newlyAssignedId = tagDao.insert(insertedTag)
+
+    val updatedTag = tag(id = newlyAssignedId, name = "updated", tweetIdList = emptyList())
+    tagDao.updateName(updatedTag)
+
+    val actual = tagDao.selectTagBy(newlyAssignedId).blockingFirst()
+    actual.run {
+      assertThat(name).isEqualTo(updatedTag.name)
+      assertThat(tweetIdList).isEqualTo(updatedTag.tweetIdList)
+    }
+  }
 }
