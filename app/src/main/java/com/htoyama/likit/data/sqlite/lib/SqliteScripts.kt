@@ -61,11 +61,9 @@ internal object SqliteScripts {
   }
 
   fun selectTagById(db: BriteDatabase, id: Long): TagEntity? {
-    return db.readableDatabase.use {
-      val stmt = TagEntity.FACTORY.select_by_id(id)
-      it.rawQuery(stmt.statement, stmt.args)
-          .mapToOne { TagEntity.FACTORY.select_by_idMapper().map(it) }
-    }
+    val stmt = TagEntity.FACTORY.select_by_id(id)
+    return db.readableDatabase.rawQuery(stmt.statement, stmt.args)
+        .mapToOne { TagEntity.FACTORY.select_by_idMapper().map(it) }
   }
 
   fun insertTweetTagRelation(db: BriteDatabase, tweetId: Long, tagId: Long) {
