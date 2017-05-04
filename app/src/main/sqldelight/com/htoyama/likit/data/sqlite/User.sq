@@ -14,3 +14,12 @@ INSERT OR REPLACE INTO user(
     avatar_url
 ) VALUES (?, ?, ?, ?)
 ;
+
+search_by_name_or_screen_name:
+SELECT *
+FROM user
+WHERE name LIKE '%' || ? || '%' escape '$' COLLATE NOCASE
+OR screen_name LIKE '%' || ? || '%' escape '$' COLLATE NOCASE
+ORDER BY name ASC
+LIMIT ?
+;
