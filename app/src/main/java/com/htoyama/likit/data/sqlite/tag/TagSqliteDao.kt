@@ -53,7 +53,7 @@ class TagSqliteDao @Inject constructor(
    * @return the newly assigned id
    */
   fun insert(tag: Tag): Long {
-    Contract.require(tag.id == Tag.UNASSIGNED_ID, "tag id must be TAG.UNASSIGNED_ID. but was [${tag.id}")
+    Contract.require(tag.id == Tag.UNASSIGNED_ID, "tag id must be TAG.UNASSIGNED_ID. but was ${tag.id}")
 
     return db.transaction {
       val newlyAssignedId = tagGateway.insertTag(tag.name, tag.createdAt.time)
