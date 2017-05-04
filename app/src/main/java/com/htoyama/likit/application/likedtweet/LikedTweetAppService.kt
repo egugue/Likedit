@@ -2,6 +2,7 @@ package com.htoyama.likit.application.likedtweet
 
 import com.htoyama.likit.domain.likedtweet.LikedTweetRepository
 import com.htoyama.likit.domain.likedtweet.LikedTweet
+import io.reactivex.Observable
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -12,7 +13,7 @@ class LikedTweetAppService @Inject internal constructor(
     private val likedRepository: LikedTweetRepository
 ){
 
-  fun find(page: Int): Single<List<LikedTweet>> {
+  fun find(page: Int): Observable<List<LikedTweet>> {
     return likedRepository.find(page, 200)
   }
 
