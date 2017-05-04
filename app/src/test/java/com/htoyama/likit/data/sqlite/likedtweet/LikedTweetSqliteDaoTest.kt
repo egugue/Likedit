@@ -49,6 +49,17 @@ class LikedTweetSqliteDaoTest {
     tweetDao.select(4, perPage).test().assertValue(emptyList())
   }
 
+  @Test fun `select by tag id`() {
+    val tagId = tagDao.insert(tag(Tag.UNASSIGNED_ID))
+
+    val unexpected = likedTweet(tweet(id = 1), emptyList())
+    val expected = likedTweet(tweet(id = 2), listOf(tagId))
+    tweetDao.insertOrUpdate(listOf(unexpected, expected))
+
+    tweetDao.selectByTagId(tagId, 1, 200).test()
+        .assertValue(listOf(expected))
+  }
+
   @Test fun `insert a liked tweet`() {
     val tagId = tagDao.insert(tag(Tag.UNASSIGNED_ID))
 

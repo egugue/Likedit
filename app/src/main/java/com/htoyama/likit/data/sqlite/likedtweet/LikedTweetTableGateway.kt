@@ -40,9 +40,26 @@ class LikedTweetTableGateway @Inject constructor(
     Contract.require(page > 0, "0 < page required but it was $page")
     Contract.require(perPage in 1..200, "0 < perPage < 201 required but it was $perPage")
 
-    val limit = perPage.toLong()
-    val offset = (page - 1) * limit
+    val (limit, offset) = limitAndOffsetFrom(perPage, page)
     val stmt = LikedTweetEntity.FACTORY.select_liked_tweets(limit, offset)
+
+    return db.createQuery(stmt)
+        .mapToList { FullLikedTweetEntity.MAPPER.map(it) }
+        .toV2Observable()
+  }
+
+  /**
+   * Select some liked tweets as [List] by the given tweet ids.
+   * The list is ordered by a time when the tweet was registered as like.
+   *
+   * @param tweetIdList the list of tweet id
+   * @param page the number of page
+   * @param perPage the number of tweets to retrieve per a page
+   */
+  fun selectByTweetIdList(tweetIdList: List<Long>, page: Int, perPage: Int): Observable<List<FullLikedTweetEntity>> {
+    val (limit, offset) = limitAndOffsetFrom(perPage, page)
+    val stmt = LikedTweetEntity.FACTORY.select_liked_tweets_by_ids(
+        tweetIdList.toLongArray(), limit, offset)
 
     return db.createQuery(stmt)
         .mapToList { FullLikedTweetEntity.MAPPER.map(it) }
@@ -83,5 +100,11 @@ class LikedTweetTableGateway @Inject constructor(
         SqliteScripts.deleteLikedTweetById(db, it)
       }
     }
+  }
+
+  private fun limitAndOffsetFrom(perPage: Int, page: Int): Pair<Long, Long> {
+    val limit = perPage.toLong()
+    val offset = (page - 1) * limit
+    return limit to offset
   }
 }
