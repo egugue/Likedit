@@ -28,6 +28,49 @@ class TagSqliteDaoTest {
     tagDao = tagSqliteDao(rule.briteDB)
   }
 
+  @Suppress("UNUSED_VARIABLE")
+  @Test fun `search tag by name`() {
+    val searchWord = "B%_B"
+
+    val id1 = tagDao.insert(tag(name = "bb%_bbbbaacc", id = Tag.UNASSIGNED_ID)) // hit
+    val id2 = tagDao.insert(tag(name = "baaccb%_b", id = Tag.UNASSIGNED_ID)) // hit
+    val id3 = tagDao.insert(tag(name = "aaabbbccc", id = Tag.UNASSIGNED_ID))
+    val id4 = tagDao.insert(tag(name = "aaaBBBccc", id = Tag.UNASSIGNED_ID))
+    val id5 = tagDao.insert(tag(name = "aaaB%_Bccc", id = Tag.UNASSIGNED_ID)) // hit
+    val id6 = tagDao.insert(tag(name = "abc", id = Tag.UNASSIGNED_ID))
+    val id7 = tagDao.insert(tag(name = "aabbc", id = Tag.UNASSIGNED_ID))
+    val id8 = tagDao.insert(tag(name = "あああいいいううう", id = Tag.UNASSIGNED_ID))
+
+    val actual = tagDao.searchTagBy(searchWord).test()
+
+    // order by name
+    actual.assertValue(listOf(
+        tag(id5),
+        tag(id2),
+        tag(id1)
+    ))
+  }
+
+  @Suppress("UNUSED_VARIABLE")
+  @Test fun `search tag by multibyte name`() {
+    val searchWord = "あああ"
+    val id1 = tagDao.insert(tag(name = "あああいいいううう", id = Tag.UNASSIGNED_ID))
+    val id2 = tagDao.insert(tag(name = "いいいいいいあああいいいううう", id = Tag.UNASSIGNED_ID))
+    val id3 = tagDao.insert(tag(name = "いいあああ", id = Tag.UNASSIGNED_ID))
+    val id4 = tagDao.insert(tag(name = "いいああ", id = Tag.UNASSIGNED_ID))
+    val id5 = tagDao.insert(tag(name = "ああいいうう", id = Tag.UNASSIGNED_ID))
+    val id6 = tagDao.insert(tag(name = "あｓｆｄｓｆｄｆｓ", id = Tag.UNASSIGNED_ID))
+
+    val actual = tagDao.searchTagBy(searchWord).test()
+
+    // order by name
+    actual.assertValue(listOf(
+        tag(id1),
+        tag(id3),
+        tag(id2)
+    ))
+  }
+
   @Test fun `insert a tag`() {
     tweetDao.insertOrUpdate(likedTweet(tweet(id = 10)))
 
@@ -66,4 +109,22 @@ class TagSqliteDaoTest {
       assertThat(tweetIdList).isEqualTo(updatedTag.tweetIdList)
     }
   }
+
+  @Test fun `not update a tag if the tag's id is invalid`() {
+    val invalidId = Tag.UNASSIGNED_ID
+    try {
+      tagDao.updateName(tag(id = invalidId))
+    } catch (actual: IllegalArgumentException) {
+      assertThat(actual).hasMessageThat().isEqualTo("tag id must not be TAG.UNASSIGNED_ID")
+    }
+  }
+
+  @Test fun `delete a tag`() {
+    val newlyAssignedId = tagDao.insert(tag(id = Tag.UNASSIGNED_ID))
+    tagDao.deleteById(newlyAssignedId)
+
+    tagDao.selectTagBy(newlyAssignedId).test()
+        .assertErrorMessage("No such tag which has id($newlyAssignedId)")
+  }
+
 }

@@ -69,7 +69,7 @@ class TagSqliteDao @Inject constructor(
    * Update the given tag name by the given tag id
    */
   fun updateName(tag: Tag) {
-    Contract.require(tag.id != Tag.UNASSIGNED_ID, "tag id must not be TAG.UNASSIGNED_ID.")
+    Contract.require(tag.id != Tag.UNASSIGNED_ID, "tag id must not be TAG.UNASSIGNED_ID")
 
     db.transaction {
       tagGateway.updateTagNameById(tag.id, tag.name)
