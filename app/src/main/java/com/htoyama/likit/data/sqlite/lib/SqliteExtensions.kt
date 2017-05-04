@@ -6,6 +6,13 @@ import com.squareup.sqlbrite.BriteDatabase
 import com.squareup.sqlbrite.QueryObservable
 import com.squareup.sqldelight.SqlDelightStatement
 
+/**
+ * Escape string for query.
+ */
+fun String.escapeForQuery()
+    = replace("%", "$%")
+    .replace("_", "\$_")
+
 /* Cursor extensions */
 
 /**

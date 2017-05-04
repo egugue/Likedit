@@ -30,6 +30,16 @@ limit ?
 offset ?
 ;
 
+select_liked_tweets_by_ids:
+SELECT *
+FROM liked_tweet
+INNER JOIN user ON liked_tweet.user_id = user.id
+WHERE liked_tweet.id IN ?
+order by created desc
+limit ?
+offset ?
+;
+
 insert_liked_tweet:
 INSERT OR IGNORE INTO liked_tweet (
     id,

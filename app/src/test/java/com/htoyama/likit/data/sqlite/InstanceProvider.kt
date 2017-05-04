@@ -6,6 +6,8 @@ import com.htoyama.likit.data.sqlite.likedtweet.LikedTweetTableGateway
 import com.htoyama.likit.data.sqlite.relation.TweetTagRelationTableGateway
 import com.htoyama.likit.data.sqlite.tag.TagSqliteDao
 import com.htoyama.likit.data.sqlite.tag.TagTableGateway
+import com.htoyama.likit.data.sqlite.user.UserSqliteDao
+import com.htoyama.likit.data.sqlite.user.UserTableGateway
 import com.squareup.sqlbrite.BriteDatabase
 import com.squareup.sqlbrite.SqlBrite
 import org.robolectric.RuntimeEnvironment
@@ -17,6 +19,7 @@ fun briteDatabaseForTest(): BriteDatabase =
         Schedulers.immediate())
 
 fun likedTweetTableGateway(db: BriteDatabase) = LikedTweetTableGateway(db)
+fun userTableGateway(db: BriteDatabase) = UserTableGateway(db)
 fun tagTableGateway(db: BriteDatabase) = TagTableGateway(db)
 fun tweetTagRelationTableGateway(db: BriteDatabase) = TweetTagRelationTableGateway(db)
 
@@ -28,6 +31,8 @@ fun likedTweetSqliDao(
     db,
     likedTweetTableGateway,
     tweetTagRelationTableGateway)
+
+fun userSqliteDao(db: BriteDatabase) = UserSqliteDao(userTableGateway(db))
 
 fun tagSqliteDao(db: BriteDatabase) = TagSqliteDao(
     db,

@@ -5,6 +5,7 @@ import com.htoyama.likit.data.sqlite.lib.transaction
 import com.htoyama.likit.data.sqlite.relation.TweetTagRelation
 import com.htoyama.likit.data.sqlite.relation.TweetTagRelationTableGateway
 import com.htoyama.likit.domain.likedtweet.LikedTweet
+import com.htoyama.likit.domain.tag.Tag
 import com.squareup.sqlbrite.BriteDatabase
 import io.reactivex.Observable
 import java.util.ArrayList
@@ -34,6 +35,29 @@ class LikedTweetSqliteDao @Inject constructor(
         .flatMap(
             { selectRelationsByTweetEntityList(it) },
             { entityList, relations -> entityList to IdMap.basedOnTweetId(relations) })
+
+    return tweetEntityListAndIdMap
+        .map { (tweetEntityList, idMap) ->
+          tweetEntityList.map { it.toLikedTweet(idMap) }
+        }
+  }
+
+  /**
+   * Select some [LikedTweet]s by the given args
+   *
+   * @param tagId the identifier of [Tag]
+   * @param page
+   *     the number of page, which must be a positive integer
+   * @param perPage
+   *    the number of tweets to retrieve per a page,
+   *    which must be between 1 and 200
+   */
+  fun selectByTagId(tagId: Long, page: Int, perPage: Int): Observable<List<LikedTweet>> {
+    val relationList = relationGateway.selectRelationsByTagIdList(listOf(tagId))
+    val tweetEntityListAndIdMap = relationList
+        .flatMap(
+            { likedTweetGateway.selectByTweetIdList(it.map { it.tweetId }, page, perPage) },
+            { relList, tweetEntityList -> tweetEntityList to IdMap.basedOnTweetId(relList) })
 
     return tweetEntityListAndIdMap
         .map { (tweetEntityList, idMap) ->
