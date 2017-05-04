@@ -5,6 +5,7 @@ import com.htoyama.likit.common.extensions.toV2Observable
 import com.htoyama.likit.common.toOptional
 import com.htoyama.likit.data.sqlite.lib.SqliteScripts
 import com.htoyama.likit.data.sqlite.lib.createQuery
+import com.htoyama.likit.data.sqlite.lib.escapeForQuery
 import com.htoyama.likit.data.sqlite.lib.transaction
 import com.squareup.sqlbrite.BriteDatabase
 import io.reactivex.Observable
@@ -38,8 +39,7 @@ class TagTableGateway @Inject constructor(
    * Search tags which name contains the given name.
    */
   fun searchTagByName(name: String): Observable<List<TagEntity>> {
-    val escaped = name.replace("%", "$%")
-        .replace("_", "\$_")
+    val escaped = name.escapeForQuery()
 
     val stmt = TagEntity.FACTORY.search_by_name(escaped)
 
