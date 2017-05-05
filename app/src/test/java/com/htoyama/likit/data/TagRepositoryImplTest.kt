@@ -7,6 +7,7 @@ import com.htoyama.likit.tag
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Observable
+import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Test
 import org.mockito.InjectMocks
@@ -34,6 +35,7 @@ class TagRepositoryImplTest {
 
     try {
       repo.findAll(0, 1)
+      fail()
     } catch (e: IllegalArgumentException) {
       assertThat(e).hasMessageThat().isEqualTo("0 < page required but it was 0")
     }
@@ -46,6 +48,7 @@ class TagRepositoryImplTest {
 
     try {
       repo.findAll(1, 0)
+      fail()
     } catch (e: IllegalArgumentException) {
       assertThat(e).hasMessageThat().isEqualTo("1 <= perPage <= 200 required but it was 0")
     }
@@ -55,6 +58,7 @@ class TagRepositoryImplTest {
 
     try {
       repo.findAll(1, 201)
+      fail()
     } catch (e: IllegalArgumentException) {
       assertThat(e).hasMessageThat().isEqualTo("1 <= perPage <= 200 required but it was 201")
     }
