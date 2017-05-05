@@ -1,5 +1,6 @@
 package com.htoyama.likit.data.sqlite.likedtweet
 
+import com.htoyama.likit.common.AllOpen
 import com.htoyama.likit.data.sqlite.IdMap
 import com.htoyama.likit.data.sqlite.lib.transaction
 import com.htoyama.likit.data.sqlite.relation.TweetTagRelation
@@ -14,6 +15,7 @@ import javax.inject.Inject
 /**
  * A Data Access Object that handles liked Tweets.
  */
+@AllOpen
 class LikedTweetSqliteDao @Inject constructor(
     private val briteDatabase: BriteDatabase,
     private val likedTweetGateway: LikedTweetTableGateway,

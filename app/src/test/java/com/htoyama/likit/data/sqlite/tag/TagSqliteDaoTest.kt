@@ -14,6 +14,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import java.util.*
 
 @RunWith(RobolectricTestRunner::class)
 class TagSqliteDaoTest {
@@ -26,6 +27,29 @@ class TagSqliteDaoTest {
   @Before fun setUp() {
     tweetDao = likedTweetSqliDao(rule.briteDB)
     tagDao = tagSqliteDao(rule.briteDB)
+  }
+
+  @Test fun `select all tag list by the given args`() {
+    val perPage = 2
+    val now = System.currentTimeMillis()
+
+    (1L..5L).forEach { tagDao.insert(tag(createdAt = Date(now + it), id = Tag.UNASSIGNED_ID))}
+
+    // order by created time
+    val actual1 = tagDao.selectAll(1, perPage).blockingFirst()
+    assertThat(actual1).containsExactly(tag(id = 1), tag(id = 2))
+
+    val actual2 = tagDao.selectAll(2, perPage).blockingFirst()
+    assertThat(actual2).containsExactly(tag(id = 3), tag(id = 4))
+
+    val actual3 = tagDao.selectAll(3, perPage).blockingFirst()
+    assertThat(actual3).containsExactly(tag(id = 5))
+
+    val actual4 = tagDao.selectAll(4, perPage).blockingFirst()
+    assertThat(actual4).isEmpty()
+
+    val actual100 = tagDao.selectAll(100, perPage).blockingFirst()
+    assertThat(actual100).isEmpty()
   }
 
   @Suppress("UNUSED_VARIABLE")

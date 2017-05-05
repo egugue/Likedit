@@ -5,6 +5,14 @@ CREATE TABLE tag (
   created INTEGER NOT NULL
 );
 
+select_all:
+SELECT *
+FROM tag
+ORDER BY created ASC
+LIMIT ?
+OFFSET ?
+;
+
 select_by_id:
 SELECT *
 FROM tag

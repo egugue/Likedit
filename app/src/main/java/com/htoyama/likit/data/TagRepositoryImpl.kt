@@ -1,42 +1,54 @@
 package com.htoyama.likit.data
 
-import com.htoyama.likit.common.Irrelevant
+import com.htoyama.likit.common.Contract
+import com.htoyama.likit.data.sqlite.tag.TagSqliteDao
 import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.domain.tag.TagRepository
+import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
 import javax.inject.Inject
 
 /**
- * A implementation of [TagRepository]
+ * An implementation of [TagRepository]
  */
 class TagRepositoryImpl @Inject internal constructor(
+    private val tagSqliteDao: TagSqliteDao
 ) : TagRepository {
+
+  override fun findAll(): Observable<List<Tag>> {
+    return Observable.never()
+  }
+
+  override fun findAll(page: Int, perPage: Int): Observable<List<Tag>> {
+    Contract.require(page > 0, "0 < page required but it was $page")
+    Contract.require(perPage in 1..200, "1 <= perPage <= 200 required but it was $perPage")
+
+    return tagSqliteDao.selectAll(page, perPage)
+  }
+
+  override fun findByNameContaining(part: String): Observable<List<Tag>> {
+    return tagSqliteDao.searchTagBy(part)
+  }
+
+  override fun store(tag: Tag): Single<Long> {
+    return Single.fromCallable {
+      if (tag.id == Tag.UNASSIGNED_ID) {
+        tagSqliteDao.insert(tag)
+      } else {
+        tagSqliteDao.updateName(tag)
+        tag.id
+      }
+    }
+  }
+
+  override fun removeById(tagId: Long): Completable {
+    return Completable.fromAction {
+      tagSqliteDao.deleteById(tagId)
+    }
+  }
 
   override fun publishNextIdentity(): Long {
     return 1
   }
-
-  //TODO
-  override fun findAll(): Single<List<Tag>>
-      = Single.never()
-
-  // TODO
-  override fun store(tag: Tag): Single<Any> {
-    return Single.fromCallable {
-      Irrelevant.get()
-    }
-  }
-
-  // TODO
-  override fun remove(tag: Tag): Single<Any> {
-    return Single.fromCallable {
-      Irrelevant.get()
-    }
-  }
-
-  // TODO
-  override fun findByNameContaining(part: String): Single<List<Tag>> {
-    return Single.never()
-  }
-
 }

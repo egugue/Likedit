@@ -1,11 +1,9 @@
 package com.htoyama.likit.ui.search
 
-import com.htoyama.likit.domain.tag.Tag
+import com.htoyama.likit.common.extensions.zipWith
 import com.htoyama.likit.domain.tag.TagRepository
-import com.htoyama.likit.domain.user.User
 import com.htoyama.likit.domain.user.UserRepository
-import io.reactivex.Single
-import io.reactivex.functions.BiFunction
+import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -15,15 +13,13 @@ internal class SearchAssistAction @Inject constructor(
     private val tagRepository: TagRepository
 ) {
 
-  fun getAssist(query: String): Single<Assist> {
-    val tagQuery: Single<List<Tag>> = tagRepository.findByNameContaining(query)
+  fun getAssist(query: String): Observable<Assist> {
+    val tagQuery = tagRepository.findByNameContaining(query)
         .subscribeOn(Schedulers.io())
 
-    val userQuery: Single<List<User>> = userRepository.findByNameContaining(query)
+    val userQuery = userRepository.findByNameContaining(query)
         .subscribeOn(Schedulers.io())
 
-    return tagQuery.zipWith(userQuery, BiFunction<List<Tag>, List<User>, Assist> { tags, users ->
-      Assist.from(tags, users)
-    })
+    return tagQuery.zipWith(userQuery, { tags, users -> Assist.from(tags, users)})
   }
 }

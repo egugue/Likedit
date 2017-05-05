@@ -12,6 +12,18 @@ fun String.escapeForQuery()
     = replace("%", "$%")
     .replace("_", "\$_")
 
+/**
+ * Convert Pair of page and perPage into Pair of limit and offset
+ */
+fun Pair<Int, Int>.toLimitAndOffset():Pair<Long, Long> {
+  val page = first
+  val perPage = second
+
+  val limit = perPage.toLong()
+  val offset = (page - 1) * limit
+  return limit to offset
+}
+
 /* Cursor extensions */
 
 /**

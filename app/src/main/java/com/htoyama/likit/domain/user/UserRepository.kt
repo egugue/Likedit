@@ -1,6 +1,6 @@
 package com.htoyama.likit.domain.user
 
-import io.reactivex.Single
+import io.reactivex.Observable
 
 /**
  * A repository related to [User]
@@ -10,5 +10,5 @@ interface UserRepository {
   /**
    * Retrieve [User]s as list which have user name containing given arg.
    */
-  fun findByNameContaining(part: String): Single<List<User>>
+  fun findByNameContaining(part: String): Observable<List<User>>
 }

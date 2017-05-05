@@ -1,5 +1,6 @@
 package com.htoyama.likit.data.sqlite.tag
 
+import com.htoyama.likit.common.AllOpen
 import com.htoyama.likit.common.Contract
 import com.htoyama.likit.data.sqlite.IdMap
 import com.htoyama.likit.data.sqlite.lib.transaction
@@ -10,6 +11,7 @@ import com.squareup.sqlbrite.BriteDatabase
 import io.reactivex.Observable
 import javax.inject.Inject
 
+@AllOpen
 class TagSqliteDao @Inject constructor(
     private val db: BriteDatabase,
     private val tagGateway: TagTableGateway,
@@ -29,6 +31,21 @@ class TagSqliteDao @Inject constructor(
 
     return tagEntityAndIdMap
         .map { (tagEntity, idMap) -> tagEntity.toTag(idMap) }
+  }
+
+  /**
+   * Select All [Tag]s as list by the given args
+   */
+  fun selectAll(page: Int, perPage: Int): Observable<List<Tag>> {
+    val tagEntityList = tagGateway.selectAll(page, perPage)
+    val tagEntityListAndIdMap = tagEntityList.flatMap(
+        { selectRelationsBy(it) },
+        { tagEntityList, relationList -> tagEntityList to IdMap.basedOnTagId(relationList) })
+
+    return tagEntityListAndIdMap
+        .map { (tagEntityList, idMap) ->
+          tagEntityList.map { it.toTag(idMap) }
+        }
   }
 
   /**

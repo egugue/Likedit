@@ -1,6 +1,5 @@
 package com.htoyama.likit.application.tag;
 
-import com.htoyama.likit.common.Irrelevant;
 import com.htoyama.likit.domain.tag.Tag;
 import com.htoyama.likit.domain.tag.TagRepository;
 
@@ -37,7 +36,7 @@ public class TagAppServiceTest {
     when(repository.publishNextIdentity())
         .thenReturn(expectedId);
     when(repository.store(any(Tag.class)))
-        .thenReturn(Single.just(Irrelevant.get()));
+        .thenReturn(Single.just(1L));
 
     TestObserver<Tag> test = service.registerNewTag(expectedName).test();
 
@@ -52,8 +51,6 @@ public class TagAppServiceTest {
 
   @Test public void findAll() {
     List<Tag> expected = Collections.emptyList();
-    when(repository.findAll())
-        .thenReturn(Single.just(expected));
 
     TestObserver<List<Tag>> test = service.findAll().test();
 

@@ -5,6 +5,7 @@ import com.htoyama.likit.common.Contract
 import com.htoyama.likit.common.extensions.toV2Observable
 import com.htoyama.likit.data.sqlite.lib.SqliteScripts
 import com.htoyama.likit.data.sqlite.lib.createQuery
+import com.htoyama.likit.data.sqlite.lib.toLimitAndOffset
 import com.htoyama.likit.data.sqlite.lib.transaction
 import com.squareup.sqlbrite.BriteDatabase
 import io.reactivex.Observable
@@ -40,7 +41,7 @@ class LikedTweetTableGateway @Inject constructor(
     Contract.require(page > 0, "0 < page required but it was $page")
     Contract.require(perPage in 1..200, "0 < perPage < 201 required but it was $perPage")
 
-    val (limit, offset) = limitAndOffsetFrom(perPage, page)
+    val (limit, offset) = (page to perPage).toLimitAndOffset()
     val stmt = LikedTweetEntity.FACTORY.select_liked_tweets(limit, offset)
 
     return db.createQuery(stmt)
@@ -57,7 +58,7 @@ class LikedTweetTableGateway @Inject constructor(
    * @param perPage the number of tweets to retrieve per a page
    */
   fun selectByTweetIdList(tweetIdList: List<Long>, page: Int, perPage: Int): Observable<List<FullLikedTweetEntity>> {
-    val (limit, offset) = limitAndOffsetFrom(perPage, page)
+    val (limit, offset) = (page to perPage).toLimitAndOffset()
     val stmt = LikedTweetEntity.FACTORY.select_liked_tweets_by_ids(
         tweetIdList.toLongArray(), limit, offset)
 
@@ -100,11 +101,5 @@ class LikedTweetTableGateway @Inject constructor(
         SqliteScripts.deleteLikedTweetById(db, it)
       }
     }
-  }
-
-  private fun limitAndOffsetFrom(perPage: Int, page: Int): Pair<Long, Long> {
-    val limit = perPage.toLong()
-    val offset = (page - 1) * limit
-    return limit to offset
   }
 }

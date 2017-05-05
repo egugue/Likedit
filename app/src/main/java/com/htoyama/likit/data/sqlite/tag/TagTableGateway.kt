@@ -3,10 +3,7 @@ package com.htoyama.likit.data.sqlite.tag
 import com.htoyama.likit.common.None
 import com.htoyama.likit.common.extensions.toV2Observable
 import com.htoyama.likit.common.toOptional
-import com.htoyama.likit.data.sqlite.lib.SqliteScripts
-import com.htoyama.likit.data.sqlite.lib.createQuery
-import com.htoyama.likit.data.sqlite.lib.escapeForQuery
-import com.htoyama.likit.data.sqlite.lib.transaction
+import com.htoyama.likit.data.sqlite.lib.*
 import com.squareup.sqlbrite.BriteDatabase
 import io.reactivex.Observable
 import javax.inject.Inject
@@ -32,6 +29,15 @@ class TagTableGateway @Inject constructor(
         )
         .doOnNext { if (it is None) throw RuntimeException("No such tag which has id($id)") }
         .map { it.get() }
+        .toV2Observable()
+  }
+
+  fun selectAll(page: Int, perPage: Int): Observable<List<TagEntity>> {
+    val (limit, offset) = (page to perPage).toLimitAndOffset()
+
+    val stmt = TagEntity.FACTORY.select_all(limit, offset)
+    return db.createQuery(stmt)
+        .mapToList { TagEntity.FACTORY.select_allMapper().map(it) }
         .toV2Observable()
   }
 
