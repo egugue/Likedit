@@ -1,5 +1,6 @@
 package com.htoyama.likit.data.sqlite.tag
 
+import com.htoyama.likit.common.AllOpen
 import com.htoyama.likit.common.Contract
 import com.htoyama.likit.data.sqlite.IdMap
 import com.htoyama.likit.data.sqlite.lib.transaction
@@ -10,6 +11,7 @@ import com.squareup.sqlbrite.BriteDatabase
 import io.reactivex.Observable
 import javax.inject.Inject
 
+@AllOpen
 class TagSqliteDao @Inject constructor(
     private val db: BriteDatabase,
     private val tagGateway: TagTableGateway,
