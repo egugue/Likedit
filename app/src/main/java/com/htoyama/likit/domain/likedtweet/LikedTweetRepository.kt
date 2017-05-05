@@ -2,7 +2,6 @@ package com.htoyama.likit.domain.likedtweet
 
 import com.htoyama.likit.domain.tag.Tag
 import io.reactivex.Observable
-import io.reactivex.Single
 
 /**
  * A repository related to [LikedTweet]
@@ -19,11 +18,6 @@ interface LikedTweetRepository {
    *    which must be between 1 and 200
    */
   fun find(page: Int, perPage: Int): Observable<List<LikedTweet>>
-
-  /**
-   * Retrieves all [LikedTweet] as list.
-   */
-  //fun find(page: Int, count: Int): Single<List<LikedTweet>>
 
   /**
    * Retrieve some [LikedTweet]s by the given args
