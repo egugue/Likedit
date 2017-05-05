@@ -1,8 +1,9 @@
 package com.htoyama.likit.data
 
-import com.htoyama.likit.common.Irrelevant
 import com.htoyama.likit.domain.tag.Tag
 import com.htoyama.likit.domain.tag.TagRepository
+import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -12,31 +13,27 @@ import javax.inject.Inject
 class TagRepositoryImpl @Inject internal constructor(
 ) : TagRepository {
 
-  override fun publishNextIdentity(): Long {
-    return 1
+  override fun findAll(): Observable<List<Tag>> {
+    return Observable.never()
   }
 
-  //TODO
-  override fun findAll(): Single<List<Tag>>
-      = Single.never()
-
-  // TODO
-  override fun store(tag: Tag): Single<Any> {
-    return Single.fromCallable {
-      Irrelevant.get()
-    }
-  }
-
-  // TODO
-  override fun remove(tag: Tag): Single<Any> {
-    return Single.fromCallable {
-      Irrelevant.get()
-    }
-  }
-
-  // TODO
-  override fun findByNameContaining(part: String): Single<List<Tag>> {
+  override fun store(tag: Tag): Single<Long> {
     return Single.never()
   }
 
+  override fun remove(tag: Tag): Observable<Any> {
+    return Observable.never()
+  }
+
+  override fun findByNameContaining(part: String): Observable<List<Tag>> {
+    return Observable.never()
+  }
+
+  override fun removeById(tagId: Long): Completable {
+    return Completable.never()
+  }
+
+  override fun publishNextIdentity(): Long {
+    return 1
+  }
 }

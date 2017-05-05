@@ -2,7 +2,7 @@ package com.htoyama.likit.data
 
 import com.htoyama.likit.domain.user.User
 import com.htoyama.likit.domain.user.UserRepository
-import io.reactivex.Single
+import io.reactivex.Observable
 import javax.inject.Inject
 
 /**
@@ -11,11 +11,8 @@ import javax.inject.Inject
 class UserRepositoryImpl internal @Inject constructor(
 ) : UserRepository {
 
-  override fun findByNameContaining(part: String): Single<List<User>> {
-    return Single.fromCallable {
-      // TODO
-      null
-    }
+  override fun findByNameContaining(part: String): Observable<List<User>> {
+    return Observable.never()
   }
 
 }

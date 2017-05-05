@@ -30,14 +30,13 @@ open class TagAppService @Inject internal constructor(
   /**
    * Retrieves all stored [Tag]s as List
    */
-  open fun findAll(): Single<List<Tag>> {
+  open fun findAll(): Observable<List<Tag>> {
     return tagRepository.findAll()
   }
 
   // TODO
   open fun findAllWithTweetCount(): Single<List<TagTweetCountDto>> {
     return tagRepository.findAll()
-        .toObservable()
         .flatMap { tagList -> Observable.fromIterable(tagList) }
         .map { tag ->
           val count = 1
