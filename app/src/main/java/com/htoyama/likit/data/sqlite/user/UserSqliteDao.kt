@@ -1,7 +1,7 @@
 package com.htoyama.likit.data.sqlite.user
 
 import com.htoyama.likit.domain.user.User
-import rx.Observable
+import io.reactivex.Observable
 import javax.inject.Inject
 
 class UserSqliteDao @Inject constructor(

@@ -1,9 +1,10 @@
 package com.htoyama.likit.data.sqlite.user
 
+import com.htoyama.likit.common.extensions.toV2Observable
 import com.htoyama.likit.data.sqlite.lib.createQuery
 import com.htoyama.likit.data.sqlite.lib.escapeForQuery
 import com.squareup.sqlbrite.BriteDatabase
-import rx.Observable
+import io.reactivex.Observable
 import javax.inject.Inject
 
 class UserTableGateway @Inject constructor(
@@ -19,5 +20,6 @@ class UserTableGateway @Inject constructor(
         escapedName, escapedScreenName, limit.toLong())
     return db.createQuery(stmt)
         .mapToList { UserEntity.FACTORY.search_by_name_or_screen_nameMapper().map(it) }
+        .toV2Observable()
   }
 }
