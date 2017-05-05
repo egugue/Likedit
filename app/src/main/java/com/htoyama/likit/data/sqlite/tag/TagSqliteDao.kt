@@ -32,6 +32,21 @@ class TagSqliteDao @Inject constructor(
   }
 
   /**
+   * Select All [Tag]s as list by the given args
+   */
+  fun selectAll(page: Int, perPage: Int): Observable<List<Tag>> {
+    val tagEntityList = tagGateway.selectAll(page, perPage)
+    val tagEntityListAndIdMap = tagEntityList.flatMap(
+        { selectRelationsBy(it) },
+        { tagEntityList, relationList -> tagEntityList to IdMap.basedOnTagId(relationList) })
+
+    return tagEntityListAndIdMap
+        .map { (tagEntityList, idMap) ->
+          tagEntityList.map { it.toTag(idMap) }
+        }
+  }
+
+  /**
    * Search tags which name contains the given name.
    */
   fun searchTagBy(name: String): Observable<List<Tag>> {
