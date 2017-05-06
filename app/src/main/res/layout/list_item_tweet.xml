@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.htoyama.likit.ui.common.tweet.TweetView
+<com.htoyama.licol.ui.common.tweet.TweetView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -71,7 +71,7 @@
         tools:text="Secondary line text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam massa quam."
     />
 
-    <com.htoyama.likit.ui.common.tweet.TweetImageView
+    <com.htoyama.licol.ui.common.tweet.TweetImageView
         android:id="@+id/tw__tweet_media"
         android:layout_width="600dp"
         android:layout_height="wrap_content"
@@ -83,4 +83,4 @@
         tools:src="@drawable/avator"
     />
 
-</com.htoyama.likit.ui.common.tweet.TweetView>
+</com.htoyama.licol.ui.common.tweet.TweetView>

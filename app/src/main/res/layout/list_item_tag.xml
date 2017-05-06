@@ -9,7 +9,7 @@
 
         <variable
             name="dto"
-            type="com.htoyama.likit.application.tag.TagTweetCountDto"
+            type="com.htoyama.licol.application.tag.TagTweetCountDto"
             />
     </data>
 

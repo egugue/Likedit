@@ -15,14 +15,14 @@ repositories {
 }
 
 allOpen {
-    annotation("com.htoyama.likit.common.AllOpen")
+    annotation("com.htoyama.licol.common.AllOpen")
 }
 
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
     defaultConfig {
-        applicationId "com.htoyama.likit"
+        applicationId "com.htoyama.licol"
         minSdkVersion 21
         targetSdkVersion 25
         versionCode 1
