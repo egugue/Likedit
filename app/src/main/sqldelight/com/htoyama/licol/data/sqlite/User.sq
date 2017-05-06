@@ -23,3 +23,11 @@ OR screen_name LIKE '%' || ? || '%' escape '$' COLLATE NOCASE
 ORDER BY name ASC
 LIMIT ?
 ;
+
+select_all:
+SELECT *
+FROM user
+ORDER BY name ASC
+LIMIT ?
+OFFSET ?
+;
