@@ -8,7 +8,7 @@
 
         <variable
             name="tag"
-            type="com.htoyama.likit.domain.tag.Tag"
+            type="com.htoyama.licol.domain.tag.Tag"
             />
     </data>
 
