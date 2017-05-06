@@ -13,6 +13,13 @@ class UserAppService @Inject constructor(
 ) {
 
   /**
+   * Get all [User]s
+   */
+  fun getAllUsers(page: Int, perPage: Int): Observable<List<User>> {
+    return userRepository.findAll(page, perPage)
+  }
+
+  /**
    * Get [User]s as list which have user name containing given arg.
    */
   fun getUsersByNameContaining(partOfName: String): Observable<List<User>> {

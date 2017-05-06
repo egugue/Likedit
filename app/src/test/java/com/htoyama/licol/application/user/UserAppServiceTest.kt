@@ -18,6 +18,14 @@ class UserAppServiceTest {
     MockitoAnnotations.initMocks(this)
   }
 
+  @Test fun `get all users`() {
+    val expected = listOf(user())
+    whenever(userRepo.findAll(1, 1)).thenReturn(Observable.just(expected))
+
+    service.getAllUsers(1, 1).test()
+        .assertValue(expected)
+  }
+
   @Test fun `get users by name containing the given arg`() {
     val expected = listOf(user())
     whenever(userRepo.findByNameContaining("foo")).thenReturn(Observable.just(expected))
