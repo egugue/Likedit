@@ -26,6 +26,22 @@ class UserSqliteDaoTest {
     userDao = userSqliteDao(rule.briteDB)
   }
 
+  @Test fun `select all users`() {
+    val perPage = 2
+    val expected1 = (1L..2L).map { user(id = it, name = it.toString()) }
+    val expected2 = (3L..4L).map { user(id = it, name = it.toString()) }
+    val expected3 = listOf(user(id = 5, name = "5"))
+
+    (expected1 + expected2 + expected3).forEach { insertUser(it) }
+
+    // order by name
+    userDao.selectAll(1, perPage).test().assertValue(expected1)
+    userDao.selectAll(2, perPage).test().assertValue(expected2)
+    userDao.selectAll(3, perPage).test().assertValue(expected3)
+    userDao.selectAll(4, perPage).test().assertValue(emptyList())
+    userDao.selectAll(100, perPage).test().assertValue(emptyList())
+  }
+
   @Test fun `search by name or screen name`() {
     // given
     val searchWord = "B%_B"

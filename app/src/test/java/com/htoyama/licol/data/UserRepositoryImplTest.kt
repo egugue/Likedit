@@ -1,9 +1,12 @@
 package com.htoyama.licol.data
 
+import com.google.common.truth.Truth.assertThat
 import com.htoyama.licol.data.sqlite.user.UserSqliteDao
 import com.htoyama.licol.user
+import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Observable
+import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Test
 import org.mockito.InjectMocks
@@ -19,7 +22,41 @@ class UserRepositoryImplTest {
     MockitoAnnotations.initMocks(this)
   }
 
-  @Test fun `find tag list by name containing the given arg`() {
+  @Test fun `select all users`() {
+    val expected = listOf(user())
+    whenever(dao.selectAll(1, 1)).thenReturn(Observable.just(expected))
+
+    repo.findAll(1, 1).test()
+        .assertValue(expected)
+  }
+
+  @Test fun `not select all users if the given page is invalid`() {
+    whenever(dao.selectAll(any(), any())).thenReturn(Observable.just(emptyList()))
+
+    try {
+      repo.findAll(0, 1)
+      fail()
+    } catch (e: IllegalArgumentException) {
+      assertThat(e).hasMessageThat().isEqualTo("0 < page required but it was 0")
+    }
+
+    repo.findAll(1, 1)
+  }
+
+  @Test fun `not select all users if the given per page is invalid`() {
+    whenever(dao.selectAll(any(), any())).thenReturn(Observable.just(emptyList()))
+
+    try {
+      repo.findAll(1, 0)
+      fail()
+    } catch (e: IllegalArgumentException) {
+      assertThat(e).hasMessageThat().isEqualTo("0 < perPage required but it was 0")
+    }
+
+    repo.findAll(1, 1)
+  }
+
+  @Test fun `search users by name containing the given arg`() {
     val arg = "part of name"
     val limit = 10
     val expected = listOf(user())

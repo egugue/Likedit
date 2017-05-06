@@ -11,6 +11,14 @@ class UserSqliteDao @Inject constructor(
 ) {
 
   /**
+   * Select All [Users]s as list by the given args
+   */
+  fun selectAll(page: Int, perPage: Int): Observable<List<User>> {
+    return userGateway.selectAll(page, perPage)
+        .map { it.map { it.toUser() } }
+  }
+
+  /**
    * Select some users which have name or screen name with part of the given each arg.
    */
   fun searchByNameOrScreenName(name: String, screenName: String, limit: Int): Observable<List<User>> {
