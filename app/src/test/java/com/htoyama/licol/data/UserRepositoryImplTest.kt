@@ -19,7 +19,7 @@ class UserRepositoryImplTest {
     MockitoAnnotations.initMocks(this)
   }
 
-  @Test fun `find tag list by name containing the given arg`() {
+  @Test fun `search users by name containing the given arg`() {
     val arg = "part of name"
     val limit = 10
     val expected = listOf(user())
