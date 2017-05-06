@@ -12,6 +12,9 @@ class LikedTweetAppService @Inject internal constructor(
     private val likedRepository: LikedTweetRepository
 ){
 
+  /**
+   * Get All [LikedTweet]s
+   */
   fun getAllLikedTweets(page: Int): Observable<List<LikedTweet>> {
     return likedRepository.find(page, 200)
   }
