@@ -22,7 +22,7 @@ internal class Presenter @Inject constructor(
   fun loadNextLikedList() {
     view?.showProgress()
 
-    appService.find(page)
+    appService.getAllLikedTweets(page)
       .subscribeOn(Schedulers.io())
       .observeOn(AndroidSchedulers.mainThread())
       .subscribe(
