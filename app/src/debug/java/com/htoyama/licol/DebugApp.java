@@ -1,5 +1,7 @@
 package com.htoyama.licol;
 
+import android.os.StrictMode;
+
 import com.facebook.stetho.Stetho;
 
 /**
@@ -15,6 +17,24 @@ public class DebugApp extends App {
       // see https://github.com/facebook/stetho/issues/440
       Stetho.initializeWithDefaults(this);
     }
+
+    applyStrictMode();
+  }
+
+  private void applyStrictMode() {
+    StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+        .detectDiskReads()
+        .detectDiskWrites()
+        .detectNetwork()   // or .detectAll() for all detectable problems
+        .penaltyLog()
+        .build());
+    StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+        .detectLeakedSqlLiteObjects()
+        .detectLeakedClosableObjects()
+        .detectActivityLeaks()
+        .penaltyLog()
+        .penaltyDeath()
+        .build());
   }
 
   private boolean isNotUsingRobolectric() {
