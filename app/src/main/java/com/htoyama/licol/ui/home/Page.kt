@@ -7,7 +7,7 @@ import com.htoyama.licol.ui.home.liked.HomeLikedFragment
 import com.htoyama.licol.ui.home.user.HomeUserFragment
 
 /**
- * A class that describes a page inside of a [ViewPager]
+ * A class representing a page inside of a [ViewPager]
  */
 internal enum class Page {
 
