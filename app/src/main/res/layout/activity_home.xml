@@ -33,12 +33,14 @@
 
             <android.support.design.widget.TabItem
                 android:layout_height="0dp" android:layout_width="0dp"
-                android:text="Tabs"
+                android:icon="@drawable/ic_home_black_24dp"
                 />
 
             <android.support.design.widget.TabItem
                 android:layout_height="0dp" android:layout_width="0dp"
-                android:text="Liked" />
+                android:icon="@drawable/ic_person_black_24dp"
+                />
+
 
         </android.support.design.widget.TabLayout>
 
