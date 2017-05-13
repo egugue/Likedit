@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
 
 /**
- * A [FragmentPagerAdapter] attatched by HomeActivity
+ * A [FragmentPagerAdapter] attached by HomeActivity
  */
 internal class HomePagerAdapter(fm: FragmentManager)
     : FragmentPagerAdapter(fm) {
