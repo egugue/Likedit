@@ -1,7 +1,6 @@
 package com.htoyama.licol.ui.home
 
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
@@ -22,7 +21,6 @@ class HomeActivity : AppCompatActivity() {
         .build()
   }
 
-  private val fab: FloatingActionButton by bindView(R.id.fab)
   private val viewPager: ViewPager by bindView(R.id.home_pager)
   private val tabLayout: TabLayout by bindView(R.id.home_tablayout)
   private val adapter: HomePagerAdapter = HomePagerAdapter(supportFragmentManager)
@@ -35,7 +33,6 @@ class HomeActivity : AppCompatActivity() {
 
     viewPager.adapter = adapter
     viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
-    viewPager.addOnPageChangeListener(FabSettingManageListener(fab, viewPager))
   }
 
   override fun onCreateOptionsMenu(menu: Menu?): Boolean {
