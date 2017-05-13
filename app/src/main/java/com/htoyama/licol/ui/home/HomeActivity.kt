@@ -21,6 +21,7 @@ class HomeActivity : AppCompatActivity() {
         .build()
   }
 
+  private val toolbar: Toolbar by bindView(R.id.toolbar)
   private val viewPager: ViewPager by bindView(R.id.home_pager)
   private val tabLayout: TabLayout by bindView(R.id.home_tablayout)
   private val adapter: HomePagerAdapter = HomePagerAdapter(supportFragmentManager)
@@ -28,7 +29,6 @@ class HomeActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_home)
-    val toolbar = findViewById(R.id.toolbar) as Toolbar?
     setSupportActionBar(toolbar)
 
     viewPager.adapter = adapter
@@ -48,5 +48,4 @@ class HomeActivity : AppCompatActivity() {
 
     return super.onOptionsItemSelected(item)
   }
-
 }
