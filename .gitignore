@@ -4,6 +4,7 @@
 .idea/
 .gradle/
 local.properties
+captures/
 
 */build/
 secret.gradle
