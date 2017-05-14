@@ -38,7 +38,7 @@ class UserModel(
 
   override fun createNewHolder(): Holder = Holder()
 
-  override fun getDefaultLayout(): Int = R.layout.home_user_view
+  override fun getDefaultLayout(): Int = R.layout.home_user_list_item
 
   override fun bind(holder: Holder) {
     holder.nameView.text = user.name
