@@ -34,7 +34,7 @@ fun RecyclerView.addOnLoadMoreListener(l: LoadMoreListener) = addOnScrollListene
           return
         }
 
-        val manager = (recyclerView.layoutManager as LinearLayoutManager)
+        val manager = recyclerView.layoutManager as LinearLayoutManager
         val visibleCount = recyclerView.childCount
         val totalCount = manager.itemCount
         val firstPos = manager.findFirstVisibleItemPosition()
