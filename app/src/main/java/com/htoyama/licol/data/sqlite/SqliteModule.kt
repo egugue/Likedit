@@ -1,9 +1,9 @@
 package com.htoyama.licol.data.sqlite
 
 import android.util.Log
+import com.htoyama.licol.BuildConfig
 import com.htoyama.licol.data.sqlite.lib.SqliteOpenHelper
 import com.squareup.sqlbrite.BriteDatabase
-import com.squareup.sqlbrite.BuildConfig
 import com.squareup.sqlbrite.SqlBrite
 import dagger.Module
 import dagger.Provides

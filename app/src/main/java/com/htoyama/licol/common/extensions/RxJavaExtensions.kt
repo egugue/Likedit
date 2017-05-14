@@ -2,12 +2,17 @@ package com.htoyama.licol.common.extensions
 
 import hu.akarnokd.rxjava.interop.RxJavaInterop
 import io.reactivex.*
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.BiFunction
+import io.reactivex.schedulers.Schedulers
 
 /**
  * Extensions for classes related to RxJava
  */
+
+fun <T> Observable<T>.subscribeOnIo(): Observable<T> = subscribeOn(Schedulers.io())
+fun <T> Observable<T>.observeOnMain(): Observable<T> = observeOn(AndroidSchedulers.mainThread())
 
 /**
  * A extension to apply SAM conversion

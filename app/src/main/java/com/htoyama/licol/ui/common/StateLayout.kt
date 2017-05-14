@@ -23,27 +23,25 @@ class StateLayout(context: Context, attrs: AttributeSet) : FrameLayout(context, 
   override fun onFinishInflate() {
     super.onFinishInflate()
 
-    var isProgressStateAssigned = false
+    var progressStateIsAssigned = false
     for (i in 0..childCount - 1) {
       val view = getChildAt(i)
       val lp = view.layoutParams as LayoutParams
       val state = lp.state
 
-      if (state == STATE_CONTENT) {
-        contentView = view
-      } else if (state == STATE_PROGRESS) {
-        progressView = view
-        isProgressStateAssigned = true
-      } else if (state == STATE_ERROR) {
-        errorView = view
-      } else if (state == STATE_EMPTY) {
-        emptyView = view
-      } else {
-        throw IllegalStateException("Invalid layout_state attribute: " + state)
+      when (state) {
+        STATE_CONTENT -> contentView = view
+        STATE_ERROR -> errorView = view
+        STATE_EMPTY -> emptyView = view
+        STATE_PROGRESS -> {
+          progressView = view
+          progressStateIsAssigned = true
+        }
+        else -> throw IllegalStateException("Invalid layout_state attribute: " + state)
       }
     }
 
-    if (!isProgressStateAssigned) {
+    if (!progressStateIsAssigned) {
       progressView = LayoutInflater.from(context).inflate(R.layout.default_progress, this, false)
       addView(progressView)
     }

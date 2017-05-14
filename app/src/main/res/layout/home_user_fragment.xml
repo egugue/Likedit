@@ -2,20 +2,22 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/home_user_state_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.htoyama.licol.ui.home.tag.HomeTagFragment"
+    tools:context="com.htoyama.licol.ui.home.user.HomeUserFragment"
     >
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/home_tag_list"
+        android:id="@+id/home_user_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_state="content"
         />
 
+    <!-- TODO -->
     <TextView
-        android:id="@+id/home_tag_error_state"
+        android:id="@+id/home_user_error_state"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="100sp"
@@ -24,8 +26,9 @@
         app:layout_state="error"
         />
 
+    <!-- TODO -->
     <TextView
-        android:id="@+id/home_tag_empty_state"
+        android:id="@+id/home_user_empty_state"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="100sp"

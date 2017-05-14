@@ -22,12 +22,17 @@ class DebugApp : App() {
   }
 
   private fun applyStrictMode() {
-    StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder()
-        .detectDiskReads()
-        .detectDiskWrites()
-        .detectNetwork()
-        .penaltyLog()
-        .build())
+    StrictMode.setThreadPolicy(
+        StrictMode.ThreadPolicy.Builder()
+            .detectCustomSlowCalls()
+            .detectDiskReads()
+            .detectDiskWrites()
+            .detectNetwork()
+            .penaltyDialog()
+            .penaltyLog()
+            .penaltyFlashScreen()
+            .build()
+    )
 
     StrictMode.setVmPolicy(StrictMode.VmPolicy.Builder()
         .detectLeakedSqlLiteObjects()
