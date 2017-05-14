@@ -71,28 +71,37 @@ class HomeUserFragment : RxFragment() {
     listView.layoutManager = LinearLayoutManager(activity)
     userController.requestModelBuild()
 
-    listView.addOnLoadMoreListener(object: LoadMoreListener {
+    listView.addOnLoadMoreListener(object : LoadMoreListener {
       override fun onLoadMore() = getMoreUserList()
       override fun isLoading(): Boolean = isLoading
       override fun hasLoadedItems(): Boolean = hasLoadedItems
     })
   }
 
-  private fun getMoreUserList(){
-    appService.getAllUsers(page = page, perPage = 10)
+  private fun getMoreUserList() {
+    appService.getAllUsers(page = page, perPage = 20)
         .bindToLifecycle(this)
         .subscribeOnIo()
         .observeOnMain()
-        .doOnSubscribe { isLoading = true }
+        .doOnSubscribe {
+          isLoading = true
+          userController.setLoadingMoreVisibility(true)
+        }
         .doOnEach { isLoading = false }
         .subscribe(
             { userList ->
+              userController.setLoadingMoreVisibility(false)
+
               if (userList.isEmpty()) {
                 hasLoadedItems = true
+                if (page == 1) {
+                  stateLayout.showEmptyState()
+                }
+              } else {
+                page++
+                userController.addData(userList)
+                stateLayout.showContent()
               }
-              page++
-              userController.addData(userList, false)
-              stateLayout.showContent()
             },
             { error ->
               error.printStackTrace()
