@@ -85,7 +85,9 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     // firebase
-    compile 'com.google.firebase:firebase-crash:10.0.1'
+    def firebaseVer = '10.0.1'
+    compile "com.google.firebase:firebase-core:$firebaseVer"
+    compile "com.google.firebase:firebase-crash:$firebaseVer"
 
     def retrofitVer = '2.2.0'
     compile "com.squareup.retrofit2:retrofit:$retrofitVer"
