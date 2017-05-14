@@ -1,7 +1,7 @@
 import java.util.List;
-import com.htoyama.licol.domain.tweet.media.Photo;
-import com.htoyama.licol.domain.tweet.media.Video;
-import com.htoyama.licol.domain.tweet.Url;
+import com.egugue.licol.domain.tweet.media.Photo;
+import com.egugue.licol.domain.tweet.media.Video;
+import com.egugue.licol.domain.tweet.Url;
 
 CREATE TABLE liked_tweet (
   id INTEGER NOT NULL PRIMARY KEY,

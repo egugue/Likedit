@@ -1,11 +1,11 @@
-<com.htoyama.licol.ui.common.StateLayout
+<com.egugue.licol.ui.common.StateLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/home_user_state_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.htoyama.licol.ui.home.user.HomeUserFragment"
+    tools:context="com.egugue.licol.ui.home.user.HomeUserFragment"
     >
 
     <android.support.v7.widget.RecyclerView
@@ -39,4 +39,4 @@
 
     <include layout="@layout/progress_in_pager" />
 
-</com.htoyama.licol.ui.common.StateLayout>
+</com.egugue.licol.ui.common.StateLayout>

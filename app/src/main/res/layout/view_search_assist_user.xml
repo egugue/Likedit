@@ -9,7 +9,7 @@
 
         <variable
             name="user"
-            type="com.htoyama.licol.domain.user.User"
+            type="com.egugue.licol.domain.user.User"
             />
     </data>
 

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.htoyama.licol.ui.tag.tweet.select.TagTweetSelectActivity"
+    tools:context="com.egugue.licol.ui.tag.tweet.select.TagTweetSelectActivity"
     >
 
     <android.support.design.widget.AppBarLayout
@@ -25,7 +25,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <com.htoyama.licol.ui.common.StateLayout
+    <com.egugue.licol.ui.common.StateLayout
         android:id="@+id/tag_tweet_select_state_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -60,7 +60,7 @@
 
         <include layout="@layout/progress_in_pager"/>
 
-    </com.htoyama.licol.ui.common.StateLayout>
+    </com.egugue.licol.ui.common.StateLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
