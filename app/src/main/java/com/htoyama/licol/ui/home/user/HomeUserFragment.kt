@@ -79,10 +79,6 @@ class HomeUserFragment : RxFragment() {
   }
 
   private fun getMoreUserList(){
-    if (isLoading) {
-      return
-    }
-
     appService.getAllUsers(page = page, perPage = 10)
         .bindToLifecycle(this)
         .subscribeOnIo()
