@@ -8,8 +8,8 @@ build:
       - script:
         name: obtain google-services.json
         code: |
-          echo $GOOGLE_SERVICES_JSON_FOR_DEBUG   | base64 -d > ./app/debug/google-services.json
-          echo $GOOGLE_SERVICES_JSON_FOR_RELEASE | base64 -d > ./app/release/google-services.json
+          echo $GOOGLE_SERVICES_JSON_FOR_DEBUG   > ./app/src/debug/google-services.json
+          echo $GOOGLE_SERVICES_JSON_FOR_RELEASE > ./app/src/release/google-services.json
       - script:
         name: run gradle testDebug
         code: |
