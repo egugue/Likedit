@@ -21,7 +21,6 @@ import com.htoyama.licol.ui.home.HomeActivity
 import com.htoyama.licol.ui.home.user.list.UserController
 import com.trello.rxlifecycle2.components.support.RxFragment
 import com.trello.rxlifecycle2.kotlin.bindToLifecycle
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
@@ -86,7 +85,6 @@ class HomeUserFragment : RxFragment() {
 
     appService.getAllUsers(page = page, perPage = 10)
         .bindToLifecycle(this)
-        .delay(1, TimeUnit.SECONDS)
         .subscribeOnIo()
         .observeOnMain()
         .doOnSubscribe { isLoading = true }
