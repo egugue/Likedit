@@ -83,7 +83,7 @@ dependencies {
     compile "com.android.support:appcompat-v7:$supportLibVer"
     compile "com.android.support:recyclerview-v7:$supportLibVer"
     compile "com.android.support:design:$supportLibVer"
-    compile 'com.android.support.constraint:constraint-layout:1.0.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     def retrofitVer = '2.2.0'
     compile "com.squareup.retrofit2:retrofit:$retrofitVer"
@@ -112,6 +112,7 @@ dependencies {
     }
 
     compile 'com.hannesdorfmann:adapterdelegates2:2.0.1'
+    compile 'com.airbnb.android:epoxy:2.1.0'
 
     // If it is missing, we can see error on CI https://github.com/square/sqldelight/issues/563
     compile 'com.squareup.sqldelight:runtime:0.6.1'
