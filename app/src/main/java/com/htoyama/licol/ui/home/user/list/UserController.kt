@@ -8,8 +8,8 @@ class UserController @Inject constructor() : EpoxyController() {
   private var userList: List<User> = emptyList()
   private var requireLoadingMore: Boolean = true
 
-  fun setData(l: List<User>, requireLoadingMore: Boolean) {
-    userList = l
+  fun addData(l: List<User>, requireLoadingMore: Boolean) {
+    userList = ArrayList(userList + l)
     this.requireLoadingMore = requireLoadingMore
     requestModelBuild()
   }

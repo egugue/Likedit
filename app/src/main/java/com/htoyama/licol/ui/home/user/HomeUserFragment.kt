@@ -12,6 +12,8 @@ import android.widget.TextView
 import butterknife.bindView
 import com.htoyama.licol.R
 import com.htoyama.licol.application.user.UserAppService
+import com.htoyama.licol.common.extensions.LoadMoreListener
+import com.htoyama.licol.common.extensions.addOnLoadMoreListener
 import com.htoyama.licol.common.extensions.observeOnMain
 import com.htoyama.licol.common.extensions.subscribeOnIo
 import com.htoyama.licol.ui.common.StateLayout
@@ -19,6 +21,7 @@ import com.htoyama.licol.ui.home.HomeActivity
 import com.htoyama.licol.ui.home.user.list.UserController
 import com.trello.rxlifecycle2.components.support.RxFragment
 import com.trello.rxlifecycle2.kotlin.bindToLifecycle
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
@@ -27,8 +30,6 @@ import javax.inject.Inject
 class HomeUserFragment : RxFragment() {
 
   companion object {
-    const val PER_PAGE = 2
-
     /** Create a [HomeUserFragment] */
     fun new(): HomeUserFragment {
       return HomeUserFragment()
@@ -39,6 +40,8 @@ class HomeUserFragment : RxFragment() {
   @Inject lateinit var userController: UserController
 
   private var page: Int = 1
+  private var isLoading = false
+  private var hasLoadedItems = false
   private val stateLayout: StateLayout by bindView(R.id.home_user_state_layout)
   private val listView: RecyclerView by bindView(R.id.home_user_list)
   private val errorView: TextView by bindView(R.id.home_user_error_state)
@@ -61,25 +64,45 @@ class HomeUserFragment : RxFragment() {
     super.onViewCreated(view, savedInstanceState)
 
     initListView()
-
-    appService.getAllUsers(page, PER_PAGE)
-        .bindToLifecycle(this)
-        .subscribeOnIo()
-        .observeOnMain()
-        .subscribe(
-            { userList ->
-              userController.setData(userList, false)
-              stateLayout.showContent()
-            },
-            { error ->
-              error.printStackTrace()
-            }
-        )
+    getMoreUserList()
   }
 
   private fun initListView() {
     listView.adapter = userController.adapter
     listView.layoutManager = LinearLayoutManager(activity)
     userController.requestModelBuild()
+
+    listView.addOnLoadMoreListener(object: LoadMoreListener {
+      override fun onLoadMore() = getMoreUserList()
+      override fun isLoading(): Boolean = isLoading
+      override fun hasLoadedItems(): Boolean = hasLoadedItems
+    })
+  }
+
+  private fun getMoreUserList(){
+    if (isLoading) {
+      return
+    }
+
+    appService.getAllUsers(page = page, perPage = 10)
+        .bindToLifecycle(this)
+        .delay(1, TimeUnit.SECONDS)
+        .subscribeOnIo()
+        .observeOnMain()
+        .doOnSubscribe { isLoading = true }
+        .doOnEach { isLoading = false }
+        .subscribe(
+            { userList ->
+              if (userList.isEmpty()) {
+                hasLoadedItems = true
+              }
+              page++
+              userController.addData(userList, false)
+              stateLayout.showContent()
+            },
+            { error ->
+              error.printStackTrace()
+            }
+        )
   }
 }
