@@ -53,7 +53,7 @@ class HomeUserFragment : RxFragment() {
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                             savedInstanceState: Bundle?): View? {
-    val root = inflater.inflate(R.layout.fragment_home_tag, container, false)
+    val root = inflater.inflate(R.layout.home_user_fragment, container, false)
     return root
   }
 
