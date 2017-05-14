@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.TextView
 import butterknife.bindView
 import com.htoyama.licol.R
@@ -44,8 +43,6 @@ class HomeUserFragment : RxFragment() {
   private val stateLayout: StateLayout by bindView(R.id.home_user_state_layout)
   private val listView: RecyclerView by bindView(R.id.home_user_list)
   private val errorView: TextView by bindView(R.id.home_user_error_state)
-  private val emptyView: TextView by bindView(R.id.home_user_empty_state)
-  private val progressBar: ProgressBar by bindView(R.id.progressBar)
 
   override fun onAttach(context: Context) {
     super.onAttach(context)
