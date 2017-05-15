@@ -11,7 +11,10 @@ import butterknife.bindView
 import com.egugue.licol.App
 
 import com.egugue.licol.R
+import com.egugue.licol.common.analytics.Analytics
+import com.egugue.licol.common.analytics.ViewEvent
 import com.egugue.licol.ui.search.SearchActivity
+import javax.inject.Inject
 
 class HomeActivity : AppCompatActivity() {
 
@@ -21,13 +24,18 @@ class HomeActivity : AppCompatActivity() {
         .build()
   }
 
+  @Inject lateinit var analytics: Analytics
+
   private val toolbar: Toolbar by bindView(R.id.toolbar)
   private val viewPager: ViewPager by bindView(R.id.home_pager)
   private val tabLayout: TabLayout by bindView(R.id.home_tablayout)
   private val adapter: HomePagerAdapter = HomePagerAdapter(supportFragmentManager)
 
   override fun onCreate(savedInstanceState: Bundle?) {
+    component.inject(this)
     super.onCreate(savedInstanceState)
+    analytics.viewEvent(ViewEvent.HOME)
+
     setContentView(R.layout.activity_home)
     setSupportActionBar(toolbar)
 

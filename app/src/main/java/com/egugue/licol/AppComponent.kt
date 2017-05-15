@@ -1,5 +1,6 @@
 package com.egugue.licol
 
+import com.egugue.licol.common.analytics.Analytics
 import com.egugue.licol.data.net.FavoriteService
 import com.egugue.licol.data.prefs.AppSetting
 import com.egugue.licol.data.sqlite.likedtweet.LikedTweetTableGateway
@@ -16,6 +17,7 @@ interface  AppComponent {
   fun inject(activity: AuthActivity)
   fun inject(activity: MainActivity)
 
+  fun analytics(): Analytics
   fun tweetTableGateway(): LikedTweetTableGateway
   fun appSetting(): AppSetting
   fun favoriteService(): FavoriteService
