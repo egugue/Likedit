@@ -9,6 +9,8 @@ captures/
 */build/
 secret.gradle
 
+*google-services.json
+
 *~
 *.swp
 .DS_Store

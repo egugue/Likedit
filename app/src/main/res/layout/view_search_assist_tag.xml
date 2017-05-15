@@ -8,7 +8,7 @@
 
         <variable
             name="tag"
-            type="com.htoyama.licol.domain.tag.Tag"
+            type="com.egugue.licol.domain.tag.Tag"
             />
     </data>
 

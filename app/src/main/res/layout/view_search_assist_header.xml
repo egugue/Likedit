@@ -9,7 +9,7 @@
 
         <variable
             name="header"
-            type="com.htoyama.licol.ui.search.Header"
+            type="com.egugue.licol.ui.search.Header"
             />
     </data>
 

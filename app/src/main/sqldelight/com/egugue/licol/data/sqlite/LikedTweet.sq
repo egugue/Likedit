@@ -1,0 +1,58 @@
+import java.util.List;
+import com.egugue.licol.domain.tweet.media.Photo;
+import com.egugue.licol.domain.tweet.media.Video;
+import com.egugue.licol.domain.tweet.Url;
+
+CREATE TABLE liked_tweet (
+  id INTEGER NOT NULL PRIMARY KEY,
+  user_id INTEGER NOT NULL,
+  text TEXT NOT NULL,
+  image_list TEXT AS List<Photo> NOT NULL,
+  url_list TEXT AS List<Url> NOT NULL,
+  video TEXT as Video,
+  created INTEGER NOT NULL,
+  FOREIGN KEY(user_id) REFERENCES user(id)
+);
+
+select_all:
+SELECT *
+FROM liked_tweet
+INNER JOIN user ON liked_tweet.user_id = user.id
+order by created desc
+;
+
+select_liked_tweets:
+SELECT *
+FROM liked_tweet
+INNER JOIN user ON liked_tweet.user_id = user.id
+order by created desc
+limit ?
+offset ?
+;
+
+select_liked_tweets_by_ids:
+SELECT *
+FROM liked_tweet
+INNER JOIN user ON liked_tweet.user_id = user.id
+WHERE liked_tweet.id IN ?
+order by created desc
+limit ?
+offset ?
+;
+
+insert_liked_tweet:
+INSERT OR IGNORE INTO liked_tweet (
+    id,
+    user_id,
+    text,
+    image_list,
+    url_list,
+    video,
+    created
+) VALUES (?, ?, ?, ?, ?, ?, ?)
+;
+
+delete_by_id:
+DELETE FROM liked_tweet
+WHERE id = ?
+;
