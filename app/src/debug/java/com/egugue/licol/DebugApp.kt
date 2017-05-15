@@ -35,8 +35,8 @@ class DebugApp : App() {
     )
 
     StrictMode.setVmPolicy(StrictMode.VmPolicy.Builder()
-        .detectLeakedSqlLiteObjects()
-        .detectLeakedClosableObjects()
+        //.detectLeakedSqlLiteObjects()
+        //.detectLeakedClosableObjects()
         .penaltyLog()
         //.penaltyDeath()
         .build())
