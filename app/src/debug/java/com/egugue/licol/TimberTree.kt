@@ -7,9 +7,8 @@ import timber.log.Timber
 class TimberTree : Timber.DebugTree() {
 
   override fun log(priority: Int, tag: String?, message: String?, t: Throwable?) {
-    super.log(priority, tag, message, t)
-
     if (priority == Log.VERBOSE || priority == Log.DEBUG) {
+      super.log(priority, tag, message, t)
       return
     }
 
