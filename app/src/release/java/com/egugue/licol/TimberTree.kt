@@ -11,7 +11,7 @@ class TimberTree : Timber.Tree() {
       return
     }
 
-    FirebaseCrash.logcat(priority, tag, message)
+    FirebaseCrash.log(message)
 
     if (t != null) {
       if (priority == Log.ERROR || priority == Log.WARN) {
