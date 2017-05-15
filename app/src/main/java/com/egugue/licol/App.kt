@@ -7,6 +7,7 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import com.twitter.sdk.android.Twitter
 import com.twitter.sdk.android.core.TwitterAuthConfig
 import io.fabric.sdk.android.Fabric
+import timber.log.Timber
 
 open class App :Application() {
 
@@ -31,6 +32,7 @@ open class App :Application() {
     buildFabric()
     AndroidThreeTen.init(this)
 
+    Timber.plant(TimberTree())
     TweetSyncService.scheduleJob(this)
   }
 

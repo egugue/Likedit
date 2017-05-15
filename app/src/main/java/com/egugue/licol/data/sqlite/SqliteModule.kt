@@ -1,6 +1,5 @@
 package com.egugue.licol.data.sqlite
 
-import android.util.Log
 import com.egugue.licol.BuildConfig
 import com.egugue.licol.data.sqlite.lib.SqliteOpenHelper
 import com.squareup.sqlbrite.BriteDatabase
@@ -8,15 +7,15 @@ import com.squareup.sqlbrite.SqlBrite
 import dagger.Module
 import dagger.Provides
 import rx.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Singleton
 
 @Module class SqliteModule {
 
   @Provides @Singleton fun sqlBrite(): SqlBrite {
-    // TODO: Use Timber instead of built-in Log
     return if (BuildConfig.DEBUG) {
       SqlBrite.Builder()
-          .logger { Log.d("--", it) }
+          .logger { Timber.i(it) }
           .build()
     } else {
       SqlBrite.Builder().build()

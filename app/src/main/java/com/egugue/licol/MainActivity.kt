@@ -16,7 +16,6 @@ import com.egugue.licol.ui.common.tweet.OnTweetClickListener
 import com.egugue.licol.ui.TweetAdapter
 import com.egugue.licol.ui.auth.AuthActivity
 import com.egugue.licol.ui.home.HomeActivity
-import com.google.firebase.crash.FirebaseCrash
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
 import com.twitter.sdk.android.core.TwitterCore
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -75,12 +74,6 @@ class MainActivity : RxAppCompatActivity() {
         )
 
     initLastSyncedTimeText()
-
-    if (BuildConfig.DEBUG) {
-      FirebaseCrash.report(Exception("My first Android non-fatal error  Debug"))
-    } else {
-      FirebaseCrash.report(Exception("My first Android non-fatal error  Release"))
-    }
   }
 
   @Inject lateinit var appSetting: AppSetting
