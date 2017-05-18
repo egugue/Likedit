@@ -21,7 +21,7 @@ class HomeUserViewModel @Inject constructor(
   val isLoading: MutableLiveData<Boolean> = MutableLiveData()
   val hasLoadedItems: MutableLiveData<Boolean> = MutableLiveData()
 
-  fun getUser(): LiveData<User> {
+  fun getUser() {
     appService.getAllUsers(1, 20)
         .subscribeOnIo()
         .observeOnMain()
@@ -36,5 +36,6 @@ class HomeUserViewModel @Inject constructor(
             { error ->
               error.printStackTrace()
             }
+        )
   }
 }
