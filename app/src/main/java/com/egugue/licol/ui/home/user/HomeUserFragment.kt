@@ -1,5 +1,9 @@
 package com.egugue.licol.ui.home.user
 
+import android.arch.lifecycle.LifecycleRegistryOwner
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -15,6 +19,8 @@ import com.egugue.licol.common.extensions.LoadMoreListener
 import com.egugue.licol.common.extensions.addOnLoadMoreListener
 import com.egugue.licol.common.extensions.observeOnMain
 import com.egugue.licol.common.extensions.subscribeOnIo
+import com.egugue.licol.domain.user.User
+import com.egugue.licol.ui.common.BaseFragment
 import com.egugue.licol.ui.common.StateLayout
 import com.egugue.licol.ui.home.HomeActivity
 import com.egugue.licol.ui.home.user.list.UserController
@@ -25,7 +31,7 @@ import javax.inject.Inject
 /**
  * A fragment showing user's list
  */
-class HomeUserFragment : RxFragment() {
+class HomeUserFragment : BaseFragment() {
 
   companion object {
     /** Create a [HomeUserFragment] */
@@ -43,11 +49,14 @@ class HomeUserFragment : RxFragment() {
   private val stateLayout: StateLayout by bindView(R.id.home_user_state_layout)
   private val listView: RecyclerView by bindView(R.id.home_user_list)
   private val errorView: TextView by bindView(R.id.home_user_error_state)
+  lateinit private var viewModel: HomeUserViewModel
 
   override fun onAttach(context: Context) {
     super.onAttach(context)
     (activity as HomeActivity).component
         .inject(this)
+
+    this.viewModel = ViewModelProviders.of(this).get(HomeUserViewModel::class.java)
   }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -61,6 +70,7 @@ class HomeUserFragment : RxFragment() {
 
     initListView()
     getMoreUserList()
+    viewModel.userList.observe(this) { userList -> userList.toString() }
   }
 
   private fun initListView() {
@@ -106,3 +116,6 @@ class HomeUserFragment : RxFragment() {
         )
   }
 }
+
+fun <T> LiveData<T>.observe(o: LifecycleRegistryOwner, f: (T?) -> Unit)
+    = observe(o,  Observer<T> { f.invoke(it)})
