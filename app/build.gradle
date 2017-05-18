@@ -86,7 +86,7 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     // firebase https://firebase.google.com/support/release-notes/android#20170428
-    def firebaseVer = '10.2.6'
+    def firebaseVer = '10.2.4'
     compile "com.google.firebase:firebase-core:$firebaseVer"
     compile "com.google.firebase:firebase-crash:$firebaseVer"
 
