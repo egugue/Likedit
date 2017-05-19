@@ -1,9 +1,7 @@
 package com.egugue.licol.data.sqlite.user
 
 import com.egugue.licol.common.extensions.toV2Observable
-import com.egugue.licol.data.sqlite.lib.createQuery
-import com.egugue.licol.data.sqlite.lib.escapeForQuery
-import com.egugue.licol.data.sqlite.lib.toLimitAndOffset
+import com.egugue.licol.data.sqlite.lib.*
 import com.squareup.sqlbrite.BriteDatabase
 import io.reactivex.Observable
 import javax.inject.Inject
@@ -32,4 +30,16 @@ class UserTableGateway @Inject constructor(
         .mapToList { UserEntity.FACTORY.search_by_name_or_screen_nameMapper().map(it) }
         .toV2Observable()
   }
+  fun insertOrUpdate(user: UserEntity) {
+    insertOrUpdate(listOf(user))
+  }
+
+  fun insertOrUpdate(list: List<UserEntity>) {
+    db.transaction {
+      list.forEach {
+        SqliteScripts.insertOrUpdateIntoUser(db, it)
+      }
+    }
+  }
+
 }

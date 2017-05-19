@@ -67,7 +67,8 @@ class MainActivity : RxAppCompatActivity() {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
             { likedList ->
-              adapter.setTweetList(likedList.map(LikedTweet::tweet))
+              // TODO
+              //adapter.setTweetList(likedList.map(LikedTweet::tweet))
             }//,
             //TODO
             //Throwable::printStackTrace

@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.egugue.licol.data.sqlite.LikedTweetModel;
+import com.egugue.licol.data.sqlite.QuotedTweetModel;
 import com.egugue.licol.data.sqlite.TagModel;
 import com.egugue.licol.data.sqlite.TweetTagRelationModel;
 import com.egugue.licol.data.sqlite.UserModel;
@@ -22,6 +23,7 @@ public class SqliteOpenHelper extends SQLiteOpenHelper {
 
   @Override public void onCreate(SQLiteDatabase db) {
     db.execSQL(LikedTweetModel.CREATE_TABLE);
+    db.execSQL(QuotedTweetModel.CREATE_TABLE);
     db.execSQL(UserModel.CREATE_TABLE);
     db.execSQL(TagModel.CREATE_TABLE);
     db.execSQL(TweetTagRelationModel.CREATE_TABLE);

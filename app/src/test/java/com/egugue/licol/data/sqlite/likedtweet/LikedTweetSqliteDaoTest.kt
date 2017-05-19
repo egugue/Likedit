@@ -5,11 +5,14 @@ import com.egugue.licol.data.sqlite.likedTweetSqliDao
 import com.egugue.licol.data.sqlite.relation.TweetTagRelationTableGateway
 import com.egugue.licol.data.sqlite.tag.TagSqliteDao
 import com.egugue.licol.data.sqlite.tagSqliteDao
+import com.egugue.licol.data.sqlite.user.UserSqliteDao
+import com.egugue.licol.data.sqlite.userSqliteDao
+import com.egugue.licol.domain.likedtweet.LikedTweet
 import com.egugue.licol.domain.tag.Tag
 import com.egugue.licol.likedTweet
 import com.egugue.licol.tag
 import com.egugue.licol.testutil.SqliteTestingRule
-import com.egugue.licol.tweet
+import com.egugue.licol.user
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.doThrow
 import com.nhaarman.mockito_kotlin.mock
@@ -27,20 +30,22 @@ class LikedTweetSqliteDaoTest {
 
   lateinit var tweetDao: LikedTweetSqliteDao
   lateinit var tagDao: TagSqliteDao
+  lateinit var userDao: UserSqliteDao
 
   @Before fun setUp() {
     tweetDao = likedTweetSqliDao(rule.briteDB)
     tagDao = tagSqliteDao(rule.briteDB)
+    userDao = userSqliteDao(rule.briteDB)
   }
 
   @Test fun `select by page and per page`() {
     val perPage = 2
-    val expected1 = (5L downTo 4L).map { likedTweet(tweet(id = it, createdAt = it)) }
-    val expected2 = (3L downTo 2L).map { likedTweet(tweet(id = it, createdAt = it)) }
-    val expected3 = listOf(likedTweet(tweet(id = 1, createdAt = 1)))
+    val expected1 = (5L downTo 4L).map { likedTweet(id = it, createdAt = it) }
+    val expected2 = (3L downTo 2L).map { likedTweet(id = it, createdAt = it) }
+    val expected3 = listOf(likedTweet(id = 1, createdAt = 1))
 
     // use a reverse list to test whether select in descending order of created property
-    tweetDao.insertOrUpdate(expected3 + expected2 + expected1)
+    insertOrUpdateLikedTweet(expected3 + expected2 + expected1)
 
     // assert
     tweetDao.select(1, perPage).test().assertValue(expected1)
@@ -52,9 +57,9 @@ class LikedTweetSqliteDaoTest {
   @Test fun `select by tag id`() {
     val tagId = tagDao.insert(tag(Tag.UNASSIGNED_ID))
 
-    val unexpected = likedTweet(tweet(id = 1), emptyList())
-    val expected = likedTweet(tweet(id = 2), listOf(tagId))
-    tweetDao.insertOrUpdate(listOf(unexpected, expected))
+    val unexpected = likedTweet(id = 1, tagIdList = emptyList())
+    val expected = likedTweet(id = 2, tagIdList = listOf(tagId))
+    insertOrUpdateLikedTweet(listOf(unexpected, expected))
 
     tweetDao.selectByTagId(tagId, 1, 200).test()
         .assertValue(listOf(expected))
@@ -63,8 +68,8 @@ class LikedTweetSqliteDaoTest {
   @Test fun `insert a liked tweet`() {
     val tagId = tagDao.insert(tag(Tag.UNASSIGNED_ID))
 
-    val inserted = likedTweet(tweet(id = 1), listOf(tagId))
-    tweetDao.insertOrUpdate(inserted)
+    val inserted = likedTweet(id = 1, tagIdList = listOf(tagId))
+    insertOrUpdateLikedTweet(inserted)
 
     tweetDao.select(1, 200).test()
         .assertValue(listOf(inserted))
@@ -84,7 +89,10 @@ class LikedTweetSqliteDaoTest {
 
     // when
     try {
-      tweetDao.insertOrUpdate(likedTweet(tweet(id = 1)))
+      val likedTweeet = likedTweet(id = 1)
+      userDao.insertOrUpdate(user(id = likedTweeet.userId))
+      tweetDao.insertOrUpdate(likedTweet())
+
       fail()
     } catch (actual: Exception) {
       assertThat(actual).isEqualTo(anError)
@@ -106,10 +114,10 @@ class LikedTweetSqliteDaoTest {
   @Test fun `update a liked tweet`() {
     val tagId = tagDao.insert(tag(Tag.UNASSIGNED_ID))
 
-    val inserted = likedTweet(tweet(id = 1), tagIdList = listOf(tagId))
-    val updated = likedTweet(tweet(id = 1), tagIdList = emptyList())
-    tweetDao.insertOrUpdate(inserted)
-    tweetDao.insertOrUpdate(updated)
+    val inserted = likedTweet(id = 1, tagIdList = listOf(tagId))
+    val updated = likedTweet(id = 1, tagIdList = emptyList())
+    insertOrUpdateLikedTweet(inserted)
+    insertOrUpdateLikedTweet(updated)
 
     tweetDao.select(1, 200).test()
         .assertValue(listOf(updated))
@@ -117,10 +125,22 @@ class LikedTweetSqliteDaoTest {
 
   @Test fun `delete a liked tweet`() {
     val id = 1L
-    tweetDao.insertOrUpdate(likedTweet(tweet(id = id)))
+    insertOrUpdateLikedTweet(likedTweet(id = id))
 
     tweetDao.delete(listOf(id))
 
     tweetDao.select(1, 1).test().assertValue(emptyList())
+  }
+
+  private fun insertOrUpdateLikedTweet(l: LikedTweet) {
+    insertOrUpdateLikedTweet(listOf(l))
+  }
+
+  private fun insertOrUpdateLikedTweet(l: List<LikedTweet>) {
+    l.forEach {
+      // must insert user before inserting tweet because of foreign key constraint
+      userDao.insertOrUpdate(user(id = it.userId))
+      tweetDao.insertOrUpdate(it)
+    }
   }
 }

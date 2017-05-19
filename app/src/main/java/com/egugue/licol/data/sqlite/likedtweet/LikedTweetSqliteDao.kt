@@ -84,13 +84,13 @@ class LikedTweetSqliteDao @Inject constructor(
     list.forEach {
       entityList.add(FullLikedTweetEntity.fromLikedTweet(it))
 
-      val tweetId = it.tweet.id
+      val tweetId = it.id
       val intermediate = it.tagIdList.map { TweetTagRelation(tweetId, it) }
       relationList.addAll(intermediate)
     }
 
     briteDatabase.transaction {
-      likedTweetGateway.insertOrUpdateTweetList(entityList)
+      likedTweetGateway.insertOrIgnoreTweetList(entityList)
       relationGateway.insertTweetTagRelation(relationList)
     }
   }
