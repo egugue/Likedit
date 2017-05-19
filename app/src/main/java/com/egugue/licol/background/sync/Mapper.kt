@@ -3,6 +3,7 @@ package com.egugue.licol.background.sync
 import com.egugue.licol.common.extensions.*
 import com.egugue.licol.data.sqlite.likedtweet.FullLikedTweetEntity
 import com.egugue.licol.data.sqlite.likedtweet.LikedTweetEntity
+import com.egugue.licol.data.sqlite.likedtweet.QuotedTweetEntity
 import com.egugue.licol.data.sqlite.user.UserEntity
 import com.twitter.sdk.android.core.models.Tweet
 import com.twitter.sdk.android.core.models.User
@@ -28,7 +29,7 @@ object Mapper {
       dto = d.retweetedStatus
     }
 
-    val user = mapIntoUserEntity(dto.user)
+    val userId = mapIntoUserEntity(dto.user).id()
     val mediaList = dto.extractAllMedias()
     val photoList = mediaList.extractPhotoList()
     val video = mediaList.extractVideo()
@@ -39,18 +40,28 @@ object Mapper {
     return FullLikedTweetEntity(
         LikedTweetEntity(
             d.id,
-            user.id,
+            userId,
             text,
+            dto.favoriteCount,
             photoList,
             urlsList,
             video,
+            dto.quotedStatus?.id,
             createdAt
         ),
-        user
+        if (dto.quotedStatus == null) null
+        else QuotedTweetEntity(
+            dto.quotedStatus.id,
+            dto.quotedStatus.textForDisplay(),
+            dto.quotedStatus.user.id,
+            dto.quotedStatus.user.name,
+            dto.quotedStatus.user.screenName,
+            dto.quotedStatus.user.avatarUrl()
+        )
     )
   }
 
-  private fun mapIntoUserEntity(dto: User): UserEntity {
+  fun mapIntoUserEntity(dto: User): UserEntity {
     return UserEntity(
         dto.id,
         dto.name,

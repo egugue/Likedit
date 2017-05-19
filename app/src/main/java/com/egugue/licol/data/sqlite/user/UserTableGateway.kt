@@ -30,10 +30,16 @@ class UserTableGateway @Inject constructor(
         .mapToList { UserEntity.FACTORY.search_by_name_or_screen_nameMapper().map(it) }
         .toV2Observable()
   }
-
   fun insertOrUpdate(user: UserEntity) {
+    insertOrUpdate(listOf(user))
+  }
+
+  fun insertOrUpdate(list: List<UserEntity>) {
     db.transaction {
-      SqliteScripts.insertOrUpdateIntoUser(db, user)
+      list.forEach {
+        SqliteScripts.insertOrUpdateIntoUser(db, it)
+      }
     }
   }
+
 }

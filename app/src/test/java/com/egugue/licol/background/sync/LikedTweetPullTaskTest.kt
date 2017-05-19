@@ -1,12 +1,12 @@
 package com.egugue.licol.background.sync
 
 import com.egugue.licol.data.net.FavoriteService
-import com.egugue.licol.data.sqlite.likedtweet.LikedTweetTableGateway
 import com.egugue.licol.twitterTweet
 import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
+import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import retrofit2.HttpException
@@ -15,31 +15,27 @@ import java.lang.IllegalStateException
 
 class LikedTweetPullTaskTest {
   @Mock lateinit var service: FavoriteService
-  @Mock lateinit var gateway: LikedTweetTableGateway
-  lateinit var task: LikedTweetPullTask
+  @Mock lateinit var dbFacade: SqliteFacade
+  @InjectMocks lateinit var task: LikedTweetPullTask
 
   @Before fun setUp() {
     MockitoAnnotations.initMocks(this)
-    task = LikedTweetPullTask(service, gateway)
   }
 
-  /**
-   * It should not store to SQLite when first emitted item is empty.
-   */
-  @Test fun execute_whenFirstEmittedIsEmpty() {
+  @Test fun `not store to SQLite if first emitted is empty`() {
     whenFavoriteApiIsInvokedWithPage(1).thenReturn(Single.just(emptyList()))
 
     val test = task.execute().test()
 
     test.assertNoErrors()
         .assertComplete()
-    verify(gateway, never()).insertOrIgnoreTweetList(any())
+    verify(dbFacade, never()).insertLikedTweetAndUser(any())
   }
 
   /**
    * It should store to SQLite as many as until emptyList is emitted.
    */
-  @Test fun execute_whenIntermediateEmittedValueIsEmptyList() {
+  @Test fun `store to SQLite as many as until empty list is emitted`() {
     whenFavoriteApiIsInvokedWithPage(1).thenReturn(Single.just(listOf(twitterTweet())))
     whenFavoriteApiIsInvokedWithPage(2).thenReturn(Single.just(listOf(twitterTweet())))
     whenFavoriteApiIsInvokedWithPage(3).thenReturn(Single.just(emptyList()))
@@ -48,10 +44,10 @@ class LikedTweetPullTaskTest {
 
     test.assertNoErrors()
         .assertComplete()
-    verify(gateway, times(2)).insertOrIgnoreTweetList(any())
+    verify(dbFacade, times(2)).insertLikedTweetAndUser(any())
   }
 
-  @Test fun execute_whenNetworkErrorIsCaused() {
+  @Test fun `execute when net work error is caused`() {
     whenFavoriteApiIsInvokedWithPage(1).thenReturn(Single.just(listOf(twitterTweet())))
     whenFavoriteApiIsInvokedWithPage(2).thenReturn(Single.just(listOf(twitterTweet())))
 
@@ -61,7 +57,7 @@ class LikedTweetPullTaskTest {
     val test = task.execute().test()
 
     test.assertError(aNetworkError)
-    verify(gateway, times(2)).insertOrIgnoreTweetList(any())
+    verify(dbFacade, times(2)).insertLikedTweetAndUser(any())
   }
 
   @Test fun execute_whenAllApisAreSuccess() {
@@ -74,7 +70,7 @@ class LikedTweetPullTaskTest {
 
     test.assertNoErrors()
         .assertComplete()
-    verify(gateway, times(4)).insertOrIgnoreTweetList(any())
+    verify(dbFacade, times(4)).insertLikedTweetAndUser(any())
   }
 
   @Test fun execute_whenFetchingLikesIsBeingLimited() {
@@ -88,7 +84,7 @@ class LikedTweetPullTaskTest {
 
     test.assertNoErrors()
         .assertComplete()
-    verify(gateway, times(3)).insertOrIgnoreTweetList(any())
+    verify(dbFacade, times(3)).insertLikedTweetAndUser(any())
   }
 
   private fun whenFavoriteApiIsInvokedWithPage(page: Int) =

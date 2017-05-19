@@ -7,7 +7,6 @@ import com.egugue.licol.common.Irrelevant
 import com.egugue.licol.common.extensions.isTwitterRateLimitException
 import com.egugue.licol.common.extensions.onErrorReturnOrJustThrow
 import com.egugue.licol.data.net.FavoriteService
-import com.egugue.licol.data.sqlite.likedtweet.LikedTweetTableGateway
 import com.twitter.sdk.android.core.models.Tweet
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -20,7 +19,7 @@ import javax.inject.Inject
 @AllOpen
 class LikedTweetPullTask @Inject constructor(
     private val favoriteService: FavoriteService,
-    private val tweetTableGateway: LikedTweetTableGateway
+    private val dbFacade: SqliteFacade
 ) : Task {
 
   @VisibleForTesting
@@ -34,7 +33,7 @@ class LikedTweetPullTask @Inject constructor(
     val seriesOfTask = Observable.fromIterable(1..4) //TODO: use specific page number
         .flatMap { favoriteService.list(null, null, 200, null, null, true, it).toObservable() }
         .takeUntil { it.isEmpty() }
-        .doOnNext { insertOrUpdateLikedList(it) }
+        .doOnNext { insertLikedTweetAndUser(it) }
 
     return seriesOfTask
         .map { Irrelevant.get() }
@@ -44,12 +43,11 @@ class LikedTweetPullTask @Inject constructor(
         .lastOrError()
   }
 
-  private fun insertOrUpdateLikedList(list: List<Tweet>) {
+  private fun insertLikedTweetAndUser(list: List<Tweet>) {
     if (list.isEmpty()) {
       return
     }
-    tweetTableGateway.insertOrUpdateTweetList(
-        Mapper.mapToFullTweetEntityList(list)
-    )
+
+    dbFacade.insertLikedTweetAndUser(list)
   }
 }
