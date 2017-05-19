@@ -6,7 +6,6 @@ CREATE TABLE quoted_tweet (
   user_name TEXT NOT NULL,
   user_screen_name TEXT NOT NULL,
   user_avatar_url TEXT NOT NULL
-  -- FOREIGN KEY(id) REFERENCES liked_tweet(quoted_tweet_id)
 );
 
 insert_quoted_tweet:
