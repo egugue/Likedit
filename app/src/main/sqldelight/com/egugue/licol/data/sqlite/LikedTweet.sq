@@ -7,24 +7,27 @@ CREATE TABLE liked_tweet (
   id INTEGER NOT NULL PRIMARY KEY,
   user_id INTEGER NOT NULL,
   text TEXT NOT NULL,
+  liked_count INTEGER AS Integer NOT NULL,
   image_list TEXT AS List<Photo> NOT NULL,
   url_list TEXT AS List<Url> NOT NULL,
   video TEXT as Video,
+  quoted_tweet_id INTEGER,
   created INTEGER NOT NULL,
-  FOREIGN KEY(user_id) REFERENCES user(id)
+  FOREIGN KEY(user_id) REFERENCES user(id),
+  FOREIGN KEY(quoted_tweet_id) REFERENCES quoted_tweet(id)
 );
 
 select_all:
 SELECT *
 FROM liked_tweet
-INNER JOIN user ON liked_tweet.user_id = user.id
+LEFT JOIN quoted_tweet ON liked_tweet.quoted_tweet_id = quoted_tweet.id
 order by created desc
 ;
 
 select_liked_tweets:
 SELECT *
 FROM liked_tweet
-INNER JOIN user ON liked_tweet.user_id = user.id
+LEFT JOIN quoted_tweet ON liked_tweet.quoted_tweet_id = quoted_tweet.id
 order by created desc
 limit ?
 offset ?
@@ -33,7 +36,7 @@ offset ?
 select_liked_tweets_by_ids:
 SELECT *
 FROM liked_tweet
-INNER JOIN user ON liked_tweet.user_id = user.id
+LEFT JOIN quoted_tweet ON liked_tweet.quoted_tweet_id = quoted_tweet.id
 WHERE liked_tweet.id IN ?
 order by created desc
 limit ?
@@ -45,11 +48,13 @@ INSERT OR IGNORE INTO liked_tweet (
     id,
     user_id,
     text,
+    liked_count,
     image_list,
     url_list,
     video,
+    quoted_tweet_id,
     created
-) VALUES (?, ?, ?, ?, ?, ?, ?)
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
 ;
 
 delete_by_id:

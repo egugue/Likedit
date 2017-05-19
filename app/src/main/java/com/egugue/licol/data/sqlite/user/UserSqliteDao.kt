@@ -25,4 +25,8 @@ class UserSqliteDao @Inject constructor(
     return userGateway.selectByNameOrScreenName(name, screenName, limit)
         .map { it.map { it.toUser() } }
   }
+
+  fun insertOrUpdate(user: User) {
+    userGateway.insertOrUpdate(UserEntity.from(user))
+  }
 }

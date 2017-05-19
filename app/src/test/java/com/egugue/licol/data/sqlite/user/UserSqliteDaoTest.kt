@@ -1,12 +1,7 @@
 package com.egugue.licol.data.sqlite.user
 
-import com.egugue.licol.data.sqlite.likedTweetSqliDao
-import com.egugue.licol.data.sqlite.likedtweet.LikedTweetSqliteDao
 import com.egugue.licol.data.sqlite.userSqliteDao
-import com.egugue.licol.domain.user.User
-import com.egugue.licol.likedTweet
 import com.egugue.licol.testutil.SqliteTestingRule
-import com.egugue.licol.tweet
 import com.egugue.licol.user
 import org.junit.Before
 import org.junit.Rule
@@ -18,11 +13,9 @@ import org.robolectric.RobolectricTestRunner
 class UserSqliteDaoTest {
   @Rule @JvmField val rule = SqliteTestingRule()
 
-  lateinit var tweetDao: LikedTweetSqliteDao
   lateinit var userDao: UserSqliteDao
 
   @Before fun setUp() {
-    tweetDao = likedTweetSqliDao(rule.briteDB)
     userDao = userSqliteDao(rule.briteDB)
   }
 
@@ -32,7 +25,7 @@ class UserSqliteDaoTest {
     val expected2 = (3L..4L).map { user(id = it, name = it.toString()) }
     val expected3 = listOf(user(id = 5, name = "5"))
 
-    (expected1 + expected2 + expected3).forEach { insertUser(it) }
+    (expected1 + expected2 + expected3).forEach { userDao.insertOrUpdate(it) }
 
     // order by name
     userDao.selectAll(1, perPage).test().assertValue(expected1)
@@ -46,7 +39,7 @@ class UserSqliteDaoTest {
     // given
     val searchWord = "B%_B"
     val expected1 = user(name = "bb%_bbbbaacc", id = 1)
-    val expected2 = user(name ="zzz", screenName = "baaccb%_b", id = 2)
+    val expected2 = user(name = "zzz", screenName = "baaccb%_b", id = 2)
     val expected3 = user(name = "aaaB%_Bccc", screenName = "aaaB%_Bccc", id = 3)
 
     val unexpecteds = listOf(
@@ -57,7 +50,7 @@ class UserSqliteDaoTest {
         user(name = "あああいいいううう", id = 8))
 
     (listOf(expected1, expected2, expected3) + unexpecteds)
-        .forEach { insertUser(it) }
+        .forEach { userDao.insertOrUpdate(it) }
 
     // order by name
     userDao.searchByNameOrScreenName(searchWord, searchWord, 200).test()
@@ -77,16 +70,10 @@ class UserSqliteDaoTest {
         user(name = "あｓｆｄｓｆｄｆｓ", id = 6))
 
     (listOf(expected1, expected2, expected3) + unexpecteds)
-        .forEach { insertUser(it) }
+        .forEach { userDao.insertOrUpdate(it) }
 
     // order by name
     userDao.searchByNameOrScreenName(searchWord, searchWord, 200).test()
         .assertValue(listOf(expected1, expected3, expected2))
-  }
-
-  var tweetId = 0L
-  private fun insertUser(user: User) {
-    tweetDao.insertOrUpdate(likedTweet(tweet = tweet(id = tweetId, user = user)))
-    tweetId++
   }
 }

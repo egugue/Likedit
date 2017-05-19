@@ -1,0 +1,21 @@
+
+CREATE TABLE quoted_tweet (
+  id INTEGER NOT NULL PRIMARY KEY,
+  text TEXT NOT NULL,
+  user_id INTEGER NOT NULL,
+  user_name TEXT NOT NULL,
+  user_screen_name TEXT NOT NULL,
+  user_avatar_url TEXT NOT NULL
+  -- FOREIGN KEY(id) REFERENCES liked_tweet(quoted_tweet_id)
+);
+
+insert_quoted_tweet:
+INSERT OR IGNORE INTO quoted_tweet(
+    id,
+    text,
+    user_id,
+    user_name,
+    user_screen_name,
+    user_avatar_url
+) VALUES (?, ?, ?, ?, ?, ?)
+;

@@ -3,6 +3,7 @@ package com.egugue.licol.data.sqlite.likedtweet
 import com.google.gson.reflect.TypeToken
 import com.egugue.licol.data.sqlite.lib.GsonProvider
 import com.egugue.licol.data.sqlite.LikedTweetModel
+import com.egugue.licol.domain.likedtweet.LikedTweet
 import com.egugue.licol.domain.tweet.Url
 import com.egugue.licol.domain.tweet.media.Photo
 import com.egugue.licol.domain.tweet.media.Video
@@ -11,9 +12,9 @@ import com.squareup.sqldelight.ColumnAdapter
 /**
  * An entity which has only liked_tweet table's data.
  *
- * An actual tweet has also a info about a user who tweeted.
- * But like_tweet table has only user identifier, not the whole user information.
- * That's why this class has also only user identifier.
+ * An actual tweet has also a info about a quoted tweet.
+ * But liked_tweet table has only quoted tweet's identifier, not the whole quoted tweet information.
+ * That's why this class has also only quoted tweet's identifier.
  *
  * @see [FullLikedTweetEntity]
  */
@@ -21,28 +22,45 @@ data class LikedTweetEntity(
     val id: Long,
     val userId: Long,
     val text: String,
+    val likedCount: Int,
     val imageList: List<Photo>,
     val urlList: List<Url>,
     val video: Video?,
+    val quotedTweetId: Long?,
     val created: Long
 ) : LikedTweetModel {
 
   override fun id(): Long = id
   override fun user_id(): Long = userId
   override fun text(): String = text
+  override fun liked_count(): Int = likedCount
   override fun image_list(): List<Photo> = imageList
-  override fun created(): Long = created
   override fun url_list(): List<Url> = urlList
   override fun video(): Video? = video
+  override fun quoted_tweet_id(): Long? = quotedTweetId
+  override fun created(): Long = created
 
   companion object {
+
+    fun fromLikedTweet(t: LikedTweet): LikedTweetEntity {
+      return LikedTweetEntity(
+          t.id,
+          t.userId,
+          t.text,
+          t.likedCount,
+          t.photoList,
+          t.urlList,
+          t.video,
+          t.quoted?.id,
+          t.createdAt)
+    }
 
     val PHOTO_LIST_ADAPTER = object : ColumnAdapter<List<Photo>, String> {
       private val type = object : TypeToken<List<Photo>>() {}.type
 
       override fun decode(databaseValue: String): List<Photo> =
-        GsonProvider.gson.fromJson<List<Photo>>(
-            databaseValue, type)
+          GsonProvider.gson.fromJson<List<Photo>>(
+              databaseValue, type)
 
       override fun encode(value: List<Photo>): String = GsonProvider.gson.toJson(value)
     }

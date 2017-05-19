@@ -4,11 +4,14 @@ import com.google.common.truth.Truth.assertThat
 import com.egugue.licol.data.sqlite.likedTweetSqliDao
 import com.egugue.licol.data.sqlite.likedtweet.LikedTweetSqliteDao
 import com.egugue.licol.data.sqlite.tagSqliteDao
+import com.egugue.licol.data.sqlite.user.UserSqliteDao
+import com.egugue.licol.data.sqlite.userSqliteDao
+import com.egugue.licol.domain.likedtweet.LikedTweet
 import com.egugue.licol.domain.tag.Tag
 import com.egugue.licol.likedTweet
 import com.egugue.licol.tag
 import com.egugue.licol.testutil.SqliteTestingRule
-import com.egugue.licol.tweet
+import com.egugue.licol.user
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -23,10 +26,12 @@ class TagSqliteDaoTest {
 
   lateinit var tweetDao: LikedTweetSqliteDao
   lateinit var tagDao: TagSqliteDao
+  lateinit var userDao: UserSqliteDao
 
   @Before fun setUp() {
     tweetDao = likedTweetSqliDao(rule.briteDB)
     tagDao = tagSqliteDao(rule.briteDB)
+    userDao = userSqliteDao(rule.briteDB)
   }
 
   @Test fun `select all tag list by the given args`() {
@@ -95,7 +100,7 @@ class TagSqliteDaoTest {
   }
 
   @Test fun `insert a tag`() {
-    tweetDao.insertOrUpdate(likedTweet(tweet(id = 10)))
+    insertLikedTweet(likedTweet(id = 10))
 
     val insertedTag = tag(id = Tag.UNASSIGNED_ID, tweetIdList = listOf(10))
     val newlyAssigendId = tagDao.insert(insertedTag)
@@ -119,7 +124,7 @@ class TagSqliteDaoTest {
 
   @Test fun `update a tag`() {
     // given
-    tweetDao.insertOrUpdate(likedTweet(tweet(id = 10)))
+    insertLikedTweet(likedTweet(id = 10))
 
     val insertedTag = tag(id = Tag.UNASSIGNED_ID, tweetIdList = listOf(10))
     val newlyAssignedId = tagDao.insert(insertedTag)
@@ -153,4 +158,10 @@ class TagSqliteDaoTest {
         .assertErrorMessage("No such tag which has id($newlyAssignedId)")
   }
 
+
+  private fun insertLikedTweet(l: LikedTweet) {
+    // must insert user before inserting tweet because of foreign key constraint
+    userDao.insertOrUpdate(user(id = l.userId))
+    tweetDao.insertOrUpdate(l)
+  }
 }

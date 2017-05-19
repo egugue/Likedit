@@ -1,12 +1,10 @@
 package com.egugue.licol.data.sqlite.lib
 
 import android.database.sqlite.SQLiteDatabase
-import com.egugue.licol.data.sqlite.LikedTweetModel
-import com.egugue.licol.data.sqlite.TagModel
-import com.egugue.licol.data.sqlite.TweetTagRelationModel
-import com.egugue.licol.data.sqlite.UserModel
+import com.egugue.licol.data.sqlite.*
 import com.egugue.licol.data.sqlite.tag.TagEntity
 import com.egugue.licol.data.sqlite.likedtweet.LikedTweetEntity
+import com.egugue.licol.data.sqlite.likedtweet.QuotedTweetEntity
 import com.egugue.licol.data.sqlite.user.UserEntity
 import com.squareup.sqlbrite.BriteDatabase
 
@@ -23,7 +21,7 @@ internal object SqliteScripts {
   fun insertOrIgnoreIntoLikedTweet(db: BriteDatabase, tweet: LikedTweetEntity) {
     val stmt = LikedTweetModel.Insert_liked_tweet(db.writableDatabase, LikedTweetEntity.FACTORY)
     tweet.apply {
-      stmt.bind(id, userId, text, imageList, urlList, video, created)
+      stmt.bind(id, userId, text, likedCount, imageList, urlList, video, quotedTweetId, created)
     }
     db.executeInsert(stmt.table, stmt.program)
   }
@@ -32,6 +30,14 @@ internal object SqliteScripts {
     val stmt = LikedTweetModel.Delete_by_id(db.writableDatabase)
     stmt.bind(tweetId)
     db.executeUpdateDelete(stmt.table, stmt.program)
+  }
+
+  fun insertOrIgnoreQuotedTweet(db: BriteDatabase, quoted: QuotedTweetEntity) {
+    val stmt = QuotedTweetModel.Insert_quoted_tweet(db.writableDatabase)
+    quoted.apply {
+      stmt.bind(id, text, userId, userName, userScreenName, userAvatarUrl)
+    }
+    db.executeInsert(stmt.table, stmt.program)
   }
 
   fun insertOrUpdateIntoUser(db: BriteDatabase, user: UserEntity) {

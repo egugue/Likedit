@@ -1,6 +1,7 @@
 package com.egugue.licol
 
 import com.egugue.licol.domain.likedtweet.LikedTweet
+import com.egugue.licol.domain.likedtweet.QuotedTweet
 import com.egugue.licol.domain.tag.Tag
 import com.egugue.licol.domain.tweet.Tweet
 import com.egugue.licol.domain.tweet.Url
@@ -16,11 +17,43 @@ import com.twitter.sdk.android.core.models.User as TwitterUser
  */
 
 fun likedTweet(
-    tweet: Tweet = tweet(),
+    id: Long = 1,
+    userId: Long = 1L,
+    text: String = "text",
+    likedCount: Int = 1,
+    photoList: List<Photo> = emptyList(),
+    urlList: List<Url> = emptyList(),
+    video: Video? = null,
+    quoted: QuotedTweet? = null,
+    createdAt: Long = 1L,
     tagIdList: List<Long> = emptyList()
 ) = LikedTweet(
-    tweet,
+    id,
+    userId,
+    createdAt,
+    text,
+    likedCount,
+    photoList,
+    urlList,
+    video,
+    quoted,
     tagIdList
+)
+
+fun quotedTweet(
+    id: Long = 1,
+    text: String = "text",
+    userId: Long = 1,
+    userName: String = "userName",
+    userScreenName: String = "userScreenName",
+    userAvatarUrl: String = "userAvatarUrl"
+) = QuotedTweet(
+    id,
+    text,
+    userId,
+    userName,
+    userScreenName,
+    userAvatarUrl
 )
 
 fun tweet(

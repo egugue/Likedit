@@ -33,7 +33,7 @@ class LikedTweetPullTaskTest {
 
     test.assertNoErrors()
         .assertComplete()
-    verify(gateway, never()).insertOrUpdateTweetList(any())
+    verify(gateway, never()).insertOrIgnoreTweetList(any())
   }
 
   /**
@@ -48,7 +48,7 @@ class LikedTweetPullTaskTest {
 
     test.assertNoErrors()
         .assertComplete()
-    verify(gateway, times(2)).insertOrUpdateTweetList(any())
+    verify(gateway, times(2)).insertOrIgnoreTweetList(any())
   }
 
   @Test fun execute_whenNetworkErrorIsCaused() {
@@ -61,7 +61,7 @@ class LikedTweetPullTaskTest {
     val test = task.execute().test()
 
     test.assertError(aNetworkError)
-    verify(gateway, times(2)).insertOrUpdateTweetList(any())
+    verify(gateway, times(2)).insertOrIgnoreTweetList(any())
   }
 
   @Test fun execute_whenAllApisAreSuccess() {
@@ -74,7 +74,7 @@ class LikedTweetPullTaskTest {
 
     test.assertNoErrors()
         .assertComplete()
-    verify(gateway, times(4)).insertOrUpdateTweetList(any())
+    verify(gateway, times(4)).insertOrIgnoreTweetList(any())
   }
 
   @Test fun execute_whenFetchingLikesIsBeingLimited() {
@@ -88,7 +88,7 @@ class LikedTweetPullTaskTest {
 
     test.assertNoErrors()
         .assertComplete()
-    verify(gateway, times(3)).insertOrUpdateTweetList(any())
+    verify(gateway, times(3)).insertOrIgnoreTweetList(any())
   }
 
   private fun whenFavoriteApiIsInvokedWithPage(page: Int) =

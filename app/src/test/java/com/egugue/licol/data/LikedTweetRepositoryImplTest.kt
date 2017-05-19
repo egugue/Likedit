@@ -25,8 +25,8 @@ class LikedTweetRepositoryImplTest {
 
   @Test fun `select liked tweet list`() {
     whenever(dao.select(1, 2)).thenReturn(Observable.just(listOf(
-        likedTweet(tweet = tweet(id = 1)),
-        likedTweet(tweet = tweet(id = 2))
+        likedTweet(id = 1),
+        likedTweet(id = 2)
     )))
 
     val expected = repo.find(1, 2).blockingFirst()
@@ -76,8 +76,8 @@ class LikedTweetRepositoryImplTest {
   @Test fun `select liked tweet list by tag id`() {
     val tagId = 1L
     whenever(dao.selectByTagId(tagId, 1, 2)).thenReturn(Observable.just(listOf(
-        likedTweet(tweet = tweet(id = 1)),
-        likedTweet(tweet = tweet(id = 2))
+        likedTweet(id = 1),
+        likedTweet(id = 2)
     )))
 
     val expected = repo.findByTagId(tagId, 1, 2).blockingFirst()

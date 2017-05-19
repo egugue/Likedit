@@ -68,21 +68,23 @@ class LikedTweetTableGateway @Inject constructor(
   }
 
   /**
-   * Insert or update the given tweet.
+   * Insert or ignore the given tweet.
    */
-  fun insertOrUpdateTweet(fullTweet: FullLikedTweetEntity) {
-    insertOrUpdateTweetList(listOf(fullTweet))
+  fun insertOrIgnoreTweet(fullTweet: FullLikedTweetEntity) {
+    insertOrIgnoreTweetList(listOf(fullTweet))
   }
 
   /**
-   * Insert or update the given tweet.
+   * Insert or ignore the given tweet.
    */
-  fun insertOrUpdateTweetList(fullTweetList: List<FullLikedTweetEntity>) {
+  fun insertOrIgnoreTweetList(fullTweetList: List<FullLikedTweetEntity>) {
     Contract.require(fullTweetList.isNotEmpty(), "fullTweetList must not be emtpy. but it's size was " + fullTweetList.size)
 
     db.transaction {
-      fullTweetList.forEach { (tweet, user) ->
-        SqliteScripts.insertOrUpdateIntoUser(db, user)
+      fullTweetList.forEach { (tweet, quoted) ->
+        if (quoted != null) {
+          SqliteScripts.insertOrIgnoreQuotedTweet(db, quoted)
+        }
         SqliteScripts.insertOrIgnoreIntoLikedTweet(db, tweet)
       }
     }
@@ -97,7 +99,7 @@ class LikedTweetTableGateway @Inject constructor(
 
   fun deleteTweetByIdList(tweetIdList: List<Long>) {
     db.transaction {
-      tweetIdList.map {
+      tweetIdList.forEach {
         SqliteScripts.deleteLikedTweetById(db, it)
       }
     }

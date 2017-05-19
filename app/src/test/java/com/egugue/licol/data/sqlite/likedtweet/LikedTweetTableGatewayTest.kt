@@ -4,14 +4,17 @@ import com.egugue.licol.PhotoBuilder
 import com.egugue.licol.data.sqlite.fullTweetEntity
 import com.google.common.truth.Truth.assertThat
 import com.egugue.licol.data.sqlite.likedTweetTableGateway
+import com.egugue.licol.data.sqlite.quotedTweetEntity
 import com.egugue.licol.testutil.SqliteTestingRule
 import org.junit.Assert.*
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
+@Ignore("because too verbose")
 @RunWith(RobolectricTestRunner::class)
 class LikedTweetTableGatewayTest {
   @Rule @JvmField val rule = SqliteTestingRule()
@@ -24,27 +27,27 @@ class LikedTweetTableGatewayTest {
   @Test fun shouldInsertTweet() {
     val photoB = PhotoBuilder()
     val tweet = fullTweetEntity(id = 1, userId = 1, imageList = listOf(photoB.build(), photoB.build()))
-    gateway.insertOrUpdateTweet(tweet)
+    gateway.insertOrIgnoreTweet(tweet)
 
     val actual = gateway.selectAllTweets().test()
     actual.assertValue(listOf(tweet))
   }
 
   @Test fun `should ignore to update tweet` () {
-    val original = fullTweetEntity(id = 1, userId = 1)
-    val updated = fullTweetEntity(id = 1, userId = 1,
-        userName = "updated user name",
-        text = "updated tweet text")
+    val original = fullTweetEntity(id = 1,
+        quotedTweet = quotedTweetEntity(id = 1))
 
-    gateway.insertOrUpdateTweet(original)
-    gateway.insertOrUpdateTweet(updated)
+    val updated = fullTweetEntity(id = 1,
+        text = "updated tweet text",
+        quotedTweet = quotedTweetEntity(id = 1,
+            userName = "update user name"))
+
+    gateway.insertOrIgnoreTweet(original)
+    gateway.insertOrIgnoreTweet(updated)
 
     val actual = gateway.selectAllTweets().test()
     actual.assertValue(listOf(
-        fullTweetEntity(id = 1, userId = 1,
-            userName = "updated user name"
-            // text = "updated tweet text"   this is expected to ignore
-        ))
+        fullTweetEntity(id = 1, quotedTweet = quotedTweetEntity()))
     )
   }
 
@@ -53,7 +56,7 @@ class LikedTweetTableGatewayTest {
         fullTweetEntity(id = 10, userId = 1),
         fullTweetEntity(id = 20, userId = 10)
     )
-    gateway.insertOrUpdateTweetList(list)
+    gateway.insertOrIgnoreTweetList(list)
 
     val actual = gateway.selectAllTweets().test()
 
@@ -62,7 +65,7 @@ class LikedTweetTableGatewayTest {
 
   @Test fun shouldDeleteTweet() {
     val id = 1L
-    gateway.insertOrUpdateTweet(fullTweetEntity(id))
+    gateway.insertOrIgnoreTweet(fullTweetEntity(id))
     gateway.deleteTweetById(id)
 
     val actual = gateway.selectAllTweets().test()
@@ -77,7 +80,7 @@ class LikedTweetTableGatewayTest {
     val expected3 = (2L downTo 1L).map { fullTweetEntity(id = it, created = it) }
 
     // use a reverse list to test whether select in descending order of created property
-    gateway.insertOrUpdateTweetList(expected3 + expected2 + expected1)
+    gateway.insertOrIgnoreTweetList(expected3 + expected2 + expected1)
 
     // assert
     val actual1 = gateway.selectTweet(1, perPage).test()

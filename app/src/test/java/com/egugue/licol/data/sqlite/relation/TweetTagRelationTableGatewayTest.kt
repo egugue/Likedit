@@ -3,8 +3,11 @@ package com.egugue.licol.data.sqlite.relation
 import android.database.sqlite.SQLiteConstraintException
 import com.google.common.truth.Truth.assertThat
 import com.egugue.licol.data.sqlite.*
+import com.egugue.licol.data.sqlite.likedtweet.FullLikedTweetEntity
+import com.egugue.licol.data.sqlite.likedtweet.LikedTweetEntity
 import com.egugue.licol.data.sqlite.tag.TagTableGateway
 import com.egugue.licol.data.sqlite.likedtweet.LikedTweetTableGateway
+import com.egugue.licol.data.sqlite.user.UserTableGateway
 import com.egugue.licol.testutil.SqliteTestingRule
 import org.junit.Assert.*
 import org.junit.Before
@@ -19,11 +22,13 @@ class TweetTagRelationTableGatewayTest {
   lateinit var gateway: TweetTagRelationTableGateway
   lateinit var tagGateway: TagTableGateway
   lateinit var tweetGateway: LikedTweetTableGateway
+  lateinit var userGateway: UserTableGateway
 
   @Before fun setUp() {
     gateway = tweetTagRelationTableGateway(rule.briteDB)
     tagGateway = tagTableGateway(rule.briteDB)
     tweetGateway = likedTweetTableGateway(rule.briteDB)
+    userGateway = userTableGateway(rule.briteDB)
   }
 
   /*********************
@@ -32,7 +37,7 @@ class TweetTagRelationTableGatewayTest {
 
   @Test fun `select relations related to the given tweet id list`() {
     // given
-    tweetGateway.insertOrUpdateTweetList(listOf(
+    insertOrIgnoreLikedTweetEntity(listOf(
         fullTweetEntity(id = 1),
         fullTweetEntity(id = 2)))
 
@@ -65,7 +70,7 @@ class TweetTagRelationTableGatewayTest {
 
   @Test fun `select relations related to the given tag id list`() {
     // given
-    tweetGateway.insertOrUpdateTweetList(listOf(
+    insertOrIgnoreLikedTweetEntity(listOf(
         fullTweetEntity(id = 1),
         fullTweetEntity(id = 2)))
 
@@ -104,7 +109,7 @@ class TweetTagRelationTableGatewayTest {
 
   @Test fun `insert relations`() {
     // given
-    tweetGateway.insertOrUpdateTweetList(listOf(
+    insertOrIgnoreLikedTweetEntity(listOf(
         fullTweetEntity(id = 1),
         fullTweetEntity(id = 2)))
 
@@ -126,7 +131,7 @@ class TweetTagRelationTableGatewayTest {
 
   @Test fun `throw an exception when a tag doesn't be inserted`() {
     // given
-    tweetGateway.insertOrUpdateTweetList(listOf(
+    insertOrIgnoreLikedTweetEntity(listOf(
         fullTweetEntity(id = 1)))
 
     // a tag doesn't be inserted here
@@ -165,7 +170,7 @@ class TweetTagRelationTableGatewayTest {
   @Test fun `delete relations`() {
     // given
     val deletingId = 1L
-    tweetGateway.insertOrUpdateTweetList(listOf(
+    insertOrIgnoreLikedTweetEntity(listOf(
         fullTweetEntity(id = deletingId),
         fullTweetEntity(id = 2)))
 
@@ -194,7 +199,7 @@ class TweetTagRelationTableGatewayTest {
    */
   @Test fun `delete relations automatically when a tag is deleted`() {
     // given
-    tweetGateway.insertOrUpdateTweetList(listOf(
+    insertOrIgnoreLikedTweetEntity(listOf(
         fullTweetEntity(id = 1),
         fullTweetEntity(id = 2))
     )
@@ -224,7 +229,7 @@ class TweetTagRelationTableGatewayTest {
   @Test fun `delete relations automatically when a tweet is deleted`() {
     // given
     val deletingId = 1L
-    tweetGateway.insertOrUpdateTweetList(listOf(
+    insertOrIgnoreLikedTweetEntity(listOf(
         fullTweetEntity(id = deletingId),
         fullTweetEntity(id = 2))
     )
@@ -247,4 +252,11 @@ class TweetTagRelationTableGatewayTest {
         tweetTagRelation(tweetId = deletingId, tagId = tagId2))
   }
 
+  private fun insertOrIgnoreLikedTweetEntity(l: List<FullLikedTweetEntity>) {
+    l.forEach {
+      // must insert user before inserting tweet because of foreign key constraint
+      userGateway.insertOrUpdate(userEntity(it.tweet.userId))
+      tweetGateway.insertOrIgnoreTweet(it)
+    }
+  }
 }
