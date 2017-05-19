@@ -54,7 +54,8 @@ class HomeLikedFragment : Fragment() {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
             { likedList ->
-              adapter.setTweetList(likedList.map(LikedTweet::tweet))
+              //TODO
+              //adapter.setTweetList(likedList.map(LikedTweet::tweet))
             },
             Throwable::printStackTrace
         )
