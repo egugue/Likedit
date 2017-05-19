@@ -6,10 +6,10 @@ import android.app.job.JobService
 import android.content.Context
 import android.app.job.JobScheduler
 import android.content.ComponentName
-import android.util.Log
 import com.egugue.licol.App
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -32,7 +32,7 @@ class TweetSyncService : JobService() {
   }
 
   override fun onStartJob(params: JobParameters?): Boolean {
-    Log.d("ーーー", "onStartJob")
+    Timber.d("onStartJob")
 
     disposable = taskExecutor.execute()
         .observeOn(AndroidSchedulers.mainThread())
@@ -41,8 +41,8 @@ class TweetSyncService : JobService() {
               jobFinished(params, false)
               scheduleJob(applicationContext)
             },
-            { e ->
-              e.printStackTrace() //TODO: https://github.com/egugue/Likedit/issues/95
+            { error ->
+              Timber.e(error)
               jobFinished(params, false)
               scheduleJob(applicationContext)
             }
@@ -70,8 +70,6 @@ class TweetSyncService : JobService() {
               .setRequiresCharging(true)
               .setRequiresDeviceIdle(true)
               .build())
-
-      Log.d("ーーー", a.toString())
     }
   }
 }
