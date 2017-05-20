@@ -8,7 +8,7 @@ import io.reactivex.Observable
 interface UserRepository {
 
   /**
-   * Retrieve some [LikedTweet]s by the given args
+   * Retrieve some [User]s by the given args
    *
    * @param page
    *     the number of page, which must be a positive integer

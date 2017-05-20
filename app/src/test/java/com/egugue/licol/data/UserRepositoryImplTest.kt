@@ -22,7 +22,7 @@ class UserRepositoryImplTest {
     MockitoAnnotations.initMocks(this)
   }
 
-  @Test fun `select all users`() {
+  @Test fun `find all users`() {
     val expected = listOf(user())
     whenever(dao.selectAll(1, 1)).thenReturn(Observable.just(expected))
 
@@ -30,7 +30,7 @@ class UserRepositoryImplTest {
         .assertValue(expected)
   }
 
-  @Test fun `not select all users if the given page is invalid`() {
+  @Test fun `not find all users if the given page is invalid`() {
     whenever(dao.selectAll(any(), any())).thenReturn(Observable.just(emptyList()))
 
     try {
@@ -43,7 +43,7 @@ class UserRepositoryImplTest {
     repo.findAll(1, 1)
   }
 
-  @Test fun `not select all users if the given per page is invalid`() {
+  @Test fun `not find all users if the given per page is invalid`() {
     whenever(dao.selectAll(any(), any())).thenReturn(Observable.just(emptyList()))
 
     try {
@@ -75,5 +75,4 @@ class UserRepositoryImplTest {
     repo.findByNameContaining(arg).test()
         .assertValue(expected)
   }
-
 }
