@@ -11,6 +11,7 @@ import android.view.ViewGroup
 
 import com.egugue.licol.R
 import com.egugue.licol.application.likedtweet.LikedTweetAppService
+import com.egugue.licol.ui.common.DividerItemDecoration
 import com.egugue.licol.ui.home.HomeActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -47,6 +48,7 @@ class HomeLikedFragment : Fragment() {
 
     listView.adapter = listController.adapter
     listView.layoutManager = LinearLayoutManager(activity)
+    listView.addItemDecoration(DividerItemDecoration(activity))
     likedTweetAppService.getAllLikedTweets(1, 200) // TODO
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
