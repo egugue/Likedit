@@ -6,8 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="12dp"
-    android:paddingRight="12dp"
-    android:paddingTop="12dp"
     >
 
     <ImageView
@@ -23,31 +21,27 @@
         android:id="@+id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="0dp"
         android:textAppearance="@style/Likedit.TextAppearance.Tweet.FullName"
         app:layout_constraintLeft_toRightOf="@+id/user_avatar"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Egugue"/>
+        tools:text="UserName"/>
 
     <TextView
         android:id="@+id/user_screen_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:textAppearance="@style/Likedit.TextAppearance.Tweet.ScreenName"
-        app:layout_constraintBottom_toBottomOf="@+id/user_name"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintBaseline_toBaselineOf="@+id/user_name"
         app:layout_constraintLeft_toRightOf="@+id/user_name"
         app:layout_constraintRight_toLeftOf="@+id/tweet_timestamp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        tools:text="@duane0728fsafdsafasdfasfsaf"/>
+        tools:text="@user_screen_name_aaaaa"/>
 
     <TextView
         android:id="@+id/tweet_timestamp"
@@ -55,17 +49,17 @@
         android:layout_height="wrap_content"
         android:textColor="#36000000"
         android:textSize="14sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/user_name"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Today 08:00"/>
+        tools:text="Today 08:00"
+        android:layout_marginRight="11dp"/>
 
     <TextView
         android:id="@+id/tweet_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="4dp"
         android:textAppearance="@style/Likedit.TextAppearance.Tweet.Text"
         app:layout_constraintHorizontal_bias="0.0"
