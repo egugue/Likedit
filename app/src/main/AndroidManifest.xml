@@ -26,10 +26,6 @@
             android:theme="@style/AppTheme">
         </activity>
         <activity
-            android:name="com.egugue.licol.ui.tag.tweet.select.TagTweetSelectActivity"
-            android:theme="@style/AppTheme">
-        </activity>
-        <activity
             android:name="com.egugue.licol.ui.search.SearchActivity"
             android:label="@string/title_activity_search"
             android:theme="@style/AppTheme">
