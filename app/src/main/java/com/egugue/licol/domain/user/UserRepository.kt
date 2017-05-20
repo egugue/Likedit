@@ -19,6 +19,11 @@ interface UserRepository {
   fun findAll(page: Int, perPage: Int): Observable<List<User>>
 
   /**
+   * Retrieve some [User]s by the given id list
+   */
+  fun findByIdList(idList: List<Long>): Observable<List<User>>
+
+  /**
    * Retrieve [User]s as list which have user name containing given arg.
    */
   fun findByNameContaining(part: String): Observable<List<User>>

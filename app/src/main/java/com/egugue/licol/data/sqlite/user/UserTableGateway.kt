@@ -19,6 +19,13 @@ class UserTableGateway @Inject constructor(
         .toV2Observable()
   }
 
+  fun selectByIdList(idList: List<Long>): Observable<List<UserEntity>> {
+    val stmt = UserEntity.FACTORY.select_by_id_list(idList.toLongArray())
+    return db.createQuery(stmt)
+        .mapToList { UserEntity.FACTORY.select_by_id_listMapper().map(it) }
+        .toV2Observable()
+  }
+
   fun selectByNameOrScreenName(name: String, screenName: String, limit: Int)
       : Observable<List<UserEntity>> {
     val escapedName = name.escapeForQuery()

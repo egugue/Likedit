@@ -56,6 +56,15 @@ class UserRepositoryImplTest {
     repo.findAll(1, 1)
   }
 
+  @Test fun `find some users by the given id list`() {
+    val expected = listOf(user(id = 1), user(id = 2), user(id = 3))
+    whenever(dao.selectByIdList(listOf(1, 2, 3)))
+        .thenReturn(Observable.just(expected))
+
+    repo.findByIdList(listOf(1, 2, 3)).test()
+        .assertValue(expected)
+  }
+
   @Test fun `search users by name containing the given arg`() {
     val arg = "part of name"
     val limit = 10

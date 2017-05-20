@@ -20,6 +20,10 @@ class UserRepositoryImpl internal @Inject constructor(
     return userSqliteDao.selectAll(page, perPage)
   }
 
+  override fun findByIdList(idList: List<Long>): Observable<List<User>> {
+    return userSqliteDao.selectByIdList(idList)
+  }
+
   override fun findByNameContaining(part: String): Observable<List<User>> {
     val limit = 10
     return userSqliteDao.searchByNameOrScreenName(part, part, limit)
