@@ -11,7 +11,7 @@ import android.view.ViewGroup
 
 import com.egugue.licol.R
 import com.egugue.licol.application.likedtweet.LikedTweetAppService
-import com.egugue.licol.ui.common.DividerItemDecoration
+import com.egugue.licol.ui.common.recyclerview.DividerItemDecoration
 import com.egugue.licol.ui.home.HomeActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

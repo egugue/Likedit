@@ -2,8 +2,7 @@ package com.egugue.licol.ui.home.liked
 
 import com.airbnb.epoxy.EpoxyController
 import com.egugue.licol.application.likedtweet.LikedTweetPayload
-import com.egugue.licol.domain.likedtweet.LikedTweet
-import com.egugue.licol.domain.user.User
+import com.egugue.licol.ui.common.recyclerview.LikedTweetModel
 import com.egugue.licol.ui.home.user.list.ProgressModel
 import javax.inject.Inject
 
