@@ -1,4 +1,4 @@
-package com.egugue.licol.ui.common;
+package com.egugue.licol.ui.common.recyclerview;
 
 import android.content.Context;
 import android.content.res.Resources;

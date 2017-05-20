@@ -3,6 +3,7 @@ package com.egugue.licol.data.sqlite.user
 import com.egugue.licol.data.sqlite.userSqliteDao
 import com.egugue.licol.testutil.SqliteTestingRule
 import com.egugue.licol.user
+import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -33,6 +34,18 @@ class UserSqliteDaoTest {
     userDao.selectAll(3, perPage).test().assertValue(expected3)
     userDao.selectAll(4, perPage).test().assertValue(emptyList())
     userDao.selectAll(100, perPage).test().assertValue(emptyList())
+  }
+
+  @Test fun `select by id list`() {
+    (1L..10L).forEach { userDao.insertOrUpdate(user(id = it)) }
+
+    val expected = userDao.selectByIdList(listOf(1L, 2L, 10L, 99L)).blockingFirst()
+
+    assertThat(expected).containsExactly(
+        user(1L),
+        user(2L),
+        user(10L)
+    )
   }
 
   @Test fun `search by name or screen name`() {

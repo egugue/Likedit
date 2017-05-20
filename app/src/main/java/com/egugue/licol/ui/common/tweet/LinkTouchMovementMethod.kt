@@ -12,12 +12,7 @@ import com.twitter.sdk.android.tweetui.internal.HighlightedClickableSpan
  * A movement method that finds some [HighlightedClickableSpan]s in [TextView]
  * and calls [HighlightedClickableSpan.select] when the span is clicked and released.
  */
-class LinkTouchMovementMethod private constructor()
-    : LinkMovementMethod() {
-
-  companion object {
-    val instance: LinkTouchMovementMethod = LinkTouchMovementMethod()
-  }
+object LinkTouchMovementMethod : LinkMovementMethod() {
 
   private var mPressedSpan: HighlightedClickableSpan? = null
 
@@ -67,7 +62,7 @@ class LinkTouchMovementMethod private constructor()
 
     val link = spannable.getSpans(off, off, HighlightedClickableSpan::class.java)
     var span: HighlightedClickableSpan? = null
-    if (link.size > 0) {
+    if (link.isNotEmpty()) {
       span = link[0]
     }
     return span

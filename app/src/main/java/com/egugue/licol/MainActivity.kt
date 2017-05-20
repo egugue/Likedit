@@ -9,11 +9,9 @@ import android.widget.Button
 import android.widget.TextView
 import butterknife.bindView
 import com.egugue.licol.data.prefs.AppSetting
-import com.egugue.licol.domain.likedtweet.LikedTweet
 import com.egugue.licol.domain.likedtweet.LikedTweetRepository
 import com.egugue.licol.domain.tag.TagRepository
 import com.egugue.licol.ui.common.tweet.OnTweetClickListener
-import com.egugue.licol.ui.TweetAdapter
 import com.egugue.licol.ui.auth.AuthActivity
 import com.egugue.licol.ui.home.HomeActivity
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
@@ -58,6 +56,7 @@ class MainActivity : RxAppCompatActivity() {
 
     val listview = findViewById(R.id.list) as RecyclerView
     listview.layoutManager = LinearLayoutManager(this)
+    /*
     val adapter = TweetAdapter()
     adapter.listener = listener
     listview.adapter = adapter
@@ -73,6 +72,7 @@ class MainActivity : RxAppCompatActivity() {
             //TODO
             //Throwable::printStackTrace
         )
+        */
 
     initLastSyncedTimeText()
   }

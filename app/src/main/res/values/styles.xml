@@ -15,33 +15,33 @@
     </style>
 
     <!-- this application base namespace -->
-    <style name="Likedit"/>
+    <style name="Licol"/>
 
     <!-- TextAppearance -->
-    <style name="Likedit.TextAppearance"/>
+    <style name="Licol.TextAppearance"/>
 
-    <style name="Likedit.TextAppearance.Tweet"/>
+    <style name="Licol.TextAppearance.Tweet"/>
 
-    <style name="Likedit.TextAppearance.Base"/>
+    <style name="Licol.TextAppearance.Base"/>
 
-    <style name="Likedit.TextAppearance.Base.Body1"
+    <style name="Licol.TextAppearance.Base.Body1"
            parent="TextAppearance.AppCompat.Body1"/>
 
-    <style name="Likedit.TextAppearance.Base.Subhead"
+    <style name="Licol.TextAppearance.Base.Subhead"
            parent="TextAppearance.AppCompat.Subhead"/>
 
-    <style name="Likedit.TextAppearance.Tweet.Text"
-           parent="Likedit.TextAppearance.Base.Body1">
+    <style name="Licol.TextAppearance.Base.Caption"
+           parent="TextAppearance.AppCompat.Caption"/>
+
+    <style name="Licol.TextAppearance.Tweet.Text"
+           parent="Licol.TextAppearance.Base.Body1">
         <item name="android:textColorLink">@color/tweet_text_link</item>
     </style>
 
-    <style name="Likedit.TextAppearance.Tweet.FullName"
-           parent="Likedit.TextAppearance.Base.Subhead">
+    <style name="Licol.TextAppearance.Tweet.FullName" parent="Licol.TextAppearance.Base.Body1">
     </style>
 
-    <style name="Likedit.TextAppearance.Tweet.ScreenName"
-           parent="Likedit.TextAppearance.Base.Body1">
-        <item name="android:textColor">?android:textColorSecondary</item>
+    <style name="Licol.TextAppearance.Tweet.ScreenName" parent="Licol.TextAppearance.Base.Caption">
     </style>
 
     <style name="AppTheme.NoActionBar">

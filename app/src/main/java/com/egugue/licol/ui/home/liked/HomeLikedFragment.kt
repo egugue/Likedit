@@ -10,9 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.egugue.licol.R
-import com.egugue.licol.domain.likedtweet.LikedTweetRepository
-import com.egugue.licol.domain.likedtweet.LikedTweet
-import com.egugue.licol.ui.TweetAdapter
+import com.egugue.licol.application.likedtweet.LikedTweetAppService
+import com.egugue.licol.ui.common.recyclerview.DividerItemDecoration
 import com.egugue.licol.ui.home.HomeActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -28,8 +27,8 @@ class HomeLikedFragment : Fragment() {
   }
 
   lateinit private var listView: RecyclerView
-  @Inject lateinit var likedRepisitory: LikedTweetRepository
-  private val adapter: TweetAdapter = TweetAdapter()
+  @Inject lateinit var listController: LikedTweetListController
+  @Inject lateinit var likedTweetAppService: LikedTweetAppService
 
   override fun onAttach(context: Context?) {
     super.onAttach(context)
@@ -47,17 +46,16 @@ class HomeLikedFragment : Fragment() {
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    listView.adapter = adapter
+    listView.adapter = listController.adapter
     listView.layoutManager = LinearLayoutManager(activity)
-    likedRepisitory.find(1, 200)
+    listView.addItemDecoration(DividerItemDecoration(activity))
+    likedTweetAppService.getAllLikedTweets(1, 200) // TODO
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
-            { likedList ->
-              //TODO
-              //adapter.setTweetList(likedList.map(LikedTweet::tweet))
-            },
-            Throwable::printStackTrace
+            { payloads ->
+              listController.addData(payloads)
+            }
         )
   }
 }

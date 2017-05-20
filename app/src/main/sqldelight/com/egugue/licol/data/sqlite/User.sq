@@ -31,3 +31,9 @@ ORDER BY name ASC
 LIMIT ?
 OFFSET ?
 ;
+
+select_by_id_list:
+SELECT *
+FROM user
+WHERE user.id IN ?
+;

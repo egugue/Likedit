@@ -1,4 +1,4 @@
-package com.egugue.licol.ui.home.user.list
+package com.egugue.licol.ui.common.recyclerview
 
 import android.view.View
 import com.airbnb.epoxy.EpoxyHolder

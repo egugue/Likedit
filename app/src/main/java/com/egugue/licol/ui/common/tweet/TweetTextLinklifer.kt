@@ -3,20 +3,19 @@ package com.egugue.licol.ui.common.tweet
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.view.View
-import com.egugue.licol.domain.tweet.Tweet
 import com.egugue.licol.domain.tweet.Url
+
+typealias OnLinkClickListener = (String) -> Unit
 
 class TweetTextLinklifer {
 
-  fun linklifyText(tweet: Tweet, bgColor: Int, listener: OnTweetClickListener?): CharSequence {
-    val ssb = SpannableStringBuilder(tweet.text)
-
-    linklifyUrl(tweet.urlList, bgColor, listener, ssb)
-
+  fun linklifyText(text: String, urlList: List<Url>, bgColor: Int, listener: OnLinkClickListener): CharSequence {
+    val ssb = SpannableStringBuilder(text)
+    linklifyUrl(urlList, bgColor, listener, ssb)
     return ssb
   }
 
-  private fun linklifyUrl(urlList: List<Url>, bgColor: Int, listener: OnTweetClickListener?,
+  private fun linklifyUrl(urlList: List<Url>, bgColor: Int, listener: OnLinkClickListener,
                           ssb: SpannableStringBuilder) {
     var offset = 0
     var start: Int
@@ -35,10 +34,10 @@ class TweetTextLinklifer {
   }
 
   private fun createClickableLinkSpan(url: String, bgColor: Int,
-      listener: OnTweetClickListener?): ClickableLinkSpan {
+      listener: OnLinkClickListener): ClickableLinkSpan {
     return object : ClickableLinkSpan(bgColor) {
       override fun onClick(widget: View?) {
-        listener?.onUrlClicked(url)
+        listener.invoke(url)
       }
     }
   }
