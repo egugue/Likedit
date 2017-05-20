@@ -15,7 +15,7 @@ import com.squareup.picasso.Picasso
 /**
  * A view displaying [Tweet]
  */
-class TweetView
+class OldTweetView
     @JvmOverloads constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int = 0)
     : RelativeLayout(context, attrs, defStyleAttr) {
 

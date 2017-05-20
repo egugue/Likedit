@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import com.egugue.licol.R
 import com.egugue.licol.domain.tweet.Tweet
 import com.egugue.licol.ui.common.tweet.OnTweetClickListener
-import com.egugue.licol.ui.common.tweet.TweetView
+import com.egugue.licol.ui.common.tweet.OldTweetView
 import java.util.ArrayList
 
 /**
@@ -45,7 +45,7 @@ class TweetAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
       : RecyclerView.ViewHolder(itemView) {
 
     fun bind(tweet: Tweet, listener: OnTweetClickListener?) {
-      (itemView as TweetView).apply {
+      (itemView as OldTweetView).apply {
         this.listener = listener
         setTweet(tweet)
       }
