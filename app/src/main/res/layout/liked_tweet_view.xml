@@ -32,15 +32,22 @@
 
     <TextView
         android:id="@+id/user_screen_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:textAppearance="@style/Likedit.TextAppearance.Tweet.ScreenName"
         app:layout_constraintBottom_toBottomOf="@+id/user_name"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@+id/user_name"
-        app:layout_constraintTop_toTopOf="@+id/user_name"
-        tools:text="@duane0728"/>
+        app:layout_constraintRight_toLeftOf="@+id/tweet_timestamp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        tools:text="@duane0728fsafdsafasdfasfsaf"/>
 
     <TextView
         android:id="@+id/tweet_timestamp"
@@ -61,11 +68,11 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
         android:textAppearance="@style/Likedit.TextAppearance.Tweet.Text"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@+id/user_avatar"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_name"
-        tools:text="Secondary line text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam massa quam."
-        app:layout_constraintHorizontal_bias="0.0"/>
+        tools:text="Secondary line text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam massa quam."/>
 
     <com.egugue.licol.ui.common.tweet.TweetImageView
         android:id="@+id/tweet_photo"
