@@ -7,44 +7,64 @@ import android.view.MotionEvent
 import android.widget.TextView
 
 import com.twitter.sdk.android.tweetui.internal.HighlightedClickableSpan
+import android.view.MotionEvent.*
+
+typealias OnTweetTextClickListener = (Unit) -> Unit
 
 /**
  * A movement method that finds some [HighlightedClickableSpan]s in [TextView]
  * and calls [HighlightedClickableSpan.select] when the span is clicked and released.
  */
-object LinkTouchMovementMethod : LinkMovementMethod() {
+class LinkTouchMovementMethod constructor(val listener: OnTweetTextClickListener) : LinkMovementMethod() {
 
-  private var mPressedSpan: HighlightedClickableSpan? = null
+  private var highlightedSpan: HighlightedClickableSpan? = null
 
   override fun onTouchEvent(textView: TextView, spannable: Spannable,
                             event: MotionEvent): Boolean {
-
-    if (event.action == MotionEvent.ACTION_DOWN) {
-      mPressedSpan = getSpan(textView, spannable, event)
-      if (mPressedSpan != null) {
-        mPressedSpan!!.select(true)
-        Selection.setSelection(spannable, spannable.getSpanStart(mPressedSpan),
-            spannable.getSpanEnd(mPressedSpan))
+    when (event.action) {
+      ACTION_DOWN -> {
+        highlightedSpan = getSpan(textView, spannable, event)
+        if (highlightedSpan != null) {
+          // highlight a link
+          highlightedSpan!!.select(true)
+          Selection.setSelection(spannable, spannable.getSpanStart(highlightedSpan),
+              spannable.getSpanEnd(highlightedSpan))
+        }
       }
 
-    } else if (event.action == MotionEvent.ACTION_MOVE) {
-      val touchedSpan = getSpan(textView, spannable, event)
-      if (mPressedSpan != null && touchedSpan !== mPressedSpan) {
-        mPressedSpan!!.select(false)
-        mPressedSpan = null
-        Selection.removeSelection(spannable)
+      ACTION_UP -> {
+        if (highlightedSpan != null) {
+          releaseHighlightingLink(spannable)
+          // propagate a link clicked event
+          super.onTouchEvent(textView, spannable, event)
+        } else {
+          // propagate the whole text clicked event
+          listener.invoke(Unit)
+        }
       }
 
-    } else {
-      if (mPressedSpan != null) {
-        mPressedSpan!!.select(false)
-        super.onTouchEvent(textView, spannable, event)
+      ACTION_MOVE -> {
+        val touchedSpan = getSpan(textView, spannable, event)
+        if (highlightedSpan != null && touchedSpan !== highlightedSpan) {
+          // release if moving after a link is pushed
+          releaseHighlightingLink(spannable)
+        }
       }
-      mPressedSpan = null
-      Selection.removeSelection(spannable)
+
+      ACTION_CANCEL -> {
+        if (highlightedSpan != null) {
+          releaseHighlightingLink(spannable)
+        }
+      }
     }
 
     return true
+  }
+
+  private fun releaseHighlightingLink(spannable: Spannable) {
+    highlightedSpan!!.select(false)
+    highlightedSpan = null
+    Selection.removeSelection(spannable)
   }
 
   private fun getSpan(textView: TextView, spannable: Spannable, event: MotionEvent)

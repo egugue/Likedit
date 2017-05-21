@@ -11,10 +11,15 @@ import android.view.ViewGroup
 
 import com.egugue.licol.R
 import com.egugue.licol.application.likedtweet.LikedTweetAppService
+import com.egugue.licol.common.extensions.toast
+import com.egugue.licol.domain.likedtweet.LikedTweet
+import com.egugue.licol.domain.tweet.media.Photo
+import com.egugue.licol.domain.user.User
 import com.egugue.licol.ui.common.recyclerview.DividerItemDecoration
 import com.egugue.licol.ui.home.HomeActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -45,10 +50,8 @@ class HomeLikedFragment : Fragment() {
 
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    initListView()
 
-    listView.adapter = listController.adapter
-    listView.layoutManager = LinearLayoutManager(activity)
-    listView.addItemDecoration(DividerItemDecoration(activity))
     likedTweetAppService.getAllLikedTweets(1, 200) // TODO
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
@@ -57,5 +60,33 @@ class HomeLikedFragment : Fragment() {
               listController.addData(payloads)
             }
         )
+  }
+
+  private fun initListView() {
+    listView.adapter = listController.adapter
+    listView.layoutManager = LinearLayoutManager(activity)
+    listView.addItemDecoration(DividerItemDecoration(activity))
+
+    listController.callbacks = object : LikedTweetListController.AdapterCallbacks {
+      override fun onTweetLinkClicked(url: String) {
+        toast("link clicked $url")
+        Timber.d("link clicked $url")
+      }
+
+      override fun onWholeTweetClicked(likedTweet: LikedTweet, user: User) {
+        toast("onWhalte clicked")
+        Timber.d("onWhalte clicked")
+      }
+
+      override fun onTweetUserAvatarClicked(user: User) {
+        toast("onUserAvatar clicked")
+        Timber.d("onUserAvatar clicked")
+      }
+
+      override fun onTweetPhotoClicked(photo: Photo) {
+        toast("onPhoto clicked")
+        Timber.d("onPhoto clicked")
+      }
+    }
   }
 }

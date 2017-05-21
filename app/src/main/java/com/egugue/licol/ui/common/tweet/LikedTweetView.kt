@@ -31,14 +31,14 @@ class LikedTweetView(context: Context, attrs: AttributeSet) : ConstraintLayout(c
   var listener: OnItemClickListener? = null
 
   /**
-   * Bind the given args to the view
+   * Bind the given args to this view
    */
   fun bindItem(tweet: LikedTweet, user: User) {
     setOnClickListener { listener?.onWholeClicked(tweet, user) }
 
     renderUser(user)
     renderTimestamp(tweet.createdAt)
-    renderText(tweet)
+    renderText(tweet, user)
     renderPhoto(tweet.photoList)
   }
 
@@ -58,7 +58,7 @@ class LikedTweetView(context: Context, attrs: AttributeSet) : ConstraintLayout(c
         resources, System.currentTimeMillis(), createdAt)
   }
 
-  private fun renderText(tweet: LikedTweet) {
+  private fun renderText(tweet: LikedTweet, user: User) {
     val linklifier = TweetTextLinklifer()
     tweetTextTv.text = linklifier.linklifyText(
         tweet.text,
@@ -66,7 +66,8 @@ class LikedTweetView(context: Context, attrs: AttributeSet) : ConstraintLayout(c
         ResourcesCompat.getColor(resources, R.color.tweet_action_light_highlight_color, context.theme),
         onLinkClickListener
     )
-    tweetTextTv.movementMethod = LinkTouchMovementMethod
+
+    tweetTextTv.movementMethod = LinkTouchMovementMethod { listener?.onWholeClicked(tweet, user) }
   }
 
   private fun renderPhoto(photoList: List<Photo>) {
