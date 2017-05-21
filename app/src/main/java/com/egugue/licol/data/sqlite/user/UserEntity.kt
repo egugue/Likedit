@@ -16,7 +16,9 @@ data class UserEntity(
   override fun id(): Long = id
   override fun name(): String = name
   override fun screen_name(): String = screenName
-  override fun avatar_url(): String  = avatarUrl
+  override fun avatar_url(): String = avatarUrl
+
+  fun toUser(likedTweetIdList: List<Long>) = User(id, name, screenName, avatarUrl, likedTweetIdList)
 
   companion object {
     val FACTORY = UserModel.Factory<UserEntity>(::UserEntity)
@@ -24,5 +26,3 @@ data class UserEntity(
     fun from(u: User) = UserEntity(u.id, u.name, u.screenName, u.avatorUrl)
   }
 }
-
-fun UserEntity.toUser() = User(id, name, screenName, avatarUrl)

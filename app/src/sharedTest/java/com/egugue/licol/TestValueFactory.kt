@@ -78,8 +78,9 @@ fun user(
     id: Long = 0,
     name: String = "name",
     screenName: String = "screen name",
-    avatarUrl: String = "avatar url"
-) = User(id, name, screenName, avatarUrl)
+    avatarUrl: String = "avatar url",
+    likedTweetIdList: List<Long> = emptyList()
+) = User(id, name, screenName, avatarUrl, likedTweetIdList)
 
 fun tag(
     id: Long = 1,
