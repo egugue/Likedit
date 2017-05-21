@@ -25,18 +25,17 @@ class LinkTouchMovementMethod constructor(val listener: OnTweetTextClickListener
       ACTION_DOWN -> {
         highlightedSpan = getSpan(textView, spannable, event)
         if (highlightedSpan != null) {
-          // highlight a link
-          highlightedSpan!!.select(true)
-          Selection.setSelection(spannable, spannable.getSpanStart(highlightedSpan),
-              spannable.getSpanEnd(highlightedSpan))
+          highlightLink(spannable)
+          return true // consume the event
         }
       }
 
       ACTION_UP -> {
         if (highlightedSpan != null) {
-          releaseHighlightingLink(spannable)
           // propagate a link clicked event
-          super.onTouchEvent(textView, spannable, event)
+          highlightedSpan!!.onClick(textView)
+          releaseHighlightingLink(spannable)
+          return true // consume the event
         } else {
           // propagate the whole text clicked event
           listener.invoke(Unit)
@@ -58,7 +57,13 @@ class LinkTouchMovementMethod constructor(val listener: OnTweetTextClickListener
       }
     }
 
-    return true
+    return false
+  }
+
+  private fun highlightLink(spannable: Spannable) {
+    highlightedSpan!!.select(true)
+    Selection.setSelection(spannable, spannable.getSpanStart(highlightedSpan),
+        spannable.getSpanEnd(highlightedSpan))
   }
 
   private fun releaseHighlightingLink(spannable: Spannable) {
