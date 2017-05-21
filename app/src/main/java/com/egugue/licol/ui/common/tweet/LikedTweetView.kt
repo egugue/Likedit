@@ -3,6 +3,7 @@ package com.egugue.licol.ui.common.tweet
 import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.support.v4.content.res.ResourcesCompat
+import android.text.Spannable
 import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.TextView
@@ -67,7 +68,14 @@ class LikedTweetView(context: Context, attrs: AttributeSet) : ConstraintLayout(c
         onLinkClickListener
     )
 
-    tweetTextTv.movementMethod = LinkTouchMovementMethod { listener?.onWholeClicked(tweet, user) }
+    val method = LinkTouchMovementMethod { listener?.onWholeClicked(tweet, user) }
+    tweetTextTv.setOnTouchListener { v, event ->
+      tweetTextTv.movementMethod = method
+      val res = method.onTouchEvent(tweetTextTv, tweetTextTv.text as Spannable, event)
+      tweetTextTv.movementMethod = null
+      tweetTextTv.isFocusable = false
+      res
+    }
   }
 
   private fun renderPhoto(photoList: List<Photo>) {
