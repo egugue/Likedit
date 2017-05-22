@@ -3,6 +3,7 @@ package com.egugue.licol.data.sqlite.likedtweet
 import com.egugue.licol.common.AllOpen
 import com.egugue.licol.common.Contract
 import com.egugue.licol.common.extensions.toV2Observable
+import com.egugue.licol.data.sqlite.LikedTweetModel
 import com.egugue.licol.data.sqlite.lib.SqliteScripts
 import com.egugue.licol.data.sqlite.lib.createQuery
 import com.egugue.licol.data.sqlite.lib.toLimitAndOffset
@@ -27,6 +28,13 @@ class LikedTweetTableGateway @Inject constructor(
 
     return db.createQuery(stmt)
         .mapToList { FullLikedTweetEntity.MAPPER.map(it) }
+        .toV2Observable()
+  }
+
+  fun selectIdByUserIds(userIdList: List<Long>): Observable<List<LikedTweetIdAndUserId>> {
+    val stmt = LikedTweetEntity.FACTORY.select_id_by_user_ids(userIdList.toLongArray())
+    return db.createQuery(stmt)
+        .mapToList { LikedTweetIdAndUserId.MAPPER.map(it) }
         .toV2Observable()
   }
 

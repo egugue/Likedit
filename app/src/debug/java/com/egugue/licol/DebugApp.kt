@@ -3,6 +3,7 @@ package com.egugue.licol
 import android.os.StrictMode
 
 import com.facebook.stetho.Stetho
+import timber.log.Timber
 
 /**
  * The application only using Debug mode.
@@ -19,6 +20,14 @@ class DebugApp : App() {
     }
 
     applyStrictMode()
+  }
+
+  private fun plantTimberTree() {
+    if (isNotUsingRobolectric()) {
+      Timber.plant(Timber.DebugTree())
+    } else {
+      Timber.plant(TimberTree())
+    }
   }
 
   private fun applyStrictMode() {

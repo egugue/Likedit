@@ -32,7 +32,7 @@ fun likedTweetSqliDao(
     likedTweetTableGateway,
     tweetTagRelationTableGateway)
 
-fun userSqliteDao(db: BriteDatabase) = UserSqliteDao(userTableGateway(db))
+fun userSqliteDao(db: BriteDatabase) = UserSqliteDao(userTableGateway(db), likedTweetTableGateway(db))
 
 fun tagSqliteDao(db: BriteDatabase) = TagSqliteDao(
     db,

@@ -1,21 +1,27 @@
 package com.egugue.licol.data.sqlite.user
 
 import com.egugue.licol.common.AllOpen
+import com.egugue.licol.data.sqlite.likedtweet.LikedTweetIdAndUserId
+import com.egugue.licol.data.sqlite.likedtweet.LikedTweetTableGateway
 import com.egugue.licol.domain.user.User
 import io.reactivex.Observable
 import javax.inject.Inject
 
 @AllOpen
 class UserSqliteDao @Inject constructor(
-    private val userGateway: UserTableGateway
+    private val userGateway: UserTableGateway,
+    private val tweetGateway: LikedTweetTableGateway
 ) {
 
   /**
-   * Select All [Users]s as list by the given args
+   * Select All [User]s as list by the given args
    */
   fun selectAll(page: Int, perPage: Int): Observable<List<User>> {
     return userGateway.selectAll(page, perPage)
-        .map { it.map { it.toUser() } }
+        .flatMap(
+            { tweetGateway.selectIdByUserIds(it.map { it.id }) },
+            this::mapToUserList
+        )
   }
 
   /**
@@ -23,7 +29,10 @@ class UserSqliteDao @Inject constructor(
    */
   fun selectByIdList(idList: List<Long>): Observable<List<User>> {
     return userGateway.selectByIdList(idList)
-        .map { it.map { it.toUser() } }
+        .flatMap(
+            { tweetGateway.selectIdByUserIds(it.map { it.id }) },
+            this::mapToUserList
+        )
   }
 
   /**
@@ -31,10 +40,26 @@ class UserSqliteDao @Inject constructor(
    */
   fun searchByNameOrScreenName(name: String, screenName: String, limit: Int): Observable<List<User>> {
     return userGateway.selectByNameOrScreenName(name, screenName, limit)
-        .map { it.map { it.toUser() } }
+        .flatMap(
+            { tweetGateway.selectIdByUserIds(it.map { it.id }) },
+            this::mapToUserList
+        )
   }
 
   fun insertOrUpdate(user: User) {
     userGateway.insertOrUpdate(UserEntity.from(user))
+  }
+
+  private fun mapToUserList(userEntityList: List<UserEntity>, relationList: List<LikedTweetIdAndUserId>): List<User> {
+    val table = mutableMapOf<Long, MutableList<Long>>()
+    relationList.forEach {
+      table.putIfAbsent(it.userId, mutableListOf())
+      table[it.userId]!!.add(it.likedTweetId)
+    }
+
+    return userEntityList.map {
+      val likedTweetIdList = table.getOrDefault(it.id, mutableListOf())
+      it.toUser(likedTweetIdList)
+    }
   }
 }

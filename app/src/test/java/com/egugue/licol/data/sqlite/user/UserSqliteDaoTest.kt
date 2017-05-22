@@ -1,6 +1,8 @@
 package com.egugue.licol.data.sqlite.user
 
+import com.egugue.licol.data.sqlite.likedTweetSqliDao
 import com.egugue.licol.data.sqlite.userSqliteDao
+import com.egugue.licol.likedTweet
 import com.egugue.licol.testutil.SqliteTestingRule
 import com.egugue.licol.user
 import com.google.common.truth.Truth.assertThat
@@ -45,6 +47,22 @@ class UserSqliteDaoTest {
         user(1L),
         user(2L),
         user(10L)
+    )
+  }
+
+  @Test fun `select user with liked tweet id list`() {
+    // given
+    userDao.insertOrUpdate(user(id = 1L))
+
+    val tweetDao = likedTweetSqliDao(rule.briteDB)
+    (1L..3L).forEach { tweetDao.insertOrUpdate(likedTweet(id = it, userId = 1L)) }
+
+    // when
+    val actual = userDao.selectAll(1, 1).blockingFirst().first()
+
+    // then
+    assertThat(actual.likedTweetIdList).containsExactly(
+        1L, 2L, 3L
     )
   }
 

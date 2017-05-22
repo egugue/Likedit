@@ -10,13 +10,14 @@ class UserEntityTest {
   @Test fun `convert into User`() {
     val entity = userEntity()
 
-    val actual = entity.toUser()
+    val actual = entity.toUser(emptyList())
 
     actual.run {
       assertThat(id).isEqualTo(entity.id)
       assertThat(name).isEqualTo(entity.name)
       assertThat(screenName).isEqualTo(entity.screenName)
       assertThat(avatorUrl).isEqualTo(entity.avatarUrl)
+      assertThat(likedTweetIdList).isEqualTo(emptyList<Long>())
     }
   }
 

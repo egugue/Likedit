@@ -1,13 +1,14 @@
 package com.egugue.licol.domain.user
 
 /**
- * Created by toyamaosamuyu on 2016/06/28.
+ * Representing a user whose tweet was liked
  */
 data class User(
     val id: Long,
     val name: String,
     val screenName: String,
-    val avatorUrl: String
+    val avatorUrl: String,
+    val likedTweetIdList: List<Long>
 ) {
 
   override fun equals(other: Any?): Boolean {
