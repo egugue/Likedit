@@ -32,7 +32,7 @@ open class App :Application() {
     buildFabric()
     AndroidThreeTen.init(this)
 
-    Timber.plant(TimberTree())
+    if (!BuildConfig.DEBUG) Timber.plant(TimberTree())
     TweetSyncService.scheduleJob(this)
   }
 
