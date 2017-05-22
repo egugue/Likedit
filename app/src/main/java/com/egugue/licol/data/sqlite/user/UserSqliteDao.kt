@@ -50,14 +50,14 @@ class UserSqliteDao @Inject constructor(
     userGateway.insertOrUpdate(UserEntity.from(user))
   }
 
-  private fun mapToUserList(userList: List<UserEntity>, foo: List<LikedTweetIdAndUserId>): List<User> {
+  private fun mapToUserList(userEntityList: List<UserEntity>, relationList: List<LikedTweetIdAndUserId>): List<User> {
     val table = mutableMapOf<Long, MutableList<Long>>()
-    foo.forEach {
+    relationList.forEach {
       table.putIfAbsent(it.userId, mutableListOf())
       table[it.userId]!!.add(it.likedTweetId)
     }
 
-    return userList.map {
+    return userEntityList.map {
       val likedTweetIdList = table.getOrDefault(it.id, mutableListOf())
       it.toUser(likedTweetIdList)
     }
