@@ -19,14 +19,15 @@ class DebugApp : App() {
       Stetho.initializeWithDefaults(this)
     }
 
+    plantTimberTree()
     applyStrictMode()
   }
 
   private fun plantTimberTree() {
     if (isNotUsingRobolectric()) {
-      Timber.plant(Timber.DebugTree())
-    } else {
       Timber.plant(TimberTree())
+    } else {
+      Timber.plant(Timber.DebugTree())
     }
   }
 
