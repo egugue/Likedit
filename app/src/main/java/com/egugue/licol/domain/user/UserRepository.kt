@@ -9,6 +9,7 @@ interface UserRepository {
 
   /**
    * Retrieve some [User]s by the given args
+   * Returned list is ordered by liked tweet count.
    *
    * @param page
    *     the number of page, which must be a positive integer

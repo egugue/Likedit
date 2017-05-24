@@ -17,7 +17,7 @@ class UserRepositoryImpl internal @Inject constructor(
   override fun findAll(page: Int, perPage: Int): Observable<List<User>> {
     Contract.require(page > 0, "0 < page required but it was $page")
     Contract.require(perPage > 0, "0 < perPage required but it was $perPage")
-    return userSqliteDao.selectAll(page, perPage)
+    return userSqliteDao.selectAllOrderedByLikedTweetCount(page, perPage)
   }
 
   override fun findByIdList(idList: List<Long>): Observable<List<User>> {
