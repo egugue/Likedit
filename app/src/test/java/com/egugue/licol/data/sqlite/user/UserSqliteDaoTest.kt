@@ -27,7 +27,6 @@ class UserSqliteDaoTest {
 
   @Test fun `select all users`() {
     // given
-    val perPage = 2
     val u1 = user(id = 1, likedTweetIdList = listOf(1L, 2L, 3L))
     val u2 = user(id = 2, likedTweetIdList = listOf(4L, 5L))
     val u3 = user(id = 3, likedTweetIdList = listOf(6L))
@@ -38,6 +37,7 @@ class UserSqliteDaoTest {
     }
 
     // when then
+    val perPage = 2
     val a1 = userDao.selectAllOrderedByLikedTweetCount(1, perPage).blockingFirst()
     assertThat(a1).containsExactly(u1, u2)
 
