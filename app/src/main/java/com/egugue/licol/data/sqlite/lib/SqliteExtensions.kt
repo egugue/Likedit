@@ -30,6 +30,8 @@ fun Pair<Int, Int>.toLimitAndOffset(): Pair<Long, Long> {
 /**
  * Convert [Cursor] into [UserEntity]
  */
+// define this extension
+// because don't want to create a model representing a result of a query which has group.
 fun Cursor.toUserEntity(): UserEntity = UserEntity.FACTORY.select_by_id_listMapper().map(this)
 
 /**
