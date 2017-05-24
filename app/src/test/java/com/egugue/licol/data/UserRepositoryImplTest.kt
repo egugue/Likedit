@@ -24,14 +24,14 @@ class UserRepositoryImplTest {
 
   @Test fun `find all users`() {
     val expected = listOf(user())
-    whenever(dao.selectAll(1, 1)).thenReturn(Observable.just(expected))
+    whenever(dao.selectAllOrderedByLikedTweetCount(1, 1)).thenReturn(Observable.just(expected))
 
     repo.findAll(1, 1).test()
         .assertValue(expected)
   }
 
   @Test fun `not find all users if the given page is invalid`() {
-    whenever(dao.selectAll(any(), any())).thenReturn(Observable.just(emptyList()))
+    whenever(dao.selectAllOrderedByLikedTweetCount(any(), any())).thenReturn(Observable.just(emptyList()))
 
     try {
       repo.findAll(0, 1)
@@ -44,7 +44,7 @@ class UserRepositoryImplTest {
   }
 
   @Test fun `not find all users if the given per page is invalid`() {
-    whenever(dao.selectAll(any(), any())).thenReturn(Observable.just(emptyList()))
+    whenever(dao.selectAllOrderedByLikedTweetCount(any(), any())).thenReturn(Observable.just(emptyList()))
 
     try {
       repo.findAll(1, 0)

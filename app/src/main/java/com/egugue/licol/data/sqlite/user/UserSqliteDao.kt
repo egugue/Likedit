@@ -14,9 +14,9 @@ class UserSqliteDao @Inject constructor(
 ) {
 
   /**
-   * Select All [User]s as list by the given args
+   * Select All [User]s as list ordered by liked tweet count related to each user
    */
-  fun selectAll(page: Int, perPage: Int): Observable<List<User>> {
+  fun selectAllOrderedByLikedTweetCount(page: Int, perPage: Int): Observable<List<User>> {
     return userGateway.selectAll(page, perPage)
         .flatMap(
             { tweetGateway.selectIdByUserIds(it.map { it.id }) },

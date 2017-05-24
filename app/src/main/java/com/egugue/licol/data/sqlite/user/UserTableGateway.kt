@@ -12,10 +12,9 @@ class UserTableGateway @Inject constructor(
 
   fun selectAll(page: Int, perPage: Int): Observable<List<UserEntity>> {
     val (limit, offset) = (page to perPage).toLimitAndOffset()
-
-    val stmt = UserEntity.FACTORY.select_all(limit, offset)
+    val stmt = UserEntity.FACTORY.select_all_order_by_liked_count(limit, offset)
     return db.createQuery(stmt)
-        .mapToList { UserEntity.FACTORY.select_allMapper().map(it) }
+        .mapToList { it.toUserEntity() }
         .toV2Observable()
   }
 
@@ -37,6 +36,7 @@ class UserTableGateway @Inject constructor(
         .mapToList { UserEntity.FACTORY.search_by_name_or_screen_nameMapper().map(it) }
         .toV2Observable()
   }
+
   fun insertOrUpdate(user: UserEntity) {
     insertOrUpdate(listOf(user))
   }

@@ -1,6 +1,7 @@
 package com.egugue.licol.data.sqlite.lib
 
 import android.database.Cursor
+import com.egugue.licol.data.sqlite.user.UserEntity
 import com.squareup.sqlbrite.BriteDatabase
 import com.squareup.sqlbrite.QueryObservable
 import com.squareup.sqldelight.SqlDelightStatement
@@ -15,7 +16,7 @@ fun String.escapeForQuery()
 /**
  * Convert Pair of page and perPage into Pair of limit and offset
  */
-fun Pair<Int, Int>.toLimitAndOffset():Pair<Long, Long> {
+fun Pair<Int, Int>.toLimitAndOffset(): Pair<Long, Long> {
   val page = first
   val perPage = second
 
@@ -25,6 +26,13 @@ fun Pair<Int, Int>.toLimitAndOffset():Pair<Long, Long> {
 }
 
 /* Cursor extensions */
+
+/**
+ * Convert [Cursor] into [UserEntity]
+ */
+// define this extension
+// because don't want to create a model representing a result of a query which has group.
+fun Cursor.toUserEntity(): UserEntity = UserEntity.FACTORY.select_by_id_listMapper().map(this)
 
 /**
  * Convert [Cursor] into [T]
