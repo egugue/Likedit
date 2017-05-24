@@ -24,10 +24,12 @@ ORDER BY name ASC
 LIMIT ?
 ;
 
-select_all:
-SELECT *
+select_all_order_by_liked_count:
+SELECT user.*, COUNT(liked_tweet.id) AS liked_count
 FROM user
-ORDER BY name ASC
+INNER JOIN liked_tweet on user.id = liked_tweet.user_id
+GROUP BY user.id
+ORDER BY liked_count DESC
 LIMIT ?
 OFFSET ?
 ;

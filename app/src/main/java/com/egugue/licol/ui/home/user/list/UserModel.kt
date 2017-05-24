@@ -28,6 +28,7 @@ class UserModel(
 
     h.nameView.text = user.name
     h.screenNameView.text = user.screenName
+    h.likedTweetCountView.text = user.likedTweetIdList.size.toString()
   }
 
   class Holder : EpoxyHolder() {
@@ -35,6 +36,7 @@ class UserModel(
     lateinit var avatarView: ImageView
     lateinit var nameView: TextView
     lateinit var screenNameView: TextView
+    lateinit var likedTweetCountView: TextView
 
     override fun bindView(itemView: View) {
       context = itemView.context
@@ -42,6 +44,7 @@ class UserModel(
       avatarView = itemView.findViewById(R.id.user_avatar) as ImageView
       nameView = itemView.findViewById(R.id.user_name) as TextView
       screenNameView = itemView.findViewById(R.id.user_screen_name) as TextView
+      likedTweetCountView = itemView.findViewById(R.id.user_liked_tweet_count) as TextView
     }
   }
 

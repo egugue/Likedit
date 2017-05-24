@@ -1,6 +1,7 @@
 package com.egugue.licol.data.sqlite.user
 
 import com.egugue.licol.data.sqlite.likedTweetSqliDao
+import com.egugue.licol.data.sqlite.likedtweet.LikedTweetSqliteDao
 import com.egugue.licol.data.sqlite.userSqliteDao
 import com.egugue.licol.likedTweet
 import com.egugue.licol.testutil.SqliteTestingRule
@@ -17,25 +18,37 @@ class UserSqliteDaoTest {
   @Rule @JvmField val rule = SqliteTestingRule()
 
   lateinit var userDao: UserSqliteDao
+  lateinit var tweetDao: LikedTweetSqliteDao
 
   @Before fun setUp() {
     userDao = userSqliteDao(rule.briteDB)
+    tweetDao = likedTweetSqliDao(rule.briteDB)
   }
 
   @Test fun `select all users`() {
+    // given
     val perPage = 2
-    val expected1 = (1L..2L).map { user(id = it, name = it.toString()) }
-    val expected2 = (3L..4L).map { user(id = it, name = it.toString()) }
-    val expected3 = listOf(user(id = 5, name = "5"))
+    val u1 = user(id = 1, likedTweetIdList = listOf(1L, 2L, 3L))
+    val u2 = user(id = 2, likedTweetIdList = listOf(4L, 5L))
+    val u3 = user(id = 3, likedTweetIdList = listOf(6L))
 
-    (expected1 + expected2 + expected3).forEach { userDao.insertOrUpdate(it) }
+    listOf(u1, u2, u3).forEach { user ->
+      userDao.insertOrUpdate(user)
+      user.likedTweetIdList.forEach { tweetDao.insertOrUpdate(likedTweet(id = it, userId = user.id)) }
+    }
 
-    // order by name
-    userDao.selectAll(1, perPage).test().assertValue(expected1)
-    userDao.selectAll(2, perPage).test().assertValue(expected2)
-    userDao.selectAll(3, perPage).test().assertValue(expected3)
-    userDao.selectAll(4, perPage).test().assertValue(emptyList())
-    userDao.selectAll(100, perPage).test().assertValue(emptyList())
+    // when then
+    val a1 = userDao.selectAllOrderedByLikedTweetCount(1, perPage).blockingFirst()
+    assertThat(a1).containsExactly(u1, u2)
+
+    val a2 = userDao.selectAllOrderedByLikedTweetCount(2, perPage).blockingFirst()
+    assertThat(a2).containsExactly(u3)
+
+    val a3 = userDao.selectAllOrderedByLikedTweetCount(3, perPage).blockingFirst()
+    assertThat(a3).isEmpty()
+
+    val a100 = userDao.selectAllOrderedByLikedTweetCount(100, perPage).blockingFirst()
+    assertThat(a100).isEmpty()
   }
 
   @Test fun `select by id list`() {
@@ -58,7 +71,7 @@ class UserSqliteDaoTest {
     (1L..3L).forEach { tweetDao.insertOrUpdate(likedTweet(id = it, userId = 1L)) }
 
     // when
-    val actual = userDao.selectAll(1, 1).blockingFirst().first()
+    val actual = userDao.selectAllOrderedByLikedTweetCount(1, 1).blockingFirst().first()
 
     // then
     assertThat(actual.likedTweetIdList).containsExactly(
