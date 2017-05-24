@@ -16,6 +16,7 @@ import com.egugue.licol.common.extensions.addOnLoadMoreListener
 import com.egugue.licol.common.extensions.observeOnMain
 import com.egugue.licol.common.extensions.subscribeOnIo
 import com.egugue.licol.ui.common.StateLayout
+import com.egugue.licol.ui.common.recyclerview.DividerItemDecoration
 import com.egugue.licol.ui.home.HomeActivity
 import com.egugue.licol.ui.home.user.list.UserController
 import com.trello.rxlifecycle2.components.support.RxFragment
@@ -66,6 +67,7 @@ class HomeUserFragment : RxFragment() {
   private fun initListView() {
     listView.adapter = userController.adapter
     listView.layoutManager = LinearLayoutManager(activity)
+    listView.addItemDecoration(DividerItemDecoration(activity))
     userController.requestModelBuild()
 
     listView.addOnLoadMoreListener(object : LoadMoreListener {
