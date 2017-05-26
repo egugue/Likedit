@@ -107,7 +107,17 @@ dependencies {
     compile "com.github.akarnokd:rxjava2-interop:0.9.6"
 
     compile 'com.squareup.okhttp3:okhttp:3.7.0'
+
+    // View
     compile 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
+
+    def butterknifeVer = "8.6.0"
+    compile "com.jakewharton:butterknife:$butterknifeVer"
+    kapt "com.jakewharton:butterknife-compiler:$butterknifeVer"
+
+    compile 'com.hannesdorfmann:adapterdelegates2:2.0.1'
+    compile 'com.airbnb.android:epoxy:2.1.0'
+
 
     compile 'com.jakewharton.timber:timber:4.5.1'
 
@@ -117,9 +127,6 @@ dependencies {
     compile('com.twitter.sdk.android:twitter:2.3.2@aar') {
         transitive = true
     }
-
-    compile 'com.hannesdorfmann:adapterdelegates2:2.0.1'
-    compile 'com.airbnb.android:epoxy:2.1.0'
 
     // If it is missing, we can see error on CI https://github.com/square/sqldelight/issues/563
     compile 'com.squareup.sqldelight:runtime:0.6.1'
