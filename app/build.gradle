@@ -84,17 +84,14 @@ dependencies {
     compile "com.android.support:recyclerview-v7:$supportLibVer"
     compile "com.android.support:design:$supportLibVer"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    kapt 'com.android.databinding:compiler:2.3.1'
 
     // firebase https://firebase.google.com/support/release-notes/android#20170428
     def firebaseVer = '10.2.4'
     compile "com.google.firebase:firebase-core:$firebaseVer"
     compile "com.google.firebase:firebase-crash:$firebaseVer"
 
-    def retrofitVer = '2.2.0'
-    compile "com.squareup.retrofit2:retrofit:$retrofitVer"
-    compile "com.squareup.retrofit2:converter-gson:$retrofitVer"
-    compile "com.squareup.retrofit2:adapter-rxjava2:$retrofitVer"
-
+    // RxJava
     compile 'io.reactivex.rxjava2:rxjava:2.0.9'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
@@ -102,11 +99,10 @@ dependencies {
     compile 'com.trello.rxlifecycle2:rxlifecycle-android:2.0.1'
     compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.0.1'
     compile 'com.trello.rxlifecycle2:rxlifecycle-kotlin:2.0.1'
-    compile 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0-RC1'
-    compile 'com.jakewharton.threetenabp:threetenabp:1.0.5'
-    compile "com.github.akarnokd:rxjava2-interop:0.9.6"
 
-    compile 'com.squareup.okhttp3:okhttp:3.7.0'
+    // Dagger
+    compile 'com.google.dagger:dagger:2.10'
+    kapt 'com.google.dagger:dagger-compiler:2.10'
 
     // View
     compile 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
@@ -118,22 +114,31 @@ dependencies {
     compile 'com.hannesdorfmann:adapterdelegates2:2.0.1'
     compile 'com.airbnb.android:epoxy:2.1.0'
 
+    // Network
+    compile 'com.squareup.okhttp3:okhttp:3.7.0'
 
+    def retrofitVer = '2.2.0'
+    compile "com.squareup.retrofit2:retrofit:$retrofitVer"
+    compile "com.squareup.retrofit2:converter-gson:$retrofitVer"
+    compile "com.squareup.retrofit2:adapter-rxjava2:$retrofitVer"
+
+    // Shared Preferences
+    compile 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0-RC1'
+
+    // SQLite
+    // If it is missing, we can see error on CI https://github.com/square/sqldelight/issues/563
+    compile 'com.squareup.sqldelight:runtime:0.6.1'
+    compile 'com.squareup.sqlbrite:sqlbrite:1.1.1'
+    compile "com.github.akarnokd:rxjava2-interop:0.9.6"
+
+    // Tools
+    compile 'com.jakewharton.threetenabp:threetenabp:1.0.5'
     compile 'com.jakewharton.timber:timber:4.5.1'
-
-    compile 'com.google.dagger:dagger:2.10'
-    kapt 'com.google.dagger:dagger-compiler:2.10'
-
     compile('com.twitter.sdk.android:twitter:2.3.2@aar') {
         transitive = true
     }
 
-    // If it is missing, we can see error on CI https://github.com/square/sqldelight/issues/563
-    compile 'com.squareup.sqldelight:runtime:0.6.1'
-    compile 'com.squareup.sqlbrite:sqlbrite:1.1.1'
-
-    kapt 'com.android.databinding:compiler:2.3.1'
-
+    // debug
     debugCompile 'com.facebook.stetho:stetho:1.4.2'
     debugCompile 'com.facebook.stetho:stetho-okhttp3:1.4.2'
 
