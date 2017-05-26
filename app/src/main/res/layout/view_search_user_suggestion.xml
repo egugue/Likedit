@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/assist_user_avator"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        tools:src="@drawable/avator"
+        />
+
+    <TextView
+        android:id="@+id/assist_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/assist_user_avator"
+        android:layout_toRightOf="@+id/assist_user_avator"
+        android:textAppearance="@style/Licol.TextAppearance.Tweet.FullName"
+        tools:text="user name"
+        />
+
+    <TextView
+        android:id="@+id/assist_user_screen_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/assist_user_name"
+        android:layout_toEndOf="@+id/assist_user_avator"
+        android:layout_toRightOf="@+id/assist_user_avator"
+        android:textAppearance="@style/Licol.TextAppearance.Tweet.ScreenName"
+        tools:text="@screen name"
+        />
+
+</RelativeLayout>
