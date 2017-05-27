@@ -1,44 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.egugue.licol.ui.search.SearchActivity">
 
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        android:orientation="vertical"
-        tools:context="com.egugue.licol.ui.search.SearchActivity"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
         >
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <EditText
+            android:id="@+id/search_query"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            >
-
-            <EditText
-                android:id="@+id/search_query"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:inputType="text"
-                android:imeOptions="actionSearch"
-                android:hint="お気に入りを検索"
-                />
-
-        </android.support.v7.widget.Toolbar>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/search_assist_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="お気に入りを検索"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1"
             />
 
-    </LinearLayout>
+    </android.support.v7.widget.Toolbar>
 
-</layout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/search_assist_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+</LinearLayout>

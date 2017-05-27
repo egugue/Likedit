@@ -7,7 +7,7 @@
     android:padding="8dp">
 
     <ImageView
-        android:id="@+id/assist_user_avator"
+        android:id="@+id/user_avatar"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_centerVertical="true"
@@ -17,22 +17,22 @@
         />
 
     <TextView
-        android:id="@+id/assist_user_name"
+        android:id="@+id/user_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/assist_user_avator"
-        android:layout_toRightOf="@+id/assist_user_avator"
+        android:layout_toEndOf="@+id/user_avatar"
+        android:layout_toRightOf="@+id/user_avatar"
         android:textAppearance="@style/Licol.TextAppearance.Tweet.FullName"
         tools:text="user name"
         />
 
     <TextView
-        android:id="@+id/assist_user_screen_name"
+        android:id="@+id/user_screen_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/assist_user_name"
-        android:layout_toEndOf="@+id/assist_user_avator"
-        android:layout_toRightOf="@+id/assist_user_avator"
+        android:layout_below="@+id/user_name"
+        android:layout_toEndOf="@+id/user_avatar"
+        android:layout_toRightOf="@+id/user_avatar"
         android:textAppearance="@style/Licol.TextAppearance.Tweet.ScreenName"
         tools:text="@screen name"
         />

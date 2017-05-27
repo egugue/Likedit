@@ -2,29 +2,29 @@ package com.egugue.licol.ui.search
 
 import android.content.Context
 import android.content.Intent
-import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.Toolbar
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-
+import android.widget.EditText
+import butterknife.bindView
 import com.egugue.licol.R
-import com.egugue.licol.databinding.ActivitySearchBinding
-import com.egugue.licol.domain.tag.Tag
-import com.egugue.licol.domain.user.User
+import com.egugue.licol.application.search.SearchAppService
+import com.egugue.licol.application.search.Suggestions
+import com.egugue.licol.common.extensions.observeOnMain
+import com.egugue.licol.common.extensions.subscribeOnIo
 import com.egugue.licol.ui.common.activity.BaseRxActivity
+import com.egugue.licol.ui.common.recyclerview.DividerItemDecoration
 import com.jakewharton.rxbinding2.widget.RxTextView
-
+import com.trello.rxlifecycle2.kotlin.bindToLifecycle
+import io.reactivex.android.schedulers.AndroidSchedulers
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
-
 import javax.inject.Inject
 
-import io.reactivex.android.schedulers.AndroidSchedulers
-
-import com.trello.rxlifecycle2.kotlin.bindToLifecycle
-import timber.log.Timber
-
-class SearchActivity : BaseRxActivity(), Presenter.View, AssistAdapter.OnItemClickListener {
+class SearchActivity : BaseRxActivity() {
 
   companion object {
 
@@ -33,13 +33,15 @@ class SearchActivity : BaseRxActivity(), Presenter.View, AssistAdapter.OnItemCli
     }
   }
 
-  @Inject internal lateinit var presenter: Presenter
-  lateinit private var binding: ActivitySearchBinding
-  lateinit private var adapter: AssistAdapter
+  private val toolbar: Toolbar by bindView(R.id.toolbar)
+  private val listView: RecyclerView by bindView(R.id.search_assist_list)
+  private val searchQueryView: EditText by bindView(R.id.search_query)
+  @Inject lateinit var searchAppService: SearchAppService
+  @Inject lateinit var listController: SuggestionListController
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    binding = DataBindingUtil.setContentView<ActivitySearchBinding>(this, R.layout.activity_search)
+    setContentView(R.layout.activity_search)
 
     SearchComponent.Initializer
         .init(this)
@@ -48,28 +50,10 @@ class SearchActivity : BaseRxActivity(), Presenter.View, AssistAdapter.OnItemCli
     initToolbar()
     initList()
     initSearchEditText()
-    presenter.setView(this)
-  }
-
-  override fun onDestroy() {
-    presenter.dispose()
-    super.onDestroy()
-  }
-
-  override fun showAssist(assist: Assist) {
-    adapter.setAssist(assist)
-  }
-
-  override fun onTagClick(tag: Tag) {
-    Timber.d("OnTagClick. Tag = " + tag.toString())
-  }
-
-  override fun onUserClick(user: User) {
-    Timber.d("OnUserClick. User = " + user.toString())
   }
 
   private fun initToolbar() {
-    setSupportActionBar(binding.toolbar)
+    setSupportActionBar(toolbar)
 
     val bar = supportActionBar
     if (bar != null) {
@@ -81,33 +65,31 @@ class SearchActivity : BaseRxActivity(), Presenter.View, AssistAdapter.OnItemCli
   }
 
   private fun initList() {
-    val listView = binding.searchAssistList
-    adapter = AssistAdapter(this)
-    listView.adapter = adapter
+    listView.adapter = listController.adapter
     listView.layoutManager = LinearLayoutManager(this)
+    listView.addItemDecoration(DividerItemDecoration(this))
   }
 
   private fun initSearchEditText() {
-    val searchView = binding.searchQuery
-
     // When user input search query.
-    RxTextView.afterTextChangeEvents(searchView)
+    RxTextView.afterTextChangeEvents(searchQueryView)
         .bindToLifecycle(this)
         .throttleLast(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
-        .map<String> { event -> event.editable()!!.toString() }
+        .map { event -> event.editable()!!.toString() }
         .distinctUntilChanged()
         .subscribe { query ->
           val length = query.length
 
           if (length == 0) {
-            adapter.setAssist(Assist.empty())
+            listController.replaceWith(Suggestions.empty())
+            listController.requestModelBuild()
           } else if (length >= 3) {
-            presenter.loadAssist(query)
+            getSuggestion(query)
           }
         }
 
     // When user input search button.
-    RxTextView.editorActionEvents(searchView)
+    RxTextView.editorActionEvents(searchQueryView)
         .filter { event -> event.actionId() == EditorInfo.IME_ACTION_SEARCH }
         .bindToLifecycle(this)
         .subscribe { searchEvent ->
@@ -118,6 +100,15 @@ class SearchActivity : BaseRxActivity(), Presenter.View, AssistAdapter.OnItemCli
 
           val query = v.text.toString()
           Timber.d("ーーー", query)
+        }
+  }
+
+  private fun getSuggestion(query: String) {
+    searchAppService.getSearchSuggestion(query)
+        .subscribeOnIo()
+        .observeOnMain()
+        .subscribe {
+          listController.replaceWith(it)
         }
   }
 }
