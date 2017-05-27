@@ -46,9 +46,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    dataBinding {
-        enabled = true
-    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -84,7 +81,6 @@ dependencies {
     compile "com.android.support:recyclerview-v7:$supportLibVer"
     compile "com.android.support:design:$supportLibVer"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    kapt 'com.android.databinding:compiler:2.3.1'
 
     // firebase https://firebase.google.com/support/release-notes/android#20170428
     def firebaseVer = '10.2.4'
