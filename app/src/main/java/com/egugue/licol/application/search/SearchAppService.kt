@@ -1,5 +1,6 @@
 package com.egugue.licol.application.search
 
+import com.egugue.licol.common.extensions.subscribeOnIo
 import com.egugue.licol.domain.likedtweet.LikedTweetRepository
 import com.egugue.licol.domain.user.UserRepository
 import io.reactivex.Observable
@@ -19,6 +20,7 @@ class SearchAppService @Inject constructor(
   fun getSearchSuggestion(searchQuery: String): Observable<Suggestions> {
     return userRepository.findByNameContaining(searchQuery)
         .map { Suggestions(it) }
+        .subscribeOnIo()
   }
 
   /**

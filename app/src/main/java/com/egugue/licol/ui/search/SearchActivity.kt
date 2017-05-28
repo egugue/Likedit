@@ -19,6 +19,7 @@ import com.egugue.licol.ui.common.activity.BaseRxActivity
 import com.egugue.licol.ui.common.recyclerview.DividerItemDecoration
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.trello.rxlifecycle2.kotlin.bindToLifecycle
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -72,20 +73,16 @@ class SearchActivity : BaseRxActivity() {
 
   private fun initSearchEditText() {
     // When user input search query.
-    RxTextView.afterTextChangeEvents(searchQueryView)
+    val query = RxTextView.afterTextChangeEvents(searchQueryView)
         .bindToLifecycle(this)
         .throttleLast(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
         .map { event -> event.editable()!!.toString() }
         .distinctUntilChanged()
-        .subscribe { query ->
-          val length = query.length
 
-          if (length == 0) {
-            listController.replaceWith(Suggestions.empty())
-            listController.requestModelBuild()
-          } else if (length >= 3) {
-            getSuggestion(query)
-          }
+    query.toSuggestions()
+        .subscribe {
+          listController.replaceWith(it)
+          listController.requestModelBuild()
         }
 
     // When user input search button.
@@ -103,12 +100,16 @@ class SearchActivity : BaseRxActivity() {
         }
   }
 
-  private fun getSuggestion(query: String) {
-    searchAppService.getSearchSuggestion(query)
-        .subscribeOnIo()
-        .observeOnMain()
-        .subscribe {
-          listController.replaceWith(it)
-        }
-  }
+  private fun Observable<String>.toSuggestions(): Observable<Suggestions> = compose({
+    it.flatMap { query ->
+      if (query.length <= 2) {
+        Observable.just(Suggestions.empty())
+      } else {
+        searchAppService.getSearchSuggestion(query)
+            .doOnError { Timber.e(it) }
+            .onErrorReturn { Suggestions.empty() }
+            .observeOnMain()
+      }
+    }
+  })
 }
