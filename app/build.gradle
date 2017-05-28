@@ -107,7 +107,6 @@ dependencies {
     compile "com.jakewharton:butterknife:$butterknifeVer"
     kapt "com.jakewharton:butterknife-compiler:$butterknifeVer"
 
-    compile 'com.hannesdorfmann:adapterdelegates2:2.0.1'
     compile 'com.airbnb.android:epoxy:2.1.0'
 
     // Network
