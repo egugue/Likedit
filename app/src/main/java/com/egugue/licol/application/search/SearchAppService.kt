@@ -19,7 +19,14 @@ class SearchAppService @Inject constructor(
    */
   fun getSearchSuggestions(searchQuery: String): Observable<Suggestions> {
     return userRepository.findByNameContaining(searchQuery)
-        .map { Suggestions(it) }
+        .map {
+          if (it.isEmpty()) {
+            Suggestions.empty()
+          }
+          else {
+            Suggestions(it)
+          }
+        }
         .subscribeOnIo()
   }
 

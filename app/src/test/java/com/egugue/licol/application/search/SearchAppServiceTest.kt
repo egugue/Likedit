@@ -34,7 +34,7 @@ class SearchAppServiceTest {
     whenever(userRepo.findByNameContaining("query"))
         .thenReturn(Observable.just(emptyList()))
 
-    service.getSearchSuggestions("query").test()
-        .assertValue(Suggestions.empty())
+    val suggestions = service.getSearchSuggestions("query").blockingFirst()
+    assertThat(suggestions).isEqualTo(Suggestions.empty())
   }
 }
