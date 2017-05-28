@@ -17,7 +17,7 @@ class SearchAppService @Inject constructor(
   /**
    * Retrieve search suggestions by the given query
    */
-  fun getSearchSuggestion(searchQuery: String): Observable<Suggestions> {
+  fun getSearchSuggestions(searchQuery: String): Observable<Suggestions> {
     return userRepository.findByNameContaining(searchQuery)
         .map { Suggestions(it) }
         .subscribeOnIo()

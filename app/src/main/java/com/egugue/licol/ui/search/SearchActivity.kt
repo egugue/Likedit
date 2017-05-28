@@ -14,7 +14,6 @@ import com.egugue.licol.R
 import com.egugue.licol.application.search.SearchAppService
 import com.egugue.licol.application.search.Suggestions
 import com.egugue.licol.common.extensions.observeOnMain
-import com.egugue.licol.common.extensions.subscribeOnIo
 import com.egugue.licol.ui.common.activity.BaseRxActivity
 import com.egugue.licol.ui.common.recyclerview.DividerItemDecoration
 import com.jakewharton.rxbinding2.widget.RxTextView
@@ -105,7 +104,7 @@ class SearchActivity : BaseRxActivity() {
       if (query.length <= 2) {
         Observable.just(Suggestions.empty())
       } else {
-        searchAppService.getSearchSuggestion(query)
+        searchAppService.getSearchSuggestions(query)
             .doOnError { Timber.e(it) }
             .onErrorReturn { Suggestions.empty() }
             .observeOnMain()
