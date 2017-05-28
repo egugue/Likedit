@@ -1,17 +1,21 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme"
-           parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
+    <style name="Theme.Licol.Light" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorPrimary">@color/textColorPrimary</item>
-        <item name="android:textColorSecondary">@color/textColorSecondary</item>
 
         <!-- http://stackoverflow.com/a/35767811 -->
         <item name="textColorError">@color/textColor_design_textinput_error_color_light</item>
+
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColorSecondary">@color/textColorSecondary</item>
+    </style>
+
+    <style name="Theme.Licol.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <!-- this application base namespace -->
@@ -44,15 +48,17 @@
     <style name="Licol.TextAppearance.Tweet.ScreenName" parent="Licol.TextAppearance.Base.Caption">
     </style>
 
+    <!--
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+    -->
 
-    <style name="AppTheme.AppBarOverlay"
+    <style name="Licol.AppBarOverlay"
            parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <style name="AppTheme.PopupOverlay"
+    <style name="Licol.PopupOverlay"
            parent="ThemeOverlay.AppCompat.Light"/>
 
 </resources>
