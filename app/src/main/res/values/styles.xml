@@ -1,70 +1,8 @@
 <resources>
-
-    <!-- Base application theme. -->
-    <style name="Theme.Licol.Light" parent="Theme.AppCompat.Light">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-
-        <!-- http://stackoverflow.com/a/35767811 -->
-        <item name="textColorError">@color/textColor_design_textinput_error_color_light</item>
-
-        <item name="android:textColorPrimary">@color/textColorPrimary</item>
-        <item name="android:textColorSecondary">@color/textColorSecondary</item>
-    </style>
-
-    <style name="Theme.Licol.Light.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="Theme.Licol.Search" parent="Theme.Licol.Light.NoActionBar">
-        <item name="colorPrimary">#FAFAFA</item>
-        <item name="colorPrimaryDark">#AFAFAF</item>
-        <item name="android:background">#FAFAFA</item>
-    </style>
-
     <!-- this application base namespace -->
     <style name="Licol"/>
 
-    <!-- TextAppearance -->
-    <style name="Licol.TextAppearance"/>
-
-    <style name="Licol.TextAppearance.Tweet"/>
-
-    <style name="Licol.TextAppearance.Base"/>
-
-    <style name="Licol.TextAppearance.Base.Body1"
-           parent="TextAppearance.AppCompat.Body1"/>
-
-    <style name="Licol.TextAppearance.Base.Subhead"
-           parent="TextAppearance.AppCompat.Subhead"/>
-
-    <style name="Licol.TextAppearance.Base.Caption"
-           parent="TextAppearance.AppCompat.Caption"/>
-
-    <style name="Licol.TextAppearance.Tweet.Text"
-           parent="Licol.TextAppearance.Base.Body1">
-        <item name="android:textColorLink">@color/tweet_text_link</item>
-    </style>
-
-    <style name="Licol.TextAppearance.Tweet.FullName" parent="Licol.TextAppearance.Base.Body1">
-    </style>
-
-    <style name="Licol.TextAppearance.Tweet.ScreenName" parent="Licol.TextAppearance.Base.Caption">
-    </style>
-
-    <!--
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-    -->
-
-    <style name="Licol.AppBarOverlay"
-           parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
-
-    <style name="Licol.PopupOverlay"
-           parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="Licol.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="Licol.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
 </resources>

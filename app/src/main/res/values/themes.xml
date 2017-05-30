@@ -1,0 +1,25 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Theme.Licol.Light" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <!-- http://stackoverflow.com/a/35767811 -->
+        <item name="textColorError">@color/textColor_design_textinput_error_color_light</item>
+
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColorSecondary">@color/textColorSecondary</item>
+    </style>
+
+    <style name="Theme.Licol.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Licol.Search" parent="Theme.Licol.Light.NoActionBar">
+        <item name="colorPrimary">#FAFAFA</item>
+        <item name="colorPrimaryDark">#AFAFAF</item>
+        <item name="android:background">#FAFAFA</item>
+    </style>
+</resources>
