@@ -28,7 +28,7 @@
         <activity
             android:name="com.egugue.licol.ui.search.SearchActivity"
             android:label="@string/title_activity_search"
-            android:theme="@style/Theme.Licol.Light.NoActionBar">
+            android:theme="@style/Theme.Licol.Search">
         </activity>
 
         <service
