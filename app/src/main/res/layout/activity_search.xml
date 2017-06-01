@@ -22,11 +22,14 @@
             android:id="@+id/search_query"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
             android:background="@android:color/transparent"
             android:hint="Search users and likes"
             android:imeOptions="actionSearch"
             android:inputType="text"
+            android:maxLength="100"
             android:maxLines="1"
+            tools:text="search query aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
             />
 
     </android.support.v7.widget.Toolbar>
