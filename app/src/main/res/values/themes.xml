@@ -20,6 +20,5 @@
     <style name="Theme.Licol.Search" parent="Theme.Licol.Light.NoActionBar">
         <item name="colorPrimary">#FAFAFA</item>
         <item name="colorPrimaryDark">#AFAFAF</item>
-        <item name="android:background">#FAFAFA</item>
     </style>
 </resources>
