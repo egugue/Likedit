@@ -24,7 +24,7 @@ internal class UserSuggestionEpoxyModel(val user: User)
     return this
   }
 
-  override fun getDefaultLayout(): Int = R.layout.view_search_user_suggestion
+  override fun getDefaultLayout(): Int = R.layout.search_user_suggestion_item
   override fun createNewHolder(): Holder = Holder()
 
   override fun bind(h: Holder) {
