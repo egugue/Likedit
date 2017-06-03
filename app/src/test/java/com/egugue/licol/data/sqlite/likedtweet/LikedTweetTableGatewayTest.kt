@@ -1,10 +1,13 @@
 package com.egugue.licol.data.sqlite.likedtweet
 
-import com.egugue.licol.PhotoBuilder
 import com.egugue.licol.data.sqlite.fullTweetEntity
 import com.google.common.truth.Truth.assertThat
 import com.egugue.licol.data.sqlite.likedTweetTableGateway
 import com.egugue.licol.data.sqlite.quotedTweetEntity
+import com.egugue.licol.domain.tweet.media.Photo
+import com.egugue.licol.domain.tweet.media.Size
+import com.egugue.licol.domain.tweet.media.Sizes
+import com.egugue.licol.photo
 import com.egugue.licol.testutil.SqliteTestingRule
 import org.junit.Assert.*
 import org.junit.Before
@@ -25,8 +28,7 @@ class LikedTweetTableGatewayTest {
   }
 
   @Test fun shouldInsertTweet() {
-    val photoB = PhotoBuilder()
-    val tweet = fullTweetEntity(id = 1, userId = 1, imageList = listOf(photoB.build(), photoB.build()))
+    val tweet = fullTweetEntity(id = 1, userId = 1, imageList = listOf(photo(), photo()))
     gateway.insertOrIgnoreTweet(tweet)
 
     val actual = gateway.selectAllTweets().test()
