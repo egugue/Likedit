@@ -6,6 +6,8 @@ import com.egugue.licol.domain.tag.Tag
 import com.egugue.licol.domain.tweet.Tweet
 import com.egugue.licol.domain.tweet.Url
 import com.egugue.licol.domain.tweet.media.Photo
+import com.egugue.licol.domain.tweet.media.Size
+import com.egugue.licol.domain.tweet.media.Sizes
 import com.egugue.licol.domain.tweet.media.Video
 import com.egugue.licol.domain.user.User
 import java.util.*
@@ -73,6 +75,8 @@ fun tweet(
     urlList,
     video
 )
+
+fun photo(): Photo = Photo("url", Sizes(Size(1, 1)))
 
 fun user(
     id: Long = 0,
