@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- TextAppearance -->
+    <style name="Licol.TextAppearance"/>
+    <style name="Licol.TextAppearance.Base"/>
+    <style name="Licol.TextAppearance.Base.Body1" parent="TextAppearance.AppCompat.Body1"/>
+    <style name="Licol.TextAppearance.Base.Subhead" parent="TextAppearance.AppCompat.Subhead"/>
+    <style name="Licol.TextAppearance.Base.Caption" parent="TextAppearance.AppCompat.Caption"/>
+    <style name="Licol.TextAppearance.Tweet.Text" parent="Licol.TextAppearance.Base.Body1">
+        <item name="android:textColorLink">@color/tweet_text_link</item>
+    </style>
+
+    <style name="Licol.TextAppearance.Tweet"/>
+    <style name="Licol.TextAppearance.Tweet.FullName" parent="Licol.TextAppearance.Base.Body1">
+    </style>
+    <style name="Licol.TextAppearance.Tweet.ScreenName" parent="Licol.TextAppearance.Base.Caption">
+    </style>
+</resources>
