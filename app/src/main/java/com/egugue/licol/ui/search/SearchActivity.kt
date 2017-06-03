@@ -14,9 +14,9 @@ import com.egugue.licol.R
 import com.egugue.licol.application.search.SearchAppService
 import com.egugue.licol.application.search.Suggestions
 import com.egugue.licol.common.extensions.observeOnMain
-import com.egugue.licol.common.extensions.toast
 import com.egugue.licol.ui.common.activity.BaseActivity
 import com.egugue.licol.ui.common.recyclerview.DividerItemDecoration
+import com.egugue.licol.ui.usertweet.UserTweetActivity
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.trello.rxlifecycle2.kotlin.bindToLifecycle
 import io.reactivex.Observable
@@ -69,7 +69,9 @@ class SearchActivity : BaseActivity() {
     listView.adapter = listController.adapter
     listView.layoutManager = LinearLayoutManager(this)
     listView.addItemDecoration(DividerItemDecoration(this))
-    listController.userClickListener = { toast("click ${it.name}") }
+    listController.userClickListener = {
+      startActivity(UserTweetActivity.createIntent(this, it))
+    }
   }
 
   private fun initSearchEditText() {

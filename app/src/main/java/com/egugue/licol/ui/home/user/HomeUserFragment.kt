@@ -103,6 +103,7 @@ class HomeUserFragment : RxFragment() {
               }
             },
             { error ->
+              //TODO
               error.printStackTrace()
             }
         )
