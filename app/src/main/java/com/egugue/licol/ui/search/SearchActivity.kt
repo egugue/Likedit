@@ -14,6 +14,7 @@ import com.egugue.licol.R
 import com.egugue.licol.application.search.SearchAppService
 import com.egugue.licol.application.search.Suggestions
 import com.egugue.licol.common.extensions.observeOnMain
+import com.egugue.licol.common.extensions.toast
 import com.egugue.licol.ui.common.activity.BaseRxActivity
 import com.egugue.licol.ui.common.recyclerview.DividerItemDecoration
 import com.jakewharton.rxbinding2.widget.RxTextView
@@ -68,6 +69,7 @@ class SearchActivity : BaseRxActivity() {
     listView.adapter = listController.adapter
     listView.layoutManager = LinearLayoutManager(this)
     listView.addItemDecoration(DividerItemDecoration(this))
+    listController.userClickListener = { toast("click ${it.name}") }
   }
 
   private fun initSearchEditText() {
@@ -93,9 +95,6 @@ class SearchActivity : BaseRxActivity() {
 
           val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
           imm.hideSoftInputFromWindow(v.windowToken, 0)
-
-          val query = v.text.toString()
-          Timber.d("ーーー", query)
         }
   }
 
