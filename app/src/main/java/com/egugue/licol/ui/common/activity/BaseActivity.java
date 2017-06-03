@@ -3,6 +3,7 @@ package com.egugue.licol.ui.common.activity;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 
 
 import com.trello.rxlifecycle2.LifecycleProvider;
@@ -17,9 +18,9 @@ import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 
 /**
- * A {@link BaseActivity} which is useful when using Reactive Extensions.
+ * An {@link AppCompatActivity} which is useful when using Reactive Extensions.
  */
-public abstract class BaseRxActivity extends BaseActivity implements LifecycleProvider<ActivityEvent> {
+public abstract class BaseActivity extends AppCompatActivity implements LifecycleProvider<ActivityEvent> {
 
   private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
 
