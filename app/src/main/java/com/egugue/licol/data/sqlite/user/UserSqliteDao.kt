@@ -14,6 +14,17 @@ class UserSqliteDao @Inject constructor(
 ) {
 
   /**
+   * Select the user which has the given user id
+   */
+  fun selectUserById(userId: Long): Observable<User> {
+    return userGateway.selectById(userId)
+        .flatMap(
+            { tweetGateway.selectIdByUserIds(listOf(it.id)) },
+            this::mapToUser
+        )
+  }
+
+  /**
    * Select All [User]s as list ordered by liked tweet count related to each user
    */
   fun selectAllOrderedByLikedTweetCount(page: Int, perPage: Int): Observable<List<User>> {
@@ -48,6 +59,17 @@ class UserSqliteDao @Inject constructor(
 
   fun insertOrUpdate(user: User) {
     userGateway.insertOrUpdate(UserEntity.from(user))
+  }
+
+  private fun mapToUser(userEntity: UserEntity, relationList: List<LikedTweetIdAndUserId>): User {
+    val table = mutableMapOf<Long, MutableList<Long>>()
+    relationList.forEach {
+      table.putIfAbsent(it.userId, mutableListOf())
+      table[it.userId]!!.add(it.likedTweetId)
+    }
+
+    val likedTweetIdList = table.getOrDefault(userEntity.id, mutableListOf())
+    return userEntity.toUser(likedTweetIdList)
   }
 
   private fun mapToUserList(userEntityList: List<UserEntity>, relationList: List<LikedTweetIdAndUserId>): List<User> {

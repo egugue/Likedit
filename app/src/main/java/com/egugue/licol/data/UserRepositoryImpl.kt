@@ -14,6 +14,11 @@ class UserRepositoryImpl internal @Inject constructor(
     private val userSqliteDao: UserSqliteDao
 ) : UserRepository {
 
+  override fun findByUserId(userId: Long): Observable<User> {
+    Contract.require(userId >= 0, "userId >= 0 required but it was $userId")
+    return userSqliteDao.selectUserById(userId)
+  }
+
   override fun findAll(page: Int, perPage: Int): Observable<List<User>> {
     Contract.require(page > 0, "0 < page required but it was $page")
     Contract.require(perPage > 0, "0 < perPage required but it was $perPage")

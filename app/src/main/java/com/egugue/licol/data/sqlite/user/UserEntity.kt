@@ -21,6 +21,8 @@ data class UserEntity(
   fun toUser(likedTweetIdList: List<Long>) = User(id, name, screenName, avatarUrl, likedTweetIdList)
 
   companion object {
+    val NONE = UserEntity(-1L, "", "", "")
+
     val FACTORY = UserModel.Factory<UserEntity>(::UserEntity)
 
     fun from(u: User) = UserEntity(u.id, u.name, u.screenName, u.avatorUrl)

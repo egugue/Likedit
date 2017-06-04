@@ -7,6 +7,7 @@ import com.egugue.licol.likedTweet
 import com.egugue.licol.testutil.SqliteTestingRule
 import com.egugue.licol.user
 import com.google.common.truth.Truth.assertThat
+import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -23,6 +24,24 @@ class UserSqliteDaoTest {
   @Before fun setUp() {
     userDao = userSqliteDao(rule.briteDB)
     tweetDao = likedTweetSqliDao(rule.briteDB)
+  }
+
+  @Test fun `select the user by id`() {
+    val user = user(id = 1, likedTweetIdList = listOf(1L))
+    userDao.insertOrUpdate(user)
+    tweetDao.insertOrUpdate(likedTweet(id = user.likedTweetIdList.first(), userId = user.id))
+
+    userDao.selectUserById(user.id).test()
+        .assertValue(user)
+  }
+
+  @Test fun `not select user by id which is not stored`() {
+    try {
+      userDao.selectUserById(100L).blockingFirst()
+      fail()
+    } catch (e: NoSuchElementException) {
+      assertThat(e).hasMessageThat().isEqualTo("cannot find the user of id(100)")
+    }
   }
 
   @Test fun `select all users`() {
