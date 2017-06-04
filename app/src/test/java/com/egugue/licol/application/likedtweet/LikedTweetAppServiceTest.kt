@@ -42,4 +42,26 @@ class LikedTweetAppServiceTest {
         LikedTweetPayload(likedTweet(userId = 2L), user(id = 2L))
     )
   }
+
+  @Test fun `get liked tweets by user id`() {
+    // given
+    val userId = 1L
+    val page = 1
+    val perPage = 200
+    whenever(likedRepo.findByUserId(userId, page, perPage)).thenReturn(Observable.just(listOf(
+        likedTweet(userId = userId), likedTweet(userId = userId))
+    ))
+    whenever(userRepo.findByUserId(userId)).thenReturn(Observable.just(
+        user(id = userId)
+    ))
+
+    // when
+    val actual = service.getAllLikedTweetsByUserId(userId, page, perPage).blockingFirst()
+
+    // then
+    assertThat(actual).containsExactly(
+        LikedTweetPayload(likedTweet(userId = userId), user(id = userId)),
+        LikedTweetPayload(likedTweet(userId = userId), user(id = userId))
+    )
+  }
 }

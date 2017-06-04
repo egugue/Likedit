@@ -1,8 +1,8 @@
 package com.egugue.licol.application.likedtweet
 
-import com.egugue.licol.application.likedtweet.LikedTweetPayload.Companion.listFrom
-import com.egugue.licol.domain.likedtweet.LikedTweetRepository
+import com.egugue.licol.common.extensions.zipWith
 import com.egugue.licol.domain.likedtweet.LikedTweet
+import com.egugue.licol.domain.likedtweet.LikedTweetRepository
 import com.egugue.licol.domain.user.User
 import com.egugue.licol.domain.user.UserRepository
 import io.reactivex.Observable
@@ -24,6 +24,17 @@ class LikedTweetAppService @Inject internal constructor(
         .flatMap(
             { userRepository.findByIdList(it.map { it.userId }) },
             { likedTweetList, userList -> LikedTweetPayload.listFrom(likedTweetList, userList) }
+        )
+  }
+
+  /**
+   * Get All [LikedTweet]s with each [User]
+   */
+  fun getAllLikedTweetsByUserId(userId: Long, page: Int, perPage: Int): Observable<List<LikedTweetPayload>> {
+    return likedRepository.findByUserId(userId, page, perPage)
+        .zipWith(
+            userRepository.findByUserId(userId),
+            { likedTweetList, user -> likedTweetList.map { LikedTweetPayload(it, user) } }
         )
   }
 }
