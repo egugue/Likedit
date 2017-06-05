@@ -138,4 +138,70 @@ class LikedTweetRepositoryImplTest {
       assertThat(e).hasMessageThat().isEqualTo("1 <= perPage <= 200 required but it was 201")
     }
   }
+
+  @Test fun `select liked tweet list by user id`() {
+    val userId = 1L
+    whenever(dao.selectByUserId(userId, 1, 2)).thenReturn(Observable.just(listOf(
+        likedTweet(id = 1),
+        likedTweet(id = 2)
+    )))
+
+    val expected = repo.findByUserId(userId, 1, 2).blockingFirst()
+
+    assertThat(expected.size).isEqualTo(2)
+  }
+
+  @Test fun `not select liked tweet list by user id if the given user id is invalid`() {
+    whenever(dao.selectByUserId(any(), any(), any())).thenReturn(Observable.just(emptyList()))
+
+    // page
+    try {
+      val invalid = -1L
+      repo.findByUserId(invalid, 1, 1)
+      fail()
+    } catch (e: IllegalArgumentException) {
+      assertThat(e).hasMessageThat().isEqualTo("userId >= 0 required but it was -1")
+    }
+
+    repo.findByUserId(0, 1, 1)
+  }
+
+  @Test fun `not select liked tweet list by user id if the given page is invalid`() {
+    whenever(dao.selectByUserId(any(), any(), any())).thenReturn(Observable.just(emptyList()))
+
+    // page
+    try {
+      val invalid = 0
+      repo.findByUserId(1, invalid, 1)
+      fail()
+    } catch (e: IllegalArgumentException) {
+      assertThat(e).hasMessageThat().isEqualTo("0 < page required but it was 0")
+    }
+
+    val validPage = 1
+    repo.findByUserId(1, validPage, 1)
+  }
+
+  @Test fun `not select liked tweet list by user id if the given per page is invalid`() {
+    whenever(dao.selectByUserId(any(), any(), any())).thenReturn(Observable.just(emptyList()))
+
+    try {
+      val invalid= 0
+      repo.findByUserId(1, 1, invalid)
+      fail()
+    } catch (e: IllegalArgumentException) {
+      assertThat(e).hasMessageThat().isEqualTo("1 <= perPage <= 200 required but it was 0")
+    }
+
+    repo.findByUserId(1, 1, 1)
+    repo.findByUserId(1, 1, 200)
+
+    try {
+      val invalid = 201
+      repo.findByUserId(1, 1, perPage = invalid)
+      fail()
+    } catch (e: IllegalArgumentException) {
+      assertThat(e).hasMessageThat().isEqualTo("1 <= perPage <= 200 required but it was 201")
+    }
+  }
 }

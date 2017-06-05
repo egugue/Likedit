@@ -84,7 +84,11 @@ class HomeUserFragment : RxFragment() {
         .observeOnMain()
         .doOnSubscribe {
           isLoading = true
-          userController.setLoadingMoreVisibility(true)
+          if (page == 1) {
+            stateLayout.showProgress()
+          } else {
+            userController.setLoadingMoreVisibility(true)
+          }
         }
         .doOnEach { isLoading = false }
         .subscribe(
@@ -103,6 +107,7 @@ class HomeUserFragment : RxFragment() {
               }
             },
             { error ->
+              //TODO
               error.printStackTrace()
             }
         )

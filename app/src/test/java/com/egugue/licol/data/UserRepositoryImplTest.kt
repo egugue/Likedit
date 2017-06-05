@@ -30,6 +30,25 @@ class UserRepositoryImplTest {
         .assertValue(expected)
   }
 
+  @Test fun `find user by id`() {
+    val expected = user(id = 1L)
+    whenever(dao.selectUserById(expected.id)).thenReturn(Observable.just(expected))
+
+    repo.findByUserId(expected.id).test()
+        .assertValue(expected)
+  }
+
+  @Test fun `not find user by illegal id`() {
+    try {
+      repo.findByUserId(-1L)
+      fail()
+    } catch (e: IllegalArgumentException) {
+      assertThat(e).hasMessageThat().isEqualTo("userId >= 0 required but it was -1")
+    }
+
+    repo.findByUserId(0L)
+  }
+
   @Test fun `not find all users if the given page is invalid`() {
     whenever(dao.selectAllOrderedByLikedTweetCount(any(), any())).thenReturn(Observable.just(emptyList()))
 

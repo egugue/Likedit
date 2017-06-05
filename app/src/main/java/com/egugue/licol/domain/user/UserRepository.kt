@@ -8,6 +8,13 @@ import io.reactivex.Observable
 interface UserRepository {
 
   /**
+   * Retrieve the user which has the given user id
+   *
+   * @throws IllegalArgumentException if user id is not a positive integer
+   */
+  fun findByUserId(userId: Long): Observable<User>
+
+  /**
    * Retrieve some [User]s by the given args
    * Returned list is ordered by liked tweet count.
    *

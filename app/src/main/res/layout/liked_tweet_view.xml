@@ -54,7 +54,7 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/user_name"
         app:layout_constraintRight_toRightOf="parent"
         tools:text="Today 08:00"
-        android:layout_marginRight="11dp"/>
+        android:layout_marginRight="0dp"/>
 
     <TextView
         android:id="@+id/tweet_text"

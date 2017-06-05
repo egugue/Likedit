@@ -10,6 +10,14 @@ class UserTableGateway @Inject constructor(
     private val db: BriteDatabase
 ) {
 
+  fun selectById(userId: Long): Observable<UserEntity> {
+    val stmt = UserEntity.FACTORY.select_by_id(userId)
+    return db.createQuery(stmt)
+        .mapToOneOrDefault({ UserEntity.FACTORY.select_by_idMapper().map(it) }, UserEntity.NONE)
+        .doOnNext { if (it == UserEntity.NONE) throw NoSuchElementException("cannot find the user of id($userId)") }
+        .toV2Observable()
+  }
+
   fun selectAll(page: Int, perPage: Int): Observable<List<UserEntity>> {
     val (limit, offset) = (page to perPage).toLimitAndOffset()
     val stmt = UserEntity.FACTORY.select_all_order_by_liked_count(limit, offset)

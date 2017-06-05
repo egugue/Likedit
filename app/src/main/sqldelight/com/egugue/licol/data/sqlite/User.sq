@@ -39,3 +39,9 @@ SELECT *
 FROM user
 WHERE user.id IN ?
 ;
+
+select_by_id:
+SELECT *
+FROM user
+WHERE user.id = :user_id
+;

@@ -3,7 +3,10 @@ package com.egugue.licol.ui.common.activity;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
-
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.trello.rxlifecycle2.LifecycleProvider;
 import com.trello.rxlifecycle2.LifecycleTransformer;
@@ -17,9 +20,9 @@ import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 
 /**
- * A {@link BaseActivity} which is useful when using Reactive Extensions.
+ * An {@link AppCompatActivity} which is useful when using Reactive Extensions.
  */
-public abstract class BaseRxActivity extends BaseActivity implements LifecycleProvider<ActivityEvent> {
+public abstract class BaseActivity extends AppCompatActivity implements LifecycleProvider<ActivityEvent> {
 
   private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
 
@@ -34,6 +37,15 @@ public abstract class BaseRxActivity extends BaseActivity implements LifecyclePr
 
   @Nonnull @Override public final <T> LifecycleTransformer<T> bindToLifecycle() {
     return RxLifecycleAndroid.bindActivity(lifecycleSubject);
+  }
+
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case android.R.id.home:
+        onBackPressed();
+        break;
+    }
+    return super.onOptionsItemSelected(item);
   }
 
   @Override
@@ -76,5 +88,18 @@ public abstract class BaseRxActivity extends BaseActivity implements LifecyclePr
   protected void onDestroy() {
     lifecycleSubject.onNext(ActivityEvent.DESTROY);
     super.onDestroy();
+  }
+
+  protected final void initBackToolbar(Toolbar toolbar) {
+    setSupportActionBar(toolbar);
+
+    ActionBar bar = getSupportActionBar();
+    if (bar != null) {
+      bar.setTitle(toolbar.getTitle());
+      bar.setDisplayHomeAsUpEnabled(true);
+      bar.setDisplayShowHomeEnabled(true);
+      bar.setDisplayShowTitleEnabled(true);
+      bar.setHomeButtonEnabled(true);
+    }
   }
 }
