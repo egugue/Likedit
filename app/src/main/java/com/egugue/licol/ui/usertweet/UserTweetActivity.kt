@@ -2,9 +2,7 @@ package com.egugue.licol.ui.usertweet
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.support.customtabs.CustomTabsIntent
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import butterknife.bindView
@@ -86,14 +84,7 @@ class UserTweetActivity : BaseActivity() {
 
     listController.callbacks = object : LikedTweetListController.AdapterCallbacks {
       override fun onTweetLinkClicked(url: String) {
-        toast("url clicked $url")
-
-        val customTabIntent = CustomTabsIntent.Builder(customTabHelper.session)
-            .setToolbarColor(color(R.color.colorPrimary))
-            .setSecondaryToolbarColor(color(R.color.colorPrimaryDark))
-            .addDefaultShareMenuItem()
-           .build()
-        CustomTabActivityHelper.openCustomTab(this@UserTweetActivity,  customTabIntent, Uri.parse(url), null)
+        openLink(url, customTabHelper.session)
       }
 
       override fun onWholeTweetClicked(likedTweet: LikedTweet, user: User) {
