@@ -4,10 +4,11 @@ import android.content.Context;
 
 import com.egugue.licol.App;
 import com.egugue.licol.AppComponent;
+import com.egugue.licol.ui.ActivityScope;
 
 import dagger.Component;
 
-@SearchScope
+@ActivityScope
 @Component(dependencies = AppComponent.class)
 public interface SearchComponent {
   void inject(SearchActivity activity);

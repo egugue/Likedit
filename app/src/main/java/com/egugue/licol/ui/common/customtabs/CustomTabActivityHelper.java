@@ -22,6 +22,7 @@ import android.support.customtabs.CustomTabsIntent;
 import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
 
+import com.egugue.licol.ui.ActivityScope;
 import com.egugue.licol.ui.common.activity.BaseActivity;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 
@@ -37,7 +38,7 @@ import static com.trello.rxlifecycle2.RxLifecycle.bindUntilEvent;
 /**
  * This is a helper class to manage the connection to the Custom Tabs Service.
  */
-//TODO: scope
+@ActivityScope
 public class CustomTabActivityHelper implements ServiceConnectionCallback {
   private CustomTabsSession mCustomTabsSession;
   private CustomTabsClient mClient;
@@ -55,10 +56,8 @@ public class CustomTabActivityHelper implements ServiceConnectionCallback {
    * @param uri              the Uri to be opened.
    * @param fallback         a CustomTabFallback to be used if Custom Tabs is not available.
    */
-  public static void openCustomTab(Activity activity,
-                                   CustomTabsIntent customTabsIntent,
-                                   Uri uri,
-                                   CustomTabFallback fallback) {
+  public static void openCustomTab(Activity activity, CustomTabsIntent customTabsIntent, Uri uri,
+      CustomTabFallback fallback) {
     String packageName = CustomTabsHelper.getPackageNameToUse(activity);
 
     //If we cant find a package name, it means theres no browser that supports
@@ -100,7 +99,7 @@ public class CustomTabActivityHelper implements ServiceConnectionCallback {
           @Override public void accept(@NonNull ActivityEvent activityEvent) throws Exception {
             if (activityEvent == ActivityEvent.START) {
               bindCustomTabsService(baseActivity);
-            } else if (activityEvent == ActivityEvent.STOP){
+            } else if (activityEvent == ActivityEvent.STOP) {
               unbindCustomTabsService(baseActivity);
             }
           }
