@@ -11,10 +11,12 @@ import android.view.ViewGroup
 
 import com.egugue.licol.R
 import com.egugue.licol.application.likedtweet.LikedTweetAppService
+import com.egugue.licol.common.extensions.openLink
 import com.egugue.licol.common.extensions.toast
 import com.egugue.licol.domain.likedtweet.LikedTweet
 import com.egugue.licol.domain.tweet.media.Photo
 import com.egugue.licol.domain.user.User
+import com.egugue.licol.ui.common.customtabs.CustomTabActivityHelper
 import com.egugue.licol.ui.common.recyclerview.DividerItemDecoration
 import com.egugue.licol.ui.home.HomeActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -34,6 +36,7 @@ class HomeLikedFragment : Fragment() {
   lateinit private var listView: RecyclerView
   @Inject lateinit var listController: LikedTweetListController
   @Inject lateinit var likedTweetAppService: LikedTweetAppService
+  @Inject lateinit var customTabActivityHelper: CustomTabActivityHelper
 
   override fun onAttach(context: Context?) {
     super.onAttach(context)
@@ -69,8 +72,7 @@ class HomeLikedFragment : Fragment() {
 
     listController.callbacks = object : LikedTweetListController.AdapterCallbacks {
       override fun onTweetLinkClicked(url: String) {
-        toast("link clicked $url")
-        Timber.d("link clicked $url")
+        openLink(url, customTabActivityHelper.session)
       }
 
       override fun onWholeTweetClicked(likedTweet: LikedTweet, user: User) {

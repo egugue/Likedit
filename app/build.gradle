@@ -82,6 +82,7 @@ dependencies {
     compile "com.android.support:appcompat-v7:$supportLibVer"
     compile "com.android.support:recyclerview-v7:$supportLibVer"
     compile "com.android.support:design:$supportLibVer"
+    compile "com.android.support:customtabs:$supportLibVer"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     // firebase https://firebase.google.com/support/release-notes/android#20170428

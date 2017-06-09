@@ -15,6 +15,7 @@ import com.egugue.licol.domain.tweet.media.Photo
 import com.egugue.licol.domain.user.User
 import com.egugue.licol.ui.common.StateLayout
 import com.egugue.licol.ui.common.activity.BaseActivity
+import com.egugue.licol.ui.common.customtabs.CustomTabActivityHelper
 import com.egugue.licol.ui.common.recyclerview.DividerItemDecoration
 import com.egugue.licol.ui.home.liked.LikedTweetListController
 import com.trello.rxlifecycle2.kotlin.bindToLifecycle
@@ -50,6 +51,7 @@ class UserTweetActivity : BaseActivity() {
 
   @Inject lateinit var likedTweetAppService: LikedTweetAppService
   @Inject lateinit var listController: LikedTweetListController
+  @Inject lateinit var customTabHelper: CustomTabActivityHelper
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -63,6 +65,7 @@ class UserTweetActivity : BaseActivity() {
     initToolbar()
     initListView()
     loadMoreLikedTweet()
+    customTabHelper.setUpCustomTabService(this)
   }
 
   private fun initToolbar() {
@@ -75,13 +78,13 @@ class UserTweetActivity : BaseActivity() {
     recyclerView.addItemDecoration(DividerItemDecoration(this))
     recyclerView.addOnLoadMoreListener(object : LoadMoreListener {
       override fun onLoadMore() = loadMoreLikedTweet()
-      override fun isLoading(): Boolean = isLoading
-      override fun hasLoadedItems(): Boolean = hasLoadedItems
+      override fun isLoading() = isLoading
+      override fun hasLoadedItems() = hasLoadedItems
     })
 
     listController.callbacks = object : LikedTweetListController.AdapterCallbacks {
       override fun onTweetLinkClicked(url: String) {
-        toast("url clicked $url")
+        openLink(url, customTabHelper.session)
       }
 
       override fun onWholeTweetClicked(likedTweet: LikedTweet, user: User) {
