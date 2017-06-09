@@ -103,7 +103,7 @@ class UserTweetActivity : BaseActivity() {
   private fun loadMoreLikedTweet() {
     assert(userId != -1L)
 
-    likedTweetAppService.getAllLikedTweetsByUserId(userId, page, 10)
+    likedTweetAppService.getAllLikedTweetsByUserId(userId, page, 50)
         .bindToLifecycle(this)
         .subscribeOnIo()
         .observeOnMain()
