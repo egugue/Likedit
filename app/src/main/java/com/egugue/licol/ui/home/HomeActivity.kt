@@ -13,10 +13,12 @@ import com.egugue.licol.App
 import com.egugue.licol.R
 import com.egugue.licol.common.analytics.Analytics
 import com.egugue.licol.common.analytics.ViewEvent
+import com.egugue.licol.ui.common.activity.BaseActivity
+import com.egugue.licol.ui.common.customtabs.CustomTabActivityHelper
 import com.egugue.licol.ui.search.SearchActivity
 import javax.inject.Inject
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : BaseActivity() {
 
   val component: HomeComponent by lazy {
     DaggerHomeComponent.builder()
@@ -25,6 +27,7 @@ class HomeActivity : AppCompatActivity() {
   }
 
   @Inject lateinit var analytics: Analytics
+  @Inject lateinit var customTabActivityHelper: CustomTabActivityHelper
 
   private val toolbar: Toolbar by bindView(R.id.toolbar)
   private val viewPager: ViewPager by bindView(R.id.home_pager)
@@ -34,13 +37,17 @@ class HomeActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     component.inject(this)
     super.onCreate(savedInstanceState)
-    analytics.viewEvent(ViewEvent.HOME)
-
     setContentView(R.layout.activity_home)
     setSupportActionBar(toolbar)
-
     viewPager.adapter = adapter
     viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
+
+    analytics.viewEvent(ViewEvent.HOME)
+    customTabActivityHelper.setUpCustomTabService(this)
+  }
+
+  override fun onResume() {
+    super.onResume()
   }
 
   override fun onCreateOptionsMenu(menu: Menu?): Boolean {
