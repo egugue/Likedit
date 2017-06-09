@@ -21,7 +21,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +30,7 @@ import timber.log.Timber;
 /**
  * Helper class for Custom Tabs.
  */
-public class CustomTabsHelper {
-  private static final String TAG = "CustomTabsHelper";
+class CustomTabsHelper {
   static final String STABLE_PACKAGE = "com.android.chrome";
   static final String BETA_PACKAGE = "com.chrome.beta";
   static final String DEV_PACKAGE = "com.chrome.dev";
