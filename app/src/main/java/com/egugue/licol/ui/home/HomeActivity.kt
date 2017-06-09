@@ -3,7 +3,6 @@ package com.egugue.licol.ui.home
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
@@ -13,7 +12,7 @@ import com.egugue.licol.App
 import com.egugue.licol.R
 import com.egugue.licol.common.analytics.Analytics
 import com.egugue.licol.common.analytics.ViewEvent
-import com.egugue.licol.ui.common.activity.BaseActivity
+import com.egugue.licol.ui.common.base.BaseActivity
 import com.egugue.licol.ui.common.customtabs.CustomTabActivityHelper
 import com.egugue.licol.ui.search.SearchActivity
 import javax.inject.Inject

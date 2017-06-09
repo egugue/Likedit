@@ -23,7 +23,7 @@ import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
 
 import com.egugue.licol.ui.ActivityScope;
-import com.egugue.licol.ui.common.activity.BaseActivity;
+import com.egugue.licol.ui.common.base.BaseActivity;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 
 import java.util.List;

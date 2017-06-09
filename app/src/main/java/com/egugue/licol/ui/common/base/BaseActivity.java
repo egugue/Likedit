@@ -1,4 +1,4 @@
-package com.egugue.licol.ui.common.activity;
+package com.egugue.licol.ui.common.base;
 
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
