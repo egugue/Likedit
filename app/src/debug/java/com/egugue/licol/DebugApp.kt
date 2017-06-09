@@ -1,7 +1,8 @@
 package com.egugue.licol
 
 import android.os.StrictMode
-
+import android.view.Gravity
+import com.codemonkeylabs.fpslibrary.TinyDancer
 import com.facebook.stetho.Stetho
 import timber.log.Timber
 
@@ -17,6 +18,10 @@ class DebugApp : App() {
       // if using Robolectric in local unit test, thrown IOException.
       // see https://github.com/facebook/stetho/issues/440
       Stetho.initializeWithDefaults(this)
+
+      TinyDancer.create()
+          .startingGravity(Gravity.BOTTOM)
+          .show(this)
     }
 
     plantTimberTree()
