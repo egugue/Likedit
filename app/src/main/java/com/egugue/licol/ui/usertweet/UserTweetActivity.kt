@@ -14,7 +14,7 @@ import com.egugue.licol.domain.likedtweet.LikedTweet
 import com.egugue.licol.domain.tweet.media.Photo
 import com.egugue.licol.domain.user.User
 import com.egugue.licol.ui.common.StateLayout
-import com.egugue.licol.ui.common.activity.BaseActivity
+import com.egugue.licol.ui.common.base.BaseActivity
 import com.egugue.licol.ui.common.customtabs.CustomTabActivityHelper
 import com.egugue.licol.ui.common.recyclerview.DividerItemDecoration
 import com.egugue.licol.ui.home.liked.LikedTweetListController
@@ -103,7 +103,7 @@ class UserTweetActivity : BaseActivity() {
   private fun loadMoreLikedTweet() {
     assert(userId != -1L)
 
-    likedTweetAppService.getAllLikedTweetsByUserId(userId, page, 10)
+    likedTweetAppService.getAllLikedTweetsByUserId(userId, page, 50)
         .bindToLifecycle(this)
         .subscribeOnIo()
         .observeOnMain()

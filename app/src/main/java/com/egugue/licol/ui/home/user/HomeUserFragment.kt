@@ -21,6 +21,7 @@ import com.egugue.licol.ui.home.HomeActivity
 import com.egugue.licol.ui.home.user.list.UserController
 import com.trello.rxlifecycle2.components.support.RxFragment
 import com.trello.rxlifecycle2.kotlin.bindToLifecycle
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -51,15 +52,11 @@ class HomeUserFragment : RxFragment() {
         .inject(this)
   }
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                            savedInstanceState: Bundle?): View? {
-    val root = inflater.inflate(R.layout.home_user_fragment, container, false)
-    return root
-  }
+  override fun onCreateView(inf: LayoutInflater, container: ViewGroup?,
+      savedInstanceState: Bundle?) = inf.inflate(R.layout.home_user_fragment, container, false)
 
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-
     initListView()
     getMoreUserList()
   }
@@ -68,7 +65,6 @@ class HomeUserFragment : RxFragment() {
     listView.adapter = userController.adapter
     listView.layoutManager = LinearLayoutManager(activity)
     listView.addItemDecoration(DividerItemDecoration(activity))
-    userController.requestModelBuild()
 
     listView.addOnLoadMoreListener(object : LoadMoreListener {
       override fun onLoadMore() = getMoreUserList()
@@ -79,36 +75,40 @@ class HomeUserFragment : RxFragment() {
 
   private fun getMoreUserList() {
     appService.getAllUsers(page = page, perPage = 20)
-        .bindToLifecycle(this)
         .subscribeOnIo()
         .observeOnMain()
+        .bindToLifecycle(this)
         .doOnSubscribe {
           isLoading = true
           if (page == 1) {
             stateLayout.showProgress()
           } else {
             userController.setLoadingMoreVisibility(true)
+            userController.requestModelBuild()
           }
         }
         .doOnEach { isLoading = false }
         .subscribe(
             { userList ->
-              userController.setLoadingMoreVisibility(false)
 
               if (userList.isEmpty()) {
                 hasLoadedItems = true
                 if (page == 1) {
                   stateLayout.showEmptyState()
+                } else {
+                  userController.setLoadingMoreVisibility(false)
+                  userController.requestModelBuild()
                 }
               } else {
                 page++
+                userController.setLoadingMoreVisibility(false)
                 userController.addData(userList)
+                userController.requestModelBuild()
                 stateLayout.showContent()
               }
             },
             { error ->
-              //TODO
-              error.printStackTrace()
+              Timber.e(error)
             }
         )
   }

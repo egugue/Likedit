@@ -14,7 +14,7 @@ import com.egugue.licol.R
 import com.egugue.licol.application.search.SearchAppService
 import com.egugue.licol.application.search.Suggestions
 import com.egugue.licol.common.extensions.observeOnMain
-import com.egugue.licol.ui.common.activity.BaseActivity
+import com.egugue.licol.ui.common.base.BaseActivity
 import com.egugue.licol.ui.common.recyclerview.DividerItemDecoration
 import com.egugue.licol.ui.usertweet.UserTweetActivity
 import com.jakewharton.rxbinding2.widget.RxTextView

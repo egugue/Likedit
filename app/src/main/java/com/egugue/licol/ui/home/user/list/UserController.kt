@@ -13,12 +13,10 @@ class UserController @Inject constructor() : EpoxyController() {
 
   fun addData(l: List<User>) {
     userList = ArrayList(userList + l)
-    requestModelBuild()
   }
 
   fun setLoadingMoreVisibility(requireLoadingMore: Boolean) {
     this.requireLoadingMore = requireLoadingMore
-    requestModelBuild()
   }
 
   override fun buildModels() {
