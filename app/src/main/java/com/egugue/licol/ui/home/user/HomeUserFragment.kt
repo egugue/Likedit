@@ -37,7 +37,7 @@ class HomeUserFragment : RxFragment() {
   }
 
   @Inject lateinit var appService: UserAppService
-  @Inject lateinit var userController: UserController
+  @Inject lateinit var listController: UserController
 
   private var page: Int = 1
   private var isLoading = false
@@ -62,7 +62,7 @@ class HomeUserFragment : RxFragment() {
   }
 
   private fun initListView() {
-    listView.adapter = userController.adapter
+    listView.adapter = listController.adapter
     listView.layoutManager = LinearLayoutManager(activity)
     listView.addItemDecoration(DividerItemDecoration(activity))
 
@@ -83,8 +83,8 @@ class HomeUserFragment : RxFragment() {
           if (page == 1) {
             stateLayout.showProgress()
           } else {
-            userController.setLoadingMoreVisibility(true)
-            userController.requestModelBuild()
+            listController.setLoadingMoreVisibility(true)
+            listController.requestModelBuild()
           }
         }
         .doOnEach { isLoading = false }
@@ -96,14 +96,14 @@ class HomeUserFragment : RxFragment() {
                 if (page == 1) {
                   stateLayout.showEmptyState()
                 } else {
-                  userController.setLoadingMoreVisibility(false)
-                  userController.requestModelBuild()
+                  listController.setLoadingMoreVisibility(false)
+                  listController.requestModelBuild()
                 }
               } else {
                 page++
-                userController.setLoadingMoreVisibility(false)
-                userController.addData(userList)
-                userController.requestModelBuild()
+                listController.setLoadingMoreVisibility(false)
+                listController.addData(userList)
+                listController.requestModelBuild()
                 stateLayout.showContent()
               }
             },
