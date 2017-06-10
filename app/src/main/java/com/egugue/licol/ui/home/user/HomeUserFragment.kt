@@ -19,6 +19,7 @@ import com.egugue.licol.ui.common.StateLayout
 import com.egugue.licol.ui.common.recyclerview.DividerItemDecoration
 import com.egugue.licol.ui.home.HomeActivity
 import com.egugue.licol.ui.home.user.list.UserController
+import com.egugue.licol.ui.usertweet.UserTweetActivity
 import com.trello.rxlifecycle2.components.support.RxFragment
 import com.trello.rxlifecycle2.kotlin.bindToLifecycle
 import timber.log.Timber
@@ -65,12 +66,13 @@ class HomeUserFragment : RxFragment() {
     listView.adapter = listController.adapter
     listView.layoutManager = LinearLayoutManager(activity)
     listView.addItemDecoration(DividerItemDecoration(activity))
-
     listView.addOnLoadMoreListener(object : LoadMoreListener {
       override fun onLoadMore() = getMoreUserList()
       override fun isLoading(): Boolean = isLoading
       override fun hasLoadedItems(): Boolean = hasLoadedItems
     })
+
+    listController.userClickListener = { startActivity(UserTweetActivity.createIntent(activity, it)) }
   }
 
   private fun getMoreUserList() {
