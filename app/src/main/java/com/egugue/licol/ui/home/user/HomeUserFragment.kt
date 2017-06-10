@@ -19,6 +19,7 @@ import com.egugue.licol.ui.common.StateLayout
 import com.egugue.licol.ui.common.recyclerview.DividerItemDecoration
 import com.egugue.licol.ui.home.HomeActivity
 import com.egugue.licol.ui.home.user.list.UserController
+import com.egugue.licol.ui.usertweet.UserTweetActivity
 import com.trello.rxlifecycle2.components.support.RxFragment
 import com.trello.rxlifecycle2.kotlin.bindToLifecycle
 import timber.log.Timber
@@ -37,7 +38,7 @@ class HomeUserFragment : RxFragment() {
   }
 
   @Inject lateinit var appService: UserAppService
-  @Inject lateinit var userController: UserController
+  @Inject lateinit var listController: UserController
 
   private var page: Int = 1
   private var isLoading = false
@@ -53,7 +54,7 @@ class HomeUserFragment : RxFragment() {
   }
 
   override fun onCreateView(inf: LayoutInflater, container: ViewGroup?,
-      savedInstanceState: Bundle?) = inf.inflate(R.layout.home_user_fragment, container, false)
+      savedInstanceState: Bundle?): View = inf.inflate(R.layout.home_user_fragment, container, false)
 
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -62,15 +63,16 @@ class HomeUserFragment : RxFragment() {
   }
 
   private fun initListView() {
-    listView.adapter = userController.adapter
+    listView.adapter = listController.adapter
     listView.layoutManager = LinearLayoutManager(activity)
     listView.addItemDecoration(DividerItemDecoration(activity))
-
     listView.addOnLoadMoreListener(object : LoadMoreListener {
       override fun onLoadMore() = getMoreUserList()
       override fun isLoading(): Boolean = isLoading
       override fun hasLoadedItems(): Boolean = hasLoadedItems
     })
+
+    listController.userClickListener = { startActivity(UserTweetActivity.createIntent(activity, it)) }
   }
 
   private fun getMoreUserList() {
@@ -83,8 +85,8 @@ class HomeUserFragment : RxFragment() {
           if (page == 1) {
             stateLayout.showProgress()
           } else {
-            userController.setLoadingMoreVisibility(true)
-            userController.requestModelBuild()
+            listController.setLoadingMoreVisibility(true)
+            listController.requestModelBuild()
           }
         }
         .doOnEach { isLoading = false }
@@ -96,18 +98,19 @@ class HomeUserFragment : RxFragment() {
                 if (page == 1) {
                   stateLayout.showEmptyState()
                 } else {
-                  userController.setLoadingMoreVisibility(false)
-                  userController.requestModelBuild()
+                  listController.setLoadingMoreVisibility(false)
+                  listController.requestModelBuild()
                 }
               } else {
                 page++
-                userController.setLoadingMoreVisibility(false)
-                userController.addData(userList)
-                userController.requestModelBuild()
+                listController.setLoadingMoreVisibility(false)
+                listController.addData(userList)
+                listController.requestModelBuild()
                 stateLayout.showContent()
               }
             },
             { error ->
+              //TODO
               Timber.e(error)
             }
         )
