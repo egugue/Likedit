@@ -108,6 +108,7 @@ class HomeUserFragment : RxFragment() {
               }
             },
             { error ->
+              //TODO
               Timber.e(error)
             }
         )
