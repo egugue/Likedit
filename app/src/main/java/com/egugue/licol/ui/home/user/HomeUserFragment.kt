@@ -53,7 +53,7 @@ class HomeUserFragment : RxFragment() {
   }
 
   override fun onCreateView(inf: LayoutInflater, container: ViewGroup?,
-      savedInstanceState: Bundle?) = inf.inflate(R.layout.home_user_fragment, container, false)
+      savedInstanceState: Bundle?): View = inf.inflate(R.layout.home_user_fragment, container, false)
 
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
