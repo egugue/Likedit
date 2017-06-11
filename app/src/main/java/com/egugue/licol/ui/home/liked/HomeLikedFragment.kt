@@ -19,6 +19,7 @@ import com.egugue.licol.domain.user.User
 import com.egugue.licol.ui.common.customtabs.CustomTabActivityHelper
 import com.egugue.licol.ui.common.recyclerview.DividerItemDecoration
 import com.egugue.licol.ui.home.HomeActivity
+import com.egugue.licol.ui.usertweet.UserTweetActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
@@ -81,8 +82,7 @@ class HomeLikedFragment : Fragment() {
       }
 
       override fun onTweetUserAvatarClicked(user: User) {
-        toast("onUserAvatar clicked")
-        Timber.d("onUserAvatar clicked")
+        startActivity(UserTweetActivity.createIntent(activity, user))
       }
 
       override fun onTweetPhotoClicked(photo: Photo) {
