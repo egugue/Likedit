@@ -16,8 +16,6 @@ import com.egugue.licol.ui.auth.AuthActivity
 import com.egugue.licol.ui.home.HomeActivity
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
 import com.twitter.sdk.android.core.TwitterCore
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class MainActivity : RxAppCompatActivity() {
@@ -54,7 +52,7 @@ class MainActivity : RxAppCompatActivity() {
       startActivity(intent)
     }
 
-    val listview = findViewById(R.id.list) as RecyclerView
+    val listview = findViewById<RecyclerView>(R.id.list)
     listview.layoutManager = LinearLayoutManager(this)
     /*
     val adapter = TweetAdapter()
@@ -80,7 +78,7 @@ class MainActivity : RxAppCompatActivity() {
   @Inject lateinit var appSetting: AppSetting
 
   private fun initLastSyncedTimeText() {
-    val view = findViewById(R.id.last_sycned_time) as TextView
+    val view = findViewById<TextView>(R.id.last_sycned_time)
     appSetting.getLastSyncedDate()
         .compose(bindToLifecycle())
         .subscribe { view.text = it.toString() }

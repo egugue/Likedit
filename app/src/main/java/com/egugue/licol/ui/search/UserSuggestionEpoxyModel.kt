@@ -3,8 +3,6 @@ package com.egugue.licol.ui.search
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.airbnb.epoxy.EpoxyHolder
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.egugue.licol.R
@@ -41,18 +39,21 @@ internal class UserSuggestionEpoxyModel(val user: User)
   class Holder : EpoxyHolder() {
     lateinit var itemView: View
 
-    @BindView(R.id.user_avatar)
+    //@BindView(R.id.user_avatar)
     lateinit var avatarView: ImageView
 
-    @BindView(R.id.user_name)
+    //@BindView(R.id.user_name)
     lateinit var nameView: TextView
 
-    @BindView(R.id.user_screen_name)
+    //@BindView(R.id.user_screen_name)
     lateinit var screenNameView: TextView
 
     override fun bindView(itemView: View) {
       this.itemView = itemView
-      ButterKnife.bind(this, itemView)
+      // ButterKnife.bind(this, itemView)
+      avatarView = itemView.findViewById(R.id.user_avatar)
+      nameView = itemView.findViewById(R.id.user_name)
+      screenNameView = itemView.findViewById(R.id.user_screen_name)
     }
   }
 }
