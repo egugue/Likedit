@@ -64,6 +64,7 @@ android {
     //TODO: remove when only use rxjava2
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
+        exclude 'META-INF/app_debug.kotlin_module'
     }
     testOptions {
         unitTests.all {
@@ -147,8 +148,10 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.7.21'
     testCompile 'com.google.truth:truth:0.32'
-    testCompile 'org.robolectric:robolectric:3.3'
     testCompile 'com.nhaarman:mockito-kotlin:1.4.0'
+
+    // when updating Robolectric, see gradle.properties
+    testCompile 'org.robolectric:robolectric:3.3.2'
 
     androidTestCompile("com.android.support.test.espresso:espresso-core:2.2.2") {
         exclude module: 'jsr305'
