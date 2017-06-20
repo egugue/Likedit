@@ -2,6 +2,7 @@ package com.egugue.licol
 
 import android.app.Application
 import android.content.Context
+import com.crashlytics.android.Crashlytics
 import com.egugue.licol.background.sync.TweetSyncService
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.twitter.sdk.android.Twitter
@@ -46,6 +47,10 @@ open class App :Application() {
     val c = TwitterAuthConfig(
         BuildConfig.TWITTER_CONSUMER_KEY,
         BuildConfig.TWITTER_CONSUMER_SECRET)
-    Fabric.with(this, Twitter(c))
+
+    val fabric = Fabric.Builder(this)
+        .kits(Twitter(c), Crashlytics())
+        .build()
+    Fabric.with(fabric)
   }
 }
