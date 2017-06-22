@@ -1,0 +1,22 @@
+machine:
+  environment:
+    REVIEWDOG_VERSION: 0.9.6
+  java:
+    version: oraclejdk8
+
+dependencies:
+  pre:
+    - echo y | android update sdk --no-ui --all --filter "tools"
+    - echo y | android update sdk --no-ui --all --filter "platform-tools"
+    - echo y | android update sdk --no-ui --all --filter "build-tools:25.03"
+    - echo y | android update sdk --no-ui --all --filter "platforms;android-25"
+    - echo y | android update sdk --no-ui --all --filter "extras-android-m2repository"
+    - echo y | android update sdk --no-ui --all --filter "extras-google-m2repository"
+  override:
+    - echo $GOOGLE_SERVICES_JSON_FOR_DEBUG   | base64 -d > ./app/src/debug/google-services.json
+    - echo $GOOGLE_SERVICES_JSON_FOR_RELEASE | base64 -d > ./app/src/release/google-services.json
+    - curl -fSL https://github.com/haya14busa/reviewdog/releases/download/$REVIEWDOG_VERSION/reviewdog_linux_amd64 -o reviewdog && chmod +x ./reviewdog
+
+test:
+  override:
+    - "./gradlew lintDebug 2>&1 | ./reviewdog -efm='%f:%l:%c: %m' -name='Android Lint' -ci='circle-ci'"
