@@ -71,6 +71,12 @@ android {
             }
         }
     }
+    lintOptions {
+        abortOnError false
+        textReport true
+        textOutput 'stdout'
+        lintConfig file("lint.xml")
+    }
 }
 
 dependencies {
