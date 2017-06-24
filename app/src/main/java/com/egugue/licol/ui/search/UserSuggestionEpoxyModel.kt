@@ -53,11 +53,6 @@ internal class UserSuggestionEpoxyModel(val user: User)
     override fun bindView(itemView: View) {
       this.itemView = itemView
       ButterKnife.bind(this, itemView)
-      /*
-      avatarView = itemView.findViewById(R.id.user_avatar)
-      nameView = itemView.findViewById(R.id.user_name)
-      screenNameView = itemView.findViewById(R.id.user_screen_name)
-      */
     }
   }
 }
