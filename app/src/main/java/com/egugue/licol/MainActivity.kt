@@ -7,7 +7,8 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.Button
 import android.widget.TextView
-import butterknife.bindView
+import butterknife.BindView
+import butterknife.ButterKnife
 import com.egugue.licol.data.prefs.AppSetting
 import com.egugue.licol.domain.likedtweet.LikedTweetRepository
 import com.egugue.licol.domain.tag.TagRepository
@@ -22,8 +23,9 @@ class MainActivity : RxAppCompatActivity() {
 
   @Inject lateinit var likedRepository: LikedTweetRepository
   @Inject lateinit var tagRepository: TagRepository
-  val authButton: Button by bindView(R.id.auth_button)
-  val homeButton: Button by bindView(R.id.home_button)
+
+  @BindView(R.id.auth_button) lateinit var authButton: Button
+  @BindView(R.id.home_button) lateinit var homeButton: Button
 
   val listener: OnTweetClickListener = object : OnTweetClickListener {
     override fun onUrlClicked(url: String) {
@@ -42,6 +44,7 @@ class MainActivity : RxAppCompatActivity() {
     }
 
     App.component(this).inject(this)
+    ButterKnife.bind(this)
 
     authButton.setOnClickListener {
       startActivity(AuthActivity.createIntent(this))

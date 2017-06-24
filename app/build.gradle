@@ -12,7 +12,6 @@ repositories {
     mavenCentral()
     maven { url "https://maven.google.com" }
     maven { url 'https://maven.fabric.io/public' }
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
 }
 
 allOpen {
@@ -112,13 +111,9 @@ dependencies {
     kapt 'com.google.dagger:dagger-compiler:2.10'
 
     // View
-    compile 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
-
-    /*
     def butterknifeVer = "8.6.0"
     compile "com.jakewharton:butterknife:$butterknifeVer"
     kapt "com.jakewharton:butterknife-compiler:$butterknifeVer"
-    */
 
     compile 'com.airbnb.android:epoxy:2.1.0'
 

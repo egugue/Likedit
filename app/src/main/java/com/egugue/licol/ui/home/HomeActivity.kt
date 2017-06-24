@@ -6,7 +6,8 @@ import android.support.v4.view.ViewPager
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
-import butterknife.bindView
+import butterknife.BindView
+import butterknife.ButterKnife
 import com.egugue.licol.App
 
 import com.egugue.licol.R
@@ -28,15 +29,18 @@ class HomeActivity : BaseActivity() {
   @Inject lateinit var analytics: Analytics
   @Inject lateinit var customTabActivityHelper: CustomTabActivityHelper
 
-  private val toolbar: Toolbar by bindView(R.id.toolbar)
-  private val viewPager: ViewPager by bindView(R.id.home_pager)
-  private val tabLayout: TabLayout by bindView(R.id.home_tablayout)
-  private val adapter: HomePagerAdapter = HomePagerAdapter(supportFragmentManager)
+  @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
+  @BindView(R.id.home_pager) lateinit var viewPager: ViewPager
+  @BindView(R.id.home_tablayout) lateinit var tabLayout: TabLayout
+
+  internal val adapter: HomePagerAdapter = HomePagerAdapter(supportFragmentManager)
 
   override fun onCreate(savedInstanceState: Bundle?) {
     component.inject(this)
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_home)
+    ButterKnife.bind(this)
+
     setSupportActionBar(toolbar)
     viewPager.adapter = adapter
     viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))

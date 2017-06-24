@@ -9,7 +9,8 @@ import android.support.v7.widget.Toolbar
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import butterknife.bindView
+import butterknife.BindView
+import butterknife.ButterKnife
 import com.egugue.licol.R
 import com.egugue.licol.application.search.SearchAppService
 import com.egugue.licol.application.search.Suggestions
@@ -34,15 +35,17 @@ class SearchActivity : BaseActivity() {
     }
   }
 
-  private val toolbar: Toolbar by bindView(R.id.toolbar)
-  private val listView: RecyclerView by bindView(R.id.search_assist_list)
-  private val searchQueryView: EditText by bindView(R.id.search_query)
+  @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
+  @BindView(R.id.search_assist_list) lateinit var listView: RecyclerView
+  @BindView(R.id.search_query) lateinit var searchQueryView: EditText
+
   @Inject lateinit var searchAppService: SearchAppService
   @Inject lateinit var listController: SuggestionListController
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_search)
+    ButterKnife.bind(this)
 
     SearchComponent.Initializer
         .init(this)
