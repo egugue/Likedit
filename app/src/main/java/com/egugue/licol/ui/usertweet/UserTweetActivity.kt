@@ -5,7 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
-import butterknife.bindView
+import butterknife.BindView
+import butterknife.ButterKnife
 import com.egugue.licol.App
 import com.egugue.licol.R
 import com.egugue.licol.application.likedtweet.LikedTweetAppService
@@ -40,9 +41,10 @@ class UserTweetActivity : BaseActivity() {
     }
   }
 
-  private val toolbar: Toolbar by bindView(R.id.toolbar)
-  private val stateLayout: StateLayout by bindView(R.id.state_layout)
-  private val recyclerView: RecyclerView by bindView(R.id.liked_tweet_list)
+  @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
+  @BindView(R.id.state_layout) lateinit var stateLayout: StateLayout
+  @BindView(R.id.liked_tweet_list) lateinit var recyclerView: RecyclerView
+
   private val userId: Long by lazy { intent.extras.getLong("userId") }
 
   private var isLoading = false
@@ -56,6 +58,7 @@ class UserTweetActivity : BaseActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.user_tweet_activity)
+    ButterKnife.bind(this)
 
     DaggerComponent.builder()
         .appComponent(App.component(this))

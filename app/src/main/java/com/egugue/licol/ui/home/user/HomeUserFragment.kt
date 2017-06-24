@@ -8,7 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import butterknife.bindView
+import butterknife.BindView
+import butterknife.ButterKnife
 import com.egugue.licol.R
 import com.egugue.licol.application.user.UserAppService
 import com.egugue.licol.common.extensions.LoadMoreListener
@@ -43,9 +44,10 @@ class HomeUserFragment : RxFragment() {
   private var page: Int = 1
   private var isLoading = false
   private var hasLoadedItems = false
-  private val stateLayout: StateLayout by bindView(R.id.home_user_state_layout)
-  private val listView: RecyclerView by bindView(R.id.home_user_list)
-  private val errorView: TextView by bindView(R.id.home_user_error_state)
+
+  @BindView(R.id.home_user_state_layout) lateinit var stateLayout: StateLayout
+  @BindView(R.id.home_user_list) lateinit var listView: RecyclerView
+  @BindView(R.id.home_user_error_state) lateinit var errorView: TextView
 
   override fun onAttach(context: Context) {
     super.onAttach(context)
@@ -54,7 +56,11 @@ class HomeUserFragment : RxFragment() {
   }
 
   override fun onCreateView(inf: LayoutInflater, container: ViewGroup?,
-      savedInstanceState: Bundle?): View = inf.inflate(R.layout.home_user_fragment, container, false)
+      savedInstanceState: Bundle?): View {
+    val view = inf.inflate(R.layout.home_user_fragment, container, false)
+    ButterKnife.bind(this, view)
+    return view
+  }
 
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

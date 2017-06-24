@@ -1,8 +1,6 @@
 package com.egugue.licol
 
 import android.os.StrictMode
-import android.view.Gravity
-import com.codemonkeylabs.fpslibrary.TinyDancer
 import com.facebook.stetho.Stetho
 import timber.log.Timber
 
@@ -19,9 +17,11 @@ class DebugApp : App() {
       // see https://github.com/facebook/stetho/issues/440
       Stetho.initializeWithDefaults(this)
 
+      /* TODO: when using AndroidStudio 3.0 canary3, throw an exception
       TinyDancer.create()
           .startingGravity(Gravity.BOTTOM)
           .show(this)
+          */
     }
 
     plantTimberTree()

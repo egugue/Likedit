@@ -7,7 +7,8 @@ import android.text.Spannable
 import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.TextView
-import butterknife.bindView
+import butterknife.BindView
+import butterknife.ButterKnife
 import com.egugue.licol.R
 import com.egugue.licol.common.extensions.toGone
 import com.egugue.licol.common.extensions.toVisible
@@ -21,15 +22,20 @@ import com.squareup.picasso.Picasso
  */
 class LikedTweetView(context: Context, attrs: AttributeSet) : ConstraintLayout(context, attrs) {
 
-  val userAvatarIv: ImageView by bindView(R.id.user_avatar)
-  val userNameTv: TextView by bindView(R.id.user_name)
-  val userScreenNameTv: TextView by bindView(R.id.user_screen_name)
-  val tweetTextTv: TextView by bindView(R.id.tweet_text)
-  val timestampTv: TextView by bindView(R.id.tweet_timestamp)
-  val photoIv: TweetImageView by bindView(R.id.tweet_photo)
+  @BindView(R.id.user_avatar) lateinit var userAvatarIv: ImageView
+  @BindView(R.id.user_name) lateinit var userNameTv: TextView
+  @BindView(R.id.user_screen_name) lateinit var userScreenNameTv: TextView
+  @BindView(R.id.tweet_text) lateinit var tweetTextTv: TextView
+  @BindView(R.id.tweet_timestamp) lateinit var timestampTv: TextView
+  @BindView(R.id.tweet_photo) lateinit var photoIv: TweetImageView
 
   val onLinkClickListener: OnLinkClickListener = { listener?.onLinkClicked(it) }
   var listener: OnItemClickListener? = null
+
+  override fun onFinishInflate() {
+    super.onFinishInflate()
+    ButterKnife.bind(this)
+  }
 
   /**
    * Bind the given args to this view
