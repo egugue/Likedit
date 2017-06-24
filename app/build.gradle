@@ -73,6 +73,12 @@ android {
             }
         }
     }
+    lintOptions {
+        abortOnError false
+        textReport true
+        textOutput 'stdout'
+        lintConfig file("lint.xml")
+    }
 }
 
 dependencies {
@@ -138,6 +144,9 @@ dependencies {
     compile 'com.jakewharton.timber:timber:4.5.1'
     compile('com.twitter.sdk.android:twitter:2.3.2@aar') {
         transitive = true
+    }
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+        transitive = true;
     }
 
     // debug
