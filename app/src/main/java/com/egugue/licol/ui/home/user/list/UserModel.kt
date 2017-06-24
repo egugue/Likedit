@@ -3,6 +3,8 @@ package com.egugue.licol.ui.home.user.list
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import butterknife.BindView
+import butterknife.ButterKnife
 import com.airbnb.epoxy.EpoxyHolder
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.egugue.licol.R
@@ -43,25 +45,21 @@ class UserModel(
   class Holder : EpoxyHolder() {
     lateinit var itemView: View
 
-    //@BindView(R.id.user_avatar)
+    @BindView(R.id.user_avatar)
     lateinit var avatarView: ImageView
 
-    //@BindView(R.id.user_name)
+    @BindView(R.id.user_name)
     lateinit var nameView: TextView
 
-    //@BindView(R.id.user_screen_name)
+    @BindView(R.id.user_screen_name)
     lateinit var screenNameView: TextView
 
-    //@BindView(R.id.user_liked_tweet_count)
+    @BindView(R.id.user_liked_tweet_count)
     lateinit var likedTweetCountView: TextView
 
     override fun bindView(itemView: View) {
       this.itemView = itemView
-      //ButterKnife.bind(this, itemView)
-      avatarView = itemView.findViewById(R.id.user_avatar)
-      nameView = itemView.findViewById(R.id.user_name)
-      screenNameView = itemView.findViewById(R.id.user_screen_name)
-      likedTweetCountView = itemView.findViewById(R.id.user_liked_tweet_count)
+      ButterKnife.bind(this, itemView)
     }
   }
 }
