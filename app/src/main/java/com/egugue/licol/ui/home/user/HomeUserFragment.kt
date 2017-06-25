@@ -12,10 +12,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.egugue.licol.R
 import com.egugue.licol.application.user.UserAppService
-import com.egugue.licol.common.extensions.LoadMoreListener
-import com.egugue.licol.common.extensions.addOnLoadMoreListener
-import com.egugue.licol.common.extensions.observeOnMain
-import com.egugue.licol.common.extensions.subscribeOnIo
+import com.egugue.licol.common.extensions.*
 import com.egugue.licol.ui.common.StateLayout
 import com.egugue.licol.ui.common.recyclerview.DividerItemDecoration
 import com.egugue.licol.ui.home.HomeActivity
@@ -72,11 +69,13 @@ class HomeUserFragment : RxFragment() {
     listView.adapter = listController.adapter
     listView.layoutManager = LinearLayoutManager(activity)
     listView.addItemDecoration(DividerItemDecoration(activity))
-    listView.addOnLoadMoreListener(object : LoadMoreListener {
-      override fun onLoadMore() = getMoreUserList()
+
+    listView.loadMoreEvent(object : LoadMorePredicate {
       override fun isLoading(): Boolean = isLoading
       override fun hasLoadedItems(): Boolean = hasLoadedItems
     })
+        .bindToLifecycle(this)
+        .subscribe { getMoreUserList() }
 
     listController.userClickListener = { startActivity(UserTweetActivity.createIntent(activity, it)) }
   }
