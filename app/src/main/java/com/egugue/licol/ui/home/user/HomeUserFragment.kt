@@ -38,7 +38,6 @@ class HomeUserFragment : RxFragment() {
   @Inject lateinit var appService: UserAppService
   @Inject lateinit var listController: UserController
 
-  private var page: Int = 1
   private var isLoading = false
   private var hasLoadedItems = false
 
@@ -62,7 +61,7 @@ class HomeUserFragment : RxFragment() {
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     initListView()
-    getMoreUserList()
+    getMoreUserList(page = 1)
   }
 
   private fun initListView() {
@@ -75,12 +74,12 @@ class HomeUserFragment : RxFragment() {
       override fun hasLoadedItems(): Boolean = hasLoadedItems
     })
         .bindToLifecycle(this)
-        .subscribe { getMoreUserList() }
+        .subscribe { getMoreUserList(page = it) }
 
     listController.userClickListener = { startActivity(UserTweetActivity.createIntent(activity, it)) }
   }
 
-  private fun getMoreUserList() {
+  private fun getMoreUserList(page: Int) {
     appService.getAllUsers(page = page, perPage = 20)
         .subscribeOnIo()
         .observeOnMain()
@@ -107,7 +106,6 @@ class HomeUserFragment : RxFragment() {
                   listController.requestModelBuild()
                 }
               } else {
-                page++
                 listController.setLoadingMoreVisibility(false)
                 listController.addData(userList)
                 listController.requestModelBuild()
