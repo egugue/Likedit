@@ -4,9 +4,8 @@ import android.view.View
 import com.airbnb.epoxy.EpoxyController
 import com.egugue.licol.domain.user.User
 import com.egugue.licol.ui.common.recyclerview.ProgressModel
-import javax.inject.Inject
 
-class UserController @Inject constructor() : EpoxyController() {
+class UserController : EpoxyController() {
 
   var userClickListener: ((User) -> Unit)? = null
 

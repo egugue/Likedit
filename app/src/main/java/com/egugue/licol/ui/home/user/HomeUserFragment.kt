@@ -37,8 +37,8 @@ class HomeUserFragment : RxFragment() {
   }
 
   @Inject lateinit var appService: UserAppService
-  @Inject lateinit var listController: UserController
 
+  lateinit var listController: UserController
   lateinit private var store: Store
   private val actions: Actions by lazy { Actions(appService, store) }
 
@@ -80,12 +80,13 @@ class HomeUserFragment : RxFragment() {
     super.onActivityCreated(savedInstanceState)
 
     if (savedInstanceState == null) {
-      actions.fetchMoreUserList(store.page(), perPage)
+      actions.fetchMoreUserList(store.nextPage(), perPage)
     }
   }
 
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
+    //TODO
     outState.putParcelable("foo", listView.layoutManager.onSaveInstanceState())
   }
 
@@ -104,6 +105,7 @@ class HomeUserFragment : RxFragment() {
   }
 
   private fun initListView() {
+    listController = UserController()
     listView.adapter = listController.adapter
     listView.layoutManager = LinearLayoutManager(activity)
     listView.addItemDecoration(DividerItemDecoration(activity))
@@ -132,8 +134,9 @@ class HomeUserFragment : RxFragment() {
       override fun isLoading(): Boolean = store.isLoadingMore.value //TODO
       override fun hasLoadedItems(): Boolean = store.hasLoadCompleted()
     })
+        .bindToLifecycle(this)
         .subscribe {
-          actions.fetchMoreUserList(store.page(), perPage)
+          actions.fetchMoreUserList(store.nextPage(), perPage)
         }
 
     listController.userClickListener = { startActivity(UserTweetActivity.createIntent(activity, it)) }

@@ -7,16 +7,18 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 class Store : ViewModel() {
   private var hasFirstLoadingCompleted: Boolean = false
   private var hasLoadCompleted: Boolean = false
-  private var page: Int = 1
+  private var nextPage: Int = 1
 
   val listData: BehaviorRelay<List<User>> = BehaviorRelay.createDefault(emptyList())
   val error: BehaviorRelay<String> = BehaviorRelay.create()
   val isLoadingMore: BehaviorRelay<Boolean> = BehaviorRelay.createDefault(false)
 
   fun hasLoadCompleted(): Boolean = hasLoadCompleted
-  fun page(): Int = page
+  fun nextPage(): Int = nextPage
 
   fun acceptListData(additional: List<User>) {
+    nextPage++
+
     if (additional.isEmpty()) {
       hasLoadCompleted = true
       return
@@ -24,7 +26,6 @@ class Store : ViewModel() {
 
     val newly = this.listData.value + additional
     this.listData.accept(newly)
-    page++
   }
 
   fun acceptError(error: Throwable) {

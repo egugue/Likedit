@@ -15,10 +15,13 @@ import javax.inject.Singleton
   @Provides @Singleton fun sqlBrite(): SqlBrite {
     return if (BuildConfig.DEBUG) {
       SqlBrite.Builder()
+          //.logger { /* do nothing */ }
           .logger { Timber.i(it) }
           .build()
     } else {
-      SqlBrite.Builder().build()
+      return SqlBrite.Builder()
+          .logger { /* do nothing */ }
+          .build()
     }
   }
 
