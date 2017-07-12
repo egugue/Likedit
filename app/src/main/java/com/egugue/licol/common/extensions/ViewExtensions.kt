@@ -4,6 +4,9 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.View.*
+import com.egugue.licol.common.Irrelevant
+import com.jakewharton.rxbinding2.support.v7.widget.scrollEvents
+import io.reactivex.Observable
 
 /**
  * Extensions for each [View]s
@@ -57,4 +60,39 @@ interface LoadMoreListener {
 
   /** Whether it has loaded all items or not */
   fun hasLoadedItems(): Boolean
+}
+
+/**
+ * Create an Observable which emits next page number when a subscriber should load more.
+ */
+fun RecyclerView.loadMoreEvent(predicate: LoadMorePredicate): Observable<Any> {
+  if (layoutManager !is LinearLayoutManager) {
+    throw IllegalStateException(
+        "layout manager must be LinearLayoutManager, but was ${layoutManager.javaClass.simpleName}")
+  }
+
+  return this.scrollEvents()
+      .filter {
+        if (predicate.isLoading() || predicate.hasLoadedItems()) {
+          false
+        } else {
+          val manager = layoutManager as LinearLayoutManager
+          val visibleCount = childCount
+          val totalCount = manager.itemCount
+          val firstPos = manager.findFirstVisibleItemPosition()
+          totalCount - visibleCount <= firstPos
+        }
+      }
+      .map { Irrelevant.get() }
+}
+
+/**
+ * @see loadMoreEvent
+ */
+interface LoadMorePredicate {
+  /** Whether it has loaded all items or not */
+  fun hasLoadedItems(): Boolean
+
+  /** Whether it is loading now or not */
+  fun isLoading(): Boolean
 }

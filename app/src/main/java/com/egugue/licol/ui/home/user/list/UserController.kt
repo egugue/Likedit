@@ -14,8 +14,8 @@ class UserController @Inject constructor() : EpoxyController() {
   private var userList: List<User> = emptyList()
   private var requireLoadingMore: Boolean = true
 
-  fun addData(l: List<User>) {
-    userList = ArrayList(userList + l)
+  fun setData(l: List<User>) {
+    userList = l
   }
 
   fun setLoadingMoreVisibility(requireLoadingMore: Boolean) {

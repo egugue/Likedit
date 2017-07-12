@@ -13,17 +13,11 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.egugue.licol.R
 import com.egugue.licol.application.search.SearchAppService
-import com.egugue.licol.application.search.Suggestions
-import com.egugue.licol.common.extensions.observeOnMain
 import com.egugue.licol.ui.common.base.BaseActivity
 import com.egugue.licol.ui.common.recyclerview.DividerItemDecoration
 import com.egugue.licol.ui.usertweet.UserTweetActivity
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.trello.rxlifecycle2.kotlin.bindToLifecycle
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import timber.log.Timber
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class SearchActivity : BaseActivity() {
@@ -80,12 +74,11 @@ class SearchActivity : BaseActivity() {
   private fun initSearchEditText() {
     // When user input search query.
     val query = RxTextView.afterTextChangeEvents(searchQueryView)
-        .bindToLifecycle(this)
-        .throttleLast(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
-        .map { event -> event.editable()!!.toString() }
-        .distinctUntilChanged()
 
-    query.toSuggestions()
+    query
+        .textChangeAction()
+        .toSuggestions(searchAppService)
+        .bindToLifecycle(this)
         .subscribe {
           listController.replaceWith(it)
           listController.requestModelBuild()
@@ -97,22 +90,8 @@ class SearchActivity : BaseActivity() {
         .bindToLifecycle(this)
         .subscribe { searchEvent ->
           val v = searchEvent.view()
-
           val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
           imm.hideSoftInputFromWindow(v.windowToken, 0)
         }
   }
-
-  private fun Observable<String>.toSuggestions(): Observable<Suggestions> = compose({
-    it.flatMap { query ->
-      if (query.length <= 2) {
-        Observable.just(Suggestions.empty())
-      } else {
-        searchAppService.getSearchSuggestions(query)
-            .doOnError { Timber.e(it) }
-            .onErrorReturn { Suggestions.empty() }
-            .observeOnMain()
-      }
-    }
-  })
 }
