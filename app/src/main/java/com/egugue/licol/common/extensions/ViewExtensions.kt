@@ -65,13 +65,12 @@ interface LoadMoreListener {
 /**
  * Create an Observable which emits next page number when a subscriber should load more.
  */
-fun RecyclerView.loadMoreEvent(predicate: LoadMorePredicate): Observable<Int> {
+fun RecyclerView.loadMoreEvent(predicate: LoadMorePredicate): Observable<Any> {
   if (layoutManager !is LinearLayoutManager) {
     throw IllegalStateException(
         "layout manager must be LinearLayoutManager, but was ${layoutManager.javaClass.simpleName}")
   }
 
-  var page = 2
   return this.scrollEvents()
       .filter {
         if (predicate.isLoading() || predicate.hasLoadedItems()) {
@@ -84,7 +83,7 @@ fun RecyclerView.loadMoreEvent(predicate: LoadMorePredicate): Observable<Int> {
           totalCount - visibleCount <= firstPos
         }
       }
-      .map { page++ }
+      .map { Irrelevant.get() }
 }
 
 /**
