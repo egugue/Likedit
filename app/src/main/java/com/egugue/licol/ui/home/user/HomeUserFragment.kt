@@ -1,5 +1,6 @@
 package com.egugue.licol.ui.home.user
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
+import butterknife.Unbinder
 import com.egugue.licol.R
 import com.egugue.licol.application.user.UserAppService
 import com.egugue.licol.common.extensions.*
@@ -20,7 +22,6 @@ import com.egugue.licol.ui.home.user.list.UserController
 import com.egugue.licol.ui.usertweet.UserTweetActivity
 import com.trello.rxlifecycle2.components.support.RxFragment
 import com.trello.rxlifecycle2.kotlin.bindToLifecycle
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -36,86 +37,108 @@ class HomeUserFragment : RxFragment() {
   }
 
   @Inject lateinit var appService: UserAppService
-  @Inject lateinit var listController: UserController
 
-  private var isLoading = false
-  private var hasLoadedItems = false
+  lateinit var listController: UserController
+  lateinit private var store: Store
+  private val actions: Actions by lazy { Actions(appService, store) }
 
-  @BindView(R.id.home_user_state_layout) lateinit var stateLayout: StateLayout
-  @BindView(R.id.home_user_list) lateinit var listView: RecyclerView
-  @BindView(R.id.home_user_error_state) lateinit var errorView: TextView
+  private val perPage = 20
+  lateinit private var unbinder: Unbinder
+
+  @BindView(R.id.home_user_state_layout)
+  lateinit var stateLayout: StateLayout
+
+  @BindView(R.id.home_user_list)
+  lateinit var listView: RecyclerView
+
+  @BindView(R.id.home_user_error_state)
+  lateinit var errorView: TextView
 
   override fun onAttach(context: Context) {
     super.onAttach(context)
     (activity as HomeActivity).component
         .inject(this)
+
+    store = ViewModelProviders.of(activity)[Store::class.java]
   }
 
   override fun onCreateView(inf: LayoutInflater, container: ViewGroup?,
-      savedInstanceState: Bundle?): View {
+                            savedInstanceState: Bundle?): View {
     val view = inf.inflate(R.layout.home_user_fragment, container, false)
-    ButterKnife.bind(this, view)
+    unbinder = ButterKnife.bind(this, view)
     return view
   }
 
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    stateLayout.showProgress()
     initListView()
-    getMoreUserList(page = 1)
+    initErrorView()
+  }
+
+  override fun onActivityCreated(savedInstanceState: Bundle?) {
+    super.onActivityCreated(savedInstanceState)
+
+    if (savedInstanceState == null) {
+      actions.fetchMoreUserList(store.nextPage(), perPage)
+    }
+  }
+
+  override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+    //TODO
+    outState.putParcelable("foo", listView.layoutManager.onSaveInstanceState())
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    unbinder.unbind()
+  }
+
+  private fun initErrorView() {
+    store.error
+        .bindToLifecycle(this)
+        .subscribe {
+          //TODO
+          stateLayout.showError()
+        }
   }
 
   private fun initListView() {
+    listController = UserController()
     listView.adapter = listController.adapter
     listView.layoutManager = LinearLayoutManager(activity)
     listView.addItemDecoration(DividerItemDecoration(activity))
 
-    listView.loadMoreEvent(object : LoadMorePredicate {
-      override fun isLoading(): Boolean = isLoading
-      override fun hasLoadedItems(): Boolean = hasLoadedItems
-    })
+    store.isLoadingMore
         .bindToLifecycle(this)
-        .subscribe { getMoreUserList(page = it) }
+        .subscribe {
+          listController.setLoadingMoreVisibility(it)
+          listController.requestModelBuild()
+        }
 
-    listController.userClickListener = { startActivity(UserTweetActivity.createIntent(activity, it)) }
-  }
-
-  private fun getMoreUserList(page: Int) {
-    appService.getAllUsers(page = page, perPage = 20)
-        .subscribeOnIo()
-        .observeOnMain()
+    store.listData
         .bindToLifecycle(this)
-        .doOnSubscribe {
-          isLoading = true
-          if (page == 1) {
-            stateLayout.showProgress()
+        .subscribe {
+          if (it.isEmpty()) {
+            stateLayout.showEmptyState()
           } else {
-            listController.setLoadingMoreVisibility(true)
+            listController.setData(it)
+            listController.setLoadingMoreVisibility(false)
             listController.requestModelBuild()
+            stateLayout.showContent()
           }
         }
-        .doOnEach { isLoading = false }
-        .subscribe(
-            { userList ->
 
-              if (userList.isEmpty()) {
-                hasLoadedItems = true
-                if (page == 1) {
-                  stateLayout.showEmptyState()
-                } else {
-                  listController.setLoadingMoreVisibility(false)
-                  listController.requestModelBuild()
-                }
-              } else {
-                listController.setLoadingMoreVisibility(false)
-                listController.addData(userList)
-                listController.requestModelBuild()
-                stateLayout.showContent()
-              }
-            },
-            { error ->
-              //TODO
-              Timber.e(error)
-            }
-        )
+    listView.loadMoreEvent(object : LoadMorePredicate {
+      override fun isLoading(): Boolean = store.isLoadingMore.value //TODO
+      override fun hasLoadedItems(): Boolean = store.hasLoadCompleted()
+    })
+        .bindToLifecycle(this)
+        .subscribe {
+          actions.fetchMoreUserList(store.nextPage(), perPage)
+        }
+
+    listController.userClickListener = { startActivity(UserTweetActivity.createIntent(activity, it)) }
   }
 }

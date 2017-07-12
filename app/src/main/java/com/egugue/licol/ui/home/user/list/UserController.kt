@@ -4,9 +4,8 @@ import android.view.View
 import com.airbnb.epoxy.EpoxyController
 import com.egugue.licol.domain.user.User
 import com.egugue.licol.ui.common.recyclerview.ProgressModel
-import javax.inject.Inject
 
-class UserController @Inject constructor() : EpoxyController() {
+class UserController : EpoxyController() {
 
   var userClickListener: ((User) -> Unit)? = null
 
@@ -14,8 +13,8 @@ class UserController @Inject constructor() : EpoxyController() {
   private var userList: List<User> = emptyList()
   private var requireLoadingMore: Boolean = true
 
-  fun addData(l: List<User>) {
-    userList = ArrayList(userList + l)
+  fun setData(l: List<User>) {
+    userList = l
   }
 
   fun setLoadingMoreVisibility(requireLoadingMore: Boolean) {
