@@ -2,8 +2,8 @@ package com.egugue.licol.data.sqlite.lib
 
 import android.database.Cursor
 import com.egugue.licol.data.sqlite.user.UserEntity
-import com.squareup.sqlbrite.BriteDatabase
-import com.squareup.sqlbrite.QueryObservable
+import com.squareup.sqlbrite2.BriteDatabase
+import com.squareup.sqlbrite2.QueryObservable
 import com.squareup.sqldelight.SqlDelightStatement
 
 /**

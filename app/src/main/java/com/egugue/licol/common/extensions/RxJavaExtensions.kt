@@ -1,6 +1,5 @@
 package com.egugue.licol.common.extensions
 
-import hu.akarnokd.rxjava.interop.RxJavaInterop
 import io.reactivex.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -51,9 +50,6 @@ fun <T> Observable<T>.onErrorReturnOrJustThrow(
     }
   }
 })
-
-fun <T> rx.Observable<T>.toV2Observable(): Observable<T> =
-    RxJavaInterop.toV2Observable(this)
 
 /**
  * A extension to apply SAM conversion

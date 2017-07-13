@@ -1,7 +1,7 @@
 package com.egugue.licol.testutil
 
 import com.egugue.licol.data.sqlite.briteDatabaseForTest
-import com.squareup.sqlbrite.BriteDatabase
+import com.squareup.sqlbrite2.BriteDatabase
 import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement

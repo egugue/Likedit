@@ -1,13 +1,13 @@
 package com.egugue.licol.data.sqlite.likedtweet
 
+import android.annotation.SuppressLint
 import com.egugue.licol.common.AllOpen
 import com.egugue.licol.common.Contract
-import com.egugue.licol.common.extensions.toV2Observable
 import com.egugue.licol.data.sqlite.lib.SqliteScripts
 import com.egugue.licol.data.sqlite.lib.createQuery
 import com.egugue.licol.data.sqlite.lib.toLimitAndOffset
 import com.egugue.licol.data.sqlite.lib.transaction
-import com.squareup.sqlbrite.BriteDatabase
+import com.squareup.sqlbrite2.BriteDatabase
 import io.reactivex.Observable
 import javax.inject.Inject
 
@@ -15,6 +15,7 @@ import javax.inject.Inject
  * A gateway that handles data via mainly tweet table.
  */
 @AllOpen
+@SuppressLint("CheckResult")
 class LikedTweetTableGateway @Inject constructor(
     private val db: BriteDatabase
 ) {
@@ -27,14 +28,12 @@ class LikedTweetTableGateway @Inject constructor(
 
     return db.createQuery(stmt)
         .mapToList { FullLikedTweetEntity.MAPPER.map(it) }
-        .toV2Observable()
   }
 
   fun selectIdByUserIds(userIdList: List<Long>): Observable<List<LikedTweetIdAndUserId>> {
     val stmt = LikedTweetEntity.FACTORY.select_id_by_user_ids(userIdList.toLongArray())
     return db.createQuery(stmt)
         .mapToList { LikedTweetIdAndUserId.MAPPER.map(it) }
-        .toV2Observable()
   }
 
   /**
@@ -53,7 +52,6 @@ class LikedTweetTableGateway @Inject constructor(
 
     return db.createQuery(stmt)
         .mapToList { FullLikedTweetEntity.MAPPER.map(it) }
-        .toV2Observable()
   }
 
   /**
@@ -71,7 +69,6 @@ class LikedTweetTableGateway @Inject constructor(
 
     return db.createQuery(stmt)
         .mapToList { FullLikedTweetEntity.MAPPER.map(it) }
-        .toV2Observable()
   }
 
   fun selectByUserId(userId: Long, page: Int, perPage: Int): Observable<List<FullLikedTweetEntity>> {
@@ -80,7 +77,6 @@ class LikedTweetTableGateway @Inject constructor(
 
     return db.createQuery(stmt)
         .mapToList { FullLikedTweetEntity.MAPPER.map(it) }
-        .toV2Observable()
   }
 
   /**

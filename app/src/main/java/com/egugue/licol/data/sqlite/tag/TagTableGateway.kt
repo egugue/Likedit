@@ -1,16 +1,17 @@
 package com.egugue.licol.data.sqlite.tag
 
+import android.annotation.SuppressLint
 import com.egugue.licol.common.None
-import com.egugue.licol.common.extensions.toV2Observable
 import com.egugue.licol.common.toOptional
 import com.egugue.licol.data.sqlite.lib.*
-import com.squareup.sqlbrite.BriteDatabase
+import com.squareup.sqlbrite2.BriteDatabase
 import io.reactivex.Observable
 import javax.inject.Inject
 
 /**
  * A gateway that handles data via mainly tag table.
  */
+@SuppressLint("CheckResult")
 class TagTableGateway @Inject constructor(
     private val db: BriteDatabase
 ) {
@@ -29,7 +30,6 @@ class TagTableGateway @Inject constructor(
         )
         .doOnNext { if (it is None) throw RuntimeException("No such tag which has id($id)") }
         .map { it.get() }
-        .toV2Observable()
   }
 
   fun selectAll(page: Int, perPage: Int): Observable<List<TagEntity>> {
@@ -38,7 +38,6 @@ class TagTableGateway @Inject constructor(
     val stmt = TagEntity.FACTORY.select_all(limit, offset)
     return db.createQuery(stmt)
         .mapToList { TagEntity.FACTORY.select_allMapper().map(it) }
-        .toV2Observable()
   }
 
   /**
@@ -51,7 +50,6 @@ class TagTableGateway @Inject constructor(
 
     return db.createQuery(stmt)
         .mapToList { TagEntity.FACTORY.search_by_nameMapper().map(it) }
-        .toV2Observable()
   }
 
   /**

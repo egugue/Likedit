@@ -7,7 +7,7 @@ import com.egugue.licol.data.sqlite.lib.transaction
 import com.egugue.licol.data.sqlite.relation.TweetTagRelation
 import com.egugue.licol.data.sqlite.relation.TweetTagRelationTableGateway
 import com.egugue.licol.domain.tag.Tag
-import com.squareup.sqlbrite.BriteDatabase
+import com.squareup.sqlbrite2.BriteDatabase
 import io.reactivex.Observable
 import javax.inject.Inject
 
