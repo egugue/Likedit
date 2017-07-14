@@ -1,12 +1,12 @@
 package com.egugue.licol.data.sqlite.relation
 
+import android.annotation.SuppressLint
 import com.egugue.licol.common.AllOpen
 import com.egugue.licol.common.Contract
-import com.egugue.licol.common.extensions.toV2Observable
 import com.egugue.licol.data.sqlite.lib.SqliteScripts
 import com.egugue.licol.data.sqlite.lib.createQuery
 import com.egugue.licol.data.sqlite.lib.transaction
-import com.squareup.sqlbrite.BriteDatabase
+import com.squareup.sqlbrite2.BriteDatabase
 import io.reactivex.Observable
 import javax.inject.Inject
 
@@ -16,6 +16,7 @@ import javax.inject.Inject
  * NOTE: Tweet of this class name means "Liked Tweet".
  */
 @AllOpen
+@SuppressLint("CheckResult")
 class TweetTagRelationTableGateway @Inject constructor(
     private val db: BriteDatabase
 ) {
@@ -30,7 +31,6 @@ class TweetTagRelationTableGateway @Inject constructor(
 
     return db.createQuery(stmt)
         .mapToList { TweetTagRelation.FACTORY.select_by_tweet_id_listMapper().map(it) }
-        .toV2Observable()
   }
 
   /**
@@ -43,7 +43,6 @@ class TweetTagRelationTableGateway @Inject constructor(
 
     return db.createQuery(stmt)
         .mapToList { TweetTagRelation.FACTORY.select_by_tag_id_listMapper().map(it) }
-        .toV2Observable()
   }
 
   /**
@@ -54,7 +53,6 @@ class TweetTagRelationTableGateway @Inject constructor(
 
     return db.createQuery(stmt)
         .mapToList { TweetTagRelation.FACTORY.select_allMapper().map(it) }
-        .toV2Observable()
   }
 
   /**

@@ -6,7 +6,7 @@ import com.egugue.licol.data.sqlite.tag.TagEntity
 import com.egugue.licol.data.sqlite.likedtweet.LikedTweetEntity
 import com.egugue.licol.data.sqlite.likedtweet.QuotedTweetEntity
 import com.egugue.licol.data.sqlite.user.UserEntity
-import com.squareup.sqlbrite.BriteDatabase
+import com.squareup.sqlbrite2.BriteDatabase
 
 /**
  * A collection which has a lot of simple SQLite scripts.

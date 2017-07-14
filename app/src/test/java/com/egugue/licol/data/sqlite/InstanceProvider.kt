@@ -8,15 +8,15 @@ import com.egugue.licol.data.sqlite.tag.TagSqliteDao
 import com.egugue.licol.data.sqlite.tag.TagTableGateway
 import com.egugue.licol.data.sqlite.user.UserSqliteDao
 import com.egugue.licol.data.sqlite.user.UserTableGateway
-import com.squareup.sqlbrite.BriteDatabase
-import com.squareup.sqlbrite.SqlBrite
+import com.squareup.sqlbrite2.BriteDatabase
+import com.squareup.sqlbrite2.SqlBrite
+import io.reactivex.schedulers.Schedulers
 import org.robolectric.RuntimeEnvironment
-import rx.schedulers.Schedulers
 
 fun briteDatabaseForTest(): BriteDatabase =
     SqlBrite.Builder().build().wrapDatabaseHelper(
         SqliteOpenHelper(RuntimeEnvironment.application),
-        Schedulers.immediate())
+        Schedulers.trampoline())
 
 fun likedTweetTableGateway(db: BriteDatabase) = LikedTweetTableGateway(db)
 fun userTableGateway(db: BriteDatabase) = UserTableGateway(db)

@@ -60,9 +60,7 @@ android {
             java.srcDir sharedTestDir
         }
     }
-    //TODO: remove when only use rxjava2
     packagingOptions {
-        exclude 'META-INF/rxjava.properties'
         exclude 'META-INF/app_debug.kotlin_module'
     }
     testOptions {
@@ -103,7 +101,7 @@ dependencies {
     compile "com.google.firebase:firebase-crash:$firebaseVer"
 
     // RxJava
-    compile 'io.reactivex.rxjava2:rxjava:2.0.9'
+    compile 'io.reactivex.rxjava2:rxjava:2.1.0'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
     compile 'com.jakewharton.rxbinding2:rxbinding-recyclerview-v7-kotlin:2.0.0'
@@ -138,8 +136,7 @@ dependencies {
     // SQLite
     // If it is missing, we can see error on CI https://github.com/square/sqldelight/issues/563
     compile 'com.squareup.sqldelight:runtime:0.6.1'
-    compile 'com.squareup.sqlbrite:sqlbrite:1.1.1'
-    compile "com.github.akarnokd:rxjava2-interop:0.9.6"
+    compile 'com.squareup.sqlbrite2:sqlbrite:2.0.0'
 
     // Tools
     compile 'com.jakewharton.threetenabp:threetenabp:1.0.5'

@@ -5,7 +5,7 @@ import com.egugue.licol.common.AllOpen
 import com.egugue.licol.data.sqlite.lib.transaction
 import com.egugue.licol.data.sqlite.likedtweet.LikedTweetTableGateway
 import com.egugue.licol.data.sqlite.user.UserTableGateway
-import com.squareup.sqlbrite.BriteDatabase
+import com.squareup.sqlbrite2.BriteDatabase
 import com.twitter.sdk.android.core.models.Tweet
 import javax.inject.Inject
 

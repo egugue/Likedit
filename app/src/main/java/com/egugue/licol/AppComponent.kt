@@ -9,7 +9,7 @@ import com.egugue.licol.domain.likedtweet.LikedTweetRepository
 import com.egugue.licol.domain.tag.TagRepository
 import com.egugue.licol.domain.user.UserRepository
 import com.egugue.licol.ui.auth.AuthActivity
-import com.squareup.sqlbrite.BriteDatabase
+import com.squareup.sqlbrite2.BriteDatabase
 import dagger.Component
 import javax.inject.Singleton
 
