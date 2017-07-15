@@ -1,5 +1,6 @@
 package com.egugue.licol.common.extensions
 
+import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -12,6 +13,8 @@ import io.reactivex.schedulers.Schedulers
 
 fun <T> Observable<T>.subscribeOnIo(): Observable<T> = subscribeOn(Schedulers.io())
 fun <T> Observable<T>.observeOnMain(): Observable<T> = observeOn(AndroidSchedulers.mainThread())
+
+fun <T> BehaviorRelay<T>.hasNotValue() = !hasValue()
 
 /**
  * A extension to apply SAM conversion

@@ -1,10 +1,12 @@
 package com.egugue.licol.ui.usertweet
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.egugue.licol.App
@@ -20,7 +22,6 @@ import com.egugue.licol.ui.common.customtabs.CustomTabActivityHelper
 import com.egugue.licol.ui.common.recyclerview.DividerItemDecoration
 import com.egugue.licol.ui.home.liked.LikedTweetListController
 import com.trello.rxlifecycle2.kotlin.bindToLifecycle
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -41,19 +42,28 @@ class UserTweetActivity : BaseActivity() {
     }
   }
 
-  @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
-  @BindView(R.id.state_layout) lateinit var stateLayout: StateLayout
-  @BindView(R.id.liked_tweet_list) lateinit var recyclerView: RecyclerView
-
+  private val perPage = 20
   private val userId: Long by lazy { intent.extras.getLong("userId") }
 
-  private var isLoading = false
-  private var hasLoadedItems = false
-  private var page = 1
-
   @Inject lateinit var likedTweetAppService: LikedTweetAppService
-  @Inject lateinit var listController: LikedTweetListController
   @Inject lateinit var customTabHelper: CustomTabActivityHelper
+
+  private val store: Store by lazy { ViewModelProviders.of(this)[Store::class.java] }
+  private val actions: Actions by lazy { Actions(likedTweetAppService, store) }
+
+  lateinit var listController: LikedTweetListController
+
+  @BindView(R.id.toolbar)
+  lateinit var toolbar: Toolbar
+
+  @BindView(R.id.state_layout)
+  lateinit var stateLayout: StateLayout
+
+  @BindView(R.id.liked_tweet_list)
+  lateinit var recyclerView: RecyclerView
+
+  @BindView(R.id.home_user_error_state)
+  lateinit var errorView: TextView
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -65,10 +75,15 @@ class UserTweetActivity : BaseActivity() {
         .build()
         .inject(this)
 
+    stateLayout.showProgress()
     initToolbar()
     initListView()
-    loadMoreLikedTweet()
+    initErrorView()
     customTabHelper.setUpCustomTabService(this)
+
+    if (store.requireData()) {
+      actions.loadListItem(userId, store.nextPage(), perPage)
+    }
   }
 
   private fun initToolbar() {
@@ -76,19 +91,49 @@ class UserTweetActivity : BaseActivity() {
     initBackToolbar(toolbar)
   }
 
+  private fun initErrorView() {
+    store.error
+        .bindToLifecycle(this)
+        .subscribe {
+          //TODO
+          stateLayout.showError()
+        }
+  }
+
   private fun initListView() {
+    listController = LikedTweetListController()
     recyclerView.adapter = listController.adapter
     recyclerView.addItemDecoration(DividerItemDecoration(this))
-    recyclerView.addOnLoadMoreListener(object : LoadMoreListener {
-      override fun onLoadMore() = loadMoreLikedTweet()
-      override fun isLoading() = isLoading
-      override fun hasLoadedItems() = hasLoadedItems
+    recyclerView.loadMoreEvent(object : LoadMorePredicate {
+      override fun isLoading(): Boolean = store.isLoadingMore.value
+      override fun hasLoadedItems(): Boolean = store.hasLoadCompleted()
     })
+        .bindToLifecycle(this)
+        .subscribe { actions.loadListItem(userId, store.nextPage(), perPage) }
+
+    store.listData
+        .bindToLifecycle(this)
+        .subscribe {
+          if (it.isEmpty()) {
+            stateLayout.showEmptyState()
+          } else {
+            listController.setData(it)
+            listController.setLoadingMoreVisibility(false)
+            listController.requestModelBuild()
+            stateLayout.showContent()
+          }
+        }
+
+    store.isLoadingMore
+        .bindToLifecycle(this)
+        .subscribe {
+          listController.setLoadingMoreVisibility(it)
+          listController.requestModelBuild()
+        }
 
     listController.callbacks = object : LikedTweetListController.AdapterCallbacks {
-      override fun onTweetLinkClicked(url: String) {
-        openLink(url, customTabHelper.session)
-      }
+      override fun onTweetLinkClicked(url: String) =
+          openLink(url, customTabHelper.session)
 
       override fun onWholeTweetClicked(likedTweet: LikedTweet, user: User) {
         toast("on whole tweet clicked")
@@ -101,43 +146,5 @@ class UserTweetActivity : BaseActivity() {
         toast("on photo clicked")
       }
     }
-  }
-
-  private fun loadMoreLikedTweet() {
-    assert(userId != -1L)
-
-    likedTweetAppService.getAllLikedTweetsByUserId(userId, page, 50)
-        .bindToLifecycle(this)
-        .subscribeOnIo()
-        .observeOnMain()
-        .doOnSubscribe {
-          isLoading = true
-          if (page == 1) {
-            stateLayout.showProgress()
-          } else {
-            listController.setLoadingMoreVisibility(true)
-          }
-        }
-        .doOnEach { isLoading = false }
-        .subscribe(
-            { payloadList ->
-              listController.setLoadingMoreVisibility(false)
-
-              if (payloadList.isEmpty()) {
-                hasLoadedItems = true
-                if (page == 1) {
-                  stateLayout.showEmptyState()
-                }
-              } else {
-                page++
-                listController.addData(payloadList)
-                stateLayout.showContent()
-              }
-            },
-            { error ->
-              //TODO
-              Timber.e(error)
-            }
-        )
   }
 }

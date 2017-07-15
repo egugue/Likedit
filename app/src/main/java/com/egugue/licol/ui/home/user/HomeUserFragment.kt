@@ -63,7 +63,7 @@ class HomeUserFragment : RxFragment() {
   }
 
   override fun onCreateView(inf: LayoutInflater, container: ViewGroup?,
-                            savedInstanceState: Bundle?): View {
+      savedInstanceState: Bundle?): View {
     val view = inf.inflate(R.layout.home_user_fragment, container, false)
     unbinder = ButterKnife.bind(this, view)
     return view
@@ -79,15 +79,9 @@ class HomeUserFragment : RxFragment() {
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
 
-    if (savedInstanceState == null) {
+    if (store.requireData()) {
       actions.fetchMoreUserList(store.nextPage(), perPage)
     }
-  }
-
-  override fun onSaveInstanceState(outState: Bundle) {
-    super.onSaveInstanceState(outState)
-    //TODO
-    outState.putParcelable("foo", listView.layoutManager.onSaveInstanceState())
   }
 
   override fun onDestroyView() {
@@ -131,7 +125,7 @@ class HomeUserFragment : RxFragment() {
         }
 
     listView.loadMoreEvent(object : LoadMorePredicate {
-      override fun isLoading(): Boolean = store.isLoadingMore.value //TODO
+      override fun isLoading(): Boolean = store.isLoadingMore.value
       override fun hasLoadedItems(): Boolean = store.hasLoadCompleted()
     })
         .bindToLifecycle(this)

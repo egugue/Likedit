@@ -1,5 +1,6 @@
 package com.egugue.licol.data.sqlite
 
+import android.annotation.SuppressLint
 import com.egugue.licol.BuildConfig
 import com.egugue.licol.data.sqlite.lib.SqliteOpenHelper
 import com.squareup.sqlbrite2.BriteDatabase
@@ -12,14 +13,15 @@ import javax.inject.Singleton
 
 @Module class SqliteModule {
 
+  @SuppressLint("CheckResult")
   @Provides @Singleton fun sqlBrite(): SqlBrite {
     return if (BuildConfig.DEBUG) {
       SqlBrite.Builder()
-          //.logger { /* do nothing */ }
-          .logger { Timber.i(it) }
+          .logger { /* do nothing */ }
+          //.logger { Timber.i(it) }
           .build()
     } else {
-      return SqlBrite.Builder()
+      SqlBrite.Builder()
           .logger { /* do nothing */ }
           .build()
     }

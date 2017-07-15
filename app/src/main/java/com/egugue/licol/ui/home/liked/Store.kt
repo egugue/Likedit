@@ -1,16 +1,16 @@
-package com.egugue.licol.ui.home.user
+package com.egugue.licol.ui.home.liked
 
 import android.arch.lifecycle.ViewModel
+import com.egugue.licol.application.likedtweet.LikedTweetPayload
 import com.egugue.licol.common.extensions.hasNotValue
-import com.egugue.licol.domain.user.User
 import com.jakewharton.rxrelay2.BehaviorRelay
 
-class Store : ViewModel() {
+class Store: ViewModel() {
   private var hasFirstLoadingCompleted: Boolean = false
   private var hasLoadCompleted: Boolean = false
   private var nextPage: Int = 1
 
-  val listData: BehaviorRelay<List<User>> = BehaviorRelay.create()
+  val listData: BehaviorRelay<List<LikedTweetPayload>> = BehaviorRelay.create()
   val error: BehaviorRelay<String> = BehaviorRelay.create()
   val isLoadingMore: BehaviorRelay<Boolean> = BehaviorRelay.createDefault(false)
 
@@ -18,7 +18,7 @@ class Store : ViewModel() {
   fun hasLoadCompleted(): Boolean = hasLoadCompleted
   fun nextPage(): Int = nextPage
 
-  fun acceptListData(additional: List<User>) {
+  fun acceptListData(additional: List<LikedTweetPayload>) {
     nextPage++
 
     if (additional.isEmpty()) {
@@ -45,4 +45,5 @@ class Store : ViewModel() {
       isLoadingMore.accept(isLoading)
     }
   }
+
 }
