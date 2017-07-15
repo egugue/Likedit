@@ -7,12 +7,11 @@ import com.egugue.licol.domain.tweet.media.Photo
 import com.egugue.licol.domain.user.User
 import com.egugue.licol.ui.common.recyclerview.ProgressModel
 import com.egugue.licol.ui.common.tweet.LikedTweetView
-import javax.inject.Inject
 
 /**
  * An [EpoxyController] which handles [LikedTweetPayload]
  */
-class LikedTweetListController @Inject constructor() : EpoxyController() {
+class LikedTweetListController : EpoxyController() {
 
   private val progressModel = ProgressModel()
 
@@ -20,8 +19,8 @@ class LikedTweetListController @Inject constructor() : EpoxyController() {
   private var requireLoadingMore: Boolean = true
   var callbacks: AdapterCallbacks? = null
 
-  fun addData(l: List<LikedTweetPayload>) {
-    tweetUserList = ArrayList(tweetUserList + l)
+  fun setData(l: List<LikedTweetPayload>) {
+    tweetUserList = l
     requestModelBuild()
   }
 
