@@ -26,9 +26,9 @@ class Store :ViewModel() {
       return
     }
 
-    val stored = this.listData.value ?: emptyList()
+    val stored = listData.value ?: emptyList()
     val newly = stored + additional
-    this.listData.accept(newly)
+    listData.accept(newly)
   }
 
   fun acceptError(error: Throwable) {
