@@ -1,6 +1,7 @@
 package com.egugue.licol.ui.home.user
 
 import android.arch.lifecycle.ViewModel
+import com.egugue.licol.common.extensions.hasNotValue
 import com.egugue.licol.domain.user.User
 import com.jakewharton.rxrelay2.BehaviorRelay
 
@@ -9,10 +10,11 @@ class Store : ViewModel() {
   private var hasLoadCompleted: Boolean = false
   private var nextPage: Int = 1
 
-  val listData: BehaviorRelay<List<User>> = BehaviorRelay.createDefault(emptyList())
+  val listData: BehaviorRelay<List<User>> = BehaviorRelay.create()
   val error: BehaviorRelay<String> = BehaviorRelay.create()
   val isLoadingMore: BehaviorRelay<Boolean> = BehaviorRelay.createDefault(false)
 
+  fun requireData(): Boolean = listData.hasNotValue()
   fun hasLoadCompleted(): Boolean = hasLoadCompleted
   fun nextPage(): Int = nextPage
 
@@ -24,7 +26,8 @@ class Store : ViewModel() {
       return
     }
 
-    val newly = this.listData.value + additional
+    val stored = this.listData.value ?: emptyList()
+    val newly = stored + additional
     this.listData.accept(newly)
   }
 
@@ -42,5 +45,4 @@ class Store : ViewModel() {
       isLoadingMore.accept(isLoading)
     }
   }
-
 }
