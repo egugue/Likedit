@@ -3,6 +3,7 @@ package com.egugue.licol.ui.home.user
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -16,7 +17,6 @@ import com.egugue.licol.R
 import com.egugue.licol.application.user.UserAppService
 import com.egugue.licol.common.extensions.*
 import com.egugue.licol.ui.common.StateLayout
-import com.egugue.licol.ui.common.recyclerview.DividerItemDecoration
 import com.egugue.licol.ui.home.HomeActivity
 import com.egugue.licol.ui.home.user.list.UserController
 import com.egugue.licol.ui.usertweet.UserTweetActivity
@@ -38,7 +38,6 @@ class HomeUserFragment : RxFragment() {
 
   @Inject lateinit var appService: UserAppService
 
-  lateinit var listController: UserController
   lateinit private var store: Store
   private val actions: Actions by lazy { Actions(appService, store) }
 
@@ -99,10 +98,11 @@ class HomeUserFragment : RxFragment() {
   }
 
   private fun initListView() {
-    listController = UserController()
+    val listController = UserController()
+    val layoutManager = LinearLayoutManager(activity)
     listView.adapter = listController.adapter
-    listView.layoutManager = LinearLayoutManager(activity)
-    listView.addItemDecoration(DividerItemDecoration(activity))
+    listView.layoutManager = layoutManager
+    listView.addItemDecoration(DividerItemDecoration(activity, layoutManager.orientation))
 
     store.isLoadingMore
         .bindToLifecycle(this)

@@ -21,12 +21,10 @@ class LikedTweetListController : EpoxyController() {
 
   fun setData(l: List<LikedTweetPayload>) {
     tweetUserList = l
-    requestModelBuild()
   }
 
   fun setLoadingMoreVisibility(requireLoadingMore: Boolean) {
     this.requireLoadingMore = requireLoadingMore
-    requestModelBuild()
   }
 
   override fun buildModels() {

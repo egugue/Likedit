@@ -3,6 +3,7 @@ package com.egugue.licol.ui.search
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
@@ -14,7 +15,6 @@ import butterknife.ButterKnife
 import com.egugue.licol.R
 import com.egugue.licol.application.search.SearchAppService
 import com.egugue.licol.ui.common.base.BaseActivity
-import com.egugue.licol.ui.common.recyclerview.DividerItemDecoration
 import com.egugue.licol.ui.usertweet.UserTweetActivity
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.trello.rxlifecycle2.kotlin.bindToLifecycle
@@ -63,9 +63,10 @@ class SearchActivity : BaseActivity() {
   }
 
   private fun initList() {
+    val layoutManager = LinearLayoutManager(this)
     listView.adapter = listController.adapter
-    listView.layoutManager = LinearLayoutManager(this)
-    listView.addItemDecoration(DividerItemDecoration(this))
+    listView.layoutManager = layoutManager
+    listView.addItemDecoration(DividerItemDecoration(this, layoutManager.orientation))
     listController.userClickListener = {
       startActivity(UserTweetActivity.createIntent(this, it))
     }
