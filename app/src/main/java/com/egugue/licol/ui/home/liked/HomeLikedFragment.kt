@@ -45,7 +45,7 @@ class HomeLikedFragment : RxFragment() {
   private val store: Store by lazy { ViewModelProviders.of(activity)[Store::class.java] }
   private val actions: Actions by lazy { Actions(likedTweetAppService, store) }
 
-  lateinit var unbinder: Unbinder
+  lateinit private var unbinder: Unbinder
 
   @BindView(R.id.home_liked_state_layout)
   lateinit var stateLayout: StateLayout
@@ -63,9 +63,9 @@ class HomeLikedFragment : RxFragment() {
         .inject(this)
   }
 
-  override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
-    val view = inflater!!.inflate(R.layout.home_liked_fragment, container, false)
+    val view = inflater.inflate(R.layout.home_liked_fragment, container, false)
     unbinder = ButterKnife.bind(this, view)
     return view
   }
@@ -85,8 +85,8 @@ class HomeLikedFragment : RxFragment() {
   }
 
   override fun onDestroyView() {
-    super.onDestroyView()
     unbinder.unbind()
+    super.onDestroyView()
   }
 
   private fun initError() {

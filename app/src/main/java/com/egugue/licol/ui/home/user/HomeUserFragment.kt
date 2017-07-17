@@ -38,7 +38,7 @@ class HomeUserFragment : RxFragment() {
 
   @Inject lateinit var appService: UserAppService
 
-  lateinit private var store: Store
+  private val store: Store by lazy { ViewModelProviders.of(activity)[Store::class.java] }
   private val actions: Actions by lazy { Actions(appService, store) }
 
   private val perPage = 20
@@ -57,8 +57,6 @@ class HomeUserFragment : RxFragment() {
     super.onAttach(context)
     (activity as HomeActivity).component
         .inject(this)
-
-    store = ViewModelProviders.of(activity)[Store::class.java]
   }
 
   override fun onCreateView(inf: LayoutInflater, container: ViewGroup?,
@@ -77,15 +75,14 @@ class HomeUserFragment : RxFragment() {
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
-
     if (store.requireData()) {
       actions.fetchMoreUserList(store.nextPage(), perPage)
     }
   }
 
   override fun onDestroyView() {
-    super.onDestroyView()
     unbinder.unbind()
+    super.onDestroyView()
   }
 
   private fun initErrorView() {
