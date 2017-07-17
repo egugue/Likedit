@@ -38,7 +38,7 @@ class HomeActivity : BaseActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     component.inject(this)
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_home)
+    setContentView(R.layout.home_activity)
     ButterKnife.bind(this)
 
     setSupportActionBar(toolbar)

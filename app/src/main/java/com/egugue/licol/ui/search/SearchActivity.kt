@@ -38,7 +38,7 @@ class SearchActivity : BaseActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_search)
+    setContentView(R.layout.search_activity)
     ButterKnife.bind(this)
 
     SearchComponent.Initializer

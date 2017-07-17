@@ -65,7 +65,7 @@ class HomeLikedFragment : RxFragment() {
 
   override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
-    val view = inflater!!.inflate(R.layout.fragment_home_liked, container, false)
+    val view = inflater!!.inflate(R.layout.home_liked_fragment, container, false)
     unbinder = ButterKnife.bind(this, view)
     return view
   }
