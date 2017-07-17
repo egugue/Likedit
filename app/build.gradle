@@ -8,12 +8,6 @@ apply plugin: 'kotlin-allopen'
 apply plugin: 'jacoco-android'
 apply from: rootProject.file('gradle/fabric-properties-generate.gradle')
 
-repositories {
-    mavenCentral()
-    maven { url "https://maven.google.com" }
-    maven { url 'https://maven.fabric.io/public' }
-}
-
 allOpen {
     annotation("com.egugue.licol.common.AllOpen")
 }
@@ -90,18 +84,19 @@ dependencies {
     compile "com.android.support:customtabs:$supportLibVer"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
-    def archVer = "1.0.0-alpha3"
+    // https://developer.android.com/topic/libraries/architecture/release-notes.html
+    def archVer = "1.0.0-alpha4"
     compile "android.arch.lifecycle:runtime:$archVer"
     compile "android.arch.lifecycle:extensions:$archVer"
     annotationProcessor "android.arch.lifecycle:compiler:$archVer"
 
     // firebase https://firebase.google.com/support/release-notes/android#20170428
-    def firebaseVer = '10.2.4'
+    def firebaseVer = '11.0.0'
     compile "com.google.firebase:firebase-core:$firebaseVer"
     compile "com.google.firebase:firebase-crash:$firebaseVer"
 
     // RxJava
-    compile 'io.reactivex.rxjava2:rxjava:2.1.0'
+    compile 'io.reactivex.rxjava2:rxjava:2.1.1'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
     compile 'com.jakewharton.rxbinding2:rxbinding-recyclerview-v7-kotlin:2.0.0'
@@ -112,8 +107,8 @@ dependencies {
     compile 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
 
     // Dagger
-    compile 'com.google.dagger:dagger:2.10'
-    kapt 'com.google.dagger:dagger-compiler:2.10'
+    compile 'com.google.dagger:dagger:2.11'
+    kapt 'com.google.dagger:dagger-compiler:2.11'
 
     // View
     def butterknifeVer = "8.6.0"
@@ -123,7 +118,7 @@ dependencies {
     compile 'com.airbnb.android:epoxy:2.1.0'
 
     // Network
-    compile 'com.squareup.okhttp3:okhttp:3.7.0'
+    compile 'com.squareup.okhttp3:okhttp:3.8.1'
 
     def retrofitVer = '2.2.0'
     compile "com.squareup.retrofit2:retrofit:$retrofitVer"
