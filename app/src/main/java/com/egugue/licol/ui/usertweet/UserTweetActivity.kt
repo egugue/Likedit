@@ -45,6 +45,7 @@ class UserTweetActivity : BaseActivity() {
 
   private val perPage = 20
   private val userId: Long by lazy { intent.extras.getLong("userId") }
+  private val userName: String by lazy { intent.extras.getString("userName") }
 
   @Inject lateinit var likedTweetAppService: LikedTweetAppService
   @Inject lateinit var customTabHelper: CustomTabActivityHelper
@@ -86,7 +87,7 @@ class UserTweetActivity : BaseActivity() {
   }
 
   private fun initToolbar() {
-    toolbar.title = intent.extras.getString("userName")
+    toolbar.title = userName
     initBackToolbar(toolbar)
   }
 
