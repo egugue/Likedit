@@ -36,7 +36,7 @@ class MainActivity : RxAppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_main)
+    setContentView(R.layout.main_activity)
     if (TwitterCore.getInstance().sessionManager.activeSession == null) {
       startActivity(AuthActivity.createIntent(this))
       finish()

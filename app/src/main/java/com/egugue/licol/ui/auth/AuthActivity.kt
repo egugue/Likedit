@@ -23,7 +23,7 @@ class AuthActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_auth)
+    setContentView(R.layout.auth_activity)
     loginButton = findViewById<TwitterLoginButton>(R.id.twitter_login_button)
 
     loginButton.callback = object : Callback<TwitterSession>() {

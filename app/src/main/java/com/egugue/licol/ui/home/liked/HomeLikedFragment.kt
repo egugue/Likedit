@@ -3,9 +3,9 @@ package com.egugue.licol.ui.home.liked
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +25,6 @@ import com.egugue.licol.domain.tweet.media.Photo
 import com.egugue.licol.domain.user.User
 import com.egugue.licol.ui.common.StateLayout
 import com.egugue.licol.ui.common.customtabs.CustomTabActivityHelper
-import com.egugue.licol.ui.common.recyclerview.DividerItemDecoration
 import com.egugue.licol.ui.home.HomeActivity
 import com.egugue.licol.ui.usertweet.UserTweetActivity
 import com.trello.rxlifecycle2.components.support.RxFragment
@@ -46,8 +45,7 @@ class HomeLikedFragment : RxFragment() {
   private val store: Store by lazy { ViewModelProviders.of(activity)[Store::class.java] }
   private val actions: Actions by lazy { Actions(likedTweetAppService, store) }
 
-  lateinit var listController: LikedTweetListController
-  lateinit var unbinder: Unbinder
+  lateinit private var unbinder: Unbinder
 
   @BindView(R.id.home_liked_state_layout)
   lateinit var stateLayout: StateLayout
@@ -65,9 +63,9 @@ class HomeLikedFragment : RxFragment() {
         .inject(this)
   }
 
-  override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
-    val view = inflater!!.inflate(R.layout.fragment_home_liked, container, false)
+    val view = inflater.inflate(R.layout.home_liked_fragment, container, false)
     unbinder = ButterKnife.bind(this, view)
     return view
   }
@@ -87,8 +85,8 @@ class HomeLikedFragment : RxFragment() {
   }
 
   override fun onDestroyView() {
-    super.onDestroyView()
     unbinder.unbind()
+    super.onDestroyView()
   }
 
   private fun initError() {
@@ -101,10 +99,11 @@ class HomeLikedFragment : RxFragment() {
   }
 
   private fun initListView() {
-    listController = LikedTweetListController()
+    val layoutManager = LinearLayoutManager(activity)
+    val listController = LikedTweetListController()
     recyclerView.adapter = listController.adapter
-    recyclerView.layoutManager = LinearLayoutManager(activity)
-    recyclerView.addItemDecoration(DividerItemDecoration(activity))
+    recyclerView.layoutManager = layoutManager
+    recyclerView.addItemDecoration(DividerItemDecoration(activity, layoutManager.orientation))
 
     store.listData
         .bindToLifecycle(this)
@@ -120,6 +119,7 @@ class HomeLikedFragment : RxFragment() {
         }
 
     store.isLoadingMore
+        .bindToLifecycle(this)
         .subscribe {
           listController.setLoadingMoreVisibility(it)
           listController.requestModelBuild()

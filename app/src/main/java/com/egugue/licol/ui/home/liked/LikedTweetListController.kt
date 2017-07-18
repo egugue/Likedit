@@ -16,17 +16,15 @@ class LikedTweetListController : EpoxyController() {
   private val progressModel = ProgressModel()
 
   private var tweetUserList: List<LikedTweetPayload> = emptyList()
-  private var requireLoadingMore: Boolean = true
+  private var requireLoadingMore: Boolean = false
   var callbacks: AdapterCallbacks? = null
 
   fun setData(l: List<LikedTweetPayload>) {
     tweetUserList = l
-    requestModelBuild()
   }
 
   fun setLoadingMoreVisibility(requireLoadingMore: Boolean) {
     this.requireLoadingMore = requireLoadingMore
-    requestModelBuild()
   }
 
   override fun buildModels() {
