@@ -13,10 +13,9 @@ import java.util.concurrent.TimeUnit
 /**
  * Convert a source into an action that user inputs a query
  */
-internal fun Observable<TextViewAfterTextChangeEvent>.textChangeAction(): Observable<String> {
+internal fun Observable<String>.toTextChangeAction(): Observable<String> {
   return this
       .throttleLast(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
-      .map { event -> event.editable()!!.toString() }
       .distinctUntilChanged()
 }
 

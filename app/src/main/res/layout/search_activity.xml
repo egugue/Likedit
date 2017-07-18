@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,20 +14,19 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:elevation="@dimen/appbar_elevation"
-        app:popupTheme="@style/Licol.PopupOverlay"
         >
 
-        <EditText
+        <SearchView
             android:id="@+id/search_query"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
-            android:background="@android:color/transparent"
-            android:hint="Search users and likes"
+            android:iconifiedByDefault="false"
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:maxLength="100"
             android:maxLines="1"
+            android:queryHint="Search users and likes"
+            android:searchIcon="@null"
             tools:text="search query aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
             />
 
