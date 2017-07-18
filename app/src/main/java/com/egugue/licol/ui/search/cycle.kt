@@ -3,7 +3,7 @@ package com.egugue.licol.ui.search
 import com.egugue.licol.application.search.SearchAppService
 import com.egugue.licol.application.search.Suggestions
 import com.egugue.licol.common.extensions.observeOnMain
-import com.jakewharton.rxbinding2.widget.TextViewAfterTextChangeEvent
+import com.jakewharton.rxbinding2.widget.SearchViewQueryTextEvent
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import timber.log.Timber
@@ -11,12 +11,23 @@ import java.util.concurrent.TimeUnit
 
 
 /**
- * Convert a source into an action that user inputs a query
+ * Convert a source into an action that the user is inputting a query
  */
-internal fun Observable<String>.toTextChangeAction(): Observable<String> {
+fun Observable<SearchViewQueryTextEvent>.toQueryChangingAction(): Observable<String> {
   return this
+      .filter { !it.isSubmitted }
+      .map { it.queryText().toString() }
       .throttleLast(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
       .distinctUntilChanged()
+}
+
+/**
+ * Convert a source into an action that the user submitted a query
+ */
+fun Observable<SearchViewQueryTextEvent>.toQuerySubmittedAction(): Observable<String> {
+  return this
+      .filter { it.isSubmitted }
+      .map { it.queryText().toString() }
 }
 
 /**

@@ -15,6 +15,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.egugue.licol.R
 import com.egugue.licol.application.search.SearchAppService
+import com.egugue.licol.common.extensions.toast
 import com.egugue.licol.ui.common.base.BaseActivity
 import com.egugue.licol.ui.usertweet.UserTweetActivity
 import com.jakewharton.rxbinding2.widget.RxSearchView
@@ -76,15 +77,23 @@ class SearchActivity : BaseActivity() {
 
   private fun initSearchEditText() {
     // When user input search query.
-    val query = RxSearchView.queryTextChanges(searchQueryView)
-    query
-        .map { it.toString() }
-        .toTextChangeAction()
+    val queryEvent = RxSearchView.queryTextChangeEvents(searchQueryView).share()
+
+    queryEvent
+        .toQueryChangingAction()
         .toSuggestions(searchAppService)
         .bindToLifecycle(this)
         .subscribe {
           listController.replaceWith(it)
           listController.requestModelBuild()
+        }
+
+    queryEvent
+        .toQuerySubmittedAction()
+        .bindToLifecycle(this)
+        .subscribe {
+          //TODO
+          toast("$it is submitted")
         }
 
     //TODO: Instead, create a custom SearchView because of flaky code
