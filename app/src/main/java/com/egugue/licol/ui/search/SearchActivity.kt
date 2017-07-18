@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
 import butterknife.BindView
 import butterknife.ButterKnife
@@ -92,6 +93,9 @@ class SearchActivity : BaseActivity() {
         .toQuerySubmittedAction()
         .bindToLifecycle(this)
         .subscribe {
+          val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+          imm.hideSoftInputFromWindow(searchQueryView.windowToken, 0)
+
           //TODO
           toast("$it is submitted")
         }
