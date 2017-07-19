@@ -18,6 +18,7 @@ import com.egugue.licol.R
 import com.egugue.licol.application.search.SearchAppService
 import com.egugue.licol.common.extensions.toast
 import com.egugue.licol.ui.common.base.BaseActivity
+import com.egugue.licol.ui.search.suggestion.SuggestionListController
 import com.egugue.licol.ui.usertweet.UserTweetActivity
 import com.jakewharton.rxbinding2.widget.RxSearchView
 import com.trello.rxlifecycle2.kotlin.bindToLifecycle

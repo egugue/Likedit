@@ -1,4 +1,4 @@
-package com.egugue.licol.ui.search
+package com.egugue.licol.ui.search.suggestion
 
 import android.view.View
 import com.airbnb.epoxy.EpoxyController
