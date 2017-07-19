@@ -1,7 +1,6 @@
 *.iml
 *.iws
 *.ipr
-.idea/
 .gradle/
 local.properties
 captures/
