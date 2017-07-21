@@ -39,7 +39,7 @@ class SearchActivity : BaseActivity() {
   @BindView(R.id.search_query) lateinit var searchQueryView: SearchView
 
   @Inject lateinit var searchAppService: SearchAppService
-  @Inject lateinit var listController: SuggestionListController
+  private val listController: SuggestionListController by lazy { SuggestionListController() }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)

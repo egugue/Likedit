@@ -7,6 +7,7 @@
 
     <color name="divider">#10000000</color>
 
+
     <!-- textColor -->
     <color name="textColorPrimary">#de000000</color>
     <color name="textColorSecondary">#89000000</color>
@@ -15,4 +16,7 @@
     <color name="tweet_text_link">#55acee</color>
     <color name="tweet_text_link_highlight">#ebeef0</color>
     <color name="tweet_action_light_highlight_color">#ebeef0</color>
+
+    <!-- search -->
+    <color name="search_screen_background">#E8E8E8</color>
 </resources>
