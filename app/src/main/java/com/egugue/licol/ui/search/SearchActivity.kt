@@ -4,9 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +15,7 @@ import com.egugue.licol.R
 import com.egugue.licol.application.search.SearchAppService
 import com.egugue.licol.common.extensions.toast
 import com.egugue.licol.ui.common.base.BaseActivity
-import com.egugue.licol.ui.search.suggestion.SuggestionListController
+import com.egugue.licol.ui.search.suggestion.SuggestionLayout
 import com.egugue.licol.ui.usertweet.UserTweetActivity
 import com.jakewharton.rxbinding2.widget.RxSearchView
 import com.trello.rxlifecycle2.kotlin.bindToLifecycle
@@ -35,11 +32,10 @@ class SearchActivity : BaseActivity() {
   }
 
   @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
-  @BindView(R.id.search_assist_list) lateinit var listView: RecyclerView
+  @BindView(R.id.search_suggestions) lateinit var suggestionLayout: SuggestionLayout
   @BindView(R.id.search_query) lateinit var searchQueryView: SearchView
 
   @Inject lateinit var searchAppService: SearchAppService
-  private val listController: SuggestionListController by lazy { SuggestionListController() }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -68,11 +64,7 @@ class SearchActivity : BaseActivity() {
   }
 
   private fun initList() {
-    val layoutManager = LinearLayoutManager(this)
-    listView.adapter = listController.adapter
-    listView.layoutManager = layoutManager
-    listView.addItemDecoration(DividerItemDecoration(this, layoutManager.orientation))
-    listController.userClickListener = {
+    suggestionLayout.itemClickListenr = {
       startActivity(UserTweetActivity.createIntent(this, it))
     }
   }
@@ -86,8 +78,7 @@ class SearchActivity : BaseActivity() {
         .toSuggestions(searchAppService)
         .bindToLifecycle(this)
         .subscribe {
-          listController.replaceWith(it)
-          listController.requestModelBuild()
+          suggestionLayout.set(it)
         }
 
     queryEvent
