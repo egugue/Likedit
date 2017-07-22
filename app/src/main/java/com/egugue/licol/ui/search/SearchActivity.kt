@@ -1,9 +1,13 @@
 package com.egugue.licol.ui.search
 
+import android.animation.LayoutTransition
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +20,7 @@ import com.egugue.licol.application.search.SearchAppService
 import com.egugue.licol.common.extensions.toast
 import com.egugue.licol.ui.common.base.BaseActivity
 import com.egugue.licol.ui.search.suggestion.SuggestionLayout
+import com.egugue.licol.ui.search.suggestion.SuggestionListController
 import com.egugue.licol.ui.usertweet.UserTweetActivity
 import com.jakewharton.rxbinding2.widget.RxSearchView
 import com.trello.rxlifecycle2.kotlin.bindToLifecycle
@@ -32,8 +37,10 @@ class SearchActivity : BaseActivity() {
   }
 
   @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
-  @BindView(R.id.search_suggestions) lateinit var suggestionLayout: SuggestionLayout
   @BindView(R.id.search_query) lateinit var searchQueryView: SearchView
+  //@BindView(R.id.search_suggestions) lateinit var suggestionLayout: SuggestionLayout
+  @BindView(R.id.search_suggestion_list) lateinit var listView: RecyclerView
+  val listController: SuggestionListController = SuggestionListController()
 
   @Inject lateinit var searchAppService: SearchAppService
 
@@ -63,10 +70,24 @@ class SearchActivity : BaseActivity() {
     }
   }
 
+
   private fun initList() {
+    val layoutManager = LinearLayoutManager(this)
+    listView.adapter = listController.adapter
+    listView.layoutManager = layoutManager
+    listView.itemAnimator = null
+    listView.addItemDecoration(DividerItemDecoration(this, layoutManager.orientation))
+    listController.userClickListener = {
+      startActivity(UserTweetActivity.createIntent(this, it))
+    }
+    listView.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
+
+    /*
+    //suggestionLayout.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
     suggestionLayout.itemClickListenr = {
       startActivity(UserTweetActivity.createIntent(this, it))
     }
+    */
   }
 
   private fun initSearchEditText() {
@@ -78,7 +99,9 @@ class SearchActivity : BaseActivity() {
         .toSuggestions(searchAppService)
         .bindToLifecycle(this)
         .subscribe {
-          suggestionLayout.set(it)
+          //suggestionLayout.set(it)
+          listController.replaceWith(it)
+          listController.requestModelBuild()
         }
 
     queryEvent

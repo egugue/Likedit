@@ -1,5 +1,6 @@
 package com.egugue.licol.ui.search.suggestion
 
+import android.animation.LayoutTransition
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
@@ -13,6 +14,9 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.egugue.licol.R
 import com.egugue.licol.application.search.Suggestions
+import com.egugue.licol.application.search.Suggestions.Companion
+import com.egugue.licol.common.extensions.toGone
+import com.egugue.licol.common.extensions.toVisible
 import com.egugue.licol.domain.user.User
 import com.squareup.picasso.Picasso
 
@@ -28,9 +32,14 @@ class SuggestionLayout @JvmOverloads constructor(
     showDividers = SHOW_DIVIDER_MIDDLE
   }
 
+  var binded: Suggestions = Suggestions.empty()
   var itemClickListenr: ((User) -> Unit)? = null
 
   fun set(suggestions: Suggestions) {
+    if (suggestions == binded) {
+      return
+    }
+    binded = suggestions
     removeAllViews()
 
     if (suggestions.userList.isEmpty()) {
@@ -38,16 +47,15 @@ class SuggestionLayout @JvmOverloads constructor(
     }
 
     val inf = LayoutInflater.from(context)
-    suggestions.userList.map {
+    suggestions.userList.forEach {
       val child = inf.inflate(R.layout.search_user_suggestion_item, this, false) as ViewGroup
       UserViewHolder(child)
           .bind(it, itemClickListenr)
-      Log.d("ーーー", "added user")
       addView(child)
     }
   }
 
-  class UserViewHolder(private val itemView: View) {
+  class UserViewHolder(val itemView: ViewGroup) {
     @BindView(R.id.user_avatar)
     lateinit var avatarView: ImageView
 
