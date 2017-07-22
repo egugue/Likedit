@@ -5,6 +5,8 @@
     <color name="colorPrimaryLight">#74CCFF</color>
     <color name="colorAccent">#309BEC</color>
 
+    <color name="light_background">#FFFAFAFA</color>
+
     <color name="divider">#10000000</color>
 
 

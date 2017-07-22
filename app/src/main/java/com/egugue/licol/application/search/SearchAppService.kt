@@ -1,6 +1,8 @@
 package com.egugue.licol.application.search
 
+import com.egugue.licol.application.likedtweet.LikedTweetPayload
 import com.egugue.licol.common.extensions.subscribeOnIo
+import com.egugue.licol.domain.likedtweet.LikedTweet
 import com.egugue.licol.domain.likedtweet.LikedTweetRepository
 import com.egugue.licol.domain.user.UserRepository
 import io.reactivex.Observable
@@ -33,6 +35,12 @@ class SearchAppService @Inject constructor(
   /**
    * Retrieve search result by the given query
    */
-  fun getSearchResult(searchQuery: String, page: Int, perPage: Int) {
+  fun getSearchResult(searchQuery: String, page: Int, perPage: Int): Observable<List<LikedTweetPayload>> {
+    //TODO
+    return likedTweetRepository.find(page, perPage)
+        .flatMap(
+            { userRepository.findByIdList(it.map { it.userId }) },
+            { likedTweetList, userList -> LikedTweetPayload.listFrom(likedTweetList, userList) }
+        )
   }
 }

@@ -35,7 +35,7 @@ fun Observable<SearchViewQueryTextEvent>.toQuerySubmittedAction(): Observable<St
  */
 internal fun Observable<String>.toSuggestions(service: SearchAppService): Observable<Suggestions> {
   return this.flatMap { query ->
-    if (query.length <= 2) {
+    if (query.isEmpty()) {
       Observable.just(Suggestions.empty())
     } else {
       service.getSearchSuggestions(query)
