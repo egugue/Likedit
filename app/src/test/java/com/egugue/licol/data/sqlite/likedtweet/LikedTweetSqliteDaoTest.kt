@@ -85,6 +85,48 @@ class LikedTweetSqliteDaoTest {
         .assertValue(listOf(inserted))
   }
 
+  @Test fun `search by name or screen name`() {
+    // given
+    val searchWord = "B%_B"
+    val expected1 = likedTweet(text = "bb%_bbbbaacc", createdAt = 1, id = 1)
+    val expected2 = likedTweet(text = "baaccb%_b", createdAt = 2, id = 2)
+    val expected3 = likedTweet(text = "aaaB%_Bccc", createdAt = 3, id = 3)
+
+    val unexpecteds = listOf(
+        likedTweet(text = "aaabbbccc", createdAt = 4, id = 4),
+        likedTweet(text = "aaaBBBccc", createdAt = 5, id = 5),
+        likedTweet(text = "abc", createdAt = 6, id = 6),
+        likedTweet(text = "aabbc", createdAt = 7, id = 7),
+        likedTweet(text = "あああいいいううう", createdAt = 8, id = 8))
+
+    (listOf(expected1, expected2, expected3) + unexpecteds)
+        .forEach { insertOrUpdateLikedTweet(it) }
+
+    // order by createdAt column desc
+    tweetDao.selectByTextContaining(searchWord, 1, 200).test()
+        .assertValue(listOf(expected3, expected2, expected1))
+  }
+
+  @Test fun `search by name or screen name if multi byte is given`() {
+    // given
+    val searchWord = "あああ"
+    val expected1 = likedTweet(text = "あああいいいううう", createdAt = 1, id = 1)
+    val expected2 = likedTweet(text = "んんいいいいいいあああいいいうううん", createdAt = 2, id = 2)
+    val expected3 = likedTweet(text = "いいあああ", createdAt = 3, id = 3)
+
+    val unexpecteds = listOf(
+        likedTweet(text = "いいああ", createdAt = 4, id = 4),
+        likedTweet(text = "ああいいうう", createdAt = 5, id = 5),
+        likedTweet(text = "あｓｆｄｓｆｄｆｓ", createdAt = 6, id = 6))
+
+    (listOf(expected1, expected2, expected3) + unexpecteds)
+        .forEach { insertOrUpdateLikedTweet(it) }
+
+    // order by createdAt column desc
+    tweetDao.selectByTextContaining(searchWord, 1, 200).test()
+        .assertValue(listOf(expected3, expected2, expected1))
+  }
+
   /**
    * testing about transaction
    */
@@ -95,7 +137,8 @@ class LikedTweetSqliteDaoTest {
       on { insertTweetTagRelation(any()) } doThrow anError
     }
 
-    val tweetDao = likedTweetSqliDao(db = rule.briteDB, tweetTagRelationTableGateway = relationGateway)
+    val tweetDao = likedTweetSqliDao(db = rule.briteDB,
+        tweetTagRelationTableGateway = relationGateway)
 
     // when
     try {

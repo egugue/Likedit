@@ -13,7 +13,6 @@ import javax.inject.Inject
 class LikedTweetRepositoryImpl @Inject constructor(
     private val likedTweetSqliteDao: LikedTweetSqliteDao
 ) : LikedTweetRepository {
-
   override fun find(page: Int, perPage: Int): Observable<List<LikedTweet>> {
     Contract.require(page > 0, "0 < page required but it was $page")
     Contract.require(perPage in 1..200, "1 <= perPage <= 200 required but it was $perPage")
@@ -36,4 +35,10 @@ class LikedTweetRepositoryImpl @Inject constructor(
 
     return likedTweetSqliteDao.selectByUserId(userId, page, perPage)
   }
+
+  override fun findByTextContaining(partOfText: String, page: Int,
+      perPage: Int): Observable<List<LikedTweet>> {
+    return likedTweetSqliteDao.selectByTextContaining(partOfText, page, perPage)
+  }
+
 }

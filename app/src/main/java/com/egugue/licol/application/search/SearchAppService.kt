@@ -24,8 +24,7 @@ class SearchAppService @Inject constructor(
         .map {
           if (it.isEmpty()) {
             Suggestions.empty()
-          }
-          else {
+          } else {
             Suggestions(it)
           }
         }
@@ -35,11 +34,11 @@ class SearchAppService @Inject constructor(
   /**
    * Retrieve search result by the given query
    */
-  fun getSearchResult(searchQuery: String, page: Int, perPage: Int): Observable<List<LikedTweetPayload>> {
-    //TODO
-    return likedTweetRepository.find(page, perPage)
+  fun getSearchResult(searchQuery: String, page: Int,
+      perPage: Int): Observable<List<LikedTweetPayload>> {
+    return likedTweetRepository.findByTextContaining(searchQuery, page, perPage)
         .flatMap(
-            { userRepository.findByIdList(it.map { it.userId }) },
+            { userRepository.findByIdList(it.map { it.userId }.distinct()) },
             { likedTweetList, userList -> LikedTweetPayload.listFrom(likedTweetList, userList) }
         )
   }

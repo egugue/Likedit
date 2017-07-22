@@ -22,7 +22,7 @@ class LikedTweetAppService @Inject internal constructor(
   fun getAllLikedTweets(page: Int, perPage: Int): Observable<List<LikedTweetPayload>> {
     return likedRepository.find(page, perPage)
         .flatMap(
-            { userRepository.findByIdList(it.map { it.userId }) },
+            { userRepository.findByIdList(it.map { it.userId }.distinct()) },
             { likedTweetList, userList -> LikedTweetPayload.listFrom(likedTweetList, userList) }
         )
   }
@@ -30,7 +30,8 @@ class LikedTweetAppService @Inject internal constructor(
   /**
    * Get All [LikedTweet]s with each [User]
    */
-  fun getAllLikedTweetsByUserId(userId: Long, page: Int, perPage: Int): Observable<List<LikedTweetPayload>> {
+  fun getAllLikedTweetsByUserId(userId: Long, page: Int,
+      perPage: Int): Observable<List<LikedTweetPayload>> {
     return likedRepository.findByUserId(userId, page, perPage)
         .zipWith(
             userRepository.findByUserId(userId),
