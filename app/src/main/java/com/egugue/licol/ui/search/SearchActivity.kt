@@ -95,13 +95,6 @@ class SearchActivity : BaseActivity() {
     suggestionListController.userClickListener = {
       startActivity(UserTweetActivity.createIntent(this, it))
     }
-
-    /*
-    //suggestionLayout.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
-    suggestionLayout.itemClickListenr = {
-      startActivity(UserTweetActivity.createIntent(this, it))
-    }
-    */
   }
 
   private fun initSearchEditText() {
