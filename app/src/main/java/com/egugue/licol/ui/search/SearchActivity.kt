@@ -29,6 +29,9 @@ import com.trello.rxlifecycle2.kotlin.bindToLifecycle
 import javax.inject.Inject
 
 
+/**
+ * TODO: Hold view-states and restore them when rotating or something like it
+ */
 class SearchActivity : BaseActivity() {
 
   companion object {
