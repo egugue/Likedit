@@ -64,6 +64,7 @@ class SearchActivity : BaseActivity() {
     initToolbar()
     initSuggestionList()
     initSearchEditText()
+    showSuggestionAndHideResult()
 
     searchPanel.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
       override fun onGlobalLayout() {
