@@ -1,16 +1,14 @@
-package com.egugue.licol.ui.search
+package com.egugue.licol.ui.search.suggestion
 
 import android.view.View
 import com.airbnb.epoxy.EpoxyController
 import com.egugue.licol.application.search.Suggestions
 import com.egugue.licol.domain.user.User
-import javax.inject.Inject
 
 /**
  * An [EpoxyController] handling search's [Suggestions]
  */
-class SuggestionListController @Inject constructor()
-  : EpoxyController() {
+class SuggestionListController : EpoxyController() {
 
   private var suggestions: Suggestions = Suggestions.empty()
 

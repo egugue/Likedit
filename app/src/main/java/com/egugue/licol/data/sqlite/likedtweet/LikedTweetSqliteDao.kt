@@ -91,6 +91,25 @@ class LikedTweetSqliteDao @Inject constructor(
   }
 
   /**
+   * Select some [LikedTweetEntity]s by the given args
+   *
+   * @param partOfText the part of text
+   */
+  fun selectByTextContaining(partOfText: String, page: Int,
+      perPage: Int): Observable<List<LikedTweet>> {
+    val tweetEntityList = likedTweetGateway.searchByTextContaining(partOfText, page, perPage)
+    val tweetEntityListAndIdMap = tweetEntityList
+        .flatMap(
+            { selectRelationsByTweetEntityList(it) },
+            { entityList, relations -> entityList to IdMap.basedOnTweetId(relations) })
+
+    return tweetEntityListAndIdMap
+        .map { (tweetEntityList, idMap) ->
+          tweetEntityList.map { it.toLikedTweet(idMap) }
+        }
+  }
+
+  /**
    * Insert or update the given [LikedTweet]
    */
   fun insertOrUpdate(tweet: LikedTweet) {
@@ -125,7 +144,8 @@ class LikedTweetSqliteDao @Inject constructor(
     likedTweetGateway.deleteTweetByIdList(tweetIdList)
   }
 
-  private fun selectRelationsByTweetEntityList(tweetList: List<FullLikedTweetEntity>): Observable<List<TweetTagRelation>> {
+  private fun selectRelationsByTweetEntityList(
+      tweetList: List<FullLikedTweetEntity>): Observable<List<TweetTagRelation>> {
     if (tweetList.isEmpty()) {
       return Observable.just(emptyList())
     }

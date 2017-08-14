@@ -16,15 +16,24 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.egugue.licol.R
 import com.egugue.licol.application.search.SearchAppService
-import com.egugue.licol.common.extensions.toast
+import com.egugue.licol.common.extensions.color
+import com.egugue.licol.common.extensions.toGone
+import com.egugue.licol.common.extensions.toVisible
+import com.egugue.licol.ui.common.IcePick
+import com.egugue.licol.ui.common.IcePickDelegate
 import com.egugue.licol.ui.common.base.BaseActivity
+import com.egugue.licol.ui.search.result.SearchResultFragment
+import com.egugue.licol.ui.search.suggestion.SuggestionListController
 import com.egugue.licol.ui.usertweet.UserTweetActivity
 import com.jakewharton.rxbinding2.widget.RxSearchView
 import com.trello.rxlifecycle2.kotlin.bindToLifecycle
 import javax.inject.Inject
 
 
-class SearchActivity : BaseActivity() {
+/**
+ * TODO: Hold view-states and restore them when rotating or something like it
+ */
+class SearchActivity : BaseActivity(), IcePick by IcePickDelegate() {
 
   companion object {
 
@@ -33,25 +42,44 @@ class SearchActivity : BaseActivity() {
     }
   }
 
+  @BindView(R.id.whole_layout) lateinit var wholeLayout: ViewGroup
+  @BindView(R.id.app_bar) lateinit var appBar: View
   @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
-  @BindView(R.id.search_assist_list) lateinit var listView: RecyclerView
   @BindView(R.id.search_query) lateinit var searchQueryView: SearchView
+  @BindView(R.id.search_suggestion_list) lateinit var suggestionRecyclerView: RecyclerView
+  @BindView(R.id.fragment_container) lateinit var fragmentContainer: ViewGroup
+  private val suggestionListController: SuggestionListController = SuggestionListController()
 
+  val component: SearchComponent by lazy { SearchComponent.Initializer.init(this) }
   @Inject lateinit var searchAppService: SearchAppService
-  @Inject lateinit var listController: SuggestionListController
+
+  private var wasSuggestionShown: Boolean by state(true)
+
+  override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+    super.onRestoreInstanceState(savedInstanceState)
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.search_activity)
     ButterKnife.bind(this)
-
-    SearchComponent.Initializer
-        .init(this)
-        .inject(this)
+    component.inject(this)
+    restoreInstanceState(savedInstanceState)
 
     initToolbar()
-    initList()
+    initSuggestionList()
     initSearchEditText()
+
+    when (wasSuggestionShown) {
+      true -> showSuggestionAndHideResult()
+      else -> hideSuggestionAndShowResult("")
+    }
+  }
+
+  override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+    wasSuggestionShown = suggestionRecyclerView.visibility == View.VISIBLE
+    saveInstanceState(outState)
   }
 
   private fun initToolbar() {
@@ -66,27 +94,38 @@ class SearchActivity : BaseActivity() {
     }
   }
 
-  private fun initList() {
+  private fun initSuggestionList() {
     val layoutManager = LinearLayoutManager(this)
-    listView.adapter = listController.adapter
-    listView.layoutManager = layoutManager
-    listView.addItemDecoration(DividerItemDecoration(this, layoutManager.orientation))
-    listController.userClickListener = {
+    suggestionRecyclerView.adapter = suggestionListController.adapter
+    suggestionRecyclerView.layoutManager = layoutManager
+    suggestionRecyclerView.itemAnimator = null
+    suggestionRecyclerView.addItemDecoration(DividerItemDecoration(this, layoutManager.orientation))
+    suggestionListController.userClickListener = {
       startActivity(UserTweetActivity.createIntent(this, it))
     }
   }
 
   private fun initSearchEditText() {
     // When user input search query.
-    val queryEvent = RxSearchView.queryTextChangeEvents(searchQueryView).share()
+    searchQueryView.requestFocus()
 
+    //TODO: RxBinding
+    searchQueryView.setOnQueryTextFocusChangeListener { _, isFocusing ->
+      if (isFocusing) {
+        showSuggestionAndHideResult()
+      }
+    }
+
+    val queryEvent = RxSearchView.queryTextChangeEvents(searchQueryView).share()
     queryEvent
         .toQueryChangingAction()
         .toSuggestions(searchAppService)
         .bindToLifecycle(this)
         .subscribe {
-          listController.replaceWith(it)
-          listController.requestModelBuild()
+          //suggestionLayout.set(it)
+          suggestionListController.replaceWith(it)
+          suggestionListController.requestModelBuild()
+          suggestionRecyclerView.scrollToPosition(0)
         }
 
     queryEvent
@@ -96,11 +135,11 @@ class SearchActivity : BaseActivity() {
           val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
           imm.hideSoftInputFromWindow(searchQueryView.windowToken, 0)
 
-          //TODO
-          toast("$it is submitted")
+          hideSuggestionAndShowResult(it)
         }
 
     //TODO: Instead, create a custom SearchView because of flaky code
+    // remove marginLeft to close toolbar's up button
     val editFrame = searchQueryView.findViewById<View>(
         resources.getIdentifier("android:id/search_edit_frame", null, null))
     if (editFrame != null) {
@@ -109,8 +148,35 @@ class SearchActivity : BaseActivity() {
       editFrame.layoutParams = lp
     }
 
+    // remove the underline in EditText of SearchView
     val plate = searchQueryView.findViewById<View>(
         resources.getIdentifier("android:id/search_plate", null, null))
     plate?.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent))
+  }
+
+  private fun hideSuggestionAndShowResult(query: String) {
+    searchQueryView.clearFocus()
+    suggestionRecyclerView.toGone()
+    wholeLayout.setBackgroundColor(color(R.color.light_background))
+
+    val f = supportFragmentManager.findFragmentById(R.id.fragment_container)
+    if (f == null) {
+      supportFragmentManager.beginTransaction()
+          .replace(R.id.fragment_container, SearchResultFragment.new(query))
+          .commit()
+    }
+  }
+
+  private fun showSuggestionAndHideResult() {
+    searchQueryView.requestFocus()
+    suggestionRecyclerView.toVisible()
+    wholeLayout.setBackgroundColor(color(R.color.search_screen_background))
+
+    val f = supportFragmentManager.findFragmentById(R.id.fragment_container)
+    if (f != null) {
+      supportFragmentManager.beginTransaction()
+          .remove(f)
+          .commit()
+    }
   }
 }

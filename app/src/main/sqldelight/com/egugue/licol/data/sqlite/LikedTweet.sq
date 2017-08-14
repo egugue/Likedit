@@ -53,6 +53,16 @@ limit ?
 offset ?
 ;
 
+search_liked_tweets_by_text:
+SELECT *
+FROM liked_tweet
+LEFT JOIN quoted_tweet ON liked_tweet.quoted_tweet_id = quoted_tweet.id
+WHERE liked_tweet.text LIKE '%' || ? || '%' escape '$' COLLATE NOCASE
+ORDER BY liked_tweet.created DESC
+limit ?
+offset ?
+;
+
 select_id_by_user_ids:
 SELECT id, user_id
 FROM liked_tweet

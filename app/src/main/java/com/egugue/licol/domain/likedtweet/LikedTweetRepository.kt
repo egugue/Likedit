@@ -43,4 +43,17 @@ interface LikedTweetRepository {
    *    which must be between 1 and 200
    */
   fun findByUserId(userId: Long, page: Int, perPage: Int): Observable<List<LikedTweet>>
+
+  /**
+   * Retrieve some [LikedTweet]s by the given args
+   *
+   * @param partOfText the part of text
+   * @param page
+   *     the number of page, which must be a positive integer
+   * @param perPage
+   *    the number of tweets to retrieve per a page,
+   *    which must be between 1 and 200
+   */
+  fun findByTextContaining(partOfText: String, page: Int,
+      perPage: Int): Observable<List<LikedTweet>>
 }

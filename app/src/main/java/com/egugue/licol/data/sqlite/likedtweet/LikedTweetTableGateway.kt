@@ -5,6 +5,7 @@ import com.egugue.licol.common.AllOpen
 import com.egugue.licol.common.Contract
 import com.egugue.licol.data.sqlite.lib.SqliteScripts
 import com.egugue.licol.data.sqlite.lib.createQuery
+import com.egugue.licol.data.sqlite.lib.escapeForQuery
 import com.egugue.licol.data.sqlite.lib.toLimitAndOffset
 import com.egugue.licol.data.sqlite.lib.transaction
 import com.squareup.sqlbrite2.BriteDatabase
@@ -74,6 +75,15 @@ class LikedTweetTableGateway @Inject constructor(
   fun selectByUserId(userId: Long, page: Int, perPage: Int): Observable<List<FullLikedTweetEntity>> {
     val (limit, offset) = (page to perPage).toLimitAndOffset()
     val stmt = LikedTweetEntity.FACTORY.select_liked_tweets_by_user_id(userId, limit, offset)
+
+    return db.createQuery(stmt)
+        .mapToList { FullLikedTweetEntity.MAPPER.map(it) }
+  }
+
+  fun searchByTextContaining(partOfText: String, page: Int, perPage: Int): Observable<List<FullLikedTweetEntity>> {
+    val (limit, offset) = (page to perPage).toLimitAndOffset()
+    val escaped = partOfText.escapeForQuery()
+    val stmt = LikedTweetEntity.FACTORY.search_liked_tweets_by_text(escaped, limit, offset)
 
     return db.createQuery(stmt)
         .mapToList { FullLikedTweetEntity.MAPPER.map(it) }

@@ -17,7 +17,7 @@ fun Observable<SearchViewQueryTextEvent>.toQueryChangingAction(): Observable<Str
   return this
       .filter { !it.isSubmitted }
       .map { it.queryText().toString() }
-      .throttleLast(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+      .throttleLast(250, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
       .distinctUntilChanged()
 }
 
@@ -35,7 +35,7 @@ fun Observable<SearchViewQueryTextEvent>.toQuerySubmittedAction(): Observable<St
  */
 internal fun Observable<String>.toSuggestions(service: SearchAppService): Observable<Suggestions> {
   return this.flatMap { query ->
-    if (query.length <= 2) {
+    if (query.isEmpty()) {
       Observable.just(Suggestions.empty())
     } else {
       service.getSearchSuggestions(query)

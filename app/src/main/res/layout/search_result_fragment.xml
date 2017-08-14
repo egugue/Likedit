@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.egugue.licol.ui.common.StateLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/search_result_state_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.egugue.licol.ui.home.liked.HomeLikedFragment"
+    >
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/search_result_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="8dp"
+        android:clipToPadding="false"
+        app:layout_state="content"
+        />
+
+    <!-- TODO -->
+    <TextView
+        android:id="@+id/search_result_error_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="This is Error State"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        app:layout_state="error"
+        />
+
+    <!-- TODO -->
+    <TextView
+        android:id="@+id/search_result_empty_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="This is a Empty State"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        app:layout_state="empty"
+        />
+
+    <include layout="@layout/progress_in_pager"/>
+
+</com.egugue.licol.ui.common.StateLayout>

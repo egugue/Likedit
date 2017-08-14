@@ -3,9 +3,13 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <dimen name="floating_toolbar_height">52dp</dimen>
+
     <dimen name="appbar_elevation">4dp</dimen>
+    <dimen name="floating_appbar_elevation">2dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
+    <dimen name="card_radius">2dp</dimen>
     <dimen name="divider_height">1dp</dimen>
 
     <dimen name="tag_create_input_padding_side">20dp</dimen>

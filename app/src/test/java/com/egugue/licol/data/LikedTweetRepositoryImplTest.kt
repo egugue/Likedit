@@ -186,7 +186,7 @@ class LikedTweetRepositoryImplTest {
     whenever(dao.selectByUserId(any(), any(), any())).thenReturn(Observable.just(emptyList()))
 
     try {
-      val invalid= 0
+      val invalid = 0
       repo.findByUserId(1, 1, invalid)
       fail()
     } catch (e: IllegalArgumentException) {
@@ -203,5 +203,14 @@ class LikedTweetRepositoryImplTest {
     } catch (e: IllegalArgumentException) {
       assertThat(e).hasMessageThat().isEqualTo("1 <= perPage <= 200 required but it was 201")
     }
+  }
+
+  @Test fun `find some liked tweet text`() {
+    val expected = listOf(likedTweet(id = 1), likedTweet(id = 2))
+    whenever(dao.selectByTextContaining("partOfText", 1, 200))
+        .thenReturn(Observable.just(expected))
+
+    repo.findByTextContaining("partOfText", 1, 200).test()
+        .assertValue(expected)
   }
 }

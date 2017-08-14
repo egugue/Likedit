@@ -1,5 +1,14 @@
 <resources>
     <!-- Base application theme. -->
+    <style name="Theme.Licol.Dark" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimaryDark">#AFAFAF</item>
+    </style>
+
+    <style name="Theme.Licol.PhotoViewing" parent="Theme.Licol.Dark">
+        <item name="android:colorBackground">@android:color/black</item>
+    </style>
+
+
     <style name="Theme.Licol.Light" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -18,7 +27,7 @@
     </style>
 
     <style name="Theme.Licol.Search" parent="Theme.Licol.Light.NoActionBar">
-        <item name="colorPrimary">#FAFAFA</item>
         <item name="colorPrimaryDark">#AFAFAF</item>
+        <item name="android:windowBackground">@drawable/search_window_background</item>
     </style>
 </resources>

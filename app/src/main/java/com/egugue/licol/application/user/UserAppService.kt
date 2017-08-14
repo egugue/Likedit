@@ -3,6 +3,7 @@ package com.egugue.licol.application.user
 import com.egugue.licol.domain.user.User
 import com.egugue.licol.domain.user.UserRepository
 import io.reactivex.Observable
+import java.util.concurrent.TimeUnit.SECONDS
 import javax.inject.Inject
 
 /**

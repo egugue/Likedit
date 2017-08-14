@@ -1,4 +1,4 @@
-package com.egugue.licol.ui.search
+package com.egugue.licol.ui.search.suggestion
 
 import android.view.View
 import android.widget.ImageView
@@ -9,13 +9,14 @@ import com.airbnb.epoxy.EpoxyHolder
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.egugue.licol.R
 import com.egugue.licol.domain.user.User
+import com.egugue.licol.ui.search.suggestion.UserSuggestionEpoxyModel.Holder
 import com.squareup.picasso.Picasso
 
 /**
  * An [EpoxyModelWithHolder] which show suggestion of [User]
  */
 internal class UserSuggestionEpoxyModel(val user: User)
-  : EpoxyModelWithHolder<UserSuggestionEpoxyModel.Holder>() {
+  : EpoxyModelWithHolder<Holder>() {
 
   private var listener: View.OnClickListener? = null
 
