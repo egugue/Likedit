@@ -1,7 +1,9 @@
 package com.egugue.licol
 
 import android.os.StrictMode
+import android.support.v4.content.ContextCompat
 import com.facebook.stetho.Stetho
+import jp.wasabeef.takt.Takt
 import timber.log.Timber
 
 /**
@@ -17,6 +19,9 @@ class DebugApp : App() {
       // see https://github.com/facebook/stetho/issues/440
       Stetho.initializeWithDefaults(this)
 
+      Takt.stock(this)
+          .color(ContextCompat.getColor(this, android.R.color.black))
+          .play()
       /* TODO: when using AndroidStudio 3.0 canary3, throw an exception
       TinyDancer.create()
           .startingGravity(Gravity.BOTTOM)
@@ -26,6 +31,11 @@ class DebugApp : App() {
 
     plantTimberTree()
     applyStrictMode()
+  }
+
+  override fun onTerminate() {
+    Takt.finish()
+    super.onTerminate()
   }
 
   private fun plantTimberTree() {

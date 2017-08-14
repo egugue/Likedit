@@ -6,6 +6,7 @@ import com.egugue.licol.domain.likedtweet.LikedTweetRepository
 import com.egugue.licol.domain.user.User
 import com.egugue.licol.domain.user.UserRepository
 import io.reactivex.Observable
+import java.util.concurrent.TimeUnit.SECONDS
 import javax.inject.Inject
 
 /**
@@ -21,6 +22,7 @@ class LikedTweetAppService @Inject internal constructor(
    */
   fun getAllLikedTweets(page: Int, perPage: Int): Observable<List<LikedTweetPayload>> {
     return likedRepository.find(page, perPage)
+        .delay(3, SECONDS)
         .flatMap(
             { userRepository.findByIdList(it.map { it.userId }.distinct()) },
             { likedTweetList, userList -> LikedTweetPayload.listFrom(likedTweetList, userList) }
@@ -33,6 +35,7 @@ class LikedTweetAppService @Inject internal constructor(
   fun getAllLikedTweetsByUserId(userId: Long, page: Int,
       perPage: Int): Observable<List<LikedTweetPayload>> {
     return likedRepository.findByUserId(userId, page, perPage)
+        .delay(3, SECONDS)
         .zipWith(
             userRepository.findByUserId(userId),
             { likedTweetList, user -> likedTweetList.map { LikedTweetPayload(it, user) } }

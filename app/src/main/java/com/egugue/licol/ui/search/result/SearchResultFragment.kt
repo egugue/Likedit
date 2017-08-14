@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver.OnPreDrawListener
 import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
@@ -31,11 +32,10 @@ class SearchResultFragment : RxFragment() {
 
   companion object {
 
-    fun new(query: String, appbarHeight: Int): SearchResultFragment {
+    fun new(query: String): SearchResultFragment {
       val f = SearchResultFragment()
       val b = Bundle()
       b.putString("query", query)
-      b.putInt("appbarHeight", appbarHeight)
       f.arguments = b
       return f
     }
@@ -50,7 +50,6 @@ class SearchResultFragment : RxFragment() {
 
   private val listController = LikedTweetListController()
   private val query: String by lazy { arguments.getString("query") }
-  private val appbarHeight: Int by lazy { arguments.getInt("appbarHeight") }
 
   override fun onAttach(context: Context) {
     super.onAttach(context)
@@ -78,11 +77,20 @@ class SearchResultFragment : RxFragment() {
   }
 
   private fun initSearchResultList() {
-    val layoutManager = LinearLayoutManager(context)
-    //recyclerView.setPadding(0, listPaddingTop, 0, 0)
-    recyclerView.setPadding(recyclerView.paddingLeft, recyclerView.paddingTop + appbarHeight,
-        recyclerView.paddingRight, recyclerView.paddingBottom)
+    //FIXME: depends on the specific activity directly
+    val appBar = (activity as SearchActivity).appBar
+    appBar.viewTreeObserver.addOnPreDrawListener(object : OnPreDrawListener {
+      override fun onPreDraw(): Boolean {
+        appBar.viewTreeObserver.removeOnPreDrawListener(this)
 
+        val appbarHeight = appBar.height
+        recyclerView.setPadding(recyclerView.paddingLeft, recyclerView.paddingTop + appbarHeight,
+            recyclerView.paddingRight, recyclerView.paddingBottom)
+        return true
+      }
+    })
+
+    val layoutManager = LinearLayoutManager(context)
     recyclerView.adapter = listController.adapter
     recyclerView.layoutManager = layoutManager
     recyclerView.itemAnimator = null

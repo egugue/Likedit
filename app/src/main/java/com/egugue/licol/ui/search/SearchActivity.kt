@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
 import butterknife.BindView
@@ -20,6 +19,8 @@ import com.egugue.licol.application.search.SearchAppService
 import com.egugue.licol.common.extensions.color
 import com.egugue.licol.common.extensions.toGone
 import com.egugue.licol.common.extensions.toVisible
+import com.egugue.licol.ui.common.IcePick
+import com.egugue.licol.ui.common.IcePickDelegate
 import com.egugue.licol.ui.common.base.BaseActivity
 import com.egugue.licol.ui.search.result.SearchResultFragment
 import com.egugue.licol.ui.search.suggestion.SuggestionListController
@@ -32,7 +33,7 @@ import javax.inject.Inject
 /**
  * TODO: Hold view-states and restore them when rotating or something like it
  */
-class SearchActivity : BaseActivity() {
+class SearchActivity : BaseActivity(), IcePick by IcePickDelegate() {
 
   companion object {
 
@@ -42,7 +43,7 @@ class SearchActivity : BaseActivity() {
   }
 
   @BindView(R.id.whole_layout) lateinit var wholeLayout: ViewGroup
-  @BindView(R.id.search_panel) lateinit var searchPanel: View
+  @BindView(R.id.app_bar) lateinit var appBar: View
   @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
   @BindView(R.id.search_query) lateinit var searchQueryView: SearchView
   @BindView(R.id.search_suggestion_list) lateinit var suggestionRecyclerView: RecyclerView
@@ -52,26 +53,33 @@ class SearchActivity : BaseActivity() {
   val component: SearchComponent by lazy { SearchComponent.Initializer.init(this) }
   @Inject lateinit var searchAppService: SearchAppService
 
-  private var initialAppbarHeight: Int = 0
+  private var wasSuggestionShown: Boolean by state(true)
+
+  override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+    super.onRestoreInstanceState(savedInstanceState)
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.search_activity)
     ButterKnife.bind(this)
-
     component.inject(this)
+    restoreInstanceState(savedInstanceState)
 
     initToolbar()
     initSuggestionList()
     initSearchEditText()
-    showSuggestionAndHideResult()
 
-    searchPanel.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
-      override fun onGlobalLayout() {
-        initialAppbarHeight = searchPanel.height
-        searchPanel.viewTreeObserver.removeOnGlobalLayoutListener(this)
-      }
-    })
+    when (wasSuggestionShown) {
+      true -> showSuggestionAndHideResult()
+      else -> hideSuggestionAndShowResult("")
+    }
+  }
+
+  override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+    wasSuggestionShown = suggestionRecyclerView.visibility == View.VISIBLE
+    saveInstanceState(outState)
   }
 
   private fun initToolbar() {
@@ -149,17 +157,20 @@ class SearchActivity : BaseActivity() {
   private fun hideSuggestionAndShowResult(query: String) {
     searchQueryView.clearFocus()
     suggestionRecyclerView.toGone()
-
-    supportFragmentManager.beginTransaction()
-        .replace(R.id.fragment_container, SearchResultFragment.new(query, initialAppbarHeight))
-        .commitNow()
-
     wholeLayout.setBackgroundColor(color(R.color.light_background))
+
+    val f = supportFragmentManager.findFragmentById(R.id.fragment_container)
+    if (f == null) {
+      supportFragmentManager.beginTransaction()
+          .replace(R.id.fragment_container, SearchResultFragment.new(query))
+          .commit()
+    }
   }
 
   private fun showSuggestionAndHideResult() {
     searchQueryView.requestFocus()
     suggestionRecyclerView.toVisible()
+    wholeLayout.setBackgroundColor(color(R.color.search_screen_background))
 
     val f = supportFragmentManager.findFragmentById(R.id.fragment_container)
     if (f != null) {
@@ -167,7 +178,5 @@ class SearchActivity : BaseActivity() {
           .remove(f)
           .commit()
     }
-
-    wholeLayout.setBackgroundColor(color(R.color.search_screen_background))
   }
 }
