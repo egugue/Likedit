@@ -34,7 +34,9 @@ class DebugApp : App() {
   }
 
   override fun onTerminate() {
-    Takt.finish()
+    if (isNotUsingRobolectric()) {
+      Takt.finish()
+    }
     super.onTerminate()
   }
 

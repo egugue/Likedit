@@ -18,7 +18,6 @@ class UserAppService @Inject constructor(
    */
   fun getAllUsers(page: Int, perPage: Int): Observable<List<User>> {
     return userRepository.findAll(page, perPage)
-        .delay(3, SECONDS)
   }
 
   /**
@@ -26,6 +25,5 @@ class UserAppService @Inject constructor(
    */
   fun getUsersByNameContaining(partOfName: String): Observable<List<User>> {
     return userRepository.findByNameContaining(partOfName)
-        .delay(3, SECONDS)
   }
 }
