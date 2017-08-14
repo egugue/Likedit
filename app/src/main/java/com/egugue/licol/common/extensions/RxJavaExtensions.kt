@@ -19,7 +19,7 @@ fun <T> BehaviorRelay<T>.hasNotValue() = !hasValue()
 /**
  * A extension to apply SAM conversion
  */
-fun <T, U, R> Observable<T>.zipWith(other: ObservableSource<U>, zipper: (T, U) -> R) =
+inline fun <T, U, R> Observable<T>.zipWith(other: ObservableSource<U>, crossinline zipper: (T, U) -> R) =
     zipWith(other, BiFunction<T, U, R> { t1, t2 -> zipper.invoke(t1, t2) })
 
 /**
@@ -27,8 +27,8 @@ fun <T, U, R> Observable<T>.zipWith(other: ObservableSource<U>, zipper: (T, U) -
  * But this method doesn't wrap an error with [CompositeException].
  * Instead, it just throws the error.
  */
-fun <T> Observable<T>.onErrorReturnOrJustThrow(
-    valueSupplier: (Throwable) -> T
+inline fun <T> Observable<T>.onErrorReturnOrJustThrow(
+    crossinline valueSupplier: (Throwable) -> T
 ): Observable<T> = lift({
   object : Observer<T> {
     override fun onComplete() {

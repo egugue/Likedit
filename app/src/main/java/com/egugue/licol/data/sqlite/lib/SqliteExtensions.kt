@@ -40,7 +40,7 @@ fun Cursor.toUserEntity(): UserEntity = UserEntity.FACTORY.select_by_id_listMapp
  * @return [T] transformed from [Cursor]. It may be null if the Cursor does'nt have a row.
  * @throws IllegalArgumentException throw it if the Cursor has more than 1 row.
  */
-fun <T> Cursor.mapToOne(transform: (Cursor) -> T): T? =
+inline fun <T> Cursor.mapToOne(transform: (Cursor) -> T): T? =
     if (count == 1) {
       moveToFirst()
       transform.invoke(this)
@@ -54,7 +54,7 @@ fun <T> Cursor.mapToOne(transform: (Cursor) -> T): T? =
 
 /* BriteDatabase extensions */
 
-fun <T> BriteDatabase.transaction(unitOfWork: () -> T): T {
+inline fun <T> BriteDatabase.transaction(unitOfWork: () -> T): T {
   val transaction = newTransaction()
   try {
     val r = unitOfWork.invoke()
