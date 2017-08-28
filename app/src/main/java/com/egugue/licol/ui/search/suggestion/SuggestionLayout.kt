@@ -1,24 +1,19 @@
 package com.egugue.licol.ui.search.suggestion
 
-import android.animation.LayoutTransition
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.egugue.licol.R
 import com.egugue.licol.application.search.Suggestions
-import com.egugue.licol.application.search.Suggestions.Companion
-import com.egugue.licol.common.extensions.toGone
-import com.egugue.licol.common.extensions.toVisible
 import com.egugue.licol.domain.user.User
 import com.squareup.picasso.Picasso
+import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.search_user_suggestion_item.user_avatar
+import kotlinx.android.synthetic.main.search_user_suggestion_item.user_name
+import kotlinx.android.synthetic.main.search_user_suggestion_item.user_screen_name
 
 class SuggestionLayout @JvmOverloads constructor(
     context: Context,
@@ -33,7 +28,7 @@ class SuggestionLayout @JvmOverloads constructor(
   }
 
   var binded: Suggestions = Suggestions.empty()
-  var itemClickListenr: ((User) -> Unit)? = null
+  var itemClickListener: ((User) -> Unit)? = null
 
   fun set(suggestions: Suggestions) {
     if (suggestions == binded) {
@@ -50,35 +45,23 @@ class SuggestionLayout @JvmOverloads constructor(
     suggestions.userList.forEach {
       val child = inf.inflate(R.layout.search_user_suggestion_item, this, false) as ViewGroup
       UserViewHolder(child)
-          .bind(it, itemClickListenr)
+          .bind(it, itemClickListener)
       addView(child)
     }
   }
 
-  class UserViewHolder(val itemView: ViewGroup) {
-    @BindView(R.id.user_avatar)
-    lateinit var avatarView: ImageView
-
-    @BindView(R.id.user_name)
-    lateinit var nameView: TextView
-
-    @BindView(R.id.user_screen_name)
-    lateinit var screenNameView: TextView
-
-    init {
-      ButterKnife.bind(this, itemView)
-    }
+  class UserViewHolder(override val containerView: View?): LayoutContainer {
 
     fun bind(user: User, listener: ((User) -> Unit)?) {
       //TODO
-      itemView.setOnClickListener { listener?.invoke(user) }
+      containerView?.setOnClickListener { listener?.invoke(user) }
 
-      Picasso.with(avatarView.context)
+      Picasso.with(user_avatar.context)
           .load(user.avatorUrl)
-          .into(avatarView)
+          .into(user_avatar)
 
-      nameView.text = user.name
-      screenNameView.text = "@${user.screenName}"
+      user_name.text = user.name
+      user_screen_name.text = "@${user.screenName}"
     }
   }
 }

@@ -6,23 +6,23 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.Toolbar
-import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.egugue.licol.App
 import com.egugue.licol.R
 import com.egugue.licol.application.likedtweet.LikedTweetAppService
-import com.egugue.licol.common.extensions.*
+import com.egugue.licol.common.extensions.LoadMorePredicate
+import com.egugue.licol.common.extensions.loadMoreEvent
+import com.egugue.licol.common.extensions.openLink
+import com.egugue.licol.common.extensions.toast
 import com.egugue.licol.domain.likedtweet.LikedTweet
 import com.egugue.licol.domain.tweet.media.Photo
 import com.egugue.licol.domain.user.User
-import com.egugue.licol.ui.common.StateLayout
 import com.egugue.licol.ui.common.base.BaseActivity
 import com.egugue.licol.ui.common.customtabs.CustomTabActivityHelper
 import com.egugue.licol.ui.home.liked.LikedTweetListController
 import com.trello.rxlifecycle2.kotlin.bindToLifecycle
+import kotlinx.android.synthetic.main.user_tweet_activity.liked_tweet_list
+import kotlinx.android.synthetic.main.user_tweet_activity.state_layout
+import kotlinx.android.synthetic.main.user_tweet_activity.toolbar
 import javax.inject.Inject
 
 /**
@@ -53,29 +53,16 @@ class UserTweetActivity : BaseActivity() {
   private val store: Store by lazy { ViewModelProviders.of(this)[Store::class.java] }
   private val actions: Actions by lazy { Actions(likedTweetAppService, store) }
 
-  @BindView(R.id.toolbar)
-  lateinit var toolbar: Toolbar
-
-  @BindView(R.id.state_layout)
-  lateinit var stateLayout: StateLayout
-
-  @BindView(R.id.liked_tweet_list)
-  lateinit var recyclerView: RecyclerView
-
-  @BindView(R.id.home_user_error_state)
-  lateinit var errorView: TextView
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.user_tweet_activity)
-    ButterKnife.bind(this)
 
     DaggerComponent.builder()
         .appComponent(App.component(this))
         .build()
         .inject(this)
 
-    stateLayout.showProgress()
+    state_layout.showProgress()
     initToolbar()
     initListView()
     initErrorView()
@@ -96,18 +83,18 @@ class UserTweetActivity : BaseActivity() {
         .bindToLifecycle(this)
         .subscribe {
           //TODO
-          stateLayout.showError()
+          state_layout.showError()
         }
   }
 
   private fun initListView() {
     val layoutManager = LinearLayoutManager(this)
     val listController = LikedTweetListController()
-    recyclerView.adapter = listController.adapter
-    recyclerView.layoutManager = layoutManager
-    recyclerView.addItemDecoration(DividerItemDecoration(this, layoutManager.orientation))
+    liked_tweet_list.adapter = listController.adapter
+    liked_tweet_list.layoutManager = layoutManager
+    liked_tweet_list.addItemDecoration(DividerItemDecoration(this, layoutManager.orientation))
 
-    recyclerView.loadMoreEvent(object : LoadMorePredicate {
+    liked_tweet_list.loadMoreEvent(object : LoadMorePredicate {
       override fun isLoading(): Boolean = store.isLoadingMore.value
       override fun hasLoadedItems(): Boolean = store.hasLoadCompleted()
     })
@@ -118,12 +105,12 @@ class UserTweetActivity : BaseActivity() {
         .bindToLifecycle(this)
         .subscribe {
           if (it.isEmpty()) {
-            stateLayout.showEmptyState()
+            state_layout.showEmptyState()
           } else {
             listController.setData(it)
             listController.setLoadingMoreVisibility(false)
             listController.requestModelBuild()
-            stateLayout.showContent()
+            state_layout.showContent()
           }
         }
 

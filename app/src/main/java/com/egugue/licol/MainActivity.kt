@@ -5,27 +5,23 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.widget.Button
 import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.egugue.licol.data.prefs.AppSetting
 import com.egugue.licol.domain.likedtweet.LikedTweetRepository
 import com.egugue.licol.domain.tag.TagRepository
-import com.egugue.licol.ui.common.tweet.OnTweetClickListener
 import com.egugue.licol.ui.auth.AuthActivity
+import com.egugue.licol.ui.common.tweet.OnTweetClickListener
 import com.egugue.licol.ui.home.HomeActivity
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
 import com.twitter.sdk.android.core.TwitterCore
+import kotlinx.android.synthetic.main.main_activity.auth_button
+import kotlinx.android.synthetic.main.main_activity.home_button
 import javax.inject.Inject
 
 class MainActivity : RxAppCompatActivity() {
 
   @Inject lateinit var likedRepository: LikedTweetRepository
   @Inject lateinit var tagRepository: TagRepository
-
-  @BindView(R.id.auth_button) lateinit var authButton: Button
-  @BindView(R.id.home_button) lateinit var homeButton: Button
 
   val listener: OnTweetClickListener = object : OnTweetClickListener {
     override fun onUrlClicked(url: String) {
@@ -38,19 +34,19 @@ class MainActivity : RxAppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.main_activity)
     if (TwitterCore.getInstance().sessionManager.activeSession == null) {
+
       startActivity(AuthActivity.createIntent(this))
       finish()
       return
     }
 
     App.component(this).inject(this)
-    ButterKnife.bind(this)
 
-    authButton.setOnClickListener {
+    auth_button.setOnClickListener {
       startActivity(AuthActivity.createIntent(this))
     }
 
-    homeButton.setOnClickListener {
+    home_button.setOnClickListener {
       val intent = Intent(this, HomeActivity::class.java)
       startActivity(intent)
     }

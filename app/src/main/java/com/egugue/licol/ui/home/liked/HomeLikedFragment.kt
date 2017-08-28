@@ -5,15 +5,9 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.Unbinder
-
 import com.egugue.licol.R
 import com.egugue.licol.application.likedtweet.LikedTweetAppService
 import com.egugue.licol.common.extensions.LoadMorePredicate
@@ -23,12 +17,13 @@ import com.egugue.licol.common.extensions.toast
 import com.egugue.licol.domain.likedtweet.LikedTweet
 import com.egugue.licol.domain.tweet.media.Photo
 import com.egugue.licol.domain.user.User
-import com.egugue.licol.ui.common.StateLayout
 import com.egugue.licol.ui.common.customtabs.CustomTabActivityHelper
 import com.egugue.licol.ui.home.HomeActivity
 import com.egugue.licol.ui.usertweet.UserTweetActivity
 import com.trello.rxlifecycle2.components.support.RxFragment
 import com.trello.rxlifecycle2.kotlin.bindToLifecycle
+import kotlinx.android.synthetic.main.home_liked_fragment.home_liked_list
+import kotlinx.android.synthetic.main.home_liked_fragment.home_liked_state_layout
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -45,17 +40,6 @@ class HomeLikedFragment : RxFragment() {
   private val store: Store by lazy { ViewModelProviders.of(activity)[Store::class.java] }
   private val actions: Actions by lazy { Actions(likedTweetAppService, store) }
 
-  lateinit private var unbinder: Unbinder
-
-  @BindView(R.id.home_liked_state_layout)
-  lateinit var stateLayout: StateLayout
-
-  @BindView(R.id.home_liked_list)
-  lateinit var recyclerView: RecyclerView
-
-  @BindView(R.id.home_liked_error_state)
-  lateinit var errorView: TextView
-
   override fun onAttach(context: Context?) {
     super.onAttach(context)
     (activity as HomeActivity)
@@ -64,15 +48,12 @@ class HomeLikedFragment : RxFragment() {
   }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-      savedInstanceState: Bundle?): View? {
-    val view = inflater.inflate(R.layout.home_liked_fragment, container, false)
-    unbinder = ButterKnife.bind(this, view)
-    return view
-  }
+      savedInstanceState: Bundle?): View
+      = inflater.inflate(R.layout.home_liked_fragment, container, false)
 
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    stateLayout.showProgress()
+    home_liked_state_layout.showProgress()
     initListView()
     initError()
   }
@@ -85,7 +66,6 @@ class HomeLikedFragment : RxFragment() {
   }
 
   override fun onDestroyView() {
-    unbinder.unbind()
     super.onDestroyView()
   }
 
@@ -94,27 +74,27 @@ class HomeLikedFragment : RxFragment() {
         .bindToLifecycle(this)
         .subscribe {
           //TODO
-          stateLayout.showError()
+          home_liked_state_layout.showError()
         }
   }
 
   private fun initListView() {
     val layoutManager = LinearLayoutManager(activity)
     val listController = LikedTweetListController()
-    recyclerView.adapter = listController.adapter
-    recyclerView.layoutManager = layoutManager
-    recyclerView.addItemDecoration(DividerItemDecoration(activity, layoutManager.orientation))
+    home_liked_list.adapter = listController.adapter
+    home_liked_list.layoutManager = layoutManager
+    home_liked_list.addItemDecoration(DividerItemDecoration(activity, layoutManager.orientation))
 
     store.listData
         .bindToLifecycle(this)
         .subscribe {
           if (it.isEmpty()) {
-            stateLayout.showEmptyState()
+            home_liked_state_layout.showEmptyState()
           } else {
             listController.setData(it)
             listController.setLoadingMoreVisibility(false)
             listController.requestModelBuild()
-            stateLayout.showContent()
+            home_liked_state_layout.showContent()
           }
         }
 
@@ -125,7 +105,7 @@ class HomeLikedFragment : RxFragment() {
           listController.requestModelBuild()
         }
 
-    recyclerView.loadMoreEvent(object : LoadMorePredicate {
+    home_liked_list.loadMoreEvent(object : LoadMorePredicate {
       override fun isLoading(): Boolean = store.isLoadingMore.value
       override fun hasLoadedItems(): Boolean = store.hasLoadCompleted()
     })
