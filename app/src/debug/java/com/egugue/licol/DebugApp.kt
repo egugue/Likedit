@@ -22,11 +22,6 @@ class DebugApp : App() {
       Takt.stock(this)
           .color(ContextCompat.getColor(this, android.R.color.black))
           .play()
-      /* TODO: when using AndroidStudio 3.0 canary3, throw an exception
-      TinyDancer.create()
-          .startingGravity(Gravity.BOTTOM)
-          .show(this)
-          */
     }
 
     plantTimberTree()
