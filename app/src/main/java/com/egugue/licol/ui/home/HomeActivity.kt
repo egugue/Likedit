@@ -2,20 +2,18 @@ package com.egugue.licol.ui.home
 
 import android.os.Bundle
 import android.support.design.widget.TabLayout
-import android.support.v4.view.ViewPager
-import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.egugue.licol.App
-
 import com.egugue.licol.R
 import com.egugue.licol.common.analytics.Analytics
 import com.egugue.licol.common.analytics.ViewEvent
 import com.egugue.licol.ui.common.base.BaseActivity
 import com.egugue.licol.ui.common.customtabs.CustomTabActivityHelper
 import com.egugue.licol.ui.search.SearchActivity
+import kotlinx.android.synthetic.main.home_activity.home_tablayout
+import kotlinx.android.synthetic.main.home_activity.toolbar
+import kotlinx.android.synthetic.main.home_activity.view_pager
 import javax.inject.Inject
 
 class HomeActivity : BaseActivity() {
@@ -29,21 +27,16 @@ class HomeActivity : BaseActivity() {
   @Inject lateinit var analytics: Analytics
   @Inject lateinit var customTabActivityHelper: CustomTabActivityHelper
 
-  @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
-  @BindView(R.id.home_pager) lateinit var viewPager: ViewPager
-  @BindView(R.id.home_tablayout) lateinit var tabLayout: TabLayout
-
   internal val adapter: HomePagerAdapter = HomePagerAdapter(supportFragmentManager)
 
   override fun onCreate(savedInstanceState: Bundle?) {
     component.inject(this)
     super.onCreate(savedInstanceState)
     setContentView(R.layout.home_activity)
-    ButterKnife.bind(this)
 
     setSupportActionBar(toolbar)
-    viewPager.adapter = adapter
-    viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
+    view_pager.adapter = adapter
+    view_pager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(home_tablayout))
 
     analytics.viewEvent(ViewEvent.HOME)
     customTabActivityHelper.setUpCustomTabService(this)

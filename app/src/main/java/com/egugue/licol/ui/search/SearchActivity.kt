@@ -4,16 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.CardView
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.Toolbar
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.SearchView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.egugue.licol.R
 import com.egugue.licol.application.search.SearchAppService
 import com.egugue.licol.common.extensions.color
@@ -27,6 +23,11 @@ import com.egugue.licol.ui.search.suggestion.SuggestionListController
 import com.egugue.licol.ui.usertweet.UserTweetActivity
 import com.jakewharton.rxbinding2.widget.RxSearchView
 import com.trello.rxlifecycle2.kotlin.bindToLifecycle
+import kotlinx.android.synthetic.main.search_activity.app_bar
+import kotlinx.android.synthetic.main.search_activity.search_query
+import kotlinx.android.synthetic.main.search_activity.search_suggestion_list
+import kotlinx.android.synthetic.main.search_activity.toolbar
+import kotlinx.android.synthetic.main.search_activity.whole_layout
 import javax.inject.Inject
 
 
@@ -42,17 +43,13 @@ class SearchActivity : BaseActivity(), IcePick by IcePickDelegate() {
     }
   }
 
-  @BindView(R.id.whole_layout) lateinit var wholeLayout: ViewGroup
-  @BindView(R.id.app_bar) lateinit var appBar: View
-  @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
-  @BindView(R.id.search_query) lateinit var searchQueryView: SearchView
-  @BindView(R.id.search_suggestion_list) lateinit var suggestionRecyclerView: RecyclerView
-  @BindView(R.id.fragment_container) lateinit var fragmentContainer: ViewGroup
   private val suggestionListController: SuggestionListController = SuggestionListController()
 
   val component: SearchComponent by lazy { SearchComponent.Initializer.init(this) }
   @Inject lateinit var searchAppService: SearchAppService
 
+  //FIXME
+  val appBar: CardView by lazy { app_bar }
   private var wasSuggestionShown: Boolean by state(true)
 
   override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
@@ -62,7 +59,6 @@ class SearchActivity : BaseActivity(), IcePick by IcePickDelegate() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.search_activity)
-    ButterKnife.bind(this)
     component.inject(this)
     restoreInstanceState(savedInstanceState)
 
@@ -78,7 +74,7 @@ class SearchActivity : BaseActivity(), IcePick by IcePickDelegate() {
 
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
-    wasSuggestionShown = suggestionRecyclerView.visibility == View.VISIBLE
+    wasSuggestionShown = search_suggestion_list.visibility == View.VISIBLE
     saveInstanceState(outState)
   }
 
@@ -96,10 +92,10 @@ class SearchActivity : BaseActivity(), IcePick by IcePickDelegate() {
 
   private fun initSuggestionList() {
     val layoutManager = LinearLayoutManager(this)
-    suggestionRecyclerView.adapter = suggestionListController.adapter
-    suggestionRecyclerView.layoutManager = layoutManager
-    suggestionRecyclerView.itemAnimator = null
-    suggestionRecyclerView.addItemDecoration(DividerItemDecoration(this, layoutManager.orientation))
+    search_suggestion_list.adapter = suggestionListController.adapter
+    search_suggestion_list.layoutManager = layoutManager
+    search_suggestion_list.itemAnimator = null
+    search_suggestion_list.addItemDecoration(DividerItemDecoration(this, layoutManager.orientation))
     suggestionListController.userClickListener = {
       startActivity(UserTweetActivity.createIntent(this, it))
     }
@@ -107,16 +103,16 @@ class SearchActivity : BaseActivity(), IcePick by IcePickDelegate() {
 
   private fun initSearchEditText() {
     // When user input search query.
-    searchQueryView.requestFocus()
+    search_query.requestFocus()
 
     //TODO: RxBinding
-    searchQueryView.setOnQueryTextFocusChangeListener { _, isFocusing ->
+    search_query.setOnQueryTextFocusChangeListener { _, isFocusing ->
       if (isFocusing) {
         showSuggestionAndHideResult()
       }
     }
 
-    val queryEvent = RxSearchView.queryTextChangeEvents(searchQueryView).share()
+    val queryEvent = RxSearchView.queryTextChangeEvents(search_query).share()
     queryEvent
         .toQueryChangingAction()
         .toSuggestions(searchAppService)
@@ -125,7 +121,7 @@ class SearchActivity : BaseActivity(), IcePick by IcePickDelegate() {
           //suggestionLayout.set(it)
           suggestionListController.replaceWith(it)
           suggestionListController.requestModelBuild()
-          suggestionRecyclerView.scrollToPosition(0)
+          search_suggestion_list.scrollToPosition(0)
         }
 
     queryEvent
@@ -133,14 +129,14 @@ class SearchActivity : BaseActivity(), IcePick by IcePickDelegate() {
         .bindToLifecycle(this)
         .subscribe {
           val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-          imm.hideSoftInputFromWindow(searchQueryView.windowToken, 0)
+          imm.hideSoftInputFromWindow(search_query.windowToken, 0)
 
           hideSuggestionAndShowResult(it)
         }
 
     //TODO: Instead, create a custom SearchView because of flaky code
     // remove marginLeft to close toolbar's up button
-    val editFrame = searchQueryView.findViewById<View>(
+    val editFrame = search_query.findViewById<View>(
         resources.getIdentifier("android:id/search_edit_frame", null, null))
     if (editFrame != null) {
       val lp = editFrame.layoutParams as ViewGroup.MarginLayoutParams
@@ -149,15 +145,15 @@ class SearchActivity : BaseActivity(), IcePick by IcePickDelegate() {
     }
 
     // remove the underline in EditText of SearchView
-    val plate = searchQueryView.findViewById<View>(
+    val plate = search_query.findViewById<View>(
         resources.getIdentifier("android:id/search_plate", null, null))
     plate?.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent))
   }
 
   private fun hideSuggestionAndShowResult(query: String) {
-    searchQueryView.clearFocus()
-    suggestionRecyclerView.toGone()
-    wholeLayout.setBackgroundColor(color(R.color.light_background))
+    search_query.clearFocus()
+    search_suggestion_list.toGone()
+    whole_layout.setBackgroundColor(color(R.color.light_background))
 
     val f = supportFragmentManager.findFragmentById(R.id.fragment_container)
     if (f == null) {
@@ -168,9 +164,9 @@ class SearchActivity : BaseActivity(), IcePick by IcePickDelegate() {
   }
 
   private fun showSuggestionAndHideResult() {
-    searchQueryView.requestFocus()
-    suggestionRecyclerView.toVisible()
-    wholeLayout.setBackgroundColor(color(R.color.search_screen_background))
+    search_query.requestFocus()
+    search_suggestion_list.toVisible()
+    whole_layout.setBackgroundColor(color(R.color.search_screen_background))
 
     val f = supportFragmentManager.findFragmentById(R.id.fragment_container)
     if (f != null) {

@@ -5,11 +5,16 @@ apply plugin: 'io.fabric'
 apply plugin: 'com.squareup.sqldelight'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-allopen'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'jacoco-android'
 apply from: rootProject.file('gradle/fabric-properties-generate.gradle')
 
 allOpen {
     annotation("com.egugue.licol.common.AllOpen")
+}
+
+androidExtensions {
+    experimental = true
 }
 
 android {
@@ -112,10 +117,6 @@ dependencies {
     kapt 'com.google.dagger:dagger-compiler:2.11'
 
     // View
-    def butterknifeVer = "8.6.0"
-    implementation "com.jakewharton:butterknife:$butterknifeVer"
-    kapt "com.jakewharton:butterknife-compiler:$butterknifeVer"
-
     implementation 'com.airbnb.android:epoxy:2.1.0'
 
     // Network

@@ -1,16 +1,16 @@
 package com.egugue.licol.ui.search.suggestion
 
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.airbnb.epoxy.EpoxyHolder
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.egugue.licol.R
 import com.egugue.licol.domain.user.User
 import com.egugue.licol.ui.search.suggestion.UserSuggestionEpoxyModel.Holder
 import com.squareup.picasso.Picasso
+import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.search_user_suggestion_item.user_avatar
+import kotlinx.android.synthetic.main.search_user_suggestion_item.user_name
+import kotlinx.android.synthetic.main.search_user_suggestion_item.user_screen_name
 
 /**
  * An [EpoxyModelWithHolder] which show suggestion of [User]
@@ -31,29 +31,22 @@ internal class UserSuggestionEpoxyModel(val user: User)
   override fun bind(h: Holder) {
     h.itemView.setOnClickListener(listener)
 
-    Picasso.with(h.avatarView.context)
+    Picasso.with(h.user_avatar.context)
         .load(user.avatorUrl)
-        .into(h.avatarView)
+        .into(h.user_avatar)
 
-    h.nameView.text = user.name
-    h.screenNameView.text = "@${user.screenName}"
+    h.user_name.text = user.name
+    h.user_screen_name.text = "@${user.screenName}"
   }
 
-  class Holder : EpoxyHolder() {
+  class Holder : EpoxyHolder(), LayoutContainer {
+    override val containerView: View?
+      get() = itemView
+
     lateinit var itemView: View
-
-    @BindView(R.id.user_avatar)
-    lateinit var avatarView: ImageView
-
-    @BindView(R.id.user_name)
-    lateinit var nameView: TextView
-
-    @BindView(R.id.user_screen_name)
-    lateinit var screenNameView: TextView
 
     override fun bindView(itemView: View) {
       this.itemView = itemView
-      ButterKnife.bind(this, itemView)
     }
   }
 }

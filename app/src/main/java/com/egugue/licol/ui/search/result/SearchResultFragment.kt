@@ -4,25 +4,21 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnPreDrawListener
-import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.Unbinder
 import com.egugue.licol.R
 import com.egugue.licol.application.search.SearchAppService
 import com.egugue.licol.common.extensions.observeOnMain
 import com.egugue.licol.domain.likedtweet.LikedTweet
 import com.egugue.licol.domain.tweet.media.Photo
 import com.egugue.licol.domain.user.User
-import com.egugue.licol.ui.common.StateLayout
 import com.egugue.licol.ui.home.liked.LikedTweetListController
 import com.egugue.licol.ui.search.SearchActivity
 import com.trello.rxlifecycle2.components.support.RxFragment
+import kotlinx.android.synthetic.main.search_result_fragment.search_result_list
+import kotlinx.android.synthetic.main.search_result_fragment.state_layout
 import javax.inject.Inject
 
 /**
@@ -43,11 +39,6 @@ class SearchResultFragment : RxFragment() {
 
   @Inject lateinit var searchAppService: SearchAppService
 
-  @BindView(R.id.search_result_list) lateinit var recyclerView: RecyclerView
-  @BindView(R.id.search_result_state_layout) lateinit var stateLayout: StateLayout
-  @BindView(R.id.search_result_error_state) lateinit var errorView: TextView
-  lateinit private var unbinder: Unbinder
-
   private val listController = LikedTweetListController()
   private val query: String by lazy { arguments.getString("query") }
 
@@ -57,20 +48,17 @@ class SearchResultFragment : RxFragment() {
   }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-      savedInstanceState: Bundle?): View? {
-    val view = inflater.inflate(R.layout.search_result_fragment, container, false)
-    unbinder = ButterKnife.bind(this, view)
-    return view
-  }
+      savedInstanceState: Bundle?): View?
+      = inflater.inflate(R.layout.search_result_fragment, container, false)
 
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     initSearchResultList()
 
-    stateLayout.showProgress()
+    state_layout.showProgress()
     searchAppService.getSearchResult(query, 1, 30)
         .observeOnMain()
         .subscribe {
-          stateLayout.showContent()
+          state_layout.showContent()
           listController.setData(it)
           listController.requestModelBuild()
         }
@@ -78,6 +66,8 @@ class SearchResultFragment : RxFragment() {
 
   private fun initSearchResultList() {
     //FIXME: depends on the specific activity directly
+    val recyclerView = search_result_list
+
     val appBar = (activity as SearchActivity).appBar
     appBar.viewTreeObserver.addOnPreDrawListener(object : OnPreDrawListener {
       override fun onPreDraw(): Boolean {

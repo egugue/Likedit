@@ -5,23 +5,20 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.Unbinder
 import com.egugue.licol.R
 import com.egugue.licol.application.user.UserAppService
-import com.egugue.licol.common.extensions.*
-import com.egugue.licol.ui.common.StateLayout
+import com.egugue.licol.common.extensions.LoadMorePredicate
+import com.egugue.licol.common.extensions.loadMoreEvent
 import com.egugue.licol.ui.home.HomeActivity
 import com.egugue.licol.ui.home.user.list.UserController
 import com.egugue.licol.ui.usertweet.UserTweetActivity
 import com.trello.rxlifecycle2.components.support.RxFragment
 import com.trello.rxlifecycle2.kotlin.bindToLifecycle
+import kotlinx.android.synthetic.main.home_user_fragment.home_user_list
+import kotlinx.android.synthetic.main.home_user_fragment.home_user_state_layout
 import javax.inject.Inject
 
 /**
@@ -42,16 +39,6 @@ class HomeUserFragment : RxFragment() {
   private val actions: Actions by lazy { Actions(appService, store) }
 
   private val perPage = 20
-  lateinit private var unbinder: Unbinder
-
-  @BindView(R.id.home_user_state_layout)
-  lateinit var stateLayout: StateLayout
-
-  @BindView(R.id.home_user_list)
-  lateinit var listView: RecyclerView
-
-  @BindView(R.id.home_user_error_state)
-  lateinit var errorView: TextView
 
   override fun onAttach(context: Context) {
     super.onAttach(context)
@@ -60,15 +47,12 @@ class HomeUserFragment : RxFragment() {
   }
 
   override fun onCreateView(inf: LayoutInflater, container: ViewGroup?,
-      savedInstanceState: Bundle?): View {
-    val view = inf.inflate(R.layout.home_user_fragment, container, false)
-    unbinder = ButterKnife.bind(this, view)
-    return view
-  }
+      savedInstanceState: Bundle?): View
+      = inf.inflate(R.layout.home_user_fragment, container, false)
 
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    stateLayout.showProgress()
+    home_user_state_layout.showProgress()
     initListView()
     initErrorView()
   }
@@ -80,21 +64,17 @@ class HomeUserFragment : RxFragment() {
     }
   }
 
-  override fun onDestroyView() {
-    unbinder.unbind()
-    super.onDestroyView()
-  }
-
   private fun initErrorView() {
     store.error
         .bindToLifecycle(this)
         .subscribe {
           //TODO
-          stateLayout.showError()
+          home_user_state_layout.showError()
         }
   }
 
   private fun initListView() {
+    val listView = home_user_list
     val listController = UserController()
     val layoutManager = LinearLayoutManager(activity)
     listView.adapter = listController.adapter
@@ -112,12 +92,12 @@ class HomeUserFragment : RxFragment() {
         .bindToLifecycle(this)
         .subscribe {
           if (it.isEmpty()) {
-            stateLayout.showEmptyState()
+            home_user_state_layout.showEmptyState()
           } else {
             listController.setData(it)
             listController.setLoadingMoreVisibility(false)
             listController.requestModelBuild()
-            stateLayout.showContent()
+            home_user_state_layout.showContent()
           }
         }
 

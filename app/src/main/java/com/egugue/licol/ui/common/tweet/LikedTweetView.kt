@@ -5,10 +5,6 @@ import android.support.constraint.ConstraintLayout
 import android.support.v4.content.res.ResourcesCompat
 import android.text.Spannable
 import android.util.AttributeSet
-import android.widget.ImageView
-import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.egugue.licol.R
 import com.egugue.licol.common.extensions.toGone
 import com.egugue.licol.common.extensions.toVisible
@@ -16,26 +12,20 @@ import com.egugue.licol.domain.likedtweet.LikedTweet
 import com.egugue.licol.domain.tweet.media.Photo
 import com.egugue.licol.domain.user.User
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.liked_tweet_view.view.tweet_photo
+import kotlinx.android.synthetic.main.liked_tweet_view.view.tweet_text
+import kotlinx.android.synthetic.main.liked_tweet_view.view.tweet_timestamp
+import kotlinx.android.synthetic.main.liked_tweet_view.view.user_avatar
+import kotlinx.android.synthetic.main.liked_tweet_view.view.user_name
+import kotlinx.android.synthetic.main.liked_tweet_view.view.user_screen_name
 
 /**
  * A view showing a tweet user liked.
  */
 class LikedTweetView(context: Context, attrs: AttributeSet) : ConstraintLayout(context, attrs) {
 
-  @BindView(R.id.user_avatar) lateinit var userAvatarIv: ImageView
-  @BindView(R.id.user_name) lateinit var userNameTv: TextView
-  @BindView(R.id.user_screen_name) lateinit var userScreenNameTv: TextView
-  @BindView(R.id.tweet_text) lateinit var tweetTextTv: TextView
-  @BindView(R.id.tweet_timestamp) lateinit var timestampTv: TextView
-  @BindView(R.id.tweet_photo) lateinit var photoIv: TweetImageView
-
   val onLinkClickListener: OnLinkClickListener = { listener?.onLinkClicked(it) }
   var listener: OnItemClickListener? = null
-
-  override fun onFinishInflate() {
-    super.onFinishInflate()
-    ButterKnife.bind(this)
-  }
 
   /**
    * Bind the given args to this view
@@ -50,55 +40,57 @@ class LikedTweetView(context: Context, attrs: AttributeSet) : ConstraintLayout(c
   }
 
   private fun renderUser(user: User) {
-    userAvatarIv.setOnClickListener { listener?.onUserAvatarClicked(user) }
+    user_avatar.setOnClickListener { listener?.onUserAvatarClicked(user) }
 
     Picasso.with(context)
-        .load(user.avatorUrl)
-        .into(userAvatarIv)
 
-    userNameTv.text = user.name
-    userScreenNameTv.text = "@${user.screenName}"
+        .load(user.avatorUrl)
+        .into(user_avatar)
+
+    user_name.text = user.name
+    user_screen_name.text = "@${user.screenName}"
   }
 
   private fun renderTimestamp(createdAt: Long) {
-    timestampTv.text = TweetDateUtils.getRelativeTimeString(
+    tweet_timestamp.text = TweetDateUtils.getRelativeTimeString(
         resources, System.currentTimeMillis(), createdAt)
   }
 
   private fun renderText(tweet: LikedTweet, user: User) {
     val linklifier = TweetTextLinklifer()
-    tweetTextTv.text = linklifier.linklifyText(
+    tweet_text.text = linklifier.linklifyText(
         tweet.text,
         tweet.urlList,
-        ResourcesCompat.getColor(resources, R.color.tweet_action_light_highlight_color, context.theme),
+        ResourcesCompat.getColor(resources, R.color.tweet_action_light_highlight_color,
+            context.theme),
         onLinkClickListener
     )
 
     val method = LinkTouchMovementMethod { listener?.onWholeClicked(tweet, user) }
-    tweetTextTv.setOnTouchListener { v, event ->
-      tweetTextTv.movementMethod = method
-      val res = method.onTouchEvent(tweetTextTv, tweetTextTv.text as Spannable, event)
-      tweetTextTv.movementMethod = null
-      tweetTextTv.isFocusable = false
+    tweet_text.setOnTouchListener { v, event ->
+      tweet_text.movementMethod = method
+      val res = method.onTouchEvent(tweet_text, tweet_text.text as Spannable, event)
+      tweet_text.movementMethod = null
+      tweet_text.isFocusable = false
       res
     }
   }
 
   private fun renderPhoto(photoList: List<Photo>) {
     if (photoList.isEmpty()) {
-      photoIv.toGone()
+      tweet_photo.toGone()
       return
     }
 
     for (photo in photoList) {
-      photoIv.setImageSize(photo.sizes.medium.width, photo.sizes.medium.height)
-      photoIv.toVisible()
+      tweet_photo.setImageSize(photo.sizes.medium.width, photo.sizes.medium.height)
+      tweet_photo.toVisible()
 
       Picasso.with(context)
           .load(photo.url)
-          .into(photoIv)
+          .into(tweet_photo)
 
-      photoIv.setOnClickListener { listener?.onPhotoClicked(photo) }
+      tweet_photo.setOnClickListener { listener?.onPhotoClicked(photo) }
       break
     }
   }
