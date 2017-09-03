@@ -1,0 +1,42 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/code
+
+    # https://hub.docker.com/r/circleci/android/tags/
+    docker:
+      - image: circleci/android:api-26-alpha
+
+    environment:
+      REVIEWDOG_VERSION: 0.9.8
+    steps:
+      - checkout
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Generate google-services.json For Debug
+          command: echo $GOOGLE_SERVICES_JSON_FOR_DEBUG   | base64 -d > ./app/src/debug/google-services.json
+      - run:
+          name: Generate google-services.json For Release
+          command: echo $GOOGLE_SERVICES_JSON_FOR_RELEASE | base64 -d > ./app/src/release/google-services.json
+      - run:
+          name: Setup ReviewDog
+          command: curl -fSL https://github.com/haya14busa/reviewdog/releases/download/$REVIEWDOG_VERSION/reviewdog_linux_amd64 -o reviewdog && chmod +x ./reviewdog
+      - run:
+          name: Run Lint
+          command: ./gradlew lint
+      - run:
+          name: Run Test
+          command: ./gradlew assemble testDebugUnitTest
+      - store_artifacts:
+          path: app/build/reports
+          destination: reports
+      - store_test_results:
+          path: app/build/test-results
